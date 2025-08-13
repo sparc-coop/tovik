@@ -1,0 +1,72 @@
+.modal {
+    display: none;
+    max-width: 600px;
+    width: 50vw;
+    padding: 32px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 20px;
+    border: 1px solid var(--blue-50);
+    background: var(--blue-600);
+    opacity: 1;
+    z-index: 1000;
+
+    h3 {
+        width: 100%;
+        text-align: center;
+        font-family: var(--brother-printed);
+        font-size: 2.4rem;
+        font-weight: 600;
+    }
+
+    h4 {
+        width: 100%;
+        font-family: var(--brother-printed);
+        font-size: 3rem;
+        text-align: center;
+    }
+
+    &.show {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        gap: 24px;
+    }
+
+    &-overlay {
+        display: none;
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: rgba(0, 0, 0, 0.50);
+        z-index: 600;
+        animation: fadeOut .8s;
+
+        &.show {
+            display: block;
+            animation: fadeIn .8s;
+        }
+    }
+
+    .btn-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+
+        button {
+            width: 50%;
+
+            ::deep svg {
+                path {
+                    stroke: var(--blue-700);
+                }
+            }
+        }
+    }
+}

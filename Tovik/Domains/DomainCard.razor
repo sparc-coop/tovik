@@ -1,0 +1,68 @@
+﻿<tr id="@Domain.Id" class="domain-card @("domain-card__" + PageType)">
+    @if (Domain != null)
+    {
+        @if (PageType == "home")
+        {
+            <td class="domain-name" @onclick='() => Nav.NavigateTo($"/sites/{Domain.Id}")'>
+                @Domain.Domain
+                @if (Domain.DateConnected != null)
+                {
+                    <VerifiedIcon />
+                }
+            </td>
+            <td class="domain-usage">@Domain.TovikUsage.ToString("N").Replace(".00", "")</td>
+            <td class="domain-actions">
+                <button class="actions-btn icon-btn" data-id="@Domain.Id" @onclick='() => Nav.NavigateTo($"/sites/{Domain.Id}")'><ChevronRightIcon /></button>
+                @* <div id="@Domain.Id-actions" class="actions-menu @(showDomainActions ? "show" : "")">
+                    <button class="edit-btn secondary-btn"><EditIcon />Edit</button>
+                    <button @onclick="DeleteDomain" class="delete-btn secondary-btn"><TrashIcon />Delete</button>
+                </div>*@
+            </td>
+        }
+
+        @if (PageType == "domain")
+        {
+            <td class="domain-name">
+                @Domain.Domain
+                @if (Domain.DateConnected != null)
+                {
+                    <VerifiedIcon />
+                }
+            </td>
+            <td class="domain-usage">@Domain.TovikUsage.ToString("N").Replace(".00", "")</td>
+            <td class="domain-actions">
+                <button class="edit-btn secondary-btn"><EditIcon /></button>
+                <button @onclick="ToggleDeleteModal" class="delete-btn secondary-btn"><TrashIcon /></button>
+            </td>
+        }
+    }
+</tr>
+<DeleteModal Domain=Domain ShowModal=showDeleteModal OnClose=ToggleDeleteModal OnDeleteDomain="DeleteDomain" />
+
+@code {
+    [Parameter] public required SparcDomain Domain { get; set; }
+    [Parameter] public string? PageType { get; set; }
+    [Parameter] public EventCallback<SparcDomain> OnDelete { get; set; }
+
+    bool showDeleteModal = false;
+    // bool showDomainActions = false;
+
+    // private void ToggleDomainActions()
+    // {
+    //     Js.InvokeVoidAsync("hideAllDomainActions");
+    //     showDomainActions = !showDomainActions;
+    // }
+    private void ToggleDeleteModal()
+    {
+        showDeleteModal = !showDeleteModal;
+    }
+
+    private void DeleteDomain()
+    {
+        OnDelete.InvokeAsync(Domain);
+        showDeleteModal = false;
+        Nav.NavigateTo("/sites");
+        StateHasChanged();
+        //showDomainActions = false;
+    }
+}

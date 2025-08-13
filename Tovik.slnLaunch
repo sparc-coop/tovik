@@ -1,0 +1,17 @@
+[
+  {
+    "Name": "Tovik with Blossom Engine",
+    "Projects": [
+      {
+        "Path": "Tovik\\Tovik.csproj",
+        "Action": "Start",
+        "DebugTarget": "https"
+      },
+      {
+        "Path": "..\\blossom\\Sparc.Blossom.Engine\\Sparc.Blossom.Engine.csproj",
+        "Action": "Start",
+        "DebugTarget": "https"
+      }
+    ]
+  }
+]

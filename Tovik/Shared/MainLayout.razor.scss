@@ -1,0 +1,183 @@
+main {
+    width: var(--app-width);
+    margin-top: 100px;
+    padding: 0 16px;
+    padding-bottom: 24px;
+    color: var(--blue-50);
+
+    .main-grid {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        column-gap: 16px;
+
+        ::deep article {
+            grid-column: 1 / span 4;
+            margin-top: 200px;
+        }
+    }
+
+    .hero {
+        width: var(--app-width);
+        height: fit-content;
+        position: relative;
+
+        &-img {
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+
+            ::deep svg {
+                width: 263px;
+                height: auto;
+            }
+        }
+
+        &-background {
+            width: 827px;
+            height: auto;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 0;
+            opacity: 0.6;
+
+            ::deep svg {
+                width: 100%;
+                height: auto;
+            }
+        }
+    }
+
+    ::deep article {
+        width: var(--app-width);
+        position: relative;
+        z-index: 20;
+
+        .page-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+
+            section {
+                display: flex;
+                flex-direction: column;
+                gap: 24px;
+                padding: 24px;
+                background-color: rgba(79, 129, 153, 0.20);
+                border: 1px solid rgba(219, 243, 252, 0.20);
+                border-radius: 24px;
+                backdrop-filter: blur(4px);
+
+                a {
+                    text-decoration: underline;
+                }
+
+                header {
+                    h3 {
+                        font-size: 2.5rem;
+                        font-weight: 700;
+                        line-height: normal;
+                    }
+
+                    .subheader {
+                        font-family: var(--articulat);
+                        font-size: 1.6rem;
+                        font-weight: 400;
+                        line-height: 140%;
+                        margin-bottom: 16px;
+                    }
+
+                    aside {
+                        color: var(--orange-300, #FF945E);
+                        font-family: var(--brother-printed);
+                        font-size: 16px;
+                        font-style: normal;
+                        font-weight: 700;
+                        line-height: normal;
+                    }
+                }
+
+                h4 {
+                    color: #FFF;
+                    font-family: var(--brother-printed);
+                    font-size: 16px;
+                    font-style: normal;
+                    font-weight: 700;
+                    line-height: normal;
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (min-width: 1024px) {
+    .layout-container {
+        width: var(--desktop-width);
+        max-width: 1400px;
+        padding: 0 64px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        column-gap: 16px;
+
+        ::deep nav {
+            width: var(--app-width);
+
+            .nav-menu {
+                display: none;
+            }
+        }
+
+        ::deep .nav-sidebar {
+            grid-column: 1 / span 1;
+            margin-top: 44px;
+            z-index: 10;
+        }
+
+        ::deep .nav-overlay {
+            display: none !important;
+        }
+
+        main {
+            width: 100%;
+            grid-column: 2 / span 3;
+            margin: 0;
+            padding: 0;
+            padding-bottom: 32px;
+
+            .main-grid {
+                width: 100%;
+                display: block;
+            }
+            .hero-img {
+                display: none;
+            }
+
+            .hero-background {
+                width: 110vw;
+                top: -38vh;
+                left: -38vw;
+                transform: none;
+                opacity: 0.6;
+            }
+
+            ::deep article {
+                width: 100%;
+                margin-top: 144px;
+
+                .page-container {
+                    max-width: none;
+                    width: 100%;
+                    margin: 0;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,58 @@
+﻿.domain-card td {
+  padding: 16px 0;
+}
+.domain-card td:first-child, .domain-card td:nth-child(2) {
+  padding-right: 32px;
+}
+.domain-card td.domain-name ::deep svg {
+  margin-left: 8px;
+  margin-top: -2px;
+  vertical-align: middle;
+}
+.domain-card td.domain-actions {
+  position: relative;
+}
+.domain-card td.domain-actions .actions-btn {
+  transition: transform 0.3s ease-in-out;
+}
+.domain-card td.domain-actions .actions-btn.rotate {
+  transform: rotate(90deg);
+  transition: transform 0.3s ease-in-out;
+}
+.domain-card td.domain-actions .actions-menu {
+  display: none;
+  position: absolute;
+  z-index: 50;
+  top: 68px;
+  right: -34px;
+  padding: 8px;
+  background: var(--blue-500);
+  border: 1px solid rgba(219, 243, 252, 0.2);
+  border-radius: 16px;
+  font-family: var(--articulat);
+  font-size: 1.6rem;
+  opacity: 1 !important;
+}
+.domain-card td.domain-actions .actions-menu button {
+  height: 48px;
+  justify-content: center;
+  gap: 8px;
+  font-size: 1.6rem;
+  font-weight: 400;
+}
+.domain-card td.domain-actions .actions-menu.show {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.domain-card__domain .domain-actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  gap: 8px;
+}
+.domain-card__domain .domain-actions button {
+  aspect-ratio: 1/1;
+  height: 48px;
+  padding: 0;
+}

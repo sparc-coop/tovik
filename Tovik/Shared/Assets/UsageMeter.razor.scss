@@ -1,0 +1,46 @@
+.usage-meter {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    gap: 14px;
+    margin-bottom: 8px;
+
+    div {
+        &:first-child {
+            color: white;
+            font-family: var(--brother-printed);
+            font-size: 2rem;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+
+            span {
+                &:first-child {
+                    font-size: 3.125rem;
+                }
+            }
+        }
+    }
+
+    .meter {
+        &-container {
+            width: 100%;
+            height: 20px;
+            background: var(--orange-100);
+            border-radius: 32px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        &-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            // width set dynamically in razor component
+            border-radius: 32px;
+            background: repeating-linear-gradient(110deg, var(--orange-200), var(--orange-200) 8px, var(--orange-300) 8px, var(--orange-300) 16px);
+        }
+    }
+}

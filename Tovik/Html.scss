@@ -1,0 +1,288 @@
+:root {
+    --black: #000000;
+    --white: #FFFFFF;
+    --blue-900: #021017;
+    --blue-800: #052738;
+    --blue-700: #07374F;
+    --blue-600: #1F5068;
+    --blue-550: #2C5569;
+    --blue-500: #376880;
+    --blue-400: #4F8199;
+    --blue-300: #9ED2F0;
+    --blue-200: #BBE0F5;
+    --blue-100: #DBF3FC;
+    --blue-75: #E7F4FB;
+    --blue-50: #EFF7F9;
+    --cyan-100: #DBF3FC;
+    --cyan-75: #E6F9FF;
+    --cyan-50: F6FCFE;
+    --orange-300: #FF945E;
+    --orange-200: #FFB48E;
+    --orange-100: #FFD4BF;
+    --purple: #6A2FD0;
+    --app-width: calc(100vw - 32px);
+    --container-width: calc(100% - 32px);
+    --padded-width: calc(100% - 80px);
+    --desktop-width: calc(100vw - 128px);
+    --brother-printed: "brother-1816-printed", sans-serif;
+    --articulat: "articulat-cf", sans-serif;
+}
+
+.error-message {
+    font-size: 1.6rem;
+    color: var(--orange-300);
+}
+
+.language-select {
+    position: relative;
+    &:after {
+        content: " ";
+        position: absolute;
+        top: 50%;
+        margin-top: -2px;
+        right: 24px;
+        width: 0;
+        height: 0;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-top: 5px solid var(--purple-500);
+    }
+
+    select { 
+        appearance: none;
+    }
+}
+
+html, body {
+    font-size: 62.5%;
+    font-family: var(--articulat), Helvetica, sans-serif;
+    color: var(--blue-50, #EFF7F9);
+    margin: 0;
+    position: relative;
+    background: var(--blue-700);
+    overflow-x: hidden;
+
+    @media screen and (min-width: 1024px) {
+        overflow-x: initial;
+    }
+}
+
+html ::-webkit-scrollbar, body ::-webkit-scrollbar {
+    display: none;
+}
+
+html.modal-open, body.modal-open {
+    overflow: hidden;
+}
+
+h1, h2, h3, h4, h5, h6, h7 {
+    margin: 0;
+    padding: 0;
+    font-family: var(--brother-printed), sans-serif;
+}
+
+p, ul, ol, li {
+    margin: 0;
+    padding: 0;
+    font-family: var(--articulat);
+}
+
+p {
+    font-size: 1.6rem;
+    font-weight: 400;
+    line-height: 140%;
+    letter-spacing: 1.05px;
+}
+
+button, input, select, textarea {
+    font-family: var(--articulat), Helvetica, sans-serif;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+a:visited {
+    color: white;
+}
+
+button {
+    padding: 0;
+    border: 1px solid transparent;
+    background: none;
+    font-family: var(--articulat), Helvetica, sans-serif;
+    font-size: 1.4rem;
+    font-weight: 600;
+    line-height: 120%; /* 16.8px */
+    letter-spacing: -0.14px;
+    cursor: pointer;
+
+    &[disabled] {
+        opacity: 0.3;
+        pointer-events: none;
+    }
+
+    > * {
+        cursor: pointer;
+    }
+
+    &.primary-btn {
+        display: flex;
+        width: 100%;
+        height: 48px;
+        padding: 16px 24px;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        align-self: stretch;
+        border-radius: 20px;
+        border: 1px solid var(--orange-300, #FF945E);
+        background: var(--orange-300, #FF945E);
+        color: var(--blue-700, #07374F);
+        /* Body/Regular/Medium */
+        font-family: var(--articulat);
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+        transition: transform 0.1s ease-in-out;
+
+        &:hover {
+            transform: scale(1.03, 1.03);
+        }
+    }
+
+    &.secondary-btn {
+        height: 48px;
+        padding: 16px 24px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 4px;
+        border-radius: 20px;
+        border: 1px solid var(--blue-600, #1F5068);
+        background: var(--blue-700, #07374F);
+        color: var(--white, #FFF);
+    }
+
+    &.tertiary-btn {
+    }
+
+    &.icon-btn {
+        aspect-ratio: 1/1;
+        display: flex;
+        width: 44px;
+        height: 44px;
+        justify-content: center;
+        align-items: center;
+        border-radius: 20px;
+        border: 1px solid var(--blue-600, #1F5068);
+        background: var(--blue-700, #07374F);
+
+        ::deep svg {
+            height: 100%;
+            width: auto;
+        }
+    }
+}
+
+input {
+    width: var(--container-width);
+    display: flex;
+    padding: 16px;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    align-self: stretch;
+    border-radius: 20px;
+    border: 1px solid var(--blue-500, #376880);
+    background: var(--blue-600, #1F5068);
+    color: var(--white, #FFF);
+    font-family: var(--articulat);
+    font-size: 1.6rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+select {
+    display: flex;
+    padding: 10px 16px;
+    align-items: center;
+    gap: 8px;
+    border-radius: 20px;
+    border: 1px solid var(--blue-500, #376880);
+    background: var(--blue-600, #1F5068);
+    color: var(--white, #FFF);
+    font-family: var(--articulat);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+}
+
+.hljs {
+    background-color: transparent !important;
+    font-weight: 600 !important;
+}
+
+hr {
+    width: 100%;
+    height: 1px;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to left, var(--orange-100), var(--orange-200), var(--orange-100));
+    opacity: .5;
+}
+
+p > code {
+    color: var(--orange-300);
+    font-weight: 600;
+
+}
+
+table {
+    font-family: var(--articulat);
+    color: var(--blue-50);
+    position: static;
+
+    /*> * {
+        display: table;
+        width: calc(100% + 8px);
+    }*/
+
+    th, td {
+        &:first-child, &:nth-child(2) {
+            padding-right: 32px;
+        }
+    }
+
+    thead {
+        color: var(--white, #fff);
+        font-size: 1.4rem;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+        text-align: left;
+    }
+
+    tbody {
+        font-size: 1.6rem;
+        font-weight: 500;
+
+        tr {
+            padding-bottom: 16px;
+
+            &:last-child {
+                padding-bottom: 0;
+            }
+        }
+    }
+}

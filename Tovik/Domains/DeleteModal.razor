@@ -1,0 +1,50 @@
+﻿<div class="modal delete-modal @(ShowModal ? "show" : "")">
+    @if(Domain != null)
+    {
+        @if (DeleteType == "domain")
+        {
+            <h4>Delete Domain</h4>
+            <p>Are you sure you want to delete this domain? This action cannot be undone.</p>
+            <div class="btn-container">
+                <button class="cancel-btn secondary-btn" @onclick=Close>Cancel</button>
+                <button class="delete-btn primary-btn" @onclick="DeleteDomain"><TrashIcon /> Delete Domain</button>
+            </div>
+        }
+        else if (DeleteType == "exemption")
+        {
+            <h4>@Domain.Domain</h4>
+            <h5>Delete " <span>@Word</span> " from this domain's exemptions?</h5>
+            <p>Are you sure you want to delete this word or phrase? This action cannot be undone.</p>
+            <div class="btn-container">
+                <button class="cancel-btn secondary-btn" @onclick=Close>Cancel</button>
+                <button class="delete-btn primary-btn" @onclick='() => DeleteExemption("word")'><TrashIcon /> Delete Word</button>
+            </div>
+        }
+    }
+</div>
+<div class="modal-overlay @(ShowModal ? "show" : "")" @onclick=Close></div>
+
+@code {
+    [Parameter] public required SparcDomain Domain { get; set; }
+    [Parameter] public bool ShowModal { get; set; }
+    [Parameter] public EventCallback OnClose { get; set; }
+    [Parameter] public EventCallback OnDeleteDomain { get; set; }
+    [Parameter] public EventCallback<string> OnDeleteExemption { get; set; }
+    [Parameter] public string Word { get; set; } = string.Empty;
+    [Parameter] public string DeleteType { get; set; } = "domain"; // or "exemption"
+
+    private void Close()
+    {
+        OnClose.InvokeAsync();
+    }
+
+    private void DeleteDomain()
+    {
+        OnDeleteDomain.InvokeAsync();
+    }
+
+    private void DeleteExemption(string word)
+    {
+        OnDeleteExemption.InvokeAsync(word);
+    }
+}

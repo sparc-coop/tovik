@@ -1,0 +1,74 @@
+.domain-card {
+    td {
+        padding: 16px 0;
+
+        &:first-child, &:nth-child(2) {
+            padding-right: 32px;
+        }
+
+        &.domain-name {
+            ::deep svg {
+                margin-left: 8px;
+                margin-top: -2px;
+                vertical-align: middle;
+            }
+        }
+
+        &.domain-actions {
+            position: relative;
+
+            .actions-btn {
+                transition: transform 0.3s ease-in-out;
+
+                &.rotate {
+                    transform: rotate(90deg);
+                    transition: transform 0.3s ease-in-out;
+                }
+            }
+
+            .actions-menu {
+                display: none;
+                position: absolute;
+                z-index: 50;
+                top: 68px;
+                right: -34px;
+                padding: 8px;
+                background: var(--blue-500);
+                border: 1px solid rgba(219, 243, 252, 0.20);
+                border-radius: 16px;
+                font-family: var(--articulat);
+                font-size: 1.6rem;
+                opacity: 1 !important;
+
+                button {
+                    height: 48px;
+                    justify-content: center;
+                    gap: 8px;
+                    font-size: 1.6rem;
+                    font-weight: 400;
+                }
+
+                &.show {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 8px;
+                }
+            }
+        }
+    }
+
+    &__domain {
+        .domain-actions {
+            display: flex;
+            flex-direction: row;
+            justify-content: end;
+            gap: 8px;
+
+            button {
+                aspect-ratio: 1/1;
+                height: 48px;
+                padding: 0;
+            }
+        }
+    }
+}

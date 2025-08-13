@@ -1,0 +1,16 @@
+﻿<div class="usage-meter">
+    <div>
+        <span>@Usage.ToString("N0")</span> / <span>@Limit.ToString("N0")</span>
+    </div>
+    <div class="meter-container">
+        <div class="meter-fill" style="width: @FillPercentage%"></div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public int Usage { get; set; }
+    [Parameter] public int Limit { get; set; }
+    int Remaining => Limit - Usage;
+
+    int FillPercentage => Limit > 0 ? (int)((double)Usage / Limit * 100) : 0;
+}

@@ -1,0 +1,62 @@
+﻿[
+  {
+    "outputFile": "wwwroot/app.css",
+    "inputFile": "Html.scss"
+  },
+  {
+    "outputFile": "Shared/MainLayout.razor.css",
+    "inputFile": "Shared/MainLayout.razor.scss"
+  },
+  {
+    "outputFile": "Shared/NavMenu.razor.css",
+    "inputFile": "Shared/NavMenu.razor.scss"
+  },
+  {
+    "outputFile": "Domains/DomainList.razor.css",
+    "inputFile": "Domains/DomainList.razor.scss"
+  },
+  {
+    "outputFile": "Domains/DomainPage.razor.css",
+    "inputFile": "Domains/DomainPage.razor.scss"
+  },
+  {
+    "outputFile": "Domains/DomainCard.razor.css",
+    "inputFile": "Domains/DomainCard.razor.scss"
+  },
+  {
+    "outputFile": "Installation/Install.razor.css",
+    "inputFile": "Installation/Install.razor.scss"
+  },
+  {
+    "outputFile": "Installation/CodeBlock.razor.css",
+    "inputFile": "Installation/CodeBlock.razor.scss"
+  },
+  {
+    "outputFile": "Shared/Assets/UsageMeter.razor.css",
+    "inputFile": "Shared/Assets/UsageMeter.razor.scss"
+  },
+  {
+    "outputFile": "Domains/DeleteModal.razor.css",
+    "inputFile": "Domains/DeleteModal.razor.scss"
+  },
+  {
+    "outputFile": "Installation/Demo.razor.css",
+    "inputFile": "Installation/Demo.razor.scss"
+  },
+  {
+    "outputFile": "Installation/DemoComponent.razor.css",
+    "inputFile": "Installation/DemoComponent.razor.scss"
+  },
+  {
+    "outputFile": "Index.razor.css",
+    "inputFile": "Index.razor.scss"
+  },
+  {
+    "outputFile": "Shared/HomeLayout.razor.css",
+    "inputFile": "Shared/HomeLayout.razor.scss"
+  },
+  {
+    "outputFile": "Installation/Credits.razor.css",
+    "inputFile": "Installation/Credits.razor.scss"
+  }
+]

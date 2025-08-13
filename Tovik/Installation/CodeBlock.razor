@@ -1,0 +1,49 @@
+﻿@using System.Net
+
+<div class="code-block @(CanCopy ? "can-copy" : "")" translate="no">
+    <pre><code @ref=CodeRef class="language-@(Language)">@ChildContent</code></pre>
+    
+    @if (CanCopy)
+    {
+        <div class="btn-container @(isCopied ? "copied" : "")">
+            <button class="copy-btn icon-btn" @onclick=Copy><CopyIcon /></button>
+            @if (isCopied)
+            {
+                <span>Copied!</span>
+            }
+            else
+            {
+                <span>Copy</span>
+            }
+        </div>
+    }
+</div>
+
+@inject IJSRuntime Js
+@code {
+    [Parameter] public required RenderFragment ChildContent { get; set; }
+    [Parameter] public bool CanCopy { get; set; }
+    [Parameter] public bool IsMultiline { get; set; }
+    [Parameter] public string Language { get; set; } = "html";
+    bool isCopied = false;
+
+    ElementReference CodeRef;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await Js.InvokeVoidAsync("highlight", CodeRef);
+    }
+
+    async Task Copy()
+    {
+        Console.WriteLine("Copy");
+        if (ChildContent != null)
+        {
+            await Js.InvokeAsync<string>("copyToClipboard", CodeRef);
+            isCopied = true;
+            StateHasChanged();
+            await Task.Delay(3000);
+            isCopied = false;
+        }
+    }
+}

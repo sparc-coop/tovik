@@ -1,0 +1,123 @@
+﻿main {
+  width: var(--app-width);
+  margin-top: 100px;
+  padding: 0 16px;
+  padding-bottom: 24px;
+  color: var(--blue-50);
+}
+main .main-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 16px;
+}
+main .main-grid ::deep article {
+  grid-column: 1/span 4;
+  margin-top: 200px;
+}
+main .hero {
+  width: var(--app-width);
+  height: fit-content;
+  position: relative;
+}
+main .hero-img {
+  position: absolute;
+  top: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+main .hero-img ::deep svg {
+  width: 263px;
+  height: auto;
+}
+main .hero-background {
+  width: 100%;
+  height: auto;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 0;
+  opacity: 0.6;
+}
+main .hero-background ::deep svg {
+  width: 100%;
+  height: auto;
+}
+main ::deep article {
+  width: var(--app-width);
+  position: relative;
+  z-index: 20;
+}
+main ::deep article .page-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+main ::deep article .page-container section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+  background-color: rgba(79, 129, 153, 0.2);
+  border: 1px solid rgba(219, 243, 252, 0.2);
+  border-radius: 24px;
+  backdrop-filter: blur(4px);
+}
+main ::deep article .page-container section header h3 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: normal;
+}
+main ::deep article .page-container section header .subheader {
+  font-family: var(--articulat);
+  font-size: 1.6rem;
+  font-weight: 400;
+  line-height: 140%;
+}
+main ::deep article .page-container section header aside {
+  color: var(--orange-300, #FF945E);
+  font-family: var(--brother-printed);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+main ::deep article .page-container section h4 {
+  color: #FFF;
+  font-family: var(--brother-printed);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+::deep nav {
+  width: var(--app-width);
+}
+::deep nav .right {
+  background-image: url("/images/aura-background.svg") !important;
+  background-position: center center;
+  padding: 10px !important;
+}
+::deep nav .right .menu-btn {
+  display: none;
+}
+::deep nav .nav-menu {
+  display: none;
+}
+
+::deep .nav-sidebar {
+  display: none !important;
+}
+
+@media only screen and (min-width: 1024px) {
+  .nav-sidebar {
+    display: block;
+    z-index: 10;
+  }
+}

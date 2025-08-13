@@ -1,0 +1,47 @@
+﻿@inject IConfiguration Config
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="google" content="notranslate" />
+    <base href="/" />
+    <link rel="stylesheet" href="@Assets["app.css"]" />
+    <link rel="stylesheet" href="@Assets["Tovik.styles.css"]" />
+    <link rel="stylesheet" href="https://use.typekit.net/bdd5udm.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Emoji:wght@300..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css">
+
+    <ImportMap />
+
+    <Sparc.Blossom.Marketing.MatomoAnalytics SiteId="2" />
+    <Sparc.Blossom.Marketing.SEOTags Title="Tovik"
+                                                 Description="Your Website, Multilingual in Minutes. Meet Tovik: A simple tool that turns your website multilingual without the need for coding or developers."
+                                                 Author="Sparc Cooperative"
+                                                 Keywords="site translation"
+                                                 LogoImage="https://tovik.app/images/PrimaryLogo.svg"
+                                                 Url="https://tovik.app/" />
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-11084766602">
+    </script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'AW-11084766602');
+    </script>
+    <HeadOutlet @rendermode="new InteractiveServerRenderMode(false)" />
+</head>
+<body>
+    <Sparc.Blossom.BlossomApp Program="Program" DefaultLayout="MainLayout" @rendermode="new InteractiveServerRenderMode(false)" />
+    <script src="_framework/blazor.web.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.0.1/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.0/beautify.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.0/beautify-css.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.0/beautify-html.js"></script>
+    <script src="/app.js"></script>
+    <script type="module" src="/tovik.js"></script>
+</body>
+</html>

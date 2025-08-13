@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36408.4
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Blossom", "_Blossom", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tovik", "Tovik\Tovik.csproj", "{DBF4115C-B00D-CC9F-85D4-9FCB215921C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc.Core", "..\blossom\Sparc.Core\Sparc.Core.csproj", "{84874C34-4503-1222-BA9D-CF49DEFC47A6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc.Blossom", "..\blossom\Sparc.Blossom\Sparc.Blossom.csproj", "{37E3276A-635C-3080-B16F-F824D7E61428}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc.Blossom.Data.Cosmos", "..\blossom\Sparc.Blossom.Data.Cosmos\Sparc.Blossom.Data.Cosmos.csproj", "{3159DDC7-2CED-C92F-025B-BB7AEDA7B672}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc.Blossom.Engine", "..\blossom\Sparc.Blossom.Engine\Sparc.Blossom.Engine.csproj", "{F40B0A7B-FFAF-22E7-6D8C-CE4AC44782B3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DBF4115C-B00D-CC9F-85D4-9FCB215921C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBF4115C-B00D-CC9F-85D4-9FCB215921C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBF4115C-B00D-CC9F-85D4-9FCB215921C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBF4115C-B00D-CC9F-85D4-9FCB215921C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84874C34-4503-1222-BA9D-CF49DEFC47A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84874C34-4503-1222-BA9D-CF49DEFC47A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84874C34-4503-1222-BA9D-CF49DEFC47A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84874C34-4503-1222-BA9D-CF49DEFC47A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37E3276A-635C-3080-B16F-F824D7E61428}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37E3276A-635C-3080-B16F-F824D7E61428}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37E3276A-635C-3080-B16F-F824D7E61428}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37E3276A-635C-3080-B16F-F824D7E61428}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3159DDC7-2CED-C92F-025B-BB7AEDA7B672}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3159DDC7-2CED-C92F-025B-BB7AEDA7B672}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3159DDC7-2CED-C92F-025B-BB7AEDA7B672}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3159DDC7-2CED-C92F-025B-BB7AEDA7B672}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F40B0A7B-FFAF-22E7-6D8C-CE4AC44782B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F40B0A7B-FFAF-22E7-6D8C-CE4AC44782B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F40B0A7B-FFAF-22E7-6D8C-CE4AC44782B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F40B0A7B-FFAF-22E7-6D8C-CE4AC44782B3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{84874C34-4503-1222-BA9D-CF49DEFC47A6} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{37E3276A-635C-3080-B16F-F824D7E61428} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{3159DDC7-2CED-C92F-025B-BB7AEDA7B672} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{F40B0A7B-FFAF-22E7-6D8C-CE4AC44782B3} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9801FEFA-77D7-4D16-8B00-B4C2C29D1AAD}
+	EndGlobalSection
+EndGlobal

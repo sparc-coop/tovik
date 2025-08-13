@@ -1,0 +1,56 @@
+﻿<nav>
+    <div class="right">
+        <SparcAura />
+        <button class="menu-btn" @onclick=ToggleMobileMenu>
+            <MenuIcon />
+        </button>
+    </div>
+    <div class="nav-menu @(showMobileMenu ? "show" : "")">
+        <SecondaryLogo />
+        <ul>
+            <li><NavLink class="nav-link" href="/" Match=NavLinkMatch.All ActiveClass="active" @onclick=ToggleMobileMenu><BubbleTail />Home</NavLink></li>
+            <li><NavLink class="nav-link" href="/sites" Match=NavLinkMatch.Prefix ActiveClass="active" @onclick=ToggleMobileMenu><BubbleTail />My Websites</NavLink></li>
+            <li><NavLink class="nav-link" href="/install" ActiveClass="active" @onclick=ToggleMobileMenu><BubbleTail />Instructions</NavLink></li>
+            <li><NavLink class="nav-link" href="/credits" ActiveClass="active" @onclick=ToggleMobileMenu><BubbleTail />Made with ❤️</NavLink></li>
+        </ul>
+    </div>
+    <div class="nav-mask">
+        <img src="/images/NavShape.png" />
+    </div>
+</nav>
+<div class="nav-overlay @(showOverlay ? "show" : "") @(hideOverlay ? "hiding" :"")" @onclick=ToggleMobileMenu></div>
+<div class="nav-sidebar">
+    <div class="nav-menu @(showMobileMenu ? "show" : "")">
+        <PrimaryLogo FontColor="#FF945E" />
+        <ul>
+            <li><NavLink class="nav-link" href="/" Match=NavLinkMatch.All ActiveClass ="active" @onclick =ToggleMobileMenu><BubbleTail />Home</NavLink></li>
+            <li><NavLink class="nav-link" href="/sites" Match=NavLinkMatch.Prefix ActiveClass="active" @onclick=ToggleMobileMenu><BubbleTail />My Websites</NavLink></li>
+            <li><NavLink class="nav-link" href="/install" ActiveClass="active" @onclick=ToggleMobileMenu><BubbleTail />Instructions</NavLink></li>
+            <li><NavLink class="nav-link" href="/credits" ActiveClass="active" @onclick=ToggleMobileMenu><BubbleTail />Made with ❤️</NavLink></li>
+        </ul>
+    </div>
+</div>
+
+@code {
+    bool showMobileMenu;
+    bool showOverlay;
+    bool hideOverlay;
+
+    async Task ToggleMobileMenu()
+    {
+        showMobileMenu = !showMobileMenu;
+
+        if (showMobileMenu)
+        {
+            showOverlay = true;
+            hideOverlay = false;
+        } else
+        {
+            hideOverlay = true;
+            StateHasChanged();
+            await Task.Delay(800);
+            showOverlay = false;
+            hideOverlay = false;
+        }
+    }
+}

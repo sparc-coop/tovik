@@ -1,0 +1,239 @@
+﻿@page "/sites/{Id}"
+@using Tovik.Domains
+@using Tovik.Installation
+@layout MainLayout
+
+<PageTitle>Tovik | @(Domain != null ? Domain.Domain : "Your Domain")</PageTitle>
+<HeadContent>
+    <!-- Event snippet for Domain Added conversion page -->
+    <script>
+      gtag('event', 'conversion', {'send_to': 'AW-11084766602/LSImCPXjhYQbEIq70KUp'});
+    </script>
+</HeadContent>
+
+<article class="domain-page">
+    <div class="page-container">
+        <div class="back">
+            <button class="back-btn secondary-btn" @onclick=NavBack><ArrowLeftIcon /> Back</button>
+        </div>
+
+        @if (Domain != null && Domain.DateConnected == null)
+        {
+            <section class="welcome">
+                <img src="/images/Star.svg" alt="Star" />
+                <header>
+                    <h3>How To Install Tovik</h3>
+                </header>
+                <p>
+                    To install Tovik on <b>@Domain.Domain</b>:
+                </p>
+
+                <ol>
+                    <li>
+                        <p>Add this line of code to your site, preferably just before the closing <code>&lt;&sol;body&gt;</code> tag:</p>
+                        <CodeBlock CanCopy=true>
+                             @("<script type=\"module\" src=\"https://tovik.app/tovik.js\"></script>")
+                        </CodeBlock>
+                    </li>
+                    <li>
+                        <p>Press the button marked <span>Verify Tovik Installation</span> below, and Tovik will confirm that you've installed everything correctly.</p>
+                    </li>
+                </ol>
+                
+                <p>
+                    That’s it! Tovik will start detecting your visitors’ browser language and displaying your entire site in their language automatically.
+                </p>
+                <aside>
+                    This message will disappear once the Tovik tag is detected on <b>@Domain.Domain</b>.
+                </aside>
+            </section>
+        }
+
+        <section class="domain-summary">
+            <header>
+                <h3>Site Summary</h3>
+                <p class="subheader">Review your site details below, and double-check that you have installed Tovik correctly on your site.</p>
+            </header>
+            <div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Domain Name</th>
+                            <th>Word Usage</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Domain != null)
+                        {
+                            <DomainCard Domain=Domain PageType="domain" OnDelete=DeleteDomain />
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <hr />
+            <div class="domain-connection">
+                <aside class="connection-status">
+                    @if (Domain != null)
+                    {
+                         @if (Domain.DateConnected != null)
+                        {
+                            <VerifiedIcon /> <span>Tovik is correctly installed on this domain! Last checked @Domain.DateConnected.Value.ToShortDateString()</span>
+                        } else if (IsVerifying)
+                        {
+                            <span>Verifying Tovik installation...</span>
+                        }
+                        else if (ErrorMessage != null)
+                        {
+                            <span class="error-message">@ErrorMessage</span>
+                            <p class="subheader">
+                                Need help installing Tovik? 
+                                <a href="/Install">Follow our instructions here!</a>
+                            </p>
+                        }
+                        else
+                        {
+                            <span>
+                                This site's Tovik installation has not yet been verified. Once you've installed Tovik on your site, click the button below to verify you've done everything correctly.
+                            </span>
+                        }
+                    }
+                </aside>
+                <div class="connection-loading" style="display: none;">
+                </div>
+                <div class="btn-container">
+                    <button class="connection-btn primary-btn" @onclick=Verify>Verify Tovik Installation</button>
+                </div>
+            </div>
+        </section>
+        <section class="add-exemption">
+            <header>
+                <h3>Add Exempt Words or Phrases</h3>
+                <p class="subheader">Do you have any words or phrases on this website that you would like Tovik to ignore? Add them here!</p>
+            </header>
+                <label>
+                    <input type="text" @bind=Exemption placeholder="Enter a word or phrase..." />
+                </label>
+                <div class="btn-container">
+                    <button class="add-btn primary-btn" @onclick=AddExemption>Add to Exemptions List</button>
+                </div>
+        </section>
+
+        @if (Domain?.Exemptions.Any() == true)
+        {
+        <section class="exemptions">
+            <header>
+                <h3>Exempt Words and Phrases</h3>
+            </header>
+            <table class="exempt-table">
+                <thead>
+                    <tr>
+                        <td>Word or Phrase</td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Domain != null)
+                    {
+                        @foreach (var word in Domain.Exemptions)
+                        {
+                            <tr>
+                                <td>@word</td>
+                                <td>
+                                    <div class="exempt-actions">
+                                        <button class="delete-exempt-btn secondary-btn" @onclick="(() => DeleteExemption(word))"><TrashIcon /></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </section>
+        }
+    </div>
+</article>
+
+@inject TovikDomains TovikDomains
+
+@code {
+    [Parameter] public required string Id { get; set; }
+
+    SparcDomain? Domain;
+    bool IsVerifying;
+    string? ErrorMessage;
+    string Exemption = "";
+
+    private List<string> Glossaries = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Domain = await TovikDomains.Get(Id);
+        Glossaries.AddRange(new[] { "Lorem Ipsum", "Dolor Sit Amet", "Consectetur Adipiscing Elit" });
+        if (Domain != null && Domain.DateConnected == null)
+            await Verify();
+    }
+
+    async Task AddExemption()
+    {
+        if (Domain != null && !string.IsNullOrWhiteSpace(Exemption))
+        {
+            Domain.Exemptions.Add(Exemption);
+            await TovikDomains.Update(Domain);
+            Exemption = string.Empty; // Clear the input after adding
+        }
+    }
+
+    async Task DeleteExemption(string word)
+    {
+        if (Domain != null && Domain.Exemptions.Contains(word))
+        {
+            Domain.Exemptions.Remove(word);
+            await TovikDomains.Update(Domain);
+        }
+    }
+
+    private async Task Verify()
+    {
+        IsVerifying = true;
+        ErrorMessage = null;
+        StateHasChanged();
+
+        var htmlToLookFor = "https://tovik.app/tovik.js";
+        try
+        {
+            var html = await new HttpClient().GetStringAsync($"https://{Domain!.Domain}");
+
+            if (html.Contains(htmlToLookFor))
+            {
+                Domain.DateConnected = DateTime.UtcNow;
+                await TovikDomains.Update(Domain);
+                StateHasChanged();
+            }
+            else
+            {
+                ErrorMessage = $"The HTML of {Domain.Domain} does not contain the expected Tovik script link: {htmlToLookFor}. Please ensure Tovik is installed correctly.";
+            }
+        }
+        catch (Exception e)
+        {
+            ErrorMessage = $"Error verifying domain: {e.Message}";
+        }
+
+        IsVerifying = false;
+    }
+
+    private async Task DeleteDomain()
+    {
+        if (Domain != null)
+        {
+            await TovikDomains.DeleteAsync(Domain);
+            Nav.NavigateTo("/sites", true);
+        }
+    }
+
+    private void NavBack()
+    {
+        Js.InvokeVoidAsync("goBack");
+    }
+}

@@ -1,0 +1,67 @@
+﻿.domain-page .page-container section.welcome {
+  align-items: flex-start;
+}
+.domain-page .page-container section.welcome > img {
+  height: 30px;
+}
+.domain-page .page-container section.welcome a {
+  text-decoration: underline !important;
+}
+.domain-page .page-container section.welcome ol {
+  font-size: 1.6rem;
+  padding-left: 32px;
+  width: calc(100% - 32px);
+}
+.domain-page .page-container section.welcome ol li {
+  margin: 16px 0;
+}
+.domain-page .page-container section.welcome ol li p {
+  margin-bottom: 16px;
+}
+.domain-page .page-container section.welcome ol li span {
+  color: var(--orange-300);
+  font-weight: 600;
+}
+.domain-page .page-container section.welcome aside {
+  font-size: 1.4rem;
+  opacity: 0.7;
+}
+.domain-page .page-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.domain-page .page-container .domain-summary table {
+  width: 100%;
+}
+.domain-page .page-container .domain-connection {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.domain-page .page-container .domain-connection aside {
+  font-size: 1.4rem;
+}
+.domain-page .page-container .exemptions table tbody {
+  width: 100%;
+}
+.domain-page .page-container .exemptions table tbody tr {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.domain-page .page-container .exemptions table td {
+  padding: 0;
+}
+.domain-page .page-container .exemptions .exempt-actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  gap: 8px;
+}
+.domain-page .page-container .exemptions .exempt-actions button {
+  aspect-ratio: 1/1;
+  height: 48px;
+  padding: 0;
+}

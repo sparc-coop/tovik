@@ -1,0 +1,187 @@
+﻿article {
+  width: var(--app-width);
+  position: relative;
+}
+article .page-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+article section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+  background: rgba(79, 129, 153, 0.2);
+  border: 1px solid rgba(219, 243, 252, 0.2);
+  border-radius: 24px;
+  backdrop-filter: blur(4px);
+}
+article section header h3 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: normal;
+}
+article section header .subheader {
+  font-family: var(--articulat);
+  font-size: 1.6rem;
+  font-weight: 400;
+  line-height: 140%;
+}
+article section h4 {
+  color: #FFF;
+  font-family: var(--brother-printed);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+article section button.primary-btn {
+  width: auto;
+}
+article section ::deep .code-block {
+  background-color: var(--blue-600);
+  margin: 24px 0;
+}
+article section h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: flex-start;
+  gap: 20px;
+}
+article section p, article section li {
+  font-family: var(--articulat);
+  font-size: 1.6rem;
+  font-weight: 500;
+  margin-bottom: 24px;
+  letter-spacing: 1.1px;
+  line-height: 150%;
+}
+article section ul {
+  padding-left: 0;
+  list-style: none;
+}
+article section li {
+  margin-bottom: 8px;
+}
+article div.two {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+article div.two ul {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  margin-top: 48px;
+}
+article div.two ul p {
+  margin-top: 8px;
+}
+@media screen and (min-width: 600px) {
+  article div.two ul {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+article div.two p, article div.two li {
+  font-size: 1.6rem;
+}
+article div.two li {
+  background-color: var(--blue-600);
+  border-radius: 24px;
+  padding: 24px;
+}
+article div.two li p {
+  margin-bottom: 0;
+}
+@media screen and (min-width: 4000px) {
+  article div.two {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+article section.trial {
+  align-items: flex-start;
+}
+article section.trial h2 {
+  display: flex;
+  justify-content: space-between;
+}
+article section.trial span {
+  display: inline-block;
+  margin-left: 4px;
+  color: var(--orange-300);
+}
+article section.trial label {
+  display: block;
+  font-weight: 600;
+  font-size: 1.6rem;
+  margin: 32px 0;
+}
+article section.trial > div {
+  width: 100%;
+}
+article section.trial input {
+  margin-top: 8px;
+}
+article section.trial > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+article section.trial footer {
+  margin-top: 16px;
+  width: 100%;
+}
+article section.trial footer button {
+  width: 100%;
+}
+article section.trial img {
+  height: 30px;
+}
+article section.demo {
+  background-color: transparent !important;
+  border: 2px solid var(--blue-400) !important;
+  border-radius: 48px !important;
+  padding: 0 !important;
+}
+article section.demo header img {
+  width: 100%;
+  height: auto;
+}
+article section.demo h1 {
+  color: white;
+  font-family: var(--brother-printed);
+  font-size: 3.2rem;
+  font-weight: 700;
+  margin-bottom: 32px;
+}
+article section.demo h2 {
+  font-size: 2.2rem;
+  margin-bottom: 8px;
+  margin-top: 32px;
+}
+article section.demo div {
+  padding: 32px;
+}
+@media screen and (min-width: 1024px) {
+  article section.demo div {
+    padding: 32px 64px 64px 64px;
+  }
+}
+article section.demo ::deep .language-select {
+  margin-top: 16px;
+  background-color: var(--blue-600);
+}
+article section.demo ::deep .language-select:after {
+  border-top: 5px solid white;
+}
+article section.demo ::deep .language-select select {
+  background-color: var(--blue-600);
+}
+article section.demo ::deep .language-select .progress-bar-value {
+  background-color: var(--blue-300);
+}

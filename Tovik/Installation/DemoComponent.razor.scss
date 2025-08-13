@@ -1,0 +1,94 @@
+.demo {
+    &-component {
+    }
+
+    // BROWSER BACKGROUND / FRAME
+    &-browser {
+        width: 150%;
+        position: relative;
+
+        ::deep svg {
+            width: 100%;
+            height: auto;
+        }
+    }
+
+    // TOVIK CHARACTER
+    &-tovik {
+        width: 20%;
+        min-width: 280px;
+        height: auto;
+        position: absolute;
+        top: 26%;
+        left: 3%;
+    }
+
+    &-bubble {
+        width: 100%;
+        position: relative;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        ::deep svg {
+            width: 100%;
+        }
+
+        .bubble-text {
+            width: 100%;
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+
+            span {
+                width: 100%;
+                color: var(--blue-600, #1F5068);
+                font-family: var(--articulat);
+                font-size: 1.4rem;
+                font-style: normal;
+                font-weight: 700;
+                line-height: normal;
+            }
+        }
+    }
+
+    &-character {
+        width: 80%;
+        height: auto;
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    // LANGUAGE SELECTOR
+    &-selector {
+        width: 30%;
+        position: absolute;
+        top: 32%;
+        left: 45%;
+        transform: translateX(-40%);
+
+        select {
+            width: 100%;
+        }
+    }
+
+    // PREVIEW
+    &-preview {
+        width: 50%;
+        position: absolute;
+        top: 50%;
+        left: 10%;
+        transform: translatex(-10%);
+        padding: 64px;
+        color: var(--white, #FFF);
+        font-family: var(--articulat);
+        font-size: 1.4rem;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+    }
+}
