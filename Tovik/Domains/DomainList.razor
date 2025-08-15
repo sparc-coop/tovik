@@ -37,7 +37,7 @@
             @if (Domains.Any())
             {
                 <p>
-                    Manage your Tovik-enabled websites here. You can add as many domains as you'd like, as Tovik places no limits on how many you can add to your account.
+                    Manage your Tovik-enabled websites here. You can add as many domains as you'd like!
                 </p>
                 <table class="domains-table">
                     <thead>
@@ -76,7 +76,7 @@
 
             @if (IsTrial)
             {
-                <p>Your free trial of Tovik includes @Limit.ToString("N0") words to start, with no time limits or restrictions.</p>
+                <p>Your free trial of Tovik includes @Limit.ToString("N0") words, with no time limits or restrictions.</p>
             }
             else
             {

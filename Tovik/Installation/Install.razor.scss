@@ -2,7 +2,7 @@
     ul {
         padding-left: 32px;
     }
-    
+
     .page-header {
         display: flex;
         flex-direction: column;
@@ -19,6 +19,32 @@
             line-height: normal;
         }
 
+        .platforms {
+            list-style: none;
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+
+            button {
+                background: var(--orange-100);
+                opacity: 0.3;
+                border: 0;
+
+            }
+
+            li:hover, li.selected {
+                button {
+                    background: var(--orange-300);
+                    opacity: 1;
+                }
+            }
+
+            li.comingsoon {
+                button {
+                    pointer-events: none;
+                }
+            }
+        }
     }
 
     section {
@@ -26,6 +52,33 @@
         flex-direction: column;
         gap: 24px;
         align-items: flex-start;
+
+        .download-link {
+            background: var(--orange-300);
+            text-decoration: none;
+            padding: 16px 24px;
+            color: var(--blue-700);
+            border-radius: 32px;
+            display: inline-block;
+            font-size: 1.6rem;
+            margin: 16px 0;
+            transition: transform 0.2s ease-in-out;
+
+            &:hover {
+                transform: scale(1.03, 1.03);
+            }
+        }
+
+        ol {
+            padding-left: 32px;
+            li {
+                margin-bottom: 8px;
+            }
+
+            strong, code {
+                color: var(--orange-300);
+            }
+        }
 
         > img {
             height: 30px;

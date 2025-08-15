@@ -7,6 +7,9 @@
 .domain-page .page-container section.welcome a {
   text-decoration: underline !important;
 }
+.domain-page .page-container section.welcome strong {
+  color: var(--orange-300);
+}
 .domain-page .page-container section.welcome ol {
   font-size: 1.6rem;
   padding-left: 32px;
@@ -33,6 +36,10 @@
 }
 .domain-page .page-container .domain-summary table {
   width: 100%;
+}
+.domain-page .page-container .connection-btn {
+  margin-top: 16px;
+  width: auto;
 }
 .domain-page .page-container .domain-connection {
   display: flex;

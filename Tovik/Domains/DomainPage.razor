@@ -22,30 +22,12 @@
             <section class="welcome">
                 <img src="/images/Star.svg" alt="Star" />
                 <header>
-                    <h3>How To Install Tovik</h3>
+                    <h3>Step 1: Install Tovik</h3>
                 </header>
                 <p>
-                    To install Tovik on <b>@Domain.Domain</b>:
+                    You can install Tovik on <strong>@Domain.Domain</strong> in just a couple of minutes! Simply click the button below and follow the instructions:
                 </p>
-
-                <ol>
-                    <li>
-                        <p>Add this line of code to your site, preferably just before the closing <code>&lt;&sol;body&gt;</code> tag:</p>
-                        <CodeBlock CanCopy=true>
-                             @("<script type=\"module\" src=\"https://tovik.app/tovik.js\"></script>")
-                        </CodeBlock>
-                    </li>
-                    <li>
-                        <p>Press the button marked <span>Verify Tovik Installation</span> below, and Tovik will confirm that you've installed everything correctly.</p>
-                    </li>
-                </ol>
-                
-                <p>
-                    That’s it! Tovik will start detecting your visitors’ browser language and displaying your entire site in their language automatically.
-                </p>
-                <aside>
-                    This message will disappear once the Tovik tag is detected on <b>@Domain.Domain</b>.
-                </aside>
+                <button class="primary-btn" @onclick=Install>Installation Instructions &rarr;</button>
             </section>
         }
 
@@ -85,24 +67,14 @@
                         }
                         else if (ErrorMessage != null)
                         {
-                            <span class="error-message">@ErrorMessage</span>
-                            <p class="subheader">
-                                Need help installing Tovik? 
-                                <a href="/Install">Follow our instructions here!</a>
-                            </p>
-                        }
-                        else
-                        {
-                            <span>
-                                This site's Tovik installation has not yet been verified. Once you've installed Tovik on your site, click the button below to verify you've done everything correctly.
+                            <span class="error-message">
+                                @ErrorMessage
                             </span>
+                            <button class="connection-btn primary-btn" @onclick=Verify>Try Again</button>
                         }
                     }
                 </aside>
                 <div class="connection-loading" style="display: none;">
-                </div>
-                <div class="btn-container">
-                    <button class="connection-btn primary-btn" @onclick=Verify>Verify Tovik Installation</button>
                 </div>
             </div>
         </section>
@@ -192,6 +164,8 @@
             await TovikDomains.Update(Domain);
         }
     }
+
+    void Install() => Nav.NavigateTo("/Install");
 
     private async Task Verify()
     {

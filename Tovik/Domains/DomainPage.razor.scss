@@ -11,6 +11,10 @@
                 text-decoration: underline !important;
             }
 
+            strong {
+                color: var(--orange-300);
+            }
+
             ol {
                 font-size: 1.6rem;
                 padding-left: 32px;
@@ -46,6 +50,11 @@
             table {
                 width: 100%;
             }
+        }
+
+        .connection-btn {
+            margin-top: 16px;
+            width: auto;
         }
 
         .domain-connection {

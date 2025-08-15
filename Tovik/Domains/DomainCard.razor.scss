@@ -20,6 +20,16 @@
             .actions-btn {
                 transition: transform 0.3s ease-in-out;
 
+                &.icon-btn {
+                    width: auto;
+                    display: flex;
+                    gap: 16px;
+                    padding: 16px;
+                    color: white;
+                    font-weight: 400;
+                    align-items: center;
+                }
+
                 &.rotate {
                     transform: rotate(90deg);
                     transition: transform 0.3s ease-in-out;
