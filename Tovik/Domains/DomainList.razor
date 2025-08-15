@@ -24,27 +24,6 @@
                 </p>
             </section>
         }
-        else
-        {
-            <section class="word-usage">
-                <header>
-                    <h3>Tovik Usage</h3>
-                </header>
-
-                @if (IsTrial)
-                {
-                    <p>Your free trial of Tovik includes @Limit.ToString("N0") words to start, with no time limits or restrictions.</p>
-                }
-                else
-                {
-                    <p>Thank you for supporting Tovik with your purchase of a word pack!</p>
-                }
-                <div>
-                    <h4>Words Translated</h4>
-                    <UsageMeter Usage=Usage Limit=Limit />
-                </div>
-            </section>
-        }
 
         <section class="manage-domains">
             <header>
@@ -86,31 +65,29 @@
                 <input type="text" placeholder="Enter a domain name" @bind="NewDomain" @bind:event="oninput" />
             </label>
             <div class="btn-container">
-                <button class="add-btn primary-btn" @onclick=AddDomain>Add Website</button>
+                <button class="add-btn primary-btn" @onclick=AddDomain>Add Domain</button>
             </div>
         </section>
 
-        @if (Limit > 0 && !Domains.Any())
-        {
-            <section class="word-usage">
-                <header>
-                    <h3>Tovik Usage</h3>
-                </header>
+        <section class="word-usage">
+            <header>
+                <h3>Tovik Usage</h3>
+            </header>
 
-                @if (IsTrial)
-                {
-                    <p>Your free trial of Tovik includes @Limit.ToString("N0") words to start, with no time limits or restrictions.</p>
-                }
-                else
-                {
-                    <p>Thank you for supporting Tovik with your purchase of a word pack!</p>
-                }
-                <div>
-                    <h4>Words Translated</h4>
-                    <UsageMeter Usage=Usage Limit=Limit />
-                </div>
-            </section>
-        }
+            @if (IsTrial)
+            {
+                <p>Your free trial of Tovik includes @Limit.ToString("N0") words to start, with no time limits or restrictions.</p>
+            }
+            else
+            {
+                <p>Thank you for supporting Tovik with your purchase of a word pack!</p>
+            }
+            <div>
+                <h4>Words Translated</h4>
+                <UsageMeter Usage=Usage Limit=Limit />
+            </div>
+        </section>
+
 
         @if (IsTrial && Product != null)
         {

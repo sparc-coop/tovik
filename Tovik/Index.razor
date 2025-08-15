@@ -17,16 +17,10 @@
             @if (IsACustomer)
             {
                 <section class="trial mini">
-                    <img src="/images/Star.svg" alt="Star" />
-                    <div>
-                        <h2>
-                            Welcome back, friend!
-                        </h2>
-                        <p>Your Tovik setup is right where you left it. Click the button below to enter your dashboard.</p>
-                    </div>
-                    <footer>
-                        <button class="add-btn primary-btn" @onclick=Start>Go To My Websites &rarr;</button>
-                    </footer>
+                    <h2>
+                        Welcome back, friend!
+                    </h2>
+                    <button class="add-btn primary-btn" @onclick=Start>Go To My Websites &rarr;</button>
                 </section>
             }
 
@@ -44,18 +38,16 @@
                         <h1>Your Website, Multilingual in Minutes</h1>
                     }
                     <p>
-                        Tovik is a simple website plugin that turns your entire site multilingual with just one line of code.
+                        Say hello to Tovik — your website’s new multilingual partner. 
                     </p>
-                    <CodeBlock CanCopy=true>
-                        @("<script type=\"module\" src=\"https://tovik.app/tovik.js\"></script>")
-                    </CodeBlock>
                     <p>
-                        Once installed, Tovik instantly recognizes your visitors' native language and automatically translates your entire site for them--no translation plugin needed on their end. It’s quick, painless to install, and it helps you connect with more folks around the world.
-
+                        With just one line of code, this lightweight tool automatically translates your site into 130+ languages, no developers or complicated setup required.
                     </p>
 
-                    <h2>See This Site in 130+ Languages, thanks to Tovik:</h2>
-                    <Sparc.Blossom.Content.LanguageSelector Avatar="Avatar" />
+                    <footer>
+                        <Sparc.Blossom.Content.LanguageSelector Avatar="Avatar" />
+                        <button class="add-btn primary-btn" @onclick=Start>Get Tovik &rarr;</button>
+                    </footer>
                 </div>
             </section>
 
@@ -64,11 +56,10 @@
                     <header>
                         <img src="/images/Star.svg" alt="Star" />
                     </header>
+                    <div class="subheader">
+                        <h2>Try Tovik, No Strings Attached <span>Free</span></h2>
+                    </div>
                     <div>
-                        <h2>
-                            Try Tovik, No Strings Attached
-                            <span>Free!</span>
-                        </h2>
                         <ul>
                             <li>
                                 @if (PersonalizedWelcome != null)
@@ -94,14 +85,9 @@
                                 <p>No expiration, no time limits.</p>
                             </li>
                         </ul>
-
-                        @if (Error != null)
-                        {
-                            <div class="error-message">@Error</div>
-                        }
                     </div>
                     <footer>
-                        <button class="add-btn primary-btn" @onclick=Start>Try Tovik Free &rarr;</button>
+                        <button class="add-btn primary-btn" @onclick=Start>Start Now &rarr;</button>
                     </footer>
                 </section>
 
@@ -111,11 +97,10 @@
                         <header>
                             <img src="/images/Star.svg" alt="Star" />
                         </header>
+                        <div class="subheader">
+                            <h2>Purchase Tovik <span>@Product.FormattedPrice</span></h2>
+                        </div>
                         <div>
-                            <h2>
-                                Purchase Tovik
-                                <span>@Product.FormattedPrice</span>
-                            </h2>
                             <ul>
                                 <li>
                                     <h3><span>100,000</span> Words Included</h3>
@@ -126,7 +111,7 @@
                                     <p>Use across all your sites, no restrictions.</p>
                                 </li>
                                 <li>
-                                    <h3>One-Time Payment</h3>
+                                    <h3>One Time Payment</h3>
                                     <p>No subscription, no recurring fee.</p>
                                 </li>
                                 <li>
@@ -144,7 +129,7 @@
                             </ul>
                         </div>
                         <footer>
-                            <button class="add-btn primary-btn" @onclick=Buy>Purchase on Sparc Store &rarr;</button>
+                            <button class="add-btn primary-btn" @onclick=Buy>Go to Sparc Store &rarr;</button>
                         </footer>
                     </section>
                 }

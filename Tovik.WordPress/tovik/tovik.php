@@ -5,7 +5,7 @@
  * Version: 1.0
  * Author: Sparc Cooperative
  * Author URI: https://sparc.coop/
- * License: GPL2
+ * License: GPL v2 or later
  * Text Domain: Tovik
  */
 
