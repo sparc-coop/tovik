@@ -149,7 +149,7 @@
 
     int Usage;
     int Limit;
-    bool IsTrial => Limit < 100000;
+    bool IsTrial => Limit <= 10;
 
     protected override async Task OnInitializedAsync()
     {
@@ -157,7 +157,7 @@
         var product = user.Product("Tovik");
 
         var options = Welcome == "Sapient" || Welcome == "Morbidology"
-            ? new SparcProductActivationOptions(2000)
+            ? new SparcProductActivationOptions(20)
             : null;
 
         if (product == null) // Start free trial
