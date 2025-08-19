@@ -19,12 +19,15 @@ Tovik is a simple app that adds the Tovik automatic site translator to your Wix 
 * No configuration required
 * Powered by Tovik (https://tovik.app)
 
-== Installation ==
+== Installation (via install link) ==
 
-1. Install Tovik from the Wix App Market (or via installation link).
-2. Open the Tovik app panel in your Wix dashboard.
-3. Click Activate Tovik.
-4. Publish your site.
+1. Open the Tovik install link (https://wix.to/AmoRmd7).
+2. Click Add to Site.
+3. Choose the Wix site where you want to install Tovik and click Continue.
+4. Review the requested permissions, then click Accept & Add.
+5. You’ll be redirected to your Wix dashboard → the Tovik app panel will open.
+6. Click Activate Tovik.
+7. Publish your site to apply the changes.
 
 == Frequently Asked Questions ==
 
