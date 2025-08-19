@@ -1,10 +1,10 @@
 ﻿using Sparc.Blossom.Authentication;
+using Sparc.Blossom.Content;
 using Sparc.Blossom.Data;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Tovik.Domains;
 
-public class TovikDomains(BlossomAggregateOptions<SparcDomain> options) 
+public class TovikDomains(BlossomAggregateOptions<SparcDomain> options, IRepository<Page> pages) 
     : BlossomAggregate<SparcDomain>(options)
 {
    public async Task<List<SparcDomain>> All()
@@ -12,6 +12,14 @@ public class TovikDomains(BlossomAggregateOptions<SparcDomain> options)
             .Where(x => x.TovikUserId == User.Id())
             .ToListAsync();
 
+    public async Task<List<Page>> GetPages(string domainName)
+    {
+        var result = await pages.Query
+            .Where(p => p.Domain == domainName)
+            .ToListAsync();
+
+        return result.OrderByDescending(x => x.TovikUsage.Sum(y => y.Value)).ToList();
+    }
 
     public async Task<SparcDomain> RegisterAsync(string domainName)
     {

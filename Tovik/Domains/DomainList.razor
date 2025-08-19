@@ -56,19 +56,7 @@
                 </table>
             }
 
-            @if (Error != null)
-            {
-                <div class="error-message">@Error</div>
-            }
-
-            <label>
-                <input type="text" placeholder="Enter a domain name" @bind="NewDomain" @bind:event="oninput" />
-            </label>
-            <div class="btn-container">
-                <button class="add-btn primary-btn" @onclick=AddDomain disabled="@IsVerifying">
-                    @(IsVerifying ? "Verifying..." : "Add Domain")
-                </button>
-            </div>
+            <Tovik.Domains.AddDomain />
         </section>
 
         <section class="word-usage">
@@ -82,58 +70,21 @@
             }
             else
             {
-                <p>Thank you for supporting Tovik with your purchase!</p>
+                <p>Thank you for supporting Tovik with your purchase of Tovik Pro!</p>
             }
+
             <div>
                 <h4>Pages Translated</h4>
                 <UsageMeter Usage=Usage Limit=Limit />
             </div>
-        </section>
 
-
-        @if (IsTrial && Product != null)
-        {
-            <section class="trial">
-                <header>
-                    <img src="/images/Star.svg" alt="Star" />
-                </header>
-                <div>
-                    <h2>
-                        Buy Tovik
-                        <span>@Product.FormattedPrice</span>
-                    </h2>
-                    <ul>
-                        <li>
-                            <h3><span>500</span> Pages Included</h3>
-                            <p>Massive multilingual coverage in a single bundle.</p>
-                        </li>
-                        <li>
-                            <h3><span>Unlimited</span> Domains</h3>
-                            <p>Use across all your sites, no restrictions.</p>
-                        </li>
-                        <li>
-                            <h3>One-Time Payment</h3>
-                            <p>No subscription, no recurring fee.</p>
-                        </li>
-                        <li>
-                            <h3>Local-Friendly Checkout</h3>
-                            <p>Pay in your preferred currency.</p>
-                        </li>
-                        <li>
-                            <h3>Yours To Keep</h3>
-                            <p>No expiration, no time limits.</p>
-                        </li>
-                        <li>
-                            <h3>Privacy First</h3>
-                            <p>No tracking, no data harvesting.</p>
-                        </li>
-                    </ul>
-                </div>
+            @if (IsTrial)
+            {
                 <footer>
-                    <button class="add-btn primary-btn" @onclick=Buy>Buy on Sparc Store &rarr;</button>
+                    <button class="primary-btn" @onclick=Buy>Upgrade to Tovik Pro</button>
                 </footer>
-            </section>
-        }
+            }
+        </section>
     </div>
 </article>
 
@@ -144,11 +95,8 @@
 
 @code {
     List<SparcDomain> Domains = new();
-    string NewDomain = "";
-    string? Error;
     GetProductResponse? Product;
     [SupplyParameterFromQuery] public string? Welcome { get; set; }
-    bool IsVerifying;
 
     int Usage;
     int Limit;
@@ -182,26 +130,6 @@
     private async Task LoadDomains()
     {
         Domains = await TovikDomains.All();
-    }
-
-    private async Task AddDomain()
-    {
-        IsVerifying = true;
-        StateHasChanged();
-
-        try
-        {
-            var newDomain = await TovikDomains.RegisterAsync(NewDomain);
-            NewDomain = "";
-            Nav.NavigateTo($"/sites/{newDomain.Id}");
-        }
-        catch (Exception ex)
-        {
-            Error = ex.Message;
-            NewDomain = "";
-        }
-
-        IsVerifying = false;
     }
 
     private async Task DeleteDomain(SparcDomain domain)

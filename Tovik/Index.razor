@@ -14,13 +14,29 @@
 {
     <article class="home">
         <div class="page-container">
-            @if (IsACustomer)
+            @if (PersonalizedWelcome != null)
+            {
+                <section class="trial mini">
+                    <div>
+                        <h2>
+                            Welcome, @PersonalizedWelcome listener!
+                        </h2>
+                        <p>
+                            As a token of your support, you can translate <strong><s>10</s> 20</strong> pages with Tovik Free!
+                        </p>
+                    </div>
+                    <div>
+                        <a class="button primary-btn" href="@WelcomeLink">Activate This Offer &rarr;</a>
+                    </div>
+                </section>
+            }
+            else if (IsACustomer)
             {
                 <section class="trial mini">
                     <h2>
                         Welcome back, friend!
                     </h2>
-                    <button class="add-btn primary-btn" @onclick=Start>Go To My Websites &rarr;</button>
+                    <a class="button primary-btn" href="@WelcomeLink">Go To My Websites &rarr;</a>
                 </section>
             }
 
@@ -29,16 +45,10 @@
                     <img src="/images/site-frame.svg" alt="Web browser facade" />
                 </header>
                 <div>
-                    @if (PersonalizedWelcome != null)
-                    {
-                        <h1>Welcome, @PersonalizedWelcome listener!</h1>
-                    }
-                    else
-                    {
-                        <h1>Your Website, Multilingual in Minutes</h1>
-                    }
+                    <h1>Your Website, Multilingual in Minutes</h1>
+
                     <p>
-                        Say hello to Tovik — your website’s new multilingual partner. 
+                        Say hello to Tovik — your website’s new multilingual partner.
                     </p>
                     <p>
                         With just one line of code, this lightweight tool automatically translates your site into 130+ languages, no developers or complicated setup required.
@@ -62,25 +72,29 @@
                         </p>
                     </div>
                     <footer>
-                        <button class="add-btn primary-btn" @onclick=Start>Learn More</button>
+                        <a class="button primary-btn" href="/questions">Learn More</a>
                     </footer>
                 </section>
 
-                @if (Product != null)
-                {
-                    <section class="trial">
-                        <header>
-                            <img src="/images/Star.svg" alt="Star" />
-                            <h2>Add Tovik To Your Site</h2>
-                        </header>
-                        <div>
+                <section class="trial">
+                    <header>
+                        <img src="/images/Star.svg" alt="Star" />
+                        <h2>Add Tovik To Your Site</h2>
+                    </header>
+                    <div>
+                        @if (PersonalizedWelcome != null)
+                        {
+                            <p>Install Tovik and translate up to <s>10</s> 20 pages completely free. No strings attached!</p>
+                        }
+                        else
+                        {
                             <p>Install Tovik and translate up to 10 pages completely free. No strings attached!</p>
-                        </div>
-                        <footer>
-                            <button class="add-btn primary-btn" @onclick=Start>Install Tovik Now</button>
-                        </footer>
-                    </section>
-                }
+                        }
+                    </div>
+                    <footer>
+                        <a class="button primary-btn" href="/install">Start Now</a>
+                    </footer>
+                </section>
             </div>
 
         </div>
@@ -89,16 +103,13 @@
 
 @inject Tovik.Domains.TovikDomains TovikDomains
 @inject ISparcAura Aura
-@inject ISparcBilling Billing
 @inject IConfiguration Config
 
 @code {
     BlossomAvatar? Avatar;
-    string NewDomain = "";
-    string? Error;
-    GetProductResponse? Product;
     bool IsACustomer;
     string? PersonalizedWelcome;
+    string? WelcomeLink => PersonalizedWelcome == null ? "/sites" : $"/sites?welcome={PersonalizedWelcome}";
 
     protected override async Task OnInitializedAsync()
     {
@@ -106,45 +117,10 @@
         IsACustomer = user.HasProduct("Tovik");
 
         Avatar = user.Avatar;
-        Product = await Billing.GetProductAsync(Config["ProductId"]!);
 
         if (Nav.Uri.Contains("sapient"))
             PersonalizedWelcome = "Sapient";
         else if (Nav.Uri.Contains("morbidology"))
             PersonalizedWelcome = "Morbidology";
-    }
-
-    void Start()
-    {
-        if (PersonalizedWelcome != null)
-            Nav.NavigateTo("/sites?welcome=" + Uri.EscapeDataString(PersonalizedWelcome));
-        else
-            Nav.NavigateTo("/sites");
-    }
-
-    async Task Buy()
-    {
-        var totp = await Aura.GetSparcCode();
-        if (totp != null)
-            Nav.NavigateTo($"{Config["SparcStore"]}?_auth=totp:{totp.Code}");
-    }
-
-    private async Task AddDomain()
-    {
-        if (string.IsNullOrWhiteSpace(NewDomain))
-            return;
-
-        Error = null;
-        try
-        {
-            await TovikDomains.RegisterAsync(NewDomain);
-            NewDomain = "";
-            Nav.NavigateTo("/sites");
-        }
-        catch (Exception ex)
-        {
-            Error = ex.Message;
-            NewDomain = "";
-        }
     }
 }

@@ -58,5 +58,13 @@
   {
     "outputFile": "Installation/Credits.razor.css",
     "inputFile": "Installation/Credits.razor.scss"
+  },
+  {
+    "outputFile": "Installation/Questions.razor.css",
+    "inputFile": "Installation/Questions.razor.scss"
+  },
+  {
+    "outputFile": "Domains/AddDomain.razor.css",
+    "inputFile": "Domains/AddDomain.razor.scss"
   }
 ]

@@ -58,7 +58,6 @@
         @if (SelectedPlatform == "WordPress")
         {
             <section class="step-1">
-                <img src="/images/Star.svg" alt="Star" />
                 <header>
                     <aside>Step 1</aside>
                     <h3>Add Tovik To Your WordPress Site</h3>
@@ -67,7 +66,7 @@
                     <ol>
                         <li>
                             Download the official Tovik WordPress plugin here:<br />
-                            <a href="/plugins/wordpress/tovik.zip" class="download-link">Download Tovik for WordPress</a>
+                            <a href="/plugins/wordpress/tovik.zip" class="button primary-btn">Download Tovik for WordPress</a>
                         </li>
                         <li>Go to your WordPress admin dashboard and navigate to <strong>Plugins</strong> &gt; <strong>Add New</strong>.</li>
                         <li>Click <strong>Upload Plugin</strong> and select the downloaded <code translate="no">tovik.zip</code> file.</li>
@@ -79,12 +78,23 @@
             </section>
         }
 
+        <section class="step-1">
+            <header>
+                <aside>Step 2</aside>
+                <h3>Register Your Domain on Tovik</h3>
+            </header>
+            <div>
+                <p>Now, enter the domain name of the website where you just installed the Tovik plugin. Tovik will verify that it is installed correctly and will start tracking your page usage.</p>
+                <Tovik.Domains.AddDomain />
+            </div>
+        </section>
+
         @if (SelectedPlatform == "HTML")
         {
             <section class="step-2">
                 <img src="/images/Star.svg" alt="Star" />
                 <header>
-                    <aside>Step 2 (recommended, intermediate)</aside>
+                    <aside>Step 3 (recommended, intermediate)</aside>
                     <h3>Let Your Visitors Choose Their Language</h3>
                 </header>
                 <div>
@@ -114,7 +124,7 @@
             <section>
                 <img src="/images/Star.svg" alt="Star" />
                 <header>
-                    <aside>Step 3 (optional, advanced)</aside>
+                    <aside>Step 4 (optional, advanced)</aside>
                     <h3>Choose What Gets Translated</h3>
                 </header>
                 <div>

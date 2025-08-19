@@ -1,20 +1,5 @@
 ﻿.install-page ul {
-  padding-left: 32px;
-}
-.install-page .page-header {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  padding: 24px;
-  background: rgba(79, 129, 153, 0.2);
-  border: 1px solid rgba(219, 243, 252, 0.2);
-  border-radius: 24px;
-  backdrop-filter: blur(4px);
-}
-.install-page .page-header h2 {
-  font-size: 3.125rem;
-  font-weight: 700;
-  line-height: normal;
+  padding-left: 0;
 }
 .install-page .page-header .platforms {
   list-style: none;
@@ -24,8 +9,8 @@
 }
 .install-page .page-header .platforms button {
   background: var(--orange-100);
-  opacity: 0.3;
   border: 0;
+  opacity: 0.3;
 }
 .install-page .page-header .platforms li:hover button, .install-page .page-header .platforms li.selected button {
   background: var(--orange-300);
@@ -33,6 +18,12 @@
 }
 .install-page .page-header .platforms li.comingsoon button {
   pointer-events: none;
+}
+.install-page a.button {
+  text-decoration: none;
+  display: inline-block;
+  width: auto;
+  margin: 16px 0;
 }
 .install-page section {
   display: flex;
