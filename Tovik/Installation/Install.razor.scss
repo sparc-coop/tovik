@@ -29,7 +29,6 @@
                 background: var(--orange-100);
                 opacity: 0.3;
                 border: 0;
-
             }
 
             li:hover, li.selected {
@@ -53,24 +52,9 @@
         gap: 24px;
         align-items: flex-start;
 
-        .download-link {
-            background: var(--orange-300);
-            text-decoration: none;
-            padding: 16px 24px;
-            color: var(--blue-700);
-            border-radius: 32px;
-            display: inline-block;
-            font-size: 1.6rem;
-            margin: 16px 0;
-            transition: transform 0.2s ease-in-out;
-
-            &:hover {
-                transform: scale(1.03, 1.03);
-            }
-        }
-
         ol {
             padding-left: 32px;
+
             li {
                 margin-bottom: 8px;
             }

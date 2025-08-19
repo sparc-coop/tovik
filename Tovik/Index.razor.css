@@ -18,25 +18,6 @@ article section {
   border-radius: 24px;
   backdrop-filter: blur(4px);
 }
-article section header h3 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  line-height: normal;
-}
-article section header .subheader {
-  font-family: var(--articulat);
-  font-size: 1.6rem;
-  font-weight: 400;
-  line-height: 140%;
-}
-article section h4 {
-  color: #FFF;
-  font-family: var(--brother-printed);
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-}
 article section button.primary-btn {
   width: auto;
 }
@@ -75,85 +56,23 @@ article div.two {
   grid-template-columns: 1fr;
   gap: 24px;
 }
-@media screen and (min-width: 1024px) {
-  article div.two section.trial {
-    padding: 32px 64px;
-  }
-}
-article div.two ul {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 24px;
-  margin-top: 24px;
-}
-article div.two ul span {
-  color: var(--orange-300);
-}
-article div.two ul p {
-  margin-top: 8px;
-}
-@media screen and (min-width: 600px) {
-  article div.two ul {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-article div.two p, article div.two li {
-  font-size: 1.6rem;
-}
-article div.two li {
-  background-color: var(--blue-600);
-  border-radius: 24px;
-  padding: 24px;
-}
-article div.two li p {
-  margin-bottom: 0;
-}
-@media screen and (min-width: 4000px) {
+@media screen and (min-width: 800px) {
   article div.two {
     grid-template-columns: 1fr 1fr;
   }
 }
 article section.trial {
   align-items: flex-start;
-}
-article section.trial div.subheader {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  justify-content: space-between;
-  box-sizing: border-box;
-}
-article section.trial div.subheader h2 {
-  margin-bottom: 0;
-}
-article section.trial div.subheader button {
-  border-radius: 32px;
-}
-@media screen and (min-width: 1024px) {
-  article section.trial div.subheader {
-    flex-direction: row;
-  }
-  article section.trial div.subheader button {
-    width: auto;
-  }
-}
-article section.trial label {
-  display: block;
-  font-weight: 600;
-  font-size: 1.6rem;
-  margin: 32px 0;
+  gap: 8px !important;
 }
 article section.trial > div {
   width: 100%;
 }
-article section.trial input {
-  margin-top: 8px;
-}
 article section.trial > header {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 36px;
 }
 article section.trial > header h2 {
   margin-bottom: 0;
@@ -227,6 +146,7 @@ article section.demo footer {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  margin-top: 64px;
 }
 article section.demo footer button {
   height: 100%;

@@ -107,7 +107,7 @@ a:visited {
     color: white;
 }
 
-button {
+button, a.button {
     padding: 0;
     border: 1px solid transparent;
     background: none;
@@ -146,10 +146,10 @@ button {
         font-style: normal;
         font-weight: 500;
         line-height: normal;
-        transition: transform 0.1s ease-in-out;
 
         &:hover {
-            transform: scale(1.03, 1.03);
+            background-color: var(--orange-200);
+            border-color: var(--orange-100);
         }
     }
 

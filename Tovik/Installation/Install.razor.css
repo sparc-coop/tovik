@@ -40,20 +40,6 @@
   gap: 24px;
   align-items: flex-start;
 }
-.install-page section .download-link {
-  background: var(--orange-300);
-  text-decoration: none;
-  padding: 16px 24px;
-  color: var(--blue-700);
-  border-radius: 32px;
-  display: inline-block;
-  font-size: 1.6rem;
-  margin: 16px 0;
-  transition: transform 0.2s ease-in-out;
-}
-.install-page section .download-link:hover {
-  transform: scale(1.03, 1.03);
-}
 .install-page section ol {
   padding-left: 32px;
 }
