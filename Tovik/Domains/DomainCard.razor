@@ -10,7 +10,7 @@
                     <VerifiedIcon />
                 }
             </td>
-            <td class="domain-usage">@Domain.TovikUsage.ToString("N").Replace(".00", "")</td>
+            <td class="domain-usage">@Domain.TovikUsage.ToString("N0")</td>
             <td class="domain-actions">
                 <button class="actions-btn icon-btn" data-id="@Domain.Id" @onclick='() => Nav.NavigateTo($"/sites/{Domain.Id}")'>Manage <ChevronRightIcon /></button>
                 @* <div id="@Domain.Id-actions" class="actions-menu @(showDomainActions ? "show" : "")">
@@ -29,7 +29,7 @@
                     <VerifiedIcon />
                 }
             </td>
-            <td class="domain-usage">@Domain.TovikUsage.ToString("N").Replace(".00", "")</td>
+            <td class="domain-usage">@Domain.TovikUsage.ToString("N0")</td>
             <td class="domain-actions">
                 <button class="edit-btn secondary-btn"><EditIcon /></button>
                 <button @onclick="ToggleDeleteModal" class="delete-btn secondary-btn"><TrashIcon /></button>
