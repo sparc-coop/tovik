@@ -7,15 +7,15 @@ Stable tag: 1.0
 License: GPLv2 or later  
 License URI: https://www.gnu.org/licenses/gpl-2.0.html  
 
-Tovik enables automatic, high-quality translation for your WordPress site in minutes.
+Tovik enables automatic, high-quality translation for your Wix site in minutes.
 
 == Description ==
 
-Tovik is a simple plugin that adds the Tovik automatic site translator to your WordPress site. Instantly make your website multilingual and accessible to a global audience with no coding required.
+Tovik.W is a simple app that adds the Tovik automatic site translator to your Wix site. Instantly make your website multilingual and accessible to a global audience with no coding required.
 
 **Features:**
 * Instantly translates your entire site into multiple languages
-* Easy setup—-just activate the plugin
+* Easy setup—-just activate the app
 * No configuration required
 * Powered by Tovik (https://tovik.app)
 
@@ -38,10 +38,10 @@ Visit [https://tovik.app](https://tovik.app) for details about plans and feature
 For support, visit [https://tovik.app](https://tovik.app).
 
 = How do I temporarily turn Tovik off? = 
-Open the Tovik app panel in your Wix dashboard and click Deactivate Tovik, then Publish your site.
+Open the Tovik.W app panel in your Wix dashboard and click Deactivate Tovik, then Publish your site.
 
 = How do I remove Tovik completely? =
-Go to your site dashboard → Manage Apps → find Tovik → More actions (⋯) → Delete app. Then Publish your site.
+Go to your site dashboard → Manage Apps → find Tovik.W → More actions (⋯) → Delete app. Then Publish your site.
 
 == Changelog ==
 
