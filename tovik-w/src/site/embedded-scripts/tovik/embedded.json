@@ -2,6 +2,6 @@
   "$schema": "https://dev.wix.com/wix-cli/schemas/embedded-script.json",
   "id": "a38b05e4-e9e7-432c-a4d2-192d2edb167c",
   "name": "tovik",
-  "scriptType": "FUNCTIONAL",
+  "scriptType": "ESSENTIAL",
   "placement": "BODY_END"
 }

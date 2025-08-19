@@ -1,12 +1,14 @@
 import React from "react";
 import { embedScript } from "@wix/app-management_embedded-scripts";
 
-
-
 export default function ActivateTovikPage() {
   async function handleActivate() {
     try {
-      await embedScript(); 
+      await embedScript({
+        properties: {
+          includeAllPages: true        
+        }        
+      });
       alert("Tovik activated! Please publish your site to apply the changes.");
     } catch (e: any) {
       alert(e?.message || "Activation failed. Please try again.");
