@@ -78,6 +78,31 @@
             </section>
         }
 
+        @if (SelectedPlatform == "Wix")
+        {
+            <section class="step-1">
+                <header>
+                    <aside>Step 1</aside>
+                    <h3>Add Tovik To Your Wix Site</h3>
+                </header>
+                <div>
+                    <ol>
+                        <li>
+                            Open the Tovik install link:<br />
+                            <a href="https://wix.to/AmoRmd7" class="button primary-btn" target="_blank" rel="noopener">Install Tovik for Wix</a>
+                        </li>
+                        <li>Click <strong>Add to Site</strong>.</li>
+                        <li>Choose the Wix site where you want to install Tovik and click <strong>Continue</strong>.</li>
+                        <li>Review the requested permissions, then click <strong>Accept &amp; Add</strong>.</li>
+                        <li>You’ll be redirected to your Wix dashboard → the Tovik app panel will open.</li>
+                        <li>Click <strong>Activate Tovik</strong>.</li>
+                        <li>Publish your site to apply the changes.</li>
+                    </ol>
+                    <p>That's it! Your site will now start automatically translating all of your content based on your visitors' language preferences.</p>
+                </div>
+            </section>
+        }
+
         <section class="step-1">
             <header>
                 <aside>Step 2</aside>
@@ -159,8 +184,8 @@
 
 @code {
     private string SelectedPlatform { get; set; } = "WordPress";
-    List<string> Platforms = ["WordPress", "HTML", "SquareSpace", "Wix"];
-    List<string> ComingSoon = ["SquareSpace", "Wix"];
+    List<string> Platforms = ["WordPress", "Wix", "HTML", "Drupal", "SquareSpace"];
+    List<string> ComingSoon = ["SquareSpace", "Drupal"];
     private void Select(string platform)
     {
         SelectedPlatform = platform;
