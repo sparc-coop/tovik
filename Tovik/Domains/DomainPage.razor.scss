@@ -1,5 +1,9 @@
 .domain-page {
     .page-container {
+
+        .page-header a {
+            text-decoration: underline;
+        }
         section.welcome {
             align-items: flex-start;
 

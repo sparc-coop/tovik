@@ -23,10 +23,7 @@
             @if (Domain != null && Domain.DateConnected == null)
             {
                 <p>It looks like we have lost connection to your domain. Try <a href="/install">following the install instructions</a> to reconnect your site to Tovik.</p>
-            }
-            else if (Domain?.TovikUsage == 0)
-            {
-                <p>This is your main dashboard for <strong>@Domain.Domain</strong>. You can see all the pages and languages Tovik has translated below. Additionally, you can preview any page on your site in any language.</p>
+                <button class="primary-btn" @onclick=Verify>Retry Connection</button>
             }
             else if (Domain?.DateConnected != null)
             {
@@ -152,8 +149,8 @@
 
         LanguageStats = Pages
             .SelectMany(x => x.TovikUsage)
-            .GroupBy(x => x.Key)
-            .ToDictionary(g => Language(g.Key)!, g => g.Sum(x => x.Value));
+            .GroupBy(x => Language(x.Key))
+            .ToDictionary(g => g.Key, g => g.Sum(x => x.Value));
     }
 
     Language? Language(string id) => Languages.FirstOrDefault(x => x.Matches(id));
@@ -178,7 +175,7 @@
     {
         if (Domain == null || Domain.TovikUsage == 0)
             return 0;
-        
+
         var max = LanguageStats.Values.Max();
         if (max == 0)
             return 0;
@@ -217,6 +214,21 @@
         {
             await TovikDomains.DeleteAsync(Domain);
             Nav.NavigateTo("/sites", true);
+        }
+    }
+
+    async Task Verify()
+    {
+        var result = await Domain.VerifyAsync();
+        if (result)
+        {
+            await TovikDomains.Update(Domain);
+            ErrorMessage = null;
+            Nav.Refresh(true);
+        }
+        else
+        {
+            ErrorMessage = $"{Domain.Domain} does not contain the expected Tovik script: https://tovik.app/tovik.js. Please ensure Tovik is installed correctly on this domain.";
         }
     }
 

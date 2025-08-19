@@ -1,4 +1,7 @@
-﻿.domain-page .page-container section.welcome {
+﻿.domain-page .page-container .page-header a {
+  text-decoration: underline;
+}
+.domain-page .page-container section.welcome {
   align-items: flex-start;
 }
 .domain-page .page-container section.welcome > img {
