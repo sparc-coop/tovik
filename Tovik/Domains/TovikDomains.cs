@@ -1,5 +1,6 @@
-﻿using Sparc.Blossom.Data;
-using Sparc.Blossom.Authentication;
+﻿using Sparc.Blossom.Authentication;
+using Sparc.Blossom.Data;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Tovik.Domains;
 
@@ -12,7 +13,7 @@ public class TovikDomains(BlossomAggregateOptions<SparcDomain> options)
             .ToListAsync();
 
 
-    public async Task RegisterAsync(string domainName)
+    public async Task<SparcDomain> RegisterAsync(string domainName)
     {
         var host = SparcDomain.Normalize(domainName) 
             ?? throw new ArgumentException("Invalid domain name.", nameof(domainName));
@@ -24,14 +25,22 @@ public class TovikDomains(BlossomAggregateOptions<SparcDomain> options)
         if (existing == null)
         {
             existing = new SparcDomain(host);
+            if (!await existing.VerifyAsync())
+                throw new Exception($"{host} does not contain the expected Tovik script: https://tovik.app/tovik.js. Please ensure Tovik is installed correctly on this domain.");
+
             await Repository.AddAsync(existing);
         }
 
         if (existing.TovikUserId != null)
             throw new Exception("This domain is already registered with Tovik.");
-        
+
+        if (existing.DateConnected == null && !await existing.VerifyAsync())
+            throw new Exception($"{host} does not contain the expected Tovik script: https://tovik.app/tovik.js. Please ensure Tovik is installed correctly on this domain.");
+
         existing.TovikUserId = User.Id();
         await Repository.UpdateAsync(existing);
+
+        return existing;
     }
 
     public async Task DeleteAsync(SparcDomain domain)

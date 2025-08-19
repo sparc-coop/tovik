@@ -17,24 +17,10 @@
             <button class="back-btn secondary-btn" @onclick=NavBack><ArrowLeftIcon /> Back</button>
         </div>
 
-        @if (Domain != null && Domain.DateConnected == null)
-        {
-            <section class="welcome">
-                <img src="/images/Star.svg" alt="Star" />
-                <header>
-                    <h3>Step 1: Install Tovik</h3>
-                </header>
-                <p>
-                    You can install Tovik on <strong>@Domain.Domain</strong> in just a couple of minutes! Simply click the button below and follow the instructions:
-                </p>
-                <button class="primary-btn" @onclick=Install>Installation Instructions &rarr;</button>
-            </section>
-        }
-
         <section class="domain-summary">
             <header>
                 <h3>Site Summary</h3>
-                <p class="subheader">Review your site details below, and double-check that you have installed Tovik correctly on your site.</p>
+                <p class="subheader">Review your site details below.</p>
             </header>
             <div>
                 <table>
@@ -58,26 +44,15 @@
                 <aside class="connection-status">
                     @if (Domain != null)
                     {
-                         @if (Domain.DateConnected != null)
+                        @if (Domain.DateConnected != null)
                         {
                             <VerifiedIcon /> <span>Tovik is correctly installed on this domain! Last checked @Domain.DateConnected.Value.ToShortDateString()</span>
-                        } else if (IsVerifying)
-                        {
-                            <span>Verifying Tovik installation...</span>
-                        }
-                        else if (ErrorMessage != null)
-                        {
-                            <span class="error-message">
-                                @ErrorMessage
-                            </span>
-                            <button class="connection-btn primary-btn" @onclick=Verify>Try Again</button>
                         }
                     }
                 </aside>
-                <div class="connection-loading" style="display: none;">
-                </div>
             </div>
         </section>
+
         <section class="add-exemption">
             <header>
                 <h3>Add Exempt Words or Phrases</h3>
@@ -136,14 +111,9 @@
     string? ErrorMessage;
     string Exemption = "";
 
-    private List<string> Glossaries = new();
-
     protected override async Task OnInitializedAsync()
     {
         Domain = await TovikDomains.Get(Id);
-        Glossaries.AddRange(new[] { "Lorem Ipsum", "Dolor Sit Amet", "Consectetur Adipiscing Elit" });
-        if (Domain != null && Domain.DateConnected == null)
-            await Verify();
     }
 
     async Task AddExemption()
@@ -166,36 +136,7 @@
     }
 
     void Install() => Nav.NavigateTo("/Install");
-
-    private async Task Verify()
-    {
-        IsVerifying = true;
-        ErrorMessage = null;
-        StateHasChanged();
-
-        var htmlToLookFor = "https://tovik.app/tovik.js";
-        try
-        {
-            var html = await new HttpClient().GetStringAsync($"https://{Domain!.Domain}");
-
-            if (html.Contains(htmlToLookFor))
-            {
-                Domain.DateConnected = DateTime.UtcNow;
-                await TovikDomains.Update(Domain);
-                StateHasChanged();
-            }
-            else
-            {
-                ErrorMessage = $"The HTML of {Domain.Domain} does not contain the expected Tovik script link: {htmlToLookFor}. Please ensure Tovik is installed correctly.";
-            }
-        }
-        catch (Exception e)
-        {
-            ErrorMessage = $"Error verifying domain: {e.Message}";
-        }
-
-        IsVerifying = false;
-    }
+    
 
     private async Task DeleteDomain()
     {

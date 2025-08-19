@@ -65,7 +65,9 @@
                 <input type="text" placeholder="Enter a domain name" @bind="NewDomain" @bind:event="oninput" />
             </label>
             <div class="btn-container">
-                <button class="add-btn primary-btn" @onclick=AddDomain>Add Domain</button>
+                <button class="add-btn primary-btn" @onclick=AddDomain disabled="@IsVerifying">
+                    @(IsVerifying ? "Verifying..." : "Add Domain")
+                </button>
             </div>
         </section>
 
@@ -146,6 +148,7 @@
     string? Error;
     GetProductResponse? Product;
     [SupplyParameterFromQuery] public string? Welcome { get; set; }
+    bool IsVerifying;
 
     int Usage;
     int Limit;
@@ -183,25 +186,22 @@
 
     private async Task AddDomain()
     {
-        if (string.IsNullOrWhiteSpace(NewDomain))
-        {
-            Error = "This doesn't look like a valid domain name. Please enter a valid domain name to continue.";
-            return;
-        }
+        IsVerifying = true;
+        StateHasChanged();
 
-        Error = null;
         try
         {
-            await TovikDomains.RegisterAsync(NewDomain);
+            var newDomain = await TovikDomains.RegisterAsync(NewDomain);
             NewDomain = "";
-            await LoadDomains();
-            Nav.NavigateTo($"/sites/{Domains.Last().Id}");
+            Nav.NavigateTo($"/sites/{newDomain.Id}");
         }
         catch (Exception ex)
         {
             Error = ex.Message;
             NewDomain = "";
         }
+
+        IsVerifying = false;
     }
 
     private async Task DeleteDomain(SparcDomain domain)
