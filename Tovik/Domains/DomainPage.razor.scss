@@ -47,8 +47,9 @@
         }
 
         .domain-summary {
-            table {
-                width: 100%;
+            > div {
+                max-height: 300px;
+                overflow-y: auto;
             }
         }
 
@@ -112,7 +113,7 @@
 
         ul {
             display: flex;
-            gap: 16px;
+            gap: 8px;
             width: 100%;
             overflow-x: auto;
             padding-bottom: 8px;
@@ -120,33 +121,39 @@
         }
 
         li {
-            background-color: var(--blue-400);
-            padding: 16px;
-            height: 36px;
-            width: 36px;
+            background-color: var(--orange-300);
+            padding: 4px 16px;
+            border-radius: 20px;
             position: relative;
             margin: 8px 0;
             display: flex;
             align-items: center;
             justify-content: center;
+            white-space: nowrap;
 
             a {
                 text-decoration: none;
             }
 
-            .language-id {
-                position: absolute;
-                bottom: -8px;
-                right: -8px;
-                color: var(--blue-200);
-                font-size: 2.4rem;
-                font-weight: 700;
+            &:hover {
+                background-color: var(--orange-100);
             }
 
             .count {
-                font-size: 1.8rem;
+                position: absolute;
+                bottom: -20px;
+                left: 0;
+                right: 0;
+                text-align: center;
+                color: var(--blue-200);
+                font-size: 1.4rem;
                 font-weight: 700;
-                color: var(--blue-300);
+            }
+
+            .language-id {
+                font-size: 1.6rem;
+                font-weight: 700;
+                color: var(--blue-700);
             }
         }
     }

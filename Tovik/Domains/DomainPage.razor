@@ -36,6 +36,24 @@
             }
         </header>
 
+        <section class="domain-summary">
+            <header>
+                <h3>Languages Translated</h3>
+            </header>
+            <div>
+                @foreach (var language in LanguageStats.OrderByDescending(x => x.Value))
+                {
+                    <div class="language">
+                        <header>
+                            @language.Key.NativeName (@language.Key.DisplayName)
+                        </header>
+                        <div class="meter-container">
+                            <div class="meter-fill" style="width: @FillPercentage(language.Key)%"></div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </section>
 
         <section class="domain-summary">
             <header>
@@ -51,34 +69,14 @@
                         <ul>
                             @foreach (var language in webpage.TovikUsage.Keys.OrderByDescending(x => webpage.TovikUsage[x]))
                             {
-                                <li title="@Language(language)?.NativeName (@Language(language)?.DisplayName)">
+                                <li title="@Language(language)?.NativeName (@Language(language)?.DisplayName)" style="width: @FillPercentage(webpage, language)%">
                                     <a href="@webpage.AbsolutePath(language)" target="_blank">
-                                        <span class="language-id">@language</span>
+                                        <span class="language-id">@Language(language)?.NativeName</span>
                                         <span class="count">@Pretty(webpage.TovikUsage[language])</span>
                                     </a>
                                 </li>
                             }
                         </ul>
-                    </div>
-                }
-            </div>
-            <hr />
-        </section>
-
-        <section class="domain-summary">
-            <header>
-                <h3>Languages Translated</h3>
-            </header>
-            <div>
-                @foreach (var language in LanguageStats.OrderByDescending(x => x.Value))
-                {
-                    <div class="language">
-                        <header>
-                            @language.Key.NativeName (@language.Key.DisplayName)
-                        </header>
-                        <div class="meter-container">
-                            <div class="meter-fill" style="width: @FillPercentage(language.Key)%"></div>
-                        </div>
                     </div>
                 }
             </div>
@@ -159,6 +157,23 @@
     }
 
     Language? Language(string id) => Languages.FirstOrDefault(x => x.Matches(id));
+
+    decimal FillPercentage(Page page, string language)
+    {
+        if (page == null || page.TovikUsage == null || page.TovikUsage.Count == 0)
+            return 0;
+
+        var max = page.TovikUsage.Values.Max();
+
+        if (max == 0)
+            return 0;
+
+        if (page.TovikUsage.TryGetValue(language, out var usage))
+            return (decimal)usage / max * 100;
+
+        return 0;
+    }
+
     decimal FillPercentage(Language language)
     {
         if (Domain == null || Domain.TovikUsage == 0)

@@ -11,6 +11,7 @@
   background: var(--orange-100);
   border: 0;
   opacity: 0.3;
+  padding: 8px 16px;
 }
 .install-page .page-header .platforms li:hover button, .install-page .page-header .platforms li.selected button {
   background: var(--orange-300);
