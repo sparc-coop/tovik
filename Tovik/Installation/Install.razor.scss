@@ -1,24 +1,9 @@
 .install-page {
     ul {
-        padding-left: 32px;
+        padding-left: 0;
     }
 
     .page-header {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        padding: 24px;
-        background: rgba(79, 129, 153, 0.20);
-        border: 1px solid rgba(219, 243, 252, 0.20);
-        border-radius: 24px;
-        backdrop-filter: blur(4px);
-
-        h2 {
-            font-size: 3.125rem;
-            font-weight: 700;
-            line-height: normal;
-        }
-
         .platforms {
             list-style: none;
             display: flex;
@@ -27,9 +12,9 @@
 
             button {
                 background: var(--orange-100);
-                opacity: 0.3;
                 border: 0;
-
+                opacity: 0.3;
+                padding: 8px 16px;
             }
 
             li:hover, li.selected {
@@ -47,30 +32,22 @@
         }
     }
 
+    a.button {
+        text-decoration: none;
+        display: inline-block;
+        width: auto;
+        margin: 16px 0;
+    }
+
     section {
         display: flex;
         flex-direction: column;
         gap: 24px;
         align-items: flex-start;
 
-        .download-link {
-            background: var(--orange-300);
-            text-decoration: none;
-            padding: 16px 24px;
-            color: var(--blue-700);
-            border-radius: 32px;
-            display: inline-block;
-            font-size: 1.6rem;
-            margin: 16px 0;
-            transition: transform 0.2s ease-in-out;
-
-            &:hover {
-                transform: scale(1.03, 1.03);
-            }
-        }
-
         ol {
             padding-left: 32px;
+
             li {
                 margin-bottom: 8px;
             }

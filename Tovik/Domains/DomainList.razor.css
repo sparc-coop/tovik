@@ -62,15 +62,7 @@ article section.welcome aside {
 article section.welcome span {
   color: var(--orange-300);
 }
-article section.add-domain form {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-article section.add-domain form label input {
-  width: var(--container-width);
-}
-article section .btn-container {
+article section.add-domain .btn-container {
   width: 100%;
   /*button {
       display: flex;

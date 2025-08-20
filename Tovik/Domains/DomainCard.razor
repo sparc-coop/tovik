@@ -1,48 +1,80 @@
-﻿<tr id="@Domain.Id" class="domain-card @("domain-card__" + PageType)">
-    @if (Domain != null)
+﻿@using Sparc.Blossom.Content
+<div id="@Domain.Id" class="domain-card @("domain-card__" + PageType)">
+    <header>
+        <img src="@Domain.FaviconUri" alt="@Domain.Domain" />
+        <h2>
+            @Domain.Domain
+            @if (Domain.DateConnected != null)
+            {
+                <VerifiedIcon />                
+            }
+        </h2>
+        <p>Last translated: @(Domain.LastTranslatedDate == null ? "Never" : Domain.LastTranslatedDate.Value.ToShortDateString())</p>
+    </header>
+
+    @if (PageType == "home")
     {
-        @if (PageType == "home")
+        <ul class="languages">
+            @foreach (var language in Domain.PagesPerLanguage)
+            {
+                <li>@Language(language.Key)?.NativeName</li>
+            }
+        </ul>
+    }
+    else
+    {
+        @if (Domain.DateConnected == null)
         {
-            <td class="domain-name" @onclick='() => Nav.NavigateTo($"/sites/{Domain.Id}")'>
-                @Domain.Domain
-                @if (Domain.DateConnected != null)
-                {
-                    <VerifiedIcon />
-                }
-            </td>
-            <td class="domain-usage">@Domain.TovikUsage.ToString("N").Replace(".00", "")</td>
-            <td class="domain-actions">
-                <button class="actions-btn icon-btn" data-id="@Domain.Id" @onclick='() => Nav.NavigateTo($"/sites/{Domain.Id}")'>Manage <ChevronRightIcon /></button>
-                @* <div id="@Domain.Id-actions" class="actions-menu @(showDomainActions ? "show" : "")">
-                    <button class="edit-btn secondary-btn"><EditIcon />Edit</button>
-                    <button @onclick="DeleteDomain" class="delete-btn secondary-btn"><TrashIcon />Delete</button>
-                </div>*@
-            </td>
+            <p>It looks like your domain isn't yet connected to Tovik. You can <a href="/install">follow the install instructions here</a> to connect your site.</p>
+            <button class="primary-btn" @onclick=Verify>Retry Connection</button>
+        }
+        else
+        {
+            <p>
+                <VerifiedIcon /> Tovik is installed and active on this domain! Last checked @Domain.DateConnected.Value.ToShortDateString()
+            </p>
         }
 
-        @if (PageType == "domain")
+        @if (!string.IsNullOrEmpty(ErrorMessage))
         {
-            <td class="domain-name">
-                @Domain.Domain
-                @if (Domain.DateConnected != null)
-                {
-                    <VerifiedIcon />
-                }
-            </td>
-            <td class="domain-usage">@Domain.TovikUsage.ToString("N").Replace(".00", "")</td>
-            <td class="domain-actions">
-                <button class="edit-btn secondary-btn"><EditIcon /></button>
-                <button @onclick="ToggleDeleteModal" class="delete-btn secondary-btn"><TrashIcon /></button>
-            </td>
+            <p class="error-message">@ErrorMessage</p>
         }
     }
-</tr>
+
+    <footer>
+        <ul>
+            <li>
+                <PageIcon />
+                Pages Translated
+                <span>@Domain.TovikUsage.ToString("N0")</span>
+            </li>
+            <li>
+                <LanguageIcon />
+                Languages Translated
+                <span>@Domain.PagesPerLanguage.Count</span>
+            </li>
+        </ul>
+
+        @if (PageType == "home")
+        {
+            <button class="actions-btn" data-id="@Domain.Id" @onclick='() => Nav.NavigateTo($"/sites/{Domain.Id}")'>Manage</button>
+        }
+        else
+        {
+            <button @onclick="ToggleDeleteModal" class="delete-btn secondary-btn"><TrashIcon /></button>
+        }
+    </footer>
+</div>
+
 <DeleteModal Domain=Domain ShowModal=showDeleteModal OnClose=ToggleDeleteModal OnDeleteDomain="DeleteDomain" />
 
+@inject Tovik.Domains.TovikDomains TovikDomains
 @code {
     [Parameter] public required SparcDomain Domain { get; set; }
+    [Parameter] public required IEnumerable<Language> Languages { get; set; }
     [Parameter] public string? PageType { get; set; }
     [Parameter] public EventCallback<SparcDomain> OnDelete { get; set; }
+    string? ErrorMessage;
 
     bool showDeleteModal = false;
     // bool showDomainActions = false;
@@ -52,9 +84,27 @@
     //     Js.InvokeVoidAsync("hideAllDomainActions");
     //     showDomainActions = !showDomainActions;
     // }
+
+    Language? Language(string id) => Languages.FirstOrDefault(x => x.Matches(id));
+
     private void ToggleDeleteModal()
     {
         showDeleteModal = !showDeleteModal;
+    }
+
+    async Task Verify()
+    {
+        var result = await Domain.VerifyAsync();
+        if (result)
+        {
+            await TovikDomains.Update(Domain);
+            ErrorMessage = null;
+            Nav.Refresh(true);
+        }
+        else
+        {
+            ErrorMessage = $"{Domain.Domain} does not contain the expected Tovik script: https://tovik.app/tovik.js. Please ensure Tovik is installed correctly on this domain.";
+        }
     }
 
     private void DeleteDomain()

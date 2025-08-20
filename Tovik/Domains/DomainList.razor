@@ -1,4 +1,5 @@
 ﻿@page "/sites"
+@using Sparc.Blossom.Content
 @using Tovik.Installation
 @layout MainLayout
 
@@ -39,34 +40,14 @@
                 <p>
                     Manage your Tovik-enabled websites here. You can add as many domains as you'd like!
                 </p>
-                <table class="domains-table">
-                    <thead>
-                        <tr>
-                            <td>Domain</td>
-                            <td>Usage</td>
-                            <td></td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var domain in Domains)
-                        {
-                            <DomainCard Domain=domain PageType="home" OnDelete=DeleteDomain />
-                        }
-                    </tbody>
-                </table>
-            }
 
-            @if (Error != null)
-            {
-                <div class="error-message">@Error</div>
-            }
+                <Tovik.Domains.AddDomain />
 
-            <label>
-                <input type="text" placeholder="Enter a domain name" @bind="NewDomain" @bind:event="oninput" />
-            </label>
-            <div class="btn-container">
-                <button class="add-btn primary-btn" @onclick=AddDomain>Add Domain</button>
-            </div>
+                @foreach (var domain in Domains)
+                {
+                    <DomainCard Domain=domain PageType="home" Languages=Languages OnDelete=DeleteDomain />
+                }
+            }
         </section>
 
         <section class="word-usage">
@@ -76,62 +57,25 @@
 
             @if (IsTrial)
             {
-                <p>Your free trial of Tovik includes @Limit.ToString("N0") words, with no time limits or restrictions.</p>
+                <p>Your free trial of Tovik includes @Limit.ToString("N0") pages, with no time limits or restrictions.</p>
             }
             else
             {
-                <p>Thank you for supporting Tovik with your purchase of a word pack!</p>
+                <p>Thank you for supporting Tovik with your purchase of Tovik Pro!</p>
             }
+
             <div>
-                <h4>Words Translated</h4>
+                <h4>Pages Translated</h4>
                 <UsageMeter Usage=Usage Limit=Limit />
             </div>
-        </section>
 
-
-        @if (IsTrial && Product != null)
-        {
-            <section class="trial">
-                <header>
-                    <img src="/images/Star.svg" alt="Star" />
-                </header>
-                <div>
-                    <h2>
-                        Buy a Tovik Word Pack
-                        <span>@Product.FormattedPrice</span>
-                    </h2>
-                    <ul>
-                        <li>
-                            <h3><span>100,000</span> Words Included</h3>
-                            <p>Massive multilingual coverage in a single bundle.</p>
-                        </li>
-                        <li>
-                            <h3><span>Unlimited</span> Domains</h3>
-                            <p>Use across all your sites, no restrictions.</p>
-                        </li>
-                        <li>
-                            <h3>One-Time Payment</h3>
-                            <p>No subscription, no recurring fee.</p>
-                        </li>
-                        <li>
-                            <h3>Local-Friendly Checkout</h3>
-                            <p>Pay in your preferred currency.</p>
-                        </li>
-                        <li>
-                            <h3>Yours To Keep</h3>
-                            <p>No expiration, no time limits.</p>
-                        </li>
-                        <li>
-                            <h3>Privacy First</h3>
-                            <p>No tracking, no data harvesting.</p>
-                        </li>
-                    </ul>
-                </div>
+            @if (IsTrial)
+            {
                 <footer>
-                    <button class="add-btn primary-btn" @onclick=Buy>Buy on Sparc Store &rarr;</button>
+                    <button class="primary-btn" @onclick=Buy>Upgrade to Tovik Pro</button>
                 </footer>
-            </section>
-        }
+            }
+        </section>
     </div>
 </article>
 
@@ -139,17 +83,17 @@
 @inject ISparcAura Aura
 @inject IConfiguration Config
 @inject ISparcBilling Billing
+@inject ITovik Tovik
 
 @code {
     List<SparcDomain> Domains = new();
-    string NewDomain = "";
-    string? Error;
+    IEnumerable<Sparc.Blossom.Content.Language> Languages = [];
     GetProductResponse? Product;
     [SupplyParameterFromQuery] public string? Welcome { get; set; }
 
     int Usage;
     int Limit;
-    bool IsTrial => Limit < 100000;
+    bool IsTrial => Limit <= 10;
 
     protected override async Task OnInitializedAsync()
     {
@@ -157,7 +101,7 @@
         var product = user.Product("Tovik");
 
         var options = Welcome == "Sapient" || Welcome == "Morbidology"
-            ? new SparcProductActivationOptions(2000)
+            ? new SparcProductActivationOptions(20)
             : null;
 
         if (product == null) // Start free trial
@@ -166,6 +110,7 @@
         await LoadDomains();
         Limit = product.MaxUsage;
         Usage = Domains.Sum(d => d.TovikUsage);
+        Languages = await Tovik.GetLanguages();
         Product = await Billing.GetProductAsync(Config["ProductId"]!);
     }
 
@@ -179,29 +124,6 @@
     private async Task LoadDomains()
     {
         Domains = await TovikDomains.All();
-    }
-
-    private async Task AddDomain()
-    {
-        if (string.IsNullOrWhiteSpace(NewDomain))
-        {
-            Error = "This doesn't look like a valid domain name. Please enter a valid domain name to continue.";
-            return;
-        }
-
-        Error = null;
-        try
-        {
-            await TovikDomains.RegisterAsync(NewDomain);
-            NewDomain = "";
-            await LoadDomains();
-            Nav.NavigateTo($"/sites/{Domains.Last().Id}");
-        }
-        catch (Exception ex)
-        {
-            Error = ex.Message;
-            NewDomain = "";
-        }
     }
 
     private async Task DeleteDomain(SparcDomain domain)

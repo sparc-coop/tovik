@@ -1,0 +1,41 @@
+﻿<div>
+    @if (Error != null)
+    {
+        <div class="error-message">@Error</div>
+    }
+
+    <label>
+        <input type="text" placeholder="Enter a domain name" @bind="NewDomain" @bind:event="oninput" />
+    </label>
+
+    <button class="add-btn primary-btn" @onclick=Add disabled="@IsVerifying">
+        Add
+    </button>
+</div>
+
+@inject Tovik.Domains.TovikDomains TovikDomains
+@code {
+    bool IsVerifying;
+    string NewDomain = "";
+    string? Error;
+
+    private async Task Add()
+    {
+        IsVerifying = true;
+        StateHasChanged();
+
+        try
+        {
+            var newDomain = await TovikDomains.RegisterAsync(NewDomain);
+            NewDomain = "";
+            Nav.NavigateTo($"/sites/{newDomain.Id}");
+        }
+        catch (Exception ex)
+        {
+            Error = ex.Message;
+            NewDomain = "";
+        }
+
+        IsVerifying = false;
+    }
+}

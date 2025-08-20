@@ -1,0 +1,135 @@
+section.pricing {
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+
+        h3 {
+            padding: 16px;
+            border-radius: 15px;
+            border: 1px solid var(--blue-200);
+            color: var(--blue-200);
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        span {
+            color: var(--blue-50);
+            font-family: var(--brother-printed);
+            font-weight: 700;
+            font-size: 4.8rem;
+        }
+
+        button, a.button {
+            display: none;
+            text-decoration: none !important;
+        }
+    }
+
+    ul {
+        list-style: none;
+        padding-left: 16px;
+
+        li {
+            background: url('/images/Star.svg') no-repeat left 8px;
+            background-size: 12px 12px;
+            padding-left: 24px;
+            font-size: 2rem;
+            font-weight: 700;
+            font-family: var(--brother-printed);
+            margin-bottom: 24px;
+            leading-trim: both;
+            text-edge: cap;
+        }
+
+        strong {
+            color: var(--orange-300);
+        }
+    }
+
+    @media screen and (min-width: 1024px) {
+        display: grid !important;
+        grid-template-columns: 4fr 6fr;
+        gap: 48px !important;
+        align-items: center;
+
+        header {
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+            gap: 32px !important;
+
+            button, a.button {
+                display: inline-block;
+                width: auto;
+                align-self: initial;
+            }
+        }
+
+        footer {
+            display: none;
+        }
+    }
+}
+
+.faq {
+    .question, .answer {
+        width: 100%;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        font-weight: 700;
+        border-radius: 100%;
+        position: relative;
+
+        span {
+            z-index: 2;
+        }
+
+        ::deep svg {
+            position: absolute;
+            bottom: -2px;
+            left: -1px;
+            width: 12px;
+            height: 12px;
+            z-index: 1;
+        }
+    }
+
+    .question {
+        background-color: #FF945E;
+        color: #9d3500;
+    }
+
+    .answer {
+        background-color: var(--blue-200);
+        color: var(--blue-500);
+    }
+
+    dl {
+        display: grid;
+        grid-template-columns: 24px auto;
+        gap: 8px
+    }
+
+    dt {
+        font-family: var(--brother-printed);
+        font-weight: 700;
+        font-size: 1.8rem;
+        color: var(--blue-50);
+        margin-bottom: 16px;
+    }
+
+    dd {
+        margin: 0 0 36px 0;
+        color: var(--blue-200);
+    }
+
+    footer {
+        font-size: 1.6rem;
+        font-weight: 500;
+    }
+}

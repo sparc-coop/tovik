@@ -1,4 +1,5 @@
 ﻿@page "/sites/{Id}"
+@using Sparc.Blossom.Content
 @using Tovik.Domains
 @using Tovik.Installation
 @layout MainLayout
@@ -7,7 +8,7 @@
 <HeadContent>
     <!-- Event snippet for Domain Added conversion page -->
     <script>
-      gtag('event', 'conversion', {'send_to': 'AW-11084766602/LSImCPXjhYQbEIq70KUp'});
+        gtag('event', 'conversion', {'send_to': 'AW-11084766602/LSImCPXjhYQbEIq70KUp'});
     </script>
 </HeadContent>
 
@@ -17,133 +18,160 @@
             <button class="back-btn secondary-btn" @onclick=NavBack><ArrowLeftIcon /> Back</button>
         </div>
 
-        @if (Domain != null && Domain.DateConnected == null)
+        @if (Domain != null)
         {
-            <section class="welcome">
-                <img src="/images/Star.svg" alt="Star" />
-                <header>
-                    <h3>Step 1: Install Tovik</h3>
-                </header>
-                <p>
-                    You can install Tovik on <strong>@Domain.Domain</strong> in just a couple of minutes! Simply click the button below and follow the instructions:
-                </p>
-                <button class="primary-btn" @onclick=Install>Installation Instructions &rarr;</button>
-            </section>
+            <DomainCard Domain="Domain" PageType="Page" Languages="Languages" />
         }
 
         <section class="domain-summary">
             <header>
-                <h3>Site Summary</h3>
-                <p class="subheader">Review your site details below, and double-check that you have installed Tovik correctly on your site.</p>
+                <h3>Languages Translated</h3>
             </header>
             <div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Domain Name</th>
-                            <th>Word Usage</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (Domain != null)
-                        {
-                            <DomainCard Domain=Domain PageType="domain" OnDelete=DeleteDomain />
-                        }
-                    </tbody>
-                </table>
-            </div>
-            <hr />
-            <div class="domain-connection">
-                <aside class="connection-status">
-                    @if (Domain != null)
-                    {
-                         @if (Domain.DateConnected != null)
-                        {
-                            <VerifiedIcon /> <span>Tovik is correctly installed on this domain! Last checked @Domain.DateConnected.Value.ToShortDateString()</span>
-                        } else if (IsVerifying)
-                        {
-                            <span>Verifying Tovik installation...</span>
-                        }
-                        else if (ErrorMessage != null)
-                        {
-                            <span class="error-message">
-                                @ErrorMessage
-                            </span>
-                            <button class="connection-btn primary-btn" @onclick=Verify>Try Again</button>
-                        }
-                    }
-                </aside>
-                <div class="connection-loading" style="display: none;">
-                </div>
+                @foreach (var language in LanguageStats.OrderByDescending(x => x.Value))
+                {
+                    <div class="language">
+                        <header>
+                            @language.Key.NativeName (@language.Key.DisplayName)
+                        </header>
+                        <div class="meter-container">
+                            <div class="meter-fill" style="width: @FillPercentage(language.Key)%"></div>
+                        </div>
+                    </div>
+                }
             </div>
         </section>
+
+        <section class="domain-summary">
+            <header>
+                <h3>Pages Translated</h3>
+            </header>
+            <div>
+                @foreach (var webpage in Pages)
+                {
+                    <div class="page">
+                        <header translate="no">
+                            @webpage.Path
+                        </header>
+                        <ul>
+                            @foreach (var language in webpage.TovikUsage.Keys.OrderByDescending(x => webpage.TovikUsage[x]))
+                            {
+                                <li title="@Language(language)?.NativeName (@Language(language)?.DisplayName)" style="width: @FillPercentage(webpage, language)%">
+                                    <a href="@webpage.AbsolutePath(language)" target="_blank">
+                                        <span class="language-id">@Language(language)?.NativeName</span>
+                                        <span class="count">@Pretty(webpage.TovikUsage[language])</span>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                }
+            </div>
+        </section>
+
         <section class="add-exemption">
             <header>
                 <h3>Add Exempt Words or Phrases</h3>
                 <p class="subheader">Do you have any words or phrases on this website that you would like Tovik to ignore? Add them here!</p>
             </header>
-                <label>
-                    <input type="text" @bind=Exemption placeholder="Enter a word or phrase..." />
-                </label>
-                <div class="btn-container">
-                    <button class="add-btn primary-btn" @onclick=AddExemption>Add to Exemptions List</button>
-                </div>
+            <label>
+                <input type="text" @bind=Exemption placeholder="Enter a word or phrase..." />
+            </label>
+            <div class="btn-container">
+                <button class="add-btn primary-btn" @onclick=AddExemption>Add to Exemptions List</button>
+            </div>
         </section>
 
         @if (Domain?.Exemptions.Any() == true)
         {
-        <section class="exemptions">
-            <header>
-                <h3>Exempt Words and Phrases</h3>
-            </header>
-            <table class="exempt-table">
-                <thead>
-                    <tr>
-                        <td>Word or Phrase</td>
-                        <td></td>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (Domain != null)
-                    {
-                        @foreach (var word in Domain.Exemptions)
+            <section class="exemptions">
+                <header>
+                    <h3>Exempt Words and Phrases</h3>
+                </header>
+                <table class="exempt-table">
+                    <thead>
+                        <tr>
+                            <td>Word or Phrase</td>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Domain != null)
                         {
-                            <tr>
-                                <td>@word</td>
-                                <td>
-                                    <div class="exempt-actions">
-                                        <button class="delete-exempt-btn secondary-btn" @onclick="(() => DeleteExemption(word))"><TrashIcon /></button>
-                                    </div>
-                                </td>
-                            </tr>
+                            @foreach (var word in Domain.Exemptions)
+                            {
+                                <tr>
+                                    <td>@word</td>
+                                    <td>
+                                        <div class="exempt-actions">
+                                            <button class="delete-exempt-btn secondary-btn" @onclick="(() => DeleteExemption(word))"><TrashIcon /></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
                         }
-                    }
-                </tbody>
-            </table>
-        </section>
+                    </tbody>
+                </table>
+            </section>
         }
     </div>
 </article>
 
 @inject TovikDomains TovikDomains
+@inject ITovik Tovik
 
 @code {
     [Parameter] public required string Id { get; set; }
 
     SparcDomain? Domain;
-    bool IsVerifying;
-    string? ErrorMessage;
+    List<Page> Pages = [];
+    IEnumerable<Language> Languages = [];
+    Dictionary<Language, int> LanguageStats = [];
     string Exemption = "";
-
-    private List<string> Glossaries = new();
 
     protected override async Task OnInitializedAsync()
     {
         Domain = await TovikDomains.Get(Id);
-        Glossaries.AddRange(new[] { "Lorem Ipsum", "Dolor Sit Amet", "Consectetur Adipiscing Elit" });
-        if (Domain != null && Domain.DateConnected == null)
-            await Verify();
+        Pages = await TovikDomains.GetPages(Domain?.Domain);
+        Languages = await Tovik.GetLanguages();
+
+        LanguageStats = Pages
+            .SelectMany(x => x.TovikUsage)
+            .GroupBy(x => Language(x.Key))
+            .ToDictionary(g => g.Key, g => g.Sum(x => x.Value));
+    }
+
+    Language? Language(string id) => Languages.FirstOrDefault(x => x.Matches(id));
+
+    decimal FillPercentage(Page page, string language)
+    {
+        if (page == null || page.TovikUsage == null || page.TovikUsage.Count == 0)
+            return 0;
+
+        var max = page.TovikUsage.Values.Max();
+
+        if (max == 0)
+            return 0;
+
+        if (page.TovikUsage.TryGetValue(language, out var usage))
+            return (decimal)usage / max * 100;
+
+        return 0;
+    }
+
+    decimal FillPercentage(Language language)
+    {
+        if (Domain == null || Domain.TovikUsage == 0)
+            return 0;
+
+        var max = LanguageStats.Values.Max();
+        if (max == 0)
+            return 0;
+
+        if (LanguageStats.TryGetValue(language, out var usage))
+            return (decimal)usage / max * 100;
+
+        return 0;
     }
 
     async Task AddExemption()
@@ -167,35 +195,6 @@
 
     void Install() => Nav.NavigateTo("/Install");
 
-    private async Task Verify()
-    {
-        IsVerifying = true;
-        ErrorMessage = null;
-        StateHasChanged();
-
-        var htmlToLookFor = "https://tovik.app/tovik.js";
-        try
-        {
-            var html = await new HttpClient().GetStringAsync($"https://{Domain!.Domain}");
-
-            if (html.Contains(htmlToLookFor))
-            {
-                Domain.DateConnected = DateTime.UtcNow;
-                await TovikDomains.Update(Domain);
-                StateHasChanged();
-            }
-            else
-            {
-                ErrorMessage = $"The HTML of {Domain.Domain} does not contain the expected Tovik script link: {htmlToLookFor}. Please ensure Tovik is installed correctly.";
-            }
-        }
-        catch (Exception e)
-        {
-            ErrorMessage = $"Error verifying domain: {e.Message}";
-        }
-
-        IsVerifying = false;
-    }
 
     private async Task DeleteDomain()
     {
@@ -206,8 +205,20 @@
         }
     }
 
+
     private void NavBack()
     {
         Js.InvokeVoidAsync("goBack");
+    }
+
+    private string Pretty(int count)
+    {
+        if (count >= 1_000_000_000)
+            return (count / 1_000_000_000D).ToString("0.#") + "B";
+        if (count >= 1_000_000)
+            return (count / 1_000_000D).ToString("0.#") + "M";
+        if (count >= 1_000)
+            return (count / 1_000D).ToString("0.#") + "K";
+        return count.ToString();
     }
 }

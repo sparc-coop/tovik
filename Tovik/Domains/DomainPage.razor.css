@@ -1,4 +1,7 @@
-﻿.domain-page .page-container section.welcome {
+﻿.domain-page .page-container .page-header a {
+  text-decoration: underline;
+}
+.domain-page .page-container section.welcome {
   align-items: flex-start;
 }
 .domain-page .page-container section.welcome > img {
@@ -34,8 +37,9 @@
   flex-direction: column;
   gap: 8px;
 }
-.domain-page .page-container .domain-summary table {
-  width: 100%;
+.domain-page .page-container .domain-summary > div {
+  max-height: 300px;
+  overflow-y: auto;
 }
 .domain-page .page-container .connection-btn {
   margin-top: 16px;
@@ -71,4 +75,78 @@
   aspect-ratio: 1/1;
   height: 48px;
   padding: 0;
+}
+.domain-page .page, .domain-page .language {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+}
+@media screen and (min-width: 800px) {
+  .domain-page .page, .domain-page .language {
+    grid-template-columns: 3fr 7fr;
+  }
+}
+.domain-page .page header, .domain-page .language header {
+  font-family: var(--brother-printed);
+  font-size: 1.8rem;
+}
+.domain-page .page ul, .domain-page .language ul {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  list-style: none;
+}
+.domain-page .page li, .domain-page .language li {
+  background-color: var(--orange-300);
+  padding: 4px 16px;
+  border-radius: 20px;
+  position: relative;
+  margin: 8px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+.domain-page .page li a, .domain-page .language li a {
+  text-decoration: none;
+}
+.domain-page .page li:hover, .domain-page .language li:hover {
+  background-color: var(--orange-100);
+}
+.domain-page .page li .count, .domain-page .language li .count {
+  position: absolute;
+  bottom: -20px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: var(--blue-200);
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+.domain-page .page li .language-id, .domain-page .language li .language-id {
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: var(--blue-700);
+}
+.domain-page .language {
+  padding: 8px 0;
+}
+
+.meter-container {
+  width: 100%;
+  height: 20px;
+  background: var(--orange-100);
+  border-radius: 32px;
+  position: relative;
+  overflow: hidden;
+}
+.meter-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: 32px;
+  background: repeating-linear-gradient(110deg, var(--orange-200), var(--orange-200) 8px, var(--orange-300) 8px, var(--orange-300) 16px);
 }

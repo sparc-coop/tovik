@@ -10,6 +10,10 @@ internal class TovikContext(DbContextOptions<TovikContext> options) : DbContext(
             .HasPartitionKey(x => x.Domain)
             .HasKey(x => x.Id);
 
+        model.Entity<Page>().ToContainer("Pages")
+            .HasPartitionKey(x => x.Domain)
+            .HasKey(x => x.Id);
+
         model.Entity<TextContent>().ToContainer("TextContent")
             .HasPartitionKey(x => x.Domain)
             .HasKey(x => x.Id);

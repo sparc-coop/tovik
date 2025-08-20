@@ -34,7 +34,7 @@
                 </header>
                 <div>
                     <p>
-                        To install Tovik, add this line of code to your site (preferably just before the closing <code>&lt;&sol;body&gt;</code> tag):
+                        To install Tovik, add this line of code to your site (preferably just before the closing <code translate="no">&lt;&sol;body&gt;</code> tag):
                     </p>
                     <CodeBlock CanCopy=true>
                         @("<script type=\"module\" src=\"https://tovik.app/tovik.js\"></script>")
@@ -58,7 +58,6 @@
         @if (SelectedPlatform == "WordPress")
         {
             <section class="step-1">
-                <img src="/images/Star.svg" alt="Star" />
                 <header>
                     <aside>Step 1</aside>
                     <h3>Add Tovik To Your WordPress Site</h3>
@@ -67,10 +66,10 @@
                     <ol>
                         <li>
                             Download the official Tovik WordPress plugin here:<br />
-                            <a href="/plugins/wordpress/tovik.zip" class="download-link">Download Tovik for WordPress</a>
+                            <a href="/plugins/wordpress/tovik.zip" class="button primary-btn">Download Tovik for WordPress</a>
                         </li>
                         <li>Go to your WordPress admin dashboard and navigate to <strong>Plugins</strong> &gt; <strong>Add New</strong>.</li>
-                        <li>Click <strong>Upload Plugin</strong> and select the downloaded <code>tovik.zip</code> file.</li>
+                        <li>Click <strong>Upload Plugin</strong> and select the downloaded <code translate="no">tovik.zip</code> file.</li>
                         <li>Click <strong>Install Now</strong>.</li>
                         <li>Once installed, click <strong>Activate Plugin</strong>.</li>
                     </ol>
@@ -79,12 +78,48 @@
             </section>
         }
 
+        @if (SelectedPlatform == "Wix")
+        {
+            <section class="step-1">
+                <header>
+                    <aside>Step 1</aside>
+                    <h3>Add Tovik To Your Wix Site</h3>
+                </header>
+                <div>
+                    <ol>
+                        <li>
+                            Open the Tovik install link:<br />
+                            <a href="https://wix.to/AmoRmd7" class="button primary-btn" target="_blank" rel="noopener">Install Tovik for Wix</a>
+                        </li>
+                        <li>Click <strong>Add to Site</strong>.</li>
+                        <li>Choose the Wix site where you want to install Tovik and click <strong>Continue</strong>.</li>
+                        <li>Review the requested permissions, then click <strong>Accept &amp; Add</strong>.</li>
+                        <li>You’ll be redirected to your Wix dashboard → the Tovik app panel will open.</li>
+                        <li>Click <strong>Activate Tovik</strong>.</li>
+                        <li>Publish your site to apply the changes.</li>
+                    </ol>
+                    <p>That's it! Your site will now start automatically translating all of your content based on your visitors' language preferences.</p>
+                </div>
+            </section>
+        }
+
+        <section class="step-1">
+            <header>
+                <aside>Step 2</aside>
+                <h3>Register Your Domain on Tovik</h3>
+            </header>
+            <div>
+                <p>Now, enter the domain name of the website where you just installed the Tovik plugin. Tovik will verify that it is installed correctly and will start tracking your page usage.</p>
+                <Tovik.Domains.AddDomain />
+            </div>
+        </section>
+
         @if (SelectedPlatform == "HTML")
         {
             <section class="step-2">
                 <img src="/images/Star.svg" alt="Star" />
                 <header>
-                    <aside>Step 2 (recommended, intermediate)</aside>
+                    <aside>Step 3 (recommended, intermediate)</aside>
                     <h3>Let Your Visitors Choose Their Language</h3>
                 </header>
                 <div>
@@ -114,7 +149,7 @@
             <section>
                 <img src="/images/Star.svg" alt="Star" />
                 <header>
-                    <aside>Step 3 (optional, advanced)</aside>
+                    <aside>Step 4 (optional, advanced)</aside>
                     <h3>Choose What Gets Translated</h3>
                 </header>
                 <div>
@@ -126,7 +161,7 @@
                         @("<tovik-translate for=\"{selector}\"></tovik-translate>")
                     </CodeBlock>
                     <p>Where <code>&lcub;selector&rcub;</code> is the CSS selector you'd like Tovik to translate.</p>
-                    <p>You can include multiple <code>&lt;tovik-translate&gt;</code> tags as well, if you have multiple separate sections you wish to translate.</p>
+                    <p>You can include multiple <code translate="no">&lt;tovik-translate&gt;</code> tags as well, if you have multiple separate sections you wish to translate.</p>
                     <h4>Examples:</h4>
                     <p>To translate an element with an ID of translate-this:</p>
                     <CodeBlock CanCopy="true">
@@ -149,8 +184,8 @@
 
 @code {
     private string SelectedPlatform { get; set; } = "WordPress";
-    List<string> Platforms = ["WordPress", "HTML", "SquareSpace", "Wix"];
-    List<string> ComingSoon = ["SquareSpace", "Wix"];
+    List<string> Platforms = ["WordPress", "Wix", "HTML", "Drupal", "SquareSpace"];
+    List<string> ComingSoon = ["SquareSpace", "Drupal"];
     private void Select(string platform)
     {
         SelectedPlatform = platform;
