@@ -1,1 +1,1 @@
-﻿div{display:flex;flex-direction:column;gap:8px;}div label input{width:var(--container-width);}
+﻿div{display:grid;grid-template-columns:auto 80px;align-items:center;gap:8px;}div label input{width:var(--container-width);}

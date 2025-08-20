@@ -1,4 +1,5 @@
 ﻿@page "/sites"
+@using Sparc.Blossom.Content
 @using Tovik.Installation
 @layout MainLayout
 
@@ -39,24 +40,14 @@
                 <p>
                     Manage your Tovik-enabled websites here. You can add as many domains as you'd like!
                 </p>
-                <table class="domains-table">
-                    <thead>
-                        <tr>
-                            <td>Domain</td>
-                            <td>Pages Translated</td>
-                            <td></td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var domain in Domains)
-                        {
-                            <DomainCard Domain=domain PageType="home" OnDelete=DeleteDomain />
-                        }
-                    </tbody>
-                </table>
-            }
 
-            <Tovik.Domains.AddDomain />
+                <Tovik.Domains.AddDomain />
+
+                @foreach (var domain in Domains)
+                {
+                    <DomainCard Domain=domain PageType="home" Languages=Languages OnDelete=DeleteDomain />
+                }
+            }
         </section>
 
         <section class="word-usage">
@@ -92,9 +83,11 @@
 @inject ISparcAura Aura
 @inject IConfiguration Config
 @inject ISparcBilling Billing
+@inject ITovik Tovik
 
 @code {
     List<SparcDomain> Domains = new();
+    IEnumerable<Sparc.Blossom.Content.Language> Languages = [];
     GetProductResponse? Product;
     [SupplyParameterFromQuery] public string? Welcome { get; set; }
 
@@ -117,6 +110,7 @@
         await LoadDomains();
         Limit = product.MaxUsage;
         Usage = Domains.Sum(d => d.TovikUsage);
+        Languages = await Tovik.GetLanguages();
         Product = await Billing.GetProductAsync(Config["ProductId"]!);
     }
 

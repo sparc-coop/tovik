@@ -18,20 +18,10 @@
             <button class="back-btn secondary-btn" @onclick=NavBack><ArrowLeftIcon /> Back</button>
         </div>
 
-        <header class="page-header">
-            <h2>@Domain?.Domain</h2>
-            @if (Domain != null && Domain.DateConnected == null)
-            {
-                <p>It looks like we have lost connection to your domain. Try <a href="/install">following the install instructions</a> to reconnect your site to Tovik.</p>
-                <button class="primary-btn" @onclick=Verify>Retry Connection</button>
-            }
-            else if (Domain?.DateConnected != null)
-            {
-                <p>
-                    <VerifiedIcon /> Tovik is installed and active on this domain! Last checked @Domain.DateConnected.Value.ToShortDateString()
-                </p>
-            }
-        </header>
+        @if (Domain != null)
+        {
+            <DomainCard Domain="Domain" PageType="Page" Languages="Languages" />
+        }
 
         <section class="domain-summary">
             <header>
@@ -137,8 +127,6 @@
     List<Page> Pages = [];
     IEnumerable<Language> Languages = [];
     Dictionary<Language, int> LanguageStats = [];
-    bool IsVerifying;
-    string? ErrorMessage;
     string Exemption = "";
 
     protected override async Task OnInitializedAsync()
@@ -217,20 +205,6 @@
         }
     }
 
-    async Task Verify()
-    {
-        var result = await Domain.VerifyAsync();
-        if (result)
-        {
-            await TovikDomains.Update(Domain);
-            ErrorMessage = null;
-            Nav.Refresh(true);
-        }
-        else
-        {
-            ErrorMessage = $"{Domain.Domain} does not contain the expected Tovik script: https://tovik.app/tovik.js. Please ensure Tovik is installed correctly on this domain.";
-        }
-    }
 
     private void NavBack()
     {

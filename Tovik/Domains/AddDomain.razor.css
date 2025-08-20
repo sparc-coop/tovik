@@ -1,6 +1,7 @@
 ﻿div {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: auto 80px;
+  align-items: center;
   gap: 8px;
 }
 div label input {
