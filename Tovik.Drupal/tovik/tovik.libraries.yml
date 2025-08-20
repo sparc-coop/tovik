@@ -1,0 +1,7 @@
+tovik:
+  js:
+    https://tovik.app/tovik.js:
+      type: external
+      attributes:
+        type: module
+        defer: true

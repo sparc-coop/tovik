@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * @file
+ * Attach the Tovik library to every page.
+ */
+
+/**
+ * Implements hook_page_attachments().
+ */
+function tovik_page_attachments(array &$attachments) {
+  $attachments['#attached']['library'][] = 'tovik/tovik';
+}
