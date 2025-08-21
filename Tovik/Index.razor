@@ -48,14 +48,19 @@
                     <h1>Your Website, Multilingual in Minutes</h1>
 
                     <p>
-                        Say hello to Tovik — your website’s new multilingual partner.
-                    </p>
-                    <p>
-                        With just one line of code, this lightweight tool automatically translates your site into 130+ languages, no developers or complicated setup required.
+                        Say hello to Tovik — your website’s new multilingual partner. Install one plugin and automatically translate your entire site into 130+ languages.
                     </p>
 
                     <footer>
-                        <Sparc.Blossom.Content.LanguageSelector Avatar="Avatar" />
+                        @if (LanguageSelector?.IsSpinning == true)
+                        {
+                            <button class="back-btn secondary-btn" translate="no" @onclick=Revert><ArrowLeftIcon /> @Avatar?.Language?.NativeName</button>
+                        }
+                        else
+                        {
+                            <button class="primary-btn" @onclick=Spin>Spin the Language Wheel</button>
+                        }
+                        <Sparc.Blossom.Content.LanguageSelector Avatar="Avatar" @ref=LanguageSelector />
                     </footer>
                 </div>
             </section>
@@ -110,6 +115,7 @@
     bool IsACustomer;
     string? PersonalizedWelcome;
     string? WelcomeLink => PersonalizedWelcome == null ? "/sites" : $"/sites?welcome={PersonalizedWelcome}";
+    Sparc.Blossom.Content.LanguageSelector? LanguageSelector;
 
     protected override async Task OnInitializedAsync()
     {
@@ -122,5 +128,19 @@
             PersonalizedWelcome = "Sapient";
         else if (Nav.Uri.Contains("morbidology"))
             PersonalizedWelcome = "Morbidology";
+    }
+
+    async Task Spin()
+    {
+        if (LanguageSelector != null)
+            await LanguageSelector.Spin();
+
+        StateHasChanged();
+    }
+
+    async Task Revert()
+    {
+        if (LanguageSelector != null && Avatar?.Language != null)
+            await LanguageSelector.SetLanguage(Avatar.Language.Id);
     }
 }

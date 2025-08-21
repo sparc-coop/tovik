@@ -134,11 +134,11 @@ article section.demo h2 {
   margin-bottom: 8px;
   margin-top: 32px;
 }
-article section.demo div {
+article section.demo > div {
   padding: 32px;
 }
 @media screen and (min-width: 1024px) {
-  article section.demo div {
+  article section.demo > div {
     padding: 32px 64px 64px 64px;
   }
 }
