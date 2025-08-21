@@ -79,7 +79,7 @@ export default class TovikElement extends HTMLElement {
     #tovikIgnoreFilter = function (node) {
         var approvedNodes = ['#text'];
 
-        if (!approvedNodes.includes(node.nodeName) || node.translating || node.translated || node.parentNode.nodeName == 'SCRIPT')
+        if (!approvedNodes.includes(node.nodeName) || node.translating || node.translated || node.parentNode.nodeName == 'SCRIPT' || node.parentNode.nodeName == 'STYLE')
             return NodeFilter.FILTER_SKIP;
 
         var closest = node.parentElement.closest('[translate="no"]');
@@ -92,7 +92,7 @@ export default class TovikElement extends HTMLElement {
     #tovikForceReloadIgnoreFilter = function (node) {
         var approvedNodes = ['#text'];
 
-        if (!approvedNodes.includes(node.nodeName) || node.parentNode.nodeName == 'SCRIPT')
+        if (!approvedNodes.includes(node.nodeName) || node.parentNode.nodeName == 'SCRIPT' || node.parentNode.nodeName == 'STYLE')
             return NodeFilter.FILTER_SKIP;
 
         var closest = node.parentElement.closest('[translate="no"]');
