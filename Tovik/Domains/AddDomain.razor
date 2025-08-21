@@ -1,17 +1,17 @@
 ﻿<form @onsubmit=Add>
-    @if (Error != null)
-    {
-        <div class="error-message">@Error</div>
-    }
-
     <label>
         <input type="text" placeholder="Enter a domain name" @bind="NewDomain" @bind:event="oninput" />
     </label>
 
-    <button class="add-btn primary-btn" @onclick=Add disabled="@IsVerifying">
+    <button class="add-btn primary-btn" type="submit" disabled="@IsVerifying">
         Add
     </button>
 </form>
+
+@if (Error != null)
+{
+    <div class="error-message">@Error</div>
+}
 
 @inject Tovik.Domains.TovikDomains TovikDomains
 @code {
