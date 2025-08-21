@@ -32,13 +32,13 @@
   gap: 24px;
   align-items: flex-start;
 }
-.install-page section ol {
+.install-page section ol, .install-page section ul {
   padding-left: 32px;
 }
-.install-page section ol li {
+.install-page section ol li, .install-page section ul li {
   margin-bottom: 8px;
 }
-.install-page section ol strong, .install-page section ol code {
+.install-page section ol strong, .install-page section ol code, .install-page section ul strong, .install-page section ul code {
   color: var(--orange-300);
 }
 .install-page section > img {
