@@ -30,23 +30,15 @@
             <header>
                 <h3>My Websites</h3>
             </header>
-            @if (!Domains.Any())
+            <p>
+                Manage your Tovik-enabled websites here. You can add as many domains as you'd like!
+            </p>
+
+            <Tovik.Domains.AddDomain />
+
+            @foreach (var domain in Domains)
             {
-                <p>Enter the domain name of the website where you will be installing Tovik.</p>
-            }
-
-            @if (Domains.Any())
-            {
-                <p>
-                    Manage your Tovik-enabled websites here. You can add as many domains as you'd like!
-                </p>
-
-                <Tovik.Domains.AddDomain />
-
-                @foreach (var domain in Domains)
-                {
-                    <DomainCard Domain=domain PageType="home" Languages=Languages OnDelete=DeleteDomain />
-                }
+                <DomainCard Domain=domain PageType="home" Languages=Languages />
             }
         </section>
 
@@ -124,11 +116,5 @@
     private async Task LoadDomains()
     {
         Domains = await TovikDomains.All();
-    }
-
-    private async Task DeleteDomain(SparcDomain domain)
-    {
-        await TovikDomains.DeleteAsync(domain);
-        await LoadDomains();
     }
 }

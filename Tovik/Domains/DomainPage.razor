@@ -15,13 +15,31 @@
 <article class="domain-page">
     <div class="page-container">
         <div class="back">
-            <button class="back-btn secondary-btn" @onclick=NavBack><ArrowLeftIcon /> Back</button>
+            <button class="back-btn secondary-btn" @onclick=NavBack><ArrowLeftIcon /> Back to My Websites</button>
         </div>
 
         @if (Domain != null)
         {
             <DomainCard Domain="Domain" PageType="Page" Languages="Languages" />
         }
+
+        <section class="preview">
+            <header>
+                <h3>Preview Your Site In Other Languages</h3>
+            </header>
+            <p>
+                Choose a language from the dropdown to preview your site in any language.
+            </p>
+
+            @if (Domain != null && Domain.DateConnected == null)
+            {
+                <p class="error-message">You'll need to install Tovik on your site first!</p>
+            }
+            <div>
+                <LanguageSelector OnLanguageChanged="UpdatePreviewLanguage" />
+                <button class="primary-btn" @onclick=Preview disabled="@(Domain?.DateConnected == null)">Preview</button>
+            </div>
+        </section>
 
         <section class="domain-summary">
             <header>
@@ -38,6 +56,10 @@
                             <div class="meter-fill" style="width: @FillPercentage(language.Key)%"></div>
                         </div>
                     </div>
+                }
+                @if (!LanguageStats.Any())
+                {
+                    <aside>Nothing to see here yet!</aside>
                 }
             </div>
         </section>
@@ -65,6 +87,11 @@
                             }
                         </ul>
                     </div>
+                }
+
+                @if (!Pages.Any())
+                {
+                    <aside>Nothing to see here yet!</aside>
                 }
             </div>
         </section>
@@ -128,16 +155,18 @@
     IEnumerable<Language> Languages = [];
     Dictionary<Language, int> LanguageStats = [];
     string Exemption = "";
+    string? PreviewLanguage;
 
     protected override async Task OnInitializedAsync()
     {
         Domain = await TovikDomains.Get(Id);
-        Pages = await TovikDomains.GetPages(Domain?.Domain);
         Languages = await Tovik.GetLanguages();
+        if (Domain != null)
+            Pages = await TovikDomains.GetPages(Domain.Domain);
 
         LanguageStats = Pages
             .SelectMany(x => x.TovikUsage)
-            .GroupBy(x => Language(x.Key))
+            .GroupBy(x => Language(x.Key)!)
             .ToDictionary(g => g.Key, g => g.Sum(x => x.Value));
     }
 
@@ -174,6 +203,16 @@
         return 0;
     }
 
+    void UpdatePreviewLanguage(Language language) => PreviewLanguage = language.Id;
+    async Task Preview()
+    {
+        if (Domain != null && !string.IsNullOrWhiteSpace(PreviewLanguage))
+        {
+            var url = Domain.ToUri().ToString() + "?lang=" + PreviewLanguage;
+            await Js.InvokeVoidAsync("open", url, "_blank");
+        }
+    }
+
     async Task AddExemption()
     {
         if (Domain != null && !string.IsNullOrWhiteSpace(Exemption))
@@ -194,17 +233,6 @@
     }
 
     void Install() => Nav.NavigateTo("/Install");
-
-
-    private async Task DeleteDomain()
-    {
-        if (Domain != null)
-        {
-            await TovikDomains.DeleteAsync(Domain);
-            Nav.NavigateTo("/sites", true);
-        }
-    }
-
 
     private void NavBack()
     {

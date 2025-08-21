@@ -28,23 +28,22 @@
     [Parameter] public required SparcDomain Domain { get; set; }
     [Parameter] public bool ShowModal { get; set; }
     [Parameter] public EventCallback OnClose { get; set; }
-    [Parameter] public EventCallback OnDeleteDomain { get; set; }
-    [Parameter] public EventCallback<string> OnDeleteExemption { get; set; }
+    [Parameter] public EventCallback<string> OnDelete { get; set; }
     [Parameter] public string Word { get; set; } = string.Empty;
     [Parameter] public string DeleteType { get; set; } = "domain"; // or "exemption"
 
-    private void Close()
+    async Task Close()
     {
-        OnClose.InvokeAsync();
+        await OnClose.InvokeAsync();
     }
 
-    private void DeleteDomain()
+    async Task DeleteDomain()
     {
-        OnDeleteDomain.InvokeAsync();
+        await OnDelete.InvokeAsync(Domain.Id);
     }
 
-    private void DeleteExemption(string word)
+    async Task DeleteExemption(string word)
     {
-        OnDeleteExemption.InvokeAsync(word);
+        await OnDelete.InvokeAsync(word);
     }
 }

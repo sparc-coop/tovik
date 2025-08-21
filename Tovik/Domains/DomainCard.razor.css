@@ -6,6 +6,9 @@
   box-sizing: border-box;
   backdrop-filter: blur(4px);
 }
+.domain-card a {
+  text-decoration: underline;
+}
 .domain-card header img {
   height: 32px;
 }
@@ -37,6 +40,7 @@
 }
 .domain-card footer {
   border-top: 1px solid var(--blue-400);
+  margin-top: 32px;
   padding-top: 32px;
   display: flex;
   flex-wrap: wrap;

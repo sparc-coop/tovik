@@ -41,6 +41,20 @@
   max-height: 300px;
   overflow-y: auto;
 }
+.domain-page .page-container .preview > div {
+  display: grid;
+  grid-template-columns: auto 80px;
+  gap: 8px;
+}
+.domain-page .page-container .preview ::deep .language-select {
+  background-color: var(--blue-600);
+}
+.domain-page .page-container .preview ::deep .language-select:after {
+  border-top: 5px solid white;
+}
+.domain-page .page-container .preview ::deep .language-select select {
+  background-color: var(--blue-600);
+}
 .domain-page .page-container .connection-btn {
   margin-top: 16px;
   width: auto;
@@ -52,6 +66,9 @@
 }
 .domain-page .page-container .domain-connection aside {
   font-size: 1.4rem;
+}
+.domain-page .page-container aside {
+  font-size: 1.6rem;
 }
 .domain-page .page-container .exemptions table tbody {
   width: 100%;

@@ -1,4 +1,4 @@
-﻿<div>
+﻿<form @onsubmit=Add>
     @if (Error != null)
     {
         <div class="error-message">@Error</div>
@@ -11,7 +11,7 @@
     <button class="add-btn primary-btn" @onclick=Add disabled="@IsVerifying">
         Add
     </button>
-</div>
+</form>
 
 @inject Tovik.Domains.TovikDomains TovikDomains
 @code {

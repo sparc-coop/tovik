@@ -4,6 +4,7 @@
         .page-header a {
             text-decoration: underline;
         }
+
         section.welcome {
             align-items: flex-start;
 
@@ -57,6 +58,26 @@
             }
         }
 
+        .preview {
+            > div {
+                display: grid;
+                grid-template-columns: auto 80px;
+                gap: 8px;
+            }
+
+            ::deep .language-select {
+                background-color: var(--blue-600);
+
+                &:after {
+                    border-top: 5px solid white;
+                }
+
+                select {
+                    background-color: var(--blue-600);
+                }
+            }
+        }
+
         .connection-btn {
             margin-top: 16px;
             width: auto;
@@ -70,6 +91,10 @@
             aside {
                 font-size: 1.4rem;
             }
+        }
+
+        aside {
+            font-size: 1.6rem;
         }
 
         .exemptions {
