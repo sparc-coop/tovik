@@ -103,6 +103,47 @@
             </section>
         }
 
+        @if (SelectedPlatform == "SquareSpace")
+        {
+            <section class="step-1">
+                <header>
+                    <aside>Step 1</aside>
+                    <h3>Add Tovik To Your SquareSpace Site</h3>
+                </header>
+                <div>
+                    <ol>
+                        <li>Log in to your Squarespace account.</li>
+                        <li>Open the site you want to enable Tovik on.</li>
+                        <li>Click <strong>Edit Site</strong> to open the site editor.</li>
+                        <li>
+                            In the left-hand menu, look for the <strong>Code Injection</strong> panel. Depending on your Squarespace version, it may appear under:
+                            <ul>
+                                <li><strong>Pages → Custom Code → Code Injection</strong>, OR</li>
+                                <li><strong>Settings → Advanced (or Website Tools) → Code Injection</strong>.</li>
+                            </ul>
+                        </li>
+                        <li>
+                            Paste the following snippet into the <strong>Footer</strong> field:
+                            
+                        </li>
+                        <CodeBlock CanCopy=true>
+                            @("<script type=\"module\" src=\"https://tovik.app/tovik.js\"></script>")
+                        </CodeBlock>
+                        <li>Click <strong>Save</strong>.</li>
+                    </ol>                    
+                    <p>That's it! Your site will now start automatically translating all of your content based on your visitors' language preferences.</p>
+                    
+                    <h3>Notes</h3>
+                    <ul>
+                        <li>The menu location may vary, but the option is always called <strong>Code Injection</strong>.</li>
+                        <li>Add the code to the <strong>Footer</strong> section so the script loads at the end of the <code translate="no">&lt;&sol;body&gt;</code>.</li>
+                        <li>In Squarespace’s site editor, scripts may not run. Always test on your published site in an incognito/private window.</li>
+                        <li>Checkout pages generally do not support injected scripts.</li>
+                    </ul>
+                </div>
+            </section>
+        }
+
         <section class="step-1">
             <header>
                 <aside>Step 2</aside>
@@ -185,7 +226,7 @@
 @code {
     private string SelectedPlatform { get; set; } = "WordPress";
     List<string> Platforms = ["WordPress", "Wix", "HTML", "SquareSpace"];
-    List<string> ComingSoon = ["SquareSpace"];
+    List<string> ComingSoon = [];
     private void Select(string platform)
     {
         SelectedPlatform = platform;
