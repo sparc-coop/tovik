@@ -28,6 +28,27 @@
   --articulat: "articulat-cf", sans-serif;
 }
 
+p.tovik-translating, div.tovik-translating, span.tovik-translating {
+  background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0));
+  background-size: 200%;
+  background-position: 0 50%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: animate-background 3s infinite linear;
+}
+
+@keyframes animate-background {
+  0% {
+    background-position: 0 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}
 .error-message {
   font-size: 1.6rem;
   color: var(--orange-300);
