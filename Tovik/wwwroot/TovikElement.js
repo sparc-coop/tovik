@@ -130,8 +130,8 @@ export default class TovikElement extends HTMLElement {
             }
             else {
                 pendingTranslations.push(textNode);
-                if (textNode.parentElement)
-                    textNode.parentElement.classList.add('tovik-translating');
+                //    if (textNode.parentElement)
+                //        textNode.parentElement.classList.add('tovik-translating');
             }
         }));
         if (pendingTranslations.length > 0) {
@@ -157,8 +157,8 @@ export default class TovikElement extends HTMLElement {
                         + (node.postWhiteSpace ? ' ' : '');
                 node.translating = false;
                 node.translated = true;
-                if (node.parentElement)
-                    node.parentElement.classList.remove('tovik-translating');
+                //if (node.parentElement)
+                //    node.parentElement.classList.remove('tovik-translating');
                 db.translations.put(translation);
             }
         }
