@@ -92,7 +92,7 @@
                             <a href="https://wix.to/AmoRmd7" class="button primary-btn" target="_blank" rel="noopener">Install Tovik for Wix</a>
                         </li>
                         <li>Click <strong>Add to Site</strong>.</li>
-                        <li>Choose the Wix site where you want to install Tovik and click <strong>Continue</strong>.</li>
+                        <li>Choose the Wix site you want to install Tovik on and click <strong>Continue</strong>.</li>
                         <li>Review the requested permissions, then click <strong>Accept &amp; Add</strong>.</li>
                         <li>You’ll be redirected to your Wix dashboard → the Tovik app panel will open.</li>
                         <li>Click <strong>Activate Tovik</strong>.</li>
@@ -113,7 +113,7 @@
                 <div>
                     <ol>
                         <li>Log in to your Squarespace account.</li>
-                        <li>Open the site you want to enable Tovik on.</li>
+                        <li>Open the site on which you want to enable Tovik.</li>
                         <li>Click <strong>Edit Site</strong> to open the site editor.</li>
                         <li>
                             In the left-hand menu, look for the <strong>Code Injection</strong> panel. Depending on your Squarespace version, it may appear under:
@@ -123,8 +123,7 @@
                             </ul>
                         </li>
                         <li>
-                            Paste the following snippet into the <strong>Footer</strong> field:
-                            
+                            Paste the following snippet into the section labeled <strong>Footer</strong>:
                         </li>
                         <CodeBlock CanCopy=true>
                             @("<script type=\"module\" src=\"https://tovik.app/tovik.js\"></script>")
@@ -136,7 +135,7 @@
                     <h3>Notes</h3>
                     <ul>
                         <li>The menu location may vary, but the option is always called <strong>Code Injection</strong>.</li>
-                        <li>Add the code to the <strong>Footer</strong> section so the script loads at the end of the <code translate="no">&lt;&sol;body&gt;</code>.</li>
+                        <li>Add the code to the section labeled <strong>Footer</strong> so the script loads at the end of the <code translate="no">&lt;&sol;body&gt;</code>.</li>                        
                         <li>In Squarespace’s site editor, scripts may not run. Always test on your published site in an incognito/private window.</li>
                         <li>Checkout pages generally do not support injected scripts.</li>
                     </ul>
