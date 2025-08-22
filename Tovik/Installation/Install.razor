@@ -200,6 +200,33 @@
             </section>
         }
 
+        @if (SelectedPlatform == "Shopify")
+        {
+            <section class="step-1">
+                <header>
+                    <aside>Step 1</aside>
+                    <h3>Add Tovik To Your Shopify Site</h3>
+                </header>
+                <div>
+                    <ol>
+                        <li>Log in to your Shopify account.</li>
+                        <li>Open the site on which you want to enable Tovik.</li>
+                        <li>Click the <strong>three-dots button</strong> for more actions.</li>
+                        <li>Select <strong>Edit code</strong>.</li>
+                        <li>You’ll be redirected to the code editor.</li>
+                        <li>In the left-hand menu, expand <strong>layout</strong>.</li>
+                        <li>Click <strong>theme.liquid</strong>.</li>
+                        <li>Paste the following snippet immediately above the <strong><code translate="no">&lt;&sol;body&gt;</code></strong> tag (on the line directly before it):</li>
+                        <CodeBlock CanCopy=true>
+                            @("<script type=\"module\" src=\"https://tovik.app/tovik.js\"></script>")
+                        </CodeBlock>
+                        <li>Click <strong>Save</strong>.</li>
+                    </ol>
+                    <p>That's it! Your site will now start automatically translating all of your content based on your visitors' language preferences.</p>
+                </div>
+            </section>
+        }
+
         <section class="step-1">
             <header>
                 <aside>Step 2</aside>
@@ -281,7 +308,7 @@
 
 @code {
     private string SelectedPlatform { get; set; } = "WordPress";
-    List<string> Platforms = ["WordPress", "Wix", "SquareSpace", "Webflow", "Weebly", "HTML"];
+    List<string> Platforms = ["WordPress", "Wix", "SquareSpace", "Webflow", "Weebly", "Shopify", "HTML"];
     List<string> ComingSoon = [];
     private void Select(string platform)
     {
