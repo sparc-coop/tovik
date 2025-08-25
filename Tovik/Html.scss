@@ -173,6 +173,7 @@ button, a.button {
         font-style: normal;
         font-weight: 500;
         line-height: normal;
+        transition: background-color 0.05s ease-in;
 
         &:hover {
             background-color: var(--orange-200);
@@ -181,7 +182,6 @@ button, a.button {
     }
 
     &.secondary-btn {
-        height: 48px;
         padding: 16px 24px;
         display: flex;
         flex-direction: row;
@@ -192,6 +192,12 @@ button, a.button {
         border: 1px solid var(--blue-600, #1F5068);
         background: var(--blue-700, #07374F);
         color: var(--white, #FFF);
+        transition: background-color 0.05s ease-in;
+
+        &:hover {
+            background-color: var(--blue-600);
+            border-color: var(--blue-500);
+        }
     }
 
     &.tertiary-btn {

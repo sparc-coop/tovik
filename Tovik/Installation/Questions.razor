@@ -11,58 +11,55 @@
             <p class="subheader">Free to start. Pro when you need it. No subscriptions, no tracking.</p>
         </header>
 
-        @if (Product != null)
-        {
-            <section class="pricing">
-                <header>
-                    <h3>Tovik Free</h3>
-                    <span>@Product.FormattedZeroPrice</span>
-                    <a class="button primary-btn" href="/install">Start Now</a>
-                </header>
-                <ul>
-                    <li>
-                        Translate up to <strong>20</strong> pages into your visitors' preferred language
-                    </li>
-                    <li>
-                        Unlimited languages per page (130+ supported!)
-                    </li>
-                    <li>
-                        Unlimited page views
-                    </li>
-                    <li>
-                        Unlimited domains
-                    </li>
-                </ul>
-                <footer>
-                    <a class="button primary-btn" href="/install">Start Now</a>
-                </footer>
-            </section>
+        <section class="pricing">
+            <header>
+                <h3>Tovik Free</h3>
+                <span>@Product?.FormattedZeroPrice</span>
+                <a class="button primary-btn" href="/install">Start Now</a>
+            </header>
+            <ul>
+                <li>
+                    Translate up to <strong>20</strong> pages into your visitors' preferred language
+                </li>
+                <li>
+                    Unlimited languages per page (130+ supported!)
+                </li>
+                <li>
+                    Unlimited page views
+                </li>
+                <li>
+                    Unlimited domains
+                </li>
+            </ul>
+            <footer>
+                <a class="button primary-btn" href="/install">Install Now</a>
+            </footer>
+        </section>
 
-            <section class="pricing">
-                <header>
-                    <h3>Tovik Pro</h3>
-                    <span>@Product.FormattedPrice</span>
-                    <button class="primary-btn" @onclick=Buy>Buy on Sparc Store</button>
-                </header>
-                <ul>
-                    <li>
-                        Translate up to <strong>500</strong> pages into your visitors' preferred language
-                    </li>
-                    <li>
-                        Unlimited languages per page (130+ supported!)
-                    </li>
-                    <li>
-                        Unlimited page views
-                    </li>
-                    <li>
-                        Unlimited domains
-                    </li>
-                </ul>
-                <footer>
-                    <button class="primary-btn" @onclick=Buy>Buy on Sparc Store</button>
-                </footer>
-            </section>
-        }
+        <section class="pricing">
+            <header>
+                <h3>Tovik Pro</h3>
+                <span>@Product?.FormattedPrice</span>
+                <button class="primary-btn" @onclick=Buy>Buy on Sparc Store</button>
+            </header>
+            <ul>
+                <li>
+                    Translate up to <strong>500</strong> pages into your visitors' preferred language
+                </li>
+                <li>
+                    Unlimited languages per page (130+ supported!)
+                </li>
+                <li>
+                    Unlimited page views
+                </li>
+                <li>
+                    Unlimited domains
+                </li>
+            </ul>
+            <footer>
+                <button class="primary-btn" @onclick=Buy>Buy on Sparc Store</button>
+            </footer>
+        </section>
 
         <section class="faq">
             <header>
@@ -100,9 +97,9 @@
     GetProductResponse? Product;
     Dictionary<string, string> FAQ = new()
     {
-        { "What is Tovik?", "Tovik is a multilingual translation tool that instantly translates your website into 130+ languages with a single, simple install. No extra plugins, no hassle." },
-        { "Why do I need Tovik if other translation tools exist?", "Most tools expect your visitors to do the work to install their own translation plugin. Tovik flips that: it's installed on your site and handles translation automatically for every visitor, with no setup required on their end." },
-        { "How does Tovik work?", "Tovik detects each visitor’s preferred language using their browser settings. If their language doesn’t match your site’s language, Tovik kicks in and translates every content element on the page. Results are nearly instantaneous, and translations are cached for future users that visit the same page in the same language." },
+        { "What is Tovik?", "Tovik is a multilingual translation plugin that instantly translates your website into 130+ languages with a single, simple install." },
+        { "Why do I need Tovik if other translation tools exist?", "Most tools expect your visitors to do the work to install their own translation plugin. Tovik thinks differently. It's installed on your site and handles translation automatically for every visitor, with no setup required on their end." },
+        { "How does Tovik work?", "Tovik detects each visitor’s preferred language using their browser settings. When their language doesn’t match your site’s language, Tovik kicks in and translates every content element on the page. Results are nearly instantaneous, and translations are cached for future users that visit the same page in the same language." },
         { "Is the free version really free?", "Yes! You can translate up to 20 pages across unlimited domains and languages. No credit card, no catch." },
         { "What happens when I reach the 20-page limit?", "Tovik will stop translating new pages, but your first 10 will continue translating automatically, forever, in every supported language Tovik offers." },
         { "Do I need coding experience to install Tovik?", "Not at all. Tovik has plug-and-play support for WordPress and Wix, with more platforms coming soon. Or just drop one line of code into your site's HTML, and you're done." },

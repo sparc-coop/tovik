@@ -165,13 +165,13 @@ button.primary-btn, a.button.primary-btn {
   font-style: normal;
   font-weight: 500;
   line-height: normal;
+  transition: background-color 0.05s ease-in;
 }
 button.primary-btn:hover, a.button.primary-btn:hover {
   background-color: var(--orange-200);
   border-color: var(--orange-100);
 }
 button.secondary-btn, a.button.secondary-btn {
-  height: 48px;
   padding: 16px 24px;
   display: flex;
   flex-direction: row;
@@ -182,6 +182,11 @@ button.secondary-btn, a.button.secondary-btn {
   border: 1px solid var(--blue-600, #1F5068);
   background: var(--blue-700, #07374F);
   color: var(--white, #FFF);
+  transition: background-color 0.05s ease-in;
+}
+button.secondary-btn:hover, a.button.secondary-btn:hover {
+  background-color: var(--blue-600);
+  border-color: var(--blue-500);
 }
 button.icon-btn, a.button.icon-btn {
   aspect-ratio: 1/1;

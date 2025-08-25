@@ -166,22 +166,6 @@
             }
         }
 
-        ::deep .language-select {
-            background-color: var(--blue-600);
-
-            &:after {
-                border-top: 5px solid white;
-            }
-
-            select {
-                background-color: var(--blue-600);
-            }
-
-            .progress-bar-value {
-                background-color: var(--blue-300);
-            }
-        }
-
         footer {
             display: flex;
             flex-direction: column;
@@ -198,6 +182,34 @@
                 align-items: center;
                 grid-template-columns: 1fr auto;
             }
+        }
+    }
+
+    .preview {
+        > div {
+            display: grid;
+            grid-template-columns: auto;
+            gap: 8px;
+
+            @media screen and (min-width: 800px) {
+                grid-template-columns: auto 240px;
+            }
+        }
+    }
+
+    ::deep .language-select {
+        background-color: var(--blue-600);
+
+        &:after {
+            border-top: 5px solid white;
+        }
+
+        select {
+            background-color: var(--blue-600);
+        }
+
+        .progress-bar-value {
+            background-color: var(--blue-300);
         }
     }
 }
