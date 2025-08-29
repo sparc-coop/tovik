@@ -1,0 +1,389 @@
+﻿@page "/example"
+
+<main style="font-size: 12px" class="wrap" id="intro">
+    <section class="hero card">
+        <div>
+            <span class="badge">Beginner-friendly</span>
+            <h1>The Friendly Gardening Guide</h1>
+            <p>
+                Welcome to your starter guide to home gardening. Whether you're planting <mark>herbs on a balcony</mark> or building a full vegetable patch,
+                this page walks you through essentials like soil, tools, watering, and seasonal planning.
+                It’s designed as a <strong>big sample HTML</strong> with many elements for translation and UI testing.
+            </p>
+            <p class="aside-note">
+                Tip: A garden grows with patience. Start small, take notes, and enjoy the process.
+                Remember to water deeply rather than frequently for stronger root systems.
+            </p>
+            <p>
+                We’ll reference simple measures (like <abbr title="Liters">L</abbr> and <abbr title="Centimeters">cm</abbr>) and common terms such as
+                compost, mulch, and pH. The chemistry is light—just enough to know that water is H<sub>2</sub>O and
+                nitrogen is vital for leafy growth (N-P-K on fertilizer labels).
+            </p>
+        </div>
+        <figure>
+            <img src="https://placehold.co/640x420?text=Garden" alt="A small backyard vegetable garden" />
+            <figcaption>A simple raised bed with lettuce, basil, and tomatoes.</figcaption>
+        </figure>
+    </section>
+
+    <section class="two-col">
+        <aside class="toc">
+            <h3>Table of contents</h3>
+            <ol>
+                <li><a href="#getting-started">Getting started</a></li>
+                <li><a href="#tools">Tools & supplies</a></li>
+                <li><a href="#planting-calendar">Planting calendar</a></li>
+                <li><a href="#soil">Soil & compost</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#planner">Garden planner (form)</a></li>
+                <li><a href="#tips">Watering & care tips</a></li>
+                <li><a href="#code">Sample code</a></li>
+                <li><a href="#faq">Frequently asked questions</a></li>
+            </ol>
+        </aside>
+
+        <section id="getting-started" class="card">
+            <h2>Getting started</h2>
+            <p>
+                You don’t need much space to begin. Many gardeners start with <em>containers</em> on a windowsill.
+                Begin by observing how sunlight moves across your space during the day. Most vegetables need
+                <strong>at least 6 hours</strong> of direct sun.
+            </p>
+
+            <h3>Quick checklist</h3>
+            <ul>
+                <li>Sunlight: 6–8 hours for fruiting plants, 3–5 for leafy greens.</li>
+                <li>Water access: A hose or watering can within easy reach.</li>
+                <li>Soil: Loose, rich in organic matter, drains well.</li>
+                <li>Containers: Drainage holes are non-negotiable.</li>
+            </ul>
+
+            <h3>Beginner project (ordered steps)</h3>
+            <ol>
+                <li>Choose 3 easy plants: basil, lettuce, cherry tomatoes.</li>
+                <li>Fill a container with potting mix; avoid heavy garden soil.</li>
+                <li>Plant seedlings at recommended spacing; label each variety.</li>
+                <li>Water thoroughly; keep soil moist while roots establish.</li>
+            </ol>
+
+            <h3>Key terms (definition list)</h3>
+            <dl>
+                <dt>Mulch</dt>
+                <dd>Material layered on top of soil to reduce evaporation and suppress weeds.</dd>
+                <dt>Hardening off</dt>
+                <dd>Gradually introducing seedlings to outdoor conditions before planting.</dd>
+                <dt>Deadheading</dt>
+                <dd>Removing spent flowers to encourage new blooms.</dd>
+            </dl>
+
+            <blockquote cite="https://en.wikipedia.org/wiki/Gardening">
+                “Gardening adds years to your life and life to your years.” <cite>— Anonymous</cite>
+            </blockquote>
+        </section>
+    </section>
+
+    <section id="tools" class="card">
+        <h2>Tools & supplies</h2>
+        <p>Start with a few essentials. Fancy gear is optional; good soil is not.</p>
+
+        <table>
+            <caption>Core tools (with care notes)</caption>
+            <colgroup>
+                <col span="1" style="width: 28%;">
+                <col span="1" style="width: 28%;">
+                <col span="1" style="width: 44%;">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th scope="col">Tool</th>
+                    <th scope="col">Use</th>
+                    <th scope="col">Care tip</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">Hand trowel</th>
+                    <td>Planting seedlings, scooping soil, mixing compost.</td>
+                    <td>Rinse after use and dry to prevent rust.</td>
+                </tr>
+                <tr>
+                    <th scope="row">Pruners</th>
+                    <td>Trimming stems, harvesting herbs & tomatoes.</td>
+                    <td>Sanitize blades with alcohol to avoid disease spread.</td>
+                </tr>
+                <tr>
+                    <th scope="row">Watering can / Hose</th>
+                    <td>Delivering water at soil level.</td>
+                    <td>Use a gentle rose head to avoid compacting soil.</td>
+                </tr>
+                <tr>
+                    <th scope="row">Gloves</th>
+                    <td>Protects hands from thorns and rough soil.</td>
+                    <td>Air-dry and store out of direct sun.</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3">Note: Buy quality once; poorly made tools often break mid-season.</td>
+                </tr>
+            </tfoot>
+        </table>
+    </section>
+
+    <section id="planting-calendar" class="card">
+        <h2>Planting calendar</h2>
+        <p>Use this sample calendar as a starting point; local climate matters.</p>
+        <table aria-describedby="calendar-desc">
+            <caption>Simple cool-/warm-season guide</caption>
+            <p id="calendar-desc" class="visually-hidden">This table divides crops by season and gives spacing and harvest times.</p>
+            <thead>
+                <tr>
+                    <th>Crop</th>
+                    <th>Season</th>
+                    <th>Spacing</th>
+                    <th>Days to harvest</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Lettuce</td>
+                    <td>Cool</td>
+                    <td>20–25 cm</td>
+                    <td>45–60</td>
+                    <td>Keep evenly moist; partial shade in heat.</td>
+                </tr>
+                <tr>
+                    <td>Basil</td>
+                    <td>Warm</td>
+                    <td>30 cm</td>
+                    <td>60–75</td>
+                    <td>Pinch tops to encourage bushy growth.</td>
+                </tr>
+                <tr>
+                    <td>Cherry tomato</td>
+                    <td>Warm</td>
+                    <td>60–90 cm</td>
+                    <td>65–80</td>
+                    <td>Stake early; full sun is essential.</td>
+                </tr>
+                <tr>
+                    <td>Spinach</td>
+                    <td>Cool</td>
+                    <td>10–15 cm</td>
+                    <td>35–45</td>
+                    <td>Bolts in heat—plant early spring or fall.</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section id="soil" class="card">
+        <h2>Soil & compost</h2>
+        <p>
+            Healthy soil is living soil. It should contain organic matter, microorganisms, and air pockets.
+            Aim for a slightly acidic to neutral pH (6.0–7.0) for most vegetables.
+        </p>
+        <div class="two-col">
+            <div>
+                <h3>Soil texture comparison</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Drainage</th>
+                            <th>Fertility</th>
+                            <th>Tip</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Sand</td><td>Fast</td><td>Low</td><td>Add compost; mulch to retain moisture.</td></tr>
+                        <tr><td>Silt</td><td>Moderate</td><td>Moderate</td><td>Protect from erosion with cover crops.</td></tr>
+                        <tr><td>Clay</td><td>Slow</td><td>High</td><td>Loosen with compost; avoid working when wet.</td></tr>
+                        <tr><td>Loam</td><td>Balanced</td><td>High</td><td>Often ideal for vegetables.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                <h3>Compost tracker</h3>
+                <p>Monitor your pile’s progress:</p>
+                <label for="compost-progress">Maturity</label>
+                <progress id="compost-progress" value="65" max="100">65%</progress>
+                <p>Check pile moisture: <meter min="0" low="30" optimum="50" high="70" max="100" value="55">55</meter>%</p>
+                <p><small>Ideal moisture is like a wrung-out sponge. Avoid adding <s>too many</s> only green materials; balance with browns.</small></p>
+            </div>
+        </div>
+    </section>
+
+    <section id="gallery" class="card">
+        <h2>Gallery</h2>
+        <div class="gallery" aria-label="Photo gallery">
+            <figure><img src="https://placehold.co/400x300?text=Raised+Beds" alt="Raised beds" /><figcaption>Raised beds</figcaption></figure>
+            <figure><img src="https://placehold.co/400x300?text=Herb+Corner" alt="Herb pots" /><figcaption>Herb corner</figcaption></figure>
+            <figure><img src="https://placehold.co/400x300?text=Tomatoes" alt="Tomato vines" /><figcaption>Tomatoes</figcaption></figure>
+            <figure><img src="https://placehold.co/400x300?text=Pollinators" alt="Flowers for bees" /><figcaption>Pollinator flowers</figcaption></figure>
+        </div>
+    </section>
+
+    <section id="planner" class="card">
+        <h2>Garden planner (form)</h2>
+        <p>Use this simple planner to sketch your season.</p>
+        <form>
+            <fieldset>
+                <legend>Basics</legend>
+                <label for="name">Name</label>
+                <br />
+                <input id="name" name="name" type="text" placeholder="Your name" required />
+
+                <br />
+                <br />
+                <label for="zone">Climate zone</label>
+                <br />
+                <input id="zone" name="zone" list="zones" placeholder="Choose or type…" />
+                <datalist id="zones">
+                    <option value="Tropical"></option>
+                    <option value="Subtropical"></option>
+                    <option value="Temperate"></option>
+                    <option value="Continental"></option>
+                    <option value="Mediterranean"></option>
+                </datalist>
+
+                <br />
+                <br />
+                <label for="area">Area size (m²)</label>
+                <br />
+                <input id="area" name="area" type="number" min="1" step="0.5" value="10" />
+            </fieldset>
+
+            <fieldset>
+                <legend>Crops</legend>
+                <div class="two-col">
+                    <div>
+                        <label><input type="checkbox" name="crop" value="basil" checked /> Basil</label><br />
+                        <label><input type="checkbox" name="crop" value="lettuce" /> Lettuce</label><br />
+                        <label><input type="checkbox" name="crop" value="tomato" /> Tomato</label><br />
+                        <label><input type="checkbox" name="crop" value="pepper" /> Pepper</label>
+                    </div>
+                    <div>
+                        <label for="water">Weekly watering (L)</label><br />
+                        <input id="water" name="water" type="range" min="0" max="50" value="15" />
+                        <output for="water" id="waterOut">15</output> L
+                        <script>
+                            document.addEventListener('input', e => {
+                              if (e.target && e.target.id === 'water') {
+                                document.getElementById('waterOut').value = e.target.value;
+                              }
+                            });
+                        </script>
+                        <br /><br />
+                        <label>Style:</label><br />
+                        <label><input type="radio" name="style" value="raised" checked /> Raised beds</label>
+                        <label><input type="radio" name="style" value="containers" /> Containers</label>
+                        <label><input type="radio" name="style" value="in-ground" /> In-ground</label>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Notes</legend>
+                <label for="notes">Anything else?</label>
+                <br />
+                <textarea id="notes" name="notes" rows="4" placeholder="Write reminders, suppliers, or tasks…"></textarea>
+            </fieldset>
+
+            <div class="controls" style="margin-top:.75rem">
+                <button class="btn brand" type="submit">Save plan</button>
+                <button class="btn" type="reset">Reset</button>
+                <small>Next review on <time datetime="2025-09-01">September 1, 2025</time>.</small>
+            </div>
+        </form>
+    </section>
+
+    <section id="tips" class="card">
+        <h2>Watering & care tips</h2>
+        <ul>
+            <li>Water early morning to reduce evaporation.</li>
+            <li>Feed with compost tea every 2–3 weeks during peak growth.</li>
+            <li>Use mulch to keep roots cool and soil moist.</li>
+            <li>Rotate crops: avoid planting tomatoes in the same spot two years in a row.</li>
+        </ul>
+        <p>
+            If pests appear, start with the least invasive method (hand picking, water spray)
+            before moving to stronger measures. Wearing gloves (<kbd>G</kbd>) is optional but recommended.
+        </p>
+    </section>
+
+    <section id="code" class="card">
+        <h2>Sample code and data</h2>
+        <p>Below is a tiny snippet you might keep as a garden task list (JSON):</p>
+        <pre><code>{
+  "tasks": [
+    {"title": "Feed tomatoes", "when": "weekly", "notes": "Compost tea"},
+    {"title": "Harvest basil", "when": "every 3 days", "notes": "Pinch tops"},
+    {"title": "Weed raised bed", "when": "Saturday", "notes": "Mulch after"}
+  ]
+}</code></pre>
+
+        <p>And a tiny CSS example for a label badge:</p>
+        <pre><code>.badge {
+  display: inline-block;
+  padding: .25rem .5rem;
+  border-radius: 999px;
+  background: seagreen;
+  color: white;
+}</code></pre>
+    </section>
+
+    <section id="faq" class="card">
+        <h2>Frequently asked questions</h2>
+
+        <details>
+            <summary>How often should I water?</summary>
+            <p>Most container plants need checking daily in hot weather. Water when the top 2–3 cm are dry.</p>
+        </details>
+
+        <details>
+            <summary>What fertilizer should I use?</summary>
+            <p>Look for balanced organic options. For leafy greens, higher nitrogen (N) helps. For roots, more phosphorus (P).</p>
+        </details>
+
+        <details>
+            <summary>Do I need special soil for containers?</summary>
+            <p>Yes. Use a light potting mix—garden soil compacts and reduces root oxygen.</p>
+        </details>
+    </section>
+
+    <article class="card">
+        <h2>Case study: Balcony herb success</h2>
+        <p>
+            <strong>Goal:</strong> Fresh herbs all year in a 1 m² space. <strong>Constraints:</strong> Partial shade,
+            wind exposure, and limited watering time.
+        </p>
+        <p>
+            <strong>Approach:</strong> We chose basil, parsley, mint, and chives in 30 cm deep planters. A simple
+            drip system (timer + hose) watered plants every morning for 10 minutes. We mulched with shredded leaves.
+        </p>
+        <p>
+            <strong>Results:</strong> Continuous harvest of 2–3 handfuls per week. The mint needed containment; basil
+            thrived with weekly tip pinching. Overall, a flavorful victory!
+        </p>
+    </article>
+
+    <section class="card">
+        <h2>Miscellaneous elements</h2>
+        <p>This section exists mostly to demonstrate additional HTML elements in a natural way.</p>
+        <ul>
+            <li>Contact: <address>123 Leaf Lane, Green City • hello@garden.example</address></li>
+            <li>Price note: Starter kit <s>$49</s> $39 this season.</li>
+            <li>Underline for emphasis (not links): <u>Label your plants</u> to avoid confusion later.</li>
+            <li>Time element: Seeds started on <time datetime="2025-03-10">March 10</time>.</li>
+        </ul>
+        <svg width="80" height="60" role="img" aria-label="Leaf icon" viewBox="0 0 64 48">
+            <path d="M4 40 C18 6, 46 4, 60 20 C40 18, 18 26, 4 40 Z" fill="currentColor"></path>
+        </svg>
+        <audio controls style="display:block; margin-top:.5rem">
+            <source src="" type="audio/mpeg">
+            Your browser supports audio; add a birdsong file to enjoy while reading.
+        </audio>
+    </section>
+</main>
