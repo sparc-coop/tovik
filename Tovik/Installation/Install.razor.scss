@@ -3,6 +3,19 @@
         padding-left: 0;
     }
 
+    .preview {
+        header {
+            justify-content: flex-start;
+            align-items: flex-start;
+        }
+
+        img {
+            height: 30px;
+            margin: 0;
+            width: auto;
+        }
+    }
+
     .page-header {
         .platforms {
             list-style: none;
