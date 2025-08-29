@@ -22,9 +22,12 @@ public class TovikCrawler(IConfiguration config)
             script.SetAttributeValue("src", $"{tovik}/tovik.js");
             body.AppendChild(script);
 
+            body.SetAttributeValue("data-tovikdomain", domain.Host);
+            body.SetAttributeValue("data-tovikpath", domain.AbsolutePath);
+
             // Inject lang into data-lang attribute of html
             if (lang != null)
-                body.SetAttributeValue("data-lang", lang);
+                body.SetAttributeValue("data-toviklang", lang);
         }
 
         // Convert all relative links to absolute using base tag
