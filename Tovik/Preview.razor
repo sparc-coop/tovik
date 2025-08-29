@@ -1,0 +1,28 @@
+﻿@page "/legacypreview"
+
+@using Tovik.Translation
+
+<article>
+    <header>
+        <h1>Preview of @Site</h1>
+        @if (!string.IsNullOrEmpty(Lang))
+        {
+            <h2>Language: @Lang</h2>
+        }
+    </header>
+    <iframe srcdoc="@PreviewHtml">
+    </iframe>
+</article>
+
+@code {
+    MarkupString PreviewHtml;
+    [Parameter]
+    [SupplyParameterFromQuery] public required string Site { get; set; }
+    [Parameter]
+    [SupplyParameterFromQuery] public string? Lang { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        //PreviewHtml = await Crawler.PreviewAsync(Site, Lang);
+    }
+}

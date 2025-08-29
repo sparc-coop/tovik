@@ -17,6 +17,12 @@ export default class TovikEngine {
             return urlParams.get('lang');
         }
 
+        // Check for data-lang on the body element
+        const htmlLang = document.body.getAttribute('data-lang');
+        if (htmlLang) {
+            return htmlLang;
+        }
+
         if (this.userLang)
             return this.userLang;
 
