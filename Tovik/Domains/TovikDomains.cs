@@ -21,6 +21,14 @@ public class TovikDomains(BlossomAggregateOptions<SparcDomain> options, IReposit
         return result.OrderByDescending(x => x.TovikUsage.Sum(y => y.Value)).ToList();
     }
 
+    public SparcDomain? Verify(string url)
+    {
+        var domain = new SparcDomain(url);
+        var page = SparcDomain.ToNormalizedUri(url);
+
+        return page == null ? null : domain;
+    }
+
     public async Task<SparcDomain> RegisterAsync(string domainName)
     {
         var host = SparcDomain.Normalize(domainName) 

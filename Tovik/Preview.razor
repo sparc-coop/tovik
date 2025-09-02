@@ -1,28 +1,28 @@
-﻿@page "/legacypreview"
-
+﻿@page "/preview"
+@layout HomeLayout
 @using Tovik.Translation
 
 <article>
     <header>
-        <h1>Preview of @Site</h1>
-        @if (!string.IsNullOrEmpty(Lang))
-        {
-            <h2>Language: @Lang</h2>
-        }
+        <input type="text" value="@Url" disabled />
+        <Sparc.Blossom.Content.LanguageSelector InitialLanguageId="@PreviewLang" OnLanguageChanged="UpdateLanguage" />
     </header>
     <iframe srcdoc="@PreviewHtml">
     </iframe>
 </article>
 
+@inject TovikCrawler Crawler
 @code {
     MarkupString PreviewHtml;
     [Parameter]
-    [SupplyParameterFromQuery] public required string Site { get; set; }
+    [SupplyParameterFromQuery] public required string Url { get; set; }
     [Parameter]
-    [SupplyParameterFromQuery] public string? Lang { get; set; }
+    [SupplyParameterFromQuery] public string? PreviewLang { get; set; }
+    Sparc.Blossom.Content.LanguageSelector? LanguageSelector;
 
-    protected override async Task OnInitializedAsync()
+    async Task UpdateLanguage(Sparc.Blossom.Content.Language lang)
     {
-        //PreviewHtml = await Crawler.PreviewAsync(Site, Lang);
+        PreviewLang = lang.Id;
+        PreviewHtml = new MarkupString(await Crawler.PreviewAsync(Url, lang.Id));
     }
 }

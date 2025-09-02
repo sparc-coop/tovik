@@ -51,7 +51,7 @@ public class TovikCrawler(IConfiguration config)
                 if (Uri.TryCreate(href, UriKind.RelativeOrAbsolute, out var uri) && !uri.IsAbsoluteUri)
                     href = new Uri(domain, uri).ToString();
 
-                link.SetAttributeValue("href", $"{tovik}/preview?url={href}" + (lang != null ? $"&lang={lang}" : ""));
+                link.SetAttributeValue("href", $"{tovik}/internalpreview?url={href}" + (lang != null ? $"&previewlang={lang}" : ""));
             }
         }
 

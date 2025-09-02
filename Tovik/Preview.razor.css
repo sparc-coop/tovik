@@ -1,4 +1,40 @@
 ﻿iframe {
-  width: 100vw;
-  height: 100vh;
+  border: 1px solid white;
+  border-radius: 0 0 20px 20px;
+  width: 80vw;
+  height: 60vh;
+  border-top-width: 0;
+}
+
+article {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+article header {
+  border: 1px solid white;
+  width: 80vw;
+  border-radius: 20px 20px 0 0;
+  padding: 16px;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 7fr 3fr;
+  gap: 8px;
+}
+article header input {
+  width: auto;
+  border-radius: 36px;
+}
+
+::deep .language-select {
+  background-color: var(--blue-600);
+}
+::deep .language-select:after {
+  border-top: 5px solid white;
+}
+::deep .language-select select {
+  background-color: var(--blue-600);
+}
+::deep .language-select .progress-bar-value {
+  background-color: var(--blue-300);
 }

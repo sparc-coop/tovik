@@ -159,15 +159,10 @@ article section.demo footer button {
     grid-template-columns: 1fr auto;
   }
 }
-article .preview > div {
+article .preview > form {
   display: grid;
-  grid-template-columns: auto;
+  grid-template-columns: auto 100px;
   gap: 8px;
-}
-@media screen and (min-width: 800px) {
-  article .preview > div {
-    grid-template-columns: auto 240px;
-  }
 }
 article ::deep .language-select {
   background-color: var(--blue-600);

@@ -70,5 +70,9 @@
   {
     "outputFile": "Preview.razor.css",
     "inputFile": "Preview.razor.scss"
+  },
+  {
+    "outputFile": "Purchase.razor.css",
+    "inputFile": "Purchase.razor.scss"
   }
 ]

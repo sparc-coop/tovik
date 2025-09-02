@@ -186,14 +186,10 @@
     }
 
     .preview {
-        > div {
+        > form {
             display: grid;
-            grid-template-columns: auto;
+            grid-template-columns: auto 100px;
             gap: 8px;
-
-            @media screen and (min-width: 800px) {
-                grid-template-columns: auto 240px;
-            }
         }
     }
 

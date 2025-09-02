@@ -48,7 +48,7 @@
                     <h1>Your visitors deserve to experience your site in their language.</h1>
 
                     <p>
-                        Install Tovik and make your website speak their language. 130+ languages, zero setup.
+                        Tovik is a smart website plugin that automatically translates your entire website into your visitors' language. 130+ languages, zero setup, no translator plugins required.
                     </p>
 
                     <footer>
@@ -59,19 +59,12 @@
 
             <section class="preview">
                 <header>
-                    <h3>Let Tovik show you how global translation should feel:</h3>
+                    <h3>See Your Site with Tovik:</h3>
                 </header>
-                <div>
-                    <Sparc.Blossom.Content.LanguageSelector Avatar="Avatar" @ref=LanguageSelector />
-                    @if (LanguageSelector?.IsSpinning == true)
-                    {
-                        <button class="back-btn secondary-btn" translate="no" @onclick=Revert><ArrowLeftIcon /> @Avatar?.Language?.NativeName</button>
-                    }
-                    else
-                    {
-                        <button class="secondary-btn" @onclick=Spin>Surprise Me</button>
-                    }
-                </div>
+                <form @onsubmit=Preview>
+                    <input type="text" @bind="Url" placeholder="Enter your website's URL" />
+                    <button class="primary-btn">Go</button>
+                </form>
             </section>
 
             <div class="two">
@@ -128,6 +121,9 @@
     string? PersonalizedWelcome;
     string? WelcomeLink => PersonalizedWelcome == null ? "/sites" : $"/sites?welcome={PersonalizedWelcome}";
     Sparc.Blossom.Content.LanguageSelector? LanguageSelector;
+    string? Url;
+    string? ErrorMessage;
+    Sparc.Blossom.Content.Language? PreviewLanguage;
 
     protected override async Task OnInitializedAsync()
     {
@@ -140,6 +136,21 @@
             PersonalizedWelcome = "Sapient";
         else if (Nav.Uri.Contains("morbidology"))
             PersonalizedWelcome = "Morbidology";
+    }
+
+    async Task Preview()
+    {
+        ErrorMessage = null;
+        if (Url == null)
+            return;
+
+        var domain = TovikDomains.Verify(Url);
+        if (domain == null)
+        {
+            ErrorMessage = "That doesn't look like a valid URL.";
+            return;
+        }
+        Nav.NavigateTo($"/preview?url={Url}");
     }
 
     async Task Spin()
@@ -155,4 +166,5 @@
         if (LanguageSelector != null && Avatar?.Language != null)
             await LanguageSelector.SetLanguage(Avatar.Language.Id);
     }
+    private void ChangePreviewLanguage(Sparc.Blossom.Content.Language language) => PreviewLanguage = language;
 }

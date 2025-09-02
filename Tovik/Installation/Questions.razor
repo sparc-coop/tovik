@@ -8,39 +8,14 @@
 
         <header class="page-header">
             <h2>Pricing and Questions</h2>
-            <p class="subheader">Free to start. Pro when you need it. No subscriptions, no tracking.</p>
+            <p class="subheader">One purchase, one time, up to 500 pages. No subscriptions, no tracking.</p>
         </header>
-
-        <section class="pricing">
-            <header>
-                <h3>Tovik Free</h3>
-                <span>@Product?.FormattedZeroPrice</span>
-                <a class="button primary-btn" href="/install">Start Now</a>
-            </header>
-            <ul>
-                <li>
-                    Translate up to <strong>20</strong> pages into your visitors' preferred language
-                </li>
-                <li>
-                    Unlimited languages per page (130+ supported!)
-                </li>
-                <li>
-                    Unlimited page views
-                </li>
-                <li>
-                    Unlimited domains
-                </li>
-            </ul>
-            <footer>
-                <a class="button primary-btn" href="/install">Install Now</a>
-            </footer>
-        </section>
 
         <section class="pricing">
             <header>
                 <h3>Tovik Pro</h3>
                 <span>@Product?.FormattedPrice</span>
-                <button class="primary-btn" @onclick=Buy>Buy on Sparc Store</button>
+                <a class="button primary-btn" href="/purchase">Buy Now</a>
             </header>
             <ul>
                 <li>
@@ -57,7 +32,7 @@
                 </li>
             </ul>
             <footer>
-                <button class="primary-btn" @onclick=Buy>Buy on Sparc Store</button>
+                <a class="button primary-btn" href="/purchase">Buy Now</a>
             </footer>
         </section>
 

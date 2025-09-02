@@ -1,0 +1,48 @@
+﻿@page "/purchase"
+@layout HomeLayout
+
+<HeadContent>
+    <script src="https://js.stripe.com/v3"></script>
+</HeadContent>
+
+<article class="home">
+    <div class="page-container">
+        @if (User != null)
+        {
+            <section>
+                <GlobalBiller ProductId="Tovik" StripeProductId="@StripeProductId" Avatar="User.Avatar" Appearance="Appearance" />
+            </section>
+        }
+    </div>
+</article>
+
+@inject IConfiguration Config
+@inject ISparcAura Aura
+@code {
+    string? StripeProductId;
+    BlossomUser? User;
+    StripeAppearance? Appearance = new()
+    {
+        Theme = "flat",
+        Variables = new()
+        {
+            ColorPrimary = "#EFF7F9",
+            ColorText = "#EFF7F9",
+            ColorBackground = "#376880",
+            BorderRadius = "20px",
+            SpacingUnit = "4px"
+        },
+        Rules = new()
+        {
+            { ".Label", new() { FontSize = "13px", FontWeight = 500 }},
+            { ".Input", new() { Border = "1px solid #052738" } },
+            { ".Tab", new() { BorderRadius = "20px" }}
+        }
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        StripeProductId = Config["Tovik"]!.Contains("localhost") ? "prod_SW5yY8O8KprzFu" : "prod_SlQhkHsXb7ZyXb";
+        User = await Aura.UserInfo();
+    }
+}

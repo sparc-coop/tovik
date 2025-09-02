@@ -1,0 +1,34 @@
+::deep .currency-selector {
+    background-color: var(--blue-600);
+
+    &:after {
+        border-top: 5px solid white;
+    }
+
+    select {
+        background-color: var(--blue-600);
+    }
+
+    .progress-bar-value {
+        background-color: var(--blue-300);
+    }
+}
+
+::deep h2 {
+    font-size: 2.2rem;
+}
+
+::deep p {
+    margin-bottom: 16px;
+}
+
+::deep .purchased {
+    h4 {
+        margin-bottom: 16px;
+        padding: 16px;
+        border: 1px solid white;
+        font-size: 2.8rem;
+        border-radius: 20px;
+        display: inline-block;
+    }
+}
