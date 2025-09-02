@@ -8,6 +8,7 @@ const baseUrl = window.location.href.includes('localhost')
 export default class TovikEngine {
     static userLang;
     static documentLang;
+    static domainSettings: { position: 'none' | 'bottomleft' | 'bottomright', themeColor?: string } | null = null;
     static rtlLanguages = ['ar', 'fa', 'he', 'ur', 'ps', 'ku', 'dv', 'yi', 'sd', 'ug'];
 
     static async getUserLanguage() {
@@ -33,15 +34,24 @@ export default class TovikEngine {
     static async hi() {
         let lang = await this.getUserLanguage();
         this.documentLang = document.documentElement.lang;
-
         await this.setLanguage(lang);
+
+        try {
+            const host = window.location.host;
+            this.domainSettings = await this.fetch(`domains/${host}/settings`);
+            document.dispatchEvent(new CustomEvent('tovik-domain-settings', { detail: this.domainSettings }));
+        } catch (e) {
+            console.warn('Unable to fetch domain settings for language selector.', e);
+        }
+
+        /*await this.setLanguage(lang);*/
         document.addEventListener('tovik-user-language-changed', async (event: CustomEvent) => {
             await this.setLanguage(event.detail);
-        });
+        });       
     }
 
     static async getLanguages() {
-        return await this.fetch('translate/languages'); 
+        return await this.fetch('translate/languages');
     }
 
     static async setLanguage(language) {
@@ -117,7 +127,7 @@ export default class TovikEngine {
         }
 
         if (language) {
-            options.headers.append('Accept-Language', language); 
+            options.headers.append('Accept-Language', language);
         }
 
         const response = await fetch(`${baseUrl}/${url}`, options);

@@ -41,6 +41,31 @@
             </div>
         </section>
 
+        <section class="lang-selector-widget">
+            <header>
+                <h3>Language Selector</h3>
+            </header>
+
+            @if (Domain is not null)
+            {
+                <label class="position-select">
+                    Position
+                    <select @bind="Domain.LanguageSelectorPosition">
+                        <option value="none">None</option>
+                        <option value="bottomleft">Bottom Left</option>
+                        <option value="bottomright">Bottom Right</option>
+                    </select>
+                </label>
+
+                <label>
+                    Theme Color
+                    <input type="color" @bind="Domain.LanguageSelectorThemeColor" @bind:event="onchange" @oninput="OnColorInput" />                    
+                </label>
+
+                <button class="primary-btn" @onclick="SaveSelectorSettings">Save</button>
+            }
+        </section>
+
         <section class="domain-summary">
             <header>
                 <h3>Languages Translated</h3>
@@ -164,6 +189,12 @@
         if (Domain != null)
             Pages = await TovikDomains.GetPages(Domain.Domain);
 
+        if (Domain != null && string.IsNullOrWhiteSpace(Domain.LanguageSelectorThemeColor))
+        {
+            Domain.LanguageSelectorThemeColor = "#CCCCCC";
+            StateHasChanged();
+        }
+
         LanguageStats = Pages
             .SelectMany(x => x.TovikUsage)
             .GroupBy(x => Language(x.Key)!)
@@ -248,5 +279,35 @@
         if (count >= 1_000)
             return (count / 1_000D).ToString("0.#") + "K";
         return count.ToString();
+    }
+
+    async Task SaveSelectorSettings()
+    {
+        if (Domain != null)
+            await TovikDomains.Update(Domain);
+    }
+
+    private void OnThemeColorInput(ChangeEventArgs e)
+    {
+        if (Domain != null && e.Value is string color)
+        {
+            Domain.LanguageSelectorThemeColor = color;
+            StateHasChanged();
+        }
+    }
+
+    void OnColorInput(ChangeEventArgs e)
+    {
+        Domain.LanguageSelectorThemeColor = NormalizeColor(e.Value?.ToString()) ?? Domain.LanguageSelectorThemeColor;
+        StateHasChanged(); 
+    }
+
+    string? NormalizeColor(string? c)
+    {
+        if (string.IsNullOrWhiteSpace(c)) return null;
+        c = c.Trim();
+        var m3 = System.Text.RegularExpressions.Regex.Match(c, "^#([0-9A-Fa-f]{3})$");
+        if (m3.Success) return "#" + string.Concat(m3.Groups[1].Value.Select(ch => $"{ch}{ch}"));
+        return System.Text.RegularExpressions.Regex.IsMatch(c, "^#([0-9A-Fa-f]{6})$") ? c : null;
     }
 }
