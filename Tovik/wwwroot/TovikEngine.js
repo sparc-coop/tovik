@@ -13,6 +13,11 @@ export default class TovikEngine {
         if (urlParams.has('lang')) {
             return urlParams.get('lang');
         }
+        // Check for data-lang on the body element
+        const htmlLang = document.body.getAttribute('data-toviklang');
+        if (htmlLang) {
+            return htmlLang;
+        }
         if (this.userLang)
             return this.userLang;
         var profile = await db.profiles.get('default');
@@ -67,10 +72,12 @@ export default class TovikEngine {
         for (let i = 0; i < progress.length; i++) {
             progress[i].classList.add('show');
         }
+        let domain = document.body.getAttribute('data-tovikdomain') ?? window.location.host;
+        let path = document.body.getAttribute('data-tovikpath') ?? window.location.pathname;
         const requests = items.map(item => ({
             id: item.hash || this.idHash(item.text, fromLang),
-            Domain: window.location.host,
-            Path: window.location.pathname,
+            Domain: domain,
+            Path: path,
             LanguageId: fromLang,
             Language: { Id: fromLang },
             Text: item.text

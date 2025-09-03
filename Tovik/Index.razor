@@ -45,23 +45,32 @@
                     <img src="/images/site-frame.svg" alt="Web browser facade" />
                 </header>
                 <div>
-                    <h1>Don’t Let Language Barriers Cost You Visitors.</h1>
+                    <h1>Your visitors deserve to experience your site in their language.</h1>
 
                     <p>
-                         Install Tovik and make your website speak their language. 130+ languages, zero setup.
+                        Install Tovik and make your website speak their language. 130+ languages, zero setup.
                     </p>
 
                     <footer>
-                        @if (LanguageSelector?.IsSpinning == true)
-                        {
-                            <button class="back-btn secondary-btn" translate="no" @onclick=Revert><ArrowLeftIcon /> @Avatar?.Language?.NativeName</button>
-                        }
-                        else
-                        {
-                            <button class="primary-btn" @onclick=Spin>Spin the Language Wheel</button>
-                        }
-                        <Sparc.Blossom.Content.LanguageSelector Avatar="Avatar" @ref=LanguageSelector />
+                        <a class="button primary-btn" href="/install">Get Started</a>
                     </footer>
+                </div>
+            </section>
+
+            <section class="preview">
+                <header>
+                    <h3>Let Tovik show you how global translation should feel:</h3>
+                </header>
+                <div>
+                    <Sparc.Blossom.Content.LanguageSelector Avatar="Avatar" @ref=LanguageSelector />
+                    @if (LanguageSelector?.IsSpinning == true)
+                    {
+                        <button class="back-btn secondary-btn" translate="no" @onclick=Revert><ArrowLeftIcon /> @Avatar?.Language?.NativeName</button>
+                    }
+                    else
+                    {
+                        <button class="secondary-btn" @onclick=Spin>Surprise Me</button>
+                    }
                 </div>
             </section>
 
@@ -69,19 +78,19 @@
                 <section class="trial">
                     <header>
                         <img src="/images/Star.svg" alt="Star" />
-                        <h2>Pricing & FAQ</h2>
+                        <h2>Free for small sites</h2>
                     </header>
                     <div>
                         @if (PersonalizedWelcome == null)
                         {
                             <p>
-                                If your website's under 20 pages, Tovik is free. No signup, no payment, no strings attached.
+                                If your website's under 20 pages, Tovik is free forever. No signup, no credit card, no strings attached.
                             </p>
                         }
                         else
                         {
                             <p>
-                                If your website's under <s>20</s> 40 pages, Tovik is free. No signup, no payment, no strings attached.
+                                If your website's under <s>20</s> 40 pages, Tovik is free forever. No signup, no credit card, no strings attached.
                             </p>
 
                         }
@@ -94,7 +103,7 @@
                 <section class="trial">
                     <header>
                         <img src="/images/Star.svg" alt="Star" />
-                        <h2>Get Tovik</h2>
+                        <h2>Easy to install</h2>
                     </header>
                     <div>
                         <p>Compatible with nearly any website, including WordPress, Wix, Webflow, Weebly, SquareSpace, Shopify, and more!</p>

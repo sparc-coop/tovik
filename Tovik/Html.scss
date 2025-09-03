@@ -173,6 +173,7 @@ button, a.button {
         font-style: normal;
         font-weight: 500;
         line-height: normal;
+        transition: background-color 0.05s ease-in;
 
         &:hover {
             background-color: var(--orange-200);
@@ -181,7 +182,6 @@ button, a.button {
     }
 
     &.secondary-btn {
-        height: 48px;
         padding: 16px 24px;
         display: flex;
         flex-direction: row;
@@ -192,6 +192,12 @@ button, a.button {
         border: 1px solid var(--blue-600, #1F5068);
         background: var(--blue-700, #07374F);
         color: var(--white, #FFF);
+        transition: background-color 0.05s ease-in;
+
+        &:hover {
+            background-color: var(--blue-600);
+            border-color: var(--blue-500);
+        }
     }
 
     &.tertiary-btn {
@@ -326,5 +332,46 @@ header.page-header {
         font-size: 3.125rem;
         font-weight: 700;
         line-height: normal;
+    }
+}
+
+.terms {
+    width: 600px !important;
+    max-width: 80vw;
+    margin-left: auto;
+    margin-right: auto;
+    grid-column: 1;
+    margin-top: 200px;
+
+    h1 {
+        font-size: 2.5rem;
+        margin-bottom: 32px;
+        text-align: center;
+    }
+
+    p {
+        margin-bottom: 32px;
+    }
+
+    ul, ol {
+        display: inline-block;
+        list-style: none;
+
+        li {
+            padding: 8px 0;
+            line-height: 150%;
+        }
+    }
+}
+
+.layout-container > footer {
+    font-size: 1.4rem;
+    text-align: center;
+    padding: 64px 16px 16px 16px;
+    position: relative;
+    z-index: 1000;
+
+    a {
+        text-decoration: underline;
     }
 }

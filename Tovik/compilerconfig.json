@@ -66,5 +66,9 @@
   {
     "outputFile": "Domains/AddDomain.razor.css",
     "inputFile": "Domains/AddDomain.razor.scss"
+  },
+  {
+    "outputFile": "Preview.razor.css",
+    "inputFile": "Preview.razor.scss"
   }
 ]

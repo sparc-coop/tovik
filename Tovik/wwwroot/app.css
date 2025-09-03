@@ -165,13 +165,13 @@ button.primary-btn, a.button.primary-btn {
   font-style: normal;
   font-weight: 500;
   line-height: normal;
+  transition: background-color 0.05s ease-in;
 }
 button.primary-btn:hover, a.button.primary-btn:hover {
   background-color: var(--orange-200);
   border-color: var(--orange-100);
 }
 button.secondary-btn, a.button.secondary-btn {
-  height: 48px;
   padding: 16px 24px;
   display: flex;
   flex-direction: row;
@@ -182,6 +182,11 @@ button.secondary-btn, a.button.secondary-btn {
   border: 1px solid var(--blue-600, #1F5068);
   background: var(--blue-700, #07374F);
   color: var(--white, #FFF);
+  transition: background-color 0.05s ease-in;
+}
+button.secondary-btn:hover, a.button.secondary-btn:hover {
+  background-color: var(--blue-600);
+  border-color: var(--blue-500);
 }
 button.icon-btn, a.button.icon-btn {
   aspect-ratio: 1/1;
@@ -303,4 +308,40 @@ header.page-header h2 {
   font-size: 3.125rem;
   font-weight: 700;
   line-height: normal;
+}
+
+.terms {
+  width: 600px !important;
+  max-width: 80vw;
+  margin-left: auto;
+  margin-right: auto;
+  grid-column: 1;
+  margin-top: 200px;
+}
+.terms h1 {
+  font-size: 2.5rem;
+  margin-bottom: 32px;
+  text-align: center;
+}
+.terms p {
+  margin-bottom: 32px;
+}
+.terms ul, .terms ol {
+  display: inline-block;
+  list-style: none;
+}
+.terms ul li, .terms ol li {
+  padding: 8px 0;
+  line-height: 150%;
+}
+
+.layout-container > footer {
+  font-size: 1.4rem;
+  text-align: center;
+  padding: 64px 16px 16px 16px;
+  position: relative;
+  z-index: 1000;
+}
+.layout-container > footer a {
+  text-decoration: underline;
 }

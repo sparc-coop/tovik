@@ -110,6 +110,9 @@ main ::deep article .page-container section h4 {
     grid-template-columns: repeat(4, 1fr);
     column-gap: 16px;
   }
+  .layout-container > footer {
+    grid-column: 2/span 3;
+  }
   .layout-container ::deep nav {
     width: var(--app-width);
   }

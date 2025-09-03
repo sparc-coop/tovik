@@ -127,6 +127,10 @@ main {
         grid-template-columns: repeat(4, 1fr);
         column-gap: 16px;
 
+        > footer {
+            grid-column: 2 / span 3;
+        }
+
         ::deep nav {
             width: var(--app-width);
 

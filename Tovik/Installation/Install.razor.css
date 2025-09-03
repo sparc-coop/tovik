@@ -1,6 +1,15 @@
 ﻿.install-page ul {
   padding-left: 0;
 }
+.install-page .preview header {
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+.install-page .preview img {
+  height: 30px;
+  margin: 0;
+  width: auto;
+}
 .install-page .page-header .platforms {
   list-style: none;
   display: flex;
