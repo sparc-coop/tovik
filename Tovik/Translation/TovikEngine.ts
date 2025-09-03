@@ -106,6 +106,15 @@ export default class TovikEngine {
 
         var result = await this.fetch('translate/bulk', requests, this.userLang);
 
+        const returnedIds = new Set(result.map(x => x.id));
+        const missing = requests.filter(r => !returnedIds.has(r.id));
+        if (missing.length) {
+            const singles = await Promise.all(
+                missing.map(req => this.fetch('translate/single', req, this.userLang).catch(() => null))
+            );
+            result = result.concat(singles.filter(Boolean));
+        }
+
         for (let i = 0; i < progress.length; i++) {
             progress[i].classList.remove('show');
         }
