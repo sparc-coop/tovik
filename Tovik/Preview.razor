@@ -91,7 +91,7 @@
     bool IsACustomer;
     bool IsPreviewing;
     string? PreviewHtml;
-    string? PreviewLang;
+    string PreviewLang = Sparc.Blossom.Content.Language.All.OrderBy(x => Guid.NewGuid()).First().Id;
     Sparc.Blossom.Content.LanguageSelector? LanguageSelector;
 
     protected override async Task OnInitializedAsync()

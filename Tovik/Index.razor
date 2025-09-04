@@ -152,18 +152,5 @@
         Nav.NavigateTo($"/preview?url={Url}");
     }
 
-    async Task Spin()
-    {
-        if (LanguageSelector != null)
-            await LanguageSelector.Spin();
-
-        StateHasChanged();
-    }
-
-    async Task Revert()
-    {
-        if (LanguageSelector != null && Avatar?.Language != null)
-            await LanguageSelector.SetLanguage(Avatar.Language.Id);
-    }
     private void ChangePreviewLanguage(Sparc.Blossom.Content.Language language) => PreviewLanguage = language;
 }
