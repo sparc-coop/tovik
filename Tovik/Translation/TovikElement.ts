@@ -61,7 +61,7 @@ export default class TovikElement extends HTMLElement {
                 nodes.push(node);
             }
         }
-        
+
         await this.translateTextNodes(nodes);
     }
 
@@ -102,7 +102,7 @@ export default class TovikElement extends HTMLElement {
         return NodeFilter.FILTER_ACCEPT;
     }
 
-    async translateAttribute(element:HTMLElement, attributeName:string, forceReload = false) {
+    async translateAttribute(element: HTMLElement, attributeName: string, forceReload = false) {
         const elements = element.querySelectorAll('[' + attributeName + ']');
         let pendingTranslations = [];
 
@@ -123,24 +123,11 @@ export default class TovikElement extends HTMLElement {
             }
         }
 
-        if (!pendingTranslations.length)
-            return;
-
-        const textsToTranslate = pendingTranslations.map(item => ({
-            hash: item.hash,
-            text: item.element['original-' + attributeName]
-        }));
-
-        const newTranslations = await TovikEngine.bulkTranslate(textsToTranslate, this.#originalLang);
-        if (newTranslations) {
-            for (const item of pendingTranslations) {
-                const translation = newTranslations.find(t => t.id === item.hash);
-                if (translation) {
-                    item.element.setAttribute(attributeName, translation.text);
-                    db.translations.put(translation);
-                }
-            }
-        }
+        await TovikEngine.translateAll(
+            pendingTranslations,
+            x => x['original-' + attributeName],
+            this.#originalLang,
+            (el, translation) => el.setAttribute(attributeName, translation.text));
     }
 
     async translateTextNodes(textNodes) {
@@ -161,42 +148,23 @@ export default class TovikElement extends HTMLElement {
             if (translation) {
                 textNode.textContent = ' ' + translation.text + ' ';
             } else {
-                pendingTranslations.push(textNode);
-            //    if (textNode.parentElement)
-            //        textNode.parentElement.classList.add('tovik-translating');
+                pendingTranslations.push({ element: textNode, hash: textNode.hash });
+                //    if (textNode.parentElement)
+                //        textNode.parentElement.classList.add('tovik-translating');
             }
         }));
 
-        if (pendingTranslations.length > 0) {
-            await this.processBulkTranslations(pendingTranslations);
-        }
-    }
-
-    async processBulkTranslations(pendingTranslations) {
-        if (pendingTranslations.length === 0) return;
-
-        const textsToTranslate = pendingTranslations.map(node => ({
-            hash: node.hash,
-            text: node.originalText
-        }));
-
-        const newTranslations = await TovikEngine.bulkTranslate(textsToTranslate, this.#originalLang);
-        if (!newTranslations)
-            return;
-
-        for (const node of pendingTranslations) {
-            const translation = newTranslations.find(t => t.id === node.hash);
-            if (translation) {
-                node.textContent =
-                    (node.preWhiteSpace ? ' ' : '')
+        await TovikEngine.translateAll(
+            pendingTranslations,
+            node => node.originalText,
+            this.#originalLang,
+            (el, translation) => {
+                el.textContent =
+                    (el.preWhiteSpace ? ' ' : '')
                     + translation.text
-                    + (node.postWhiteSpace ? ' ' : '');
-                node.translating = false;
-                node.translated = true;
-                //if (node.parentElement)
-                //    node.parentElement.classList.remove('tovik-translating');
-                db.translations.put(translation);
-            }
-        }
+                    + (el.postWhiteSpace ? ' ' : '');
+                el.translating = false;
+                el.translated = true;
+            });
     }
 }

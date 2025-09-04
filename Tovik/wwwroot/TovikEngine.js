@@ -1,6 +1,6 @@
 import MD5 from "./MD5.js";
 import db from './TovikDb.js';
-const baseUrl = window.location.href.includes('localhost')
+const baseUrl = true || window.location.href.includes('localhost')
     ? 'https://localhost:7185'
     : 'https://engine.sparc.coop';
 export default class TovikEngine {
@@ -20,13 +20,13 @@ export default class TovikEngine {
         }
         if (this.userLang)
             return this.userLang;
-        var profile = await db.profiles.get('default');
-        if (profile) {
-            this.userLang = profile.language;
+        var tovikLang = await localStorage.getItem('tovik-lang');
+        if (tovikLang) {
+            this.userLang = tovikLang;
         }
         else {
             this.userLang = navigator.language;
-            await db.profiles.add({ id: 'default', language: this.userLang });
+            await localStorage.setItem('tovik-lang', this.userLang);
         }
         return this.userLang;
     }
@@ -43,7 +43,7 @@ export default class TovikEngine {
     }
     static async setLanguage(language) {
         if (this.userLang != language) {
-            await db.profiles.put({ id: 'default', language: language });
+            await localStorage.setItem('tovik-lang', language);
             this.userLang = language;
             document.dispatchEvent(new CustomEvent('tovik-language-changed', { detail: this.userLang }));
         }
@@ -67,36 +67,62 @@ export default class TovikEngine {
         };
         return await this.fetch('translate', request, this.userLang);
     }
-    static async bulkTranslate(items, fromLang) {
+    static async getFromCache(items, fromLang) {
+        const requests = items.map(item => TovikEngine.toRequest(item, fromLang));
+        if (!this.userLang) {
+            await this.getUserLanguage();
+        }
+        var result = await this.fetch('translate/all', requests, this.userLang);
+        return result;
+    }
+    static async getOne(item, fromLang) {
+        var request = TovikEngine.toRequest(item, fromLang);
+        if (!this.userLang) {
+            await this.getUserLanguage();
+        }
+        var result = await this.fetch('translate/single', request, this.userLang);
+        return result;
+    }
+    static async translateAll(pendingTranslations, textMap, fromLang, onTranslation) {
+        if (!pendingTranslations.length)
+            return;
         var progress = document.querySelectorAll('.language-select-progress-bar');
         for (let i = 0; i < progress.length; i++) {
             progress[i].classList.add('show');
         }
+        var textsToTranslate = pendingTranslations.map(item => ({
+            hash: item.hash,
+            text: textMap(item.element)
+        }));
+        const newTranslations = await TovikEngine.getFromCache(textsToTranslate, fromLang);
+        if (newTranslations) {
+            await Promise.all(pendingTranslations.map(async (item) => {
+                let translation = newTranslations.find(t => t.id === item.hash);
+                if (!translation)
+                    translation = await TovikEngine.getOne({ hash: item.hash, text: textMap(item.element) }, fromLang);
+                if (translation) {
+                    onTranslation(item.element, translation);
+                    db.translations.put(translation);
+                }
+            }));
+        }
+        for (let i = 0; i < progress.length; i++) {
+            progress[i].classList.remove('show');
+        }
+    }
+    static toRequest(item, fromLang) {
         let domain = document.body.getAttribute('data-tovikdomain') ?? window.location.host;
         let path = document.body.getAttribute('data-tovikpath') ?? window.location.pathname;
-        const requests = items.map(item => ({
+        return {
             id: item.hash || this.idHash(item.text, fromLang),
             Domain: domain,
             Path: path,
             LanguageId: fromLang,
             Language: { Id: fromLang },
             Text: item.text
-        }));
-        if (!this.userLang) {
-            await this.getUserLanguage();
-        }
-        var result = await this.fetch('translate/all', requests, this.userLang);
-        const returnedIds = new Set(result.map(x => x.id));
-        const missing = requests.filter(r => !returnedIds.has(r.id));
-        if (missing.length) {
-            const singles = await Promise.all(missing.map(req => this.fetch('translate/single', req, this.userLang).catch(() => null)));
-            result = result.concat(singles.filter(Boolean));
-        }
-        for (let i = 0; i < progress.length; i++) {
-            progress[i].classList.remove('show');
-        }
-        return result;
+        };
     }
+    ;
     static async fetch(url, body = null, language = null) {
         const options = {
             credentials: 'include',
