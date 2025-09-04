@@ -12,7 +12,7 @@
             <button @onclick=Home>
                 <img src="/images/TovikHorizontal.svg" alt="Tovik" />
             </button>
-            @if (PreviewHtml != null)
+            @if (IsPreviewing)
             {
                 <Sparc.Blossom.Content.LanguageSelector InitialLanguageId="@PreviewLang" OnLanguageChanged="UpdateLanguage" />
             }
@@ -95,16 +95,15 @@
         Avatar = user.Avatar;
     }
 
-    async Task PreviewSite()
+    void PreviewSite()
     {
-        PreviewHtml = await Crawler.PreviewAsync(Url, PreviewLang);
         IsPreviewing = true;
     }
 
     async Task UpdateLanguage(Sparc.Blossom.Content.Language lang)
     {
         PreviewLang = lang.Id;
-        await PreviewSite();
+        PreviewHtml = await Crawler.PreviewAsync(Url, PreviewLang);
     }
 
     void Home()

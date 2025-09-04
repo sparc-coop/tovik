@@ -9,8 +9,9 @@ public class TovikCrawler(IConfiguration config)
     {
         var domain = new SparcDomain(url).ToUri();
         var page = SparcDomain.ToNormalizedUri(url);
-        var web = new HtmlWeb();
-        var doc = web.Load(page);
+        var html = await new HttpClient().GetStringAsync(page);
+        var doc = new HtmlDocument();
+        doc.LoadHtml(html);
         var tovik = config["Tovik"];
 
         // Inject tovik.js script
@@ -55,8 +56,7 @@ public class TovikCrawler(IConfiguration config)
             }
         }
 
-        // Escape entities as needed for iframe srcdoc
-        var html = doc.DocumentNode.OuterHtml;
-        return html;
+        var result = doc.DocumentNode.OuterHtml;
+        return result;
     }
 }
