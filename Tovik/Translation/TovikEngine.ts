@@ -8,7 +8,7 @@ const baseUrl = window.location.href.includes('localhost')
 export default class TovikEngine {
     static userLang;
     static documentLang;
-    static domainSettings: { position: 'none' | 'bottomleft' | 'bottomright', themeColor?: string } | null = null;
+    static domainSettings: { languageSelectorPosition: 'none' | 'bottomleft' | 'bottomright', languageSelectorThemeColor?: string } | null = null;
     static rtlLanguages = ['ar', 'fa', 'he', 'ur', 'ps', 'ku', 'dv', 'yi', 'sd', 'ug'];
 
     static async getUserLanguage() {

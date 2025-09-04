@@ -140,6 +140,10 @@
                 ::deep select {
                     appearance: none;
                     padding: 10px 16px;
+
+                    &:focus {
+                        outline: none;
+                    }
                 }
 
                 &:after {

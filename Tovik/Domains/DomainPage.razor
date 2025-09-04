@@ -59,10 +59,10 @@
 
                 <label>
                     Theme Color
-                    <input type="color" @bind="Domain.LanguageSelectorThemeColor" @bind:event="onchange" @oninput="OnColorInput" />                    
+                    <input type="color" @bind="Domain.LanguageSelectorThemeColor" @bind:event="onchange" @oninput="OnColorInput" />
                 </label>
 
-                <button class="primary-btn" @onclick="SaveSelectorSettings">Save</button>
+                <button class="primary-btn" @onclick="SaveSelectorSettings" disabled="@(!SelectorSettingsChanged)">Save</button>
             }
         </section>
 
@@ -181,13 +181,19 @@
     Dictionary<Language, int> LanguageStats = [];
     string Exemption = "";
     string? PreviewLanguage;
+    string? InitialPosition;
+    string? InitialThemeColor;
 
     protected override async Task OnInitializedAsync()
     {
         Domain = await TovikDomains.Get(Id);
         Languages = await Tovik.GetLanguages();
         if (Domain != null)
+        {
             Pages = await TovikDomains.GetPages(Domain.Domain);
+            InitialPosition = Domain.LanguageSelectorPosition;
+            InitialThemeColor = Domain.LanguageSelectorThemeColor;
+        }
 
         if (Domain != null && string.IsNullOrWhiteSpace(Domain.LanguageSelectorThemeColor))
         {
@@ -285,6 +291,9 @@
     {
         if (Domain != null)
             await TovikDomains.Update(Domain);
+        InitialPosition = Domain.LanguageSelectorPosition;
+        InitialThemeColor = Domain.LanguageSelectorThemeColor;
+        StateHasChanged();
     }
 
     private void OnThemeColorInput(ChangeEventArgs e)
@@ -299,7 +308,7 @@
     void OnColorInput(ChangeEventArgs e)
     {
         Domain.LanguageSelectorThemeColor = NormalizeColor(e.Value?.ToString()) ?? Domain.LanguageSelectorThemeColor;
-        StateHasChanged(); 
+        StateHasChanged();
     }
 
     string? NormalizeColor(string? c)
@@ -310,4 +319,9 @@
         if (m3.Success) return "#" + string.Concat(m3.Groups[1].Value.Select(ch => $"{ch}{ch}"));
         return System.Text.RegularExpressions.Regex.IsMatch(c, "^#([0-9A-Fa-f]{6})$") ? c : null;
     }
+
+    bool SelectorSettingsChanged =>
+        Domain != null &&
+        (Domain.LanguageSelectorPosition != InitialPosition ||
+         Domain.LanguageSelectorThemeColor != InitialThemeColor);
 }

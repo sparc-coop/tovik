@@ -104,6 +104,9 @@
   appearance: none;
   padding: 10px 16px;
 }
+.domain-page .page-container .lang-selector-widget label ::deep select:focus {
+  outline: none;
+}
 .domain-page .page-container .lang-selector-widget label:after {
   border-top: 5px solid white;
   content: "";

@@ -15,15 +15,18 @@ TovikEngine.hi().then(() => {
         bodyElement.setAttribute('for', 'body');
         document.body.appendChild(bodyElement);
     }
+});
 
-    const settings = TovikEngine.domainSettings;
-    if (settings && settings.position && settings.position !== 'none') {
+// Waits for the event to inject the language selector
+document.addEventListener('tovik-domain-settings', (e: any) => {
+    const settings = e.detail;
+    if (settings && settings.languageSelectorPosition && settings.languageSelectorPosition !== 'none') {
         if (!document.querySelector('tovik-language[floating="true"]')) {
             const langEl = document.createElement('tovik-language');
             langEl.setAttribute('floating', 'true');
-            langEl.setAttribute('position', settings.position); 
-            if (settings.themeColor) {
-                langEl.setAttribute('theme-color', settings.themeColor);
+            langEl.setAttribute('position', settings.languageSelectorPosition);
+            if (settings.languageSelectorThemeColor) {
+                langEl.setAttribute('theme-color', settings.languageSelectorThemeColor);
             }
             document.body.appendChild(langEl);
         }
