@@ -67,6 +67,12 @@ article {
         backdrop-filter: blur(40px);
         padding: 16px 64px;
 
+        .buttons {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 8px;
+        }
+
         button {
             width: auto;
         }

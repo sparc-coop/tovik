@@ -61,6 +61,11 @@ article > header {
   backdrop-filter: blur(40px);
   padding: 16px 64px;
 }
+article > header .buttons {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 8px;
+}
 article > header button {
   width: auto;
 }

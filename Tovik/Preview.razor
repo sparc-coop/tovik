@@ -20,14 +20,21 @@
             {
                 <Sparc.Blossom.Content.LanguageSelector Avatar="Avatar" />
             }
-            @if (IsACustomer)
-            {
-                <button class="primary-btn" @onclick=MyWebsites>My Websites</button>
-            }
-            else
-            {
-                <button class="primary-btn" @onclick=Purchase>Get Tovik</button>
-            }
+
+            <div class="buttons">
+                @if (IsPreviewing)
+                {
+                    <button class="secondary-btn" @onclick=Home>Learn More</button>
+                }
+                @if (IsACustomer)
+                {
+                    <button class="primary-btn" @onclick=MyWebsites>My Websites</button>
+                }
+                else
+                {
+                    <button class="primary-btn" @onclick=Purchase>Get Tovik</button>
+                }
+            </div>
         </header>
 
         <section>
