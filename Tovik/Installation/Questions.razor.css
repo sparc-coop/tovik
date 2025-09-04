@@ -1,4 +1,9 @@
-﻿section.pricing header {
+﻿article {
+  max-width: 1200px;
+  margin: 150px auto 0;
+}
+
+section.pricing header {
   display: flex;
   justify-content: space-between;
   align-items: center;

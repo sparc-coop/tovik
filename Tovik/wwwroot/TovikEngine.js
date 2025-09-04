@@ -85,7 +85,7 @@ export default class TovikEngine {
         if (!this.userLang) {
             await this.getUserLanguage();
         }
-        var result = await this.fetch('translate/bulk', requests, this.userLang);
+        var result = await this.fetch('translate/all', requests, this.userLang);
         const returnedIds = new Set(result.map(x => x.id));
         const missing = requests.filter(r => !returnedIds.has(r.id));
         if (missing.length) {

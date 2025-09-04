@@ -1,28 +1,117 @@
-﻿@page "/preview"
-@layout HomeLayout
+﻿@page "/"
+@layout NewHomeLayout
 @using Tovik.Translation
 
-<article>
-    <header>
-        <input type="text" value="@Url" disabled />
-        <Sparc.Blossom.Content.LanguageSelector InitialLanguageId="@PreviewLang" OnLanguageChanged="UpdateLanguage" />
-    </header>
+<div class="home-container @(IsPreviewing ? "previewing" : "")">
     <iframe srcdoc="@PreviewHtml">
     </iframe>
-</article>
 
+    <article>
+        <div class="hero-background"><DashedLine Color="#FFD4BF" /></div>
+        <header>
+            <button @onclick=Home>
+                <img src="/images/TovikHorizontal.svg" alt="Tovik" />
+            </button>
+            @if (PreviewHtml != null)
+            {
+                <Sparc.Blossom.Content.LanguageSelector InitialLanguageId="@PreviewLang" OnLanguageChanged="UpdateLanguage" />
+            }
+            else
+            {
+                <Sparc.Blossom.Content.LanguageSelector Avatar="Avatar" />
+            }
+            @if (IsACustomer)
+            {
+                <button class="primary-btn" @onclick=MyWebsites>My Websites</button>
+            }
+            else
+            {
+                <button class="primary-btn" @onclick=Purchase>Get Tovik</button>
+            }
+        </header>
+
+        <section>
+            <img src="/images/TovikChar.svg" alt="Tovik" />
+            <h1>Speaking your website visitors' language isn't optional anymore.</h1>
+            <p>
+                Tovik is a multilingual plugin that quietly translates your site into their native language, without relying on them to bring their own translator.
+            </p>
+            <form @onsubmit=PreviewSite>
+                <input type="text" placeholder="Enter your website's URL" @bind=Url required />
+                <button class="primary-btn">Try Yourself</button>
+            </form>
+        </section>
+
+        <div class="two">
+            <section>
+                <header>
+                    <img src="/images/Star.svg" alt="Star" />
+                    <h2>130+ Languages Supported</h2>
+                </header>
+                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi  ut aliquip ex ea commodo consequat.</p>
+            </section>
+            <section>
+                <header>
+                    <img src="/images/Star.svg" alt="Star" />
+                    <h2>Built for Creators, Not Coders</h2>
+                </header>
+                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi  ut aliquip ex ea commodo consequat.</p>
+            </section>
+            <section>
+                <header>
+                    <img src="/images/Star.svg" alt="Star" />
+                    <h2>We Don't Track Anyone</h2>
+                </header>
+                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi  ut aliquip ex ea commodo consequat.</p>
+            </section>
+            <section>
+                <header>
+                    <img src="/images/Star.svg" alt="Star" />
+                    <h2>Works On Any Website</h2>
+                </header>
+                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi  ut aliquip ex ea commodo consequat.</p>
+            </section>
+        </div>
+        <Tovik.Installation.Questions />
+    </article>
+</div>
+
+@inject ISparcAura Aura
 @inject TovikCrawler Crawler
 @code {
-    MarkupString PreviewHtml;
-    [Parameter]
-    [SupplyParameterFromQuery] public required string Url { get; set; }
-    [Parameter]
-    [SupplyParameterFromQuery] public string? PreviewLang { get; set; }
+    [Parameter][SupplyParameterFromQuery] public required string Url { get; set; }
+    BlossomAvatar? Avatar;
+    bool IsACustomer;
+    bool IsPreviewing;
+    string? PreviewHtml;
+    string? PreviewLang;
     Sparc.Blossom.Content.LanguageSelector? LanguageSelector;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var user = await Aura.UserInfo();
+        IsACustomer = user.HasProduct("Tovik");
+
+        Avatar = user.Avatar;
+    }
+
+    async Task PreviewSite()
+    {
+        PreviewHtml = await Crawler.PreviewAsync(Url, PreviewLang);
+        IsPreviewing = true;
+    }
 
     async Task UpdateLanguage(Sparc.Blossom.Content.Language lang)
     {
         PreviewLang = lang.Id;
-        PreviewHtml = new MarkupString(await Crawler.PreviewAsync(Url, lang.Id));
+        await PreviewSite();
     }
+
+    void Home()
+    {
+        IsPreviewing = false;
+    }
+
+    void MyWebsites() => Nav.NavigateTo("/sites");
+    void Purchase() => Nav.NavigateTo("/purchase");
 }
