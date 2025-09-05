@@ -50,6 +50,9 @@ article {
   transition: transform 0.8s ease-in-out;
   background-color: var(--blue-700);
 }
+article a {
+  text-decoration: underline;
+}
 article > header {
   position: sticky;
   top: 0;

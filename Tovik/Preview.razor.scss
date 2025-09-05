@@ -56,6 +56,10 @@ article {
     transition: transform 0.8s ease-in-out;
     background-color: var(--blue-700);
 
+    a {
+        text-decoration: underline;
+    }
+
     > header {
         position: sticky;
         top: 0;

@@ -1,4 +1,5 @@
 ﻿@page "/install"
+@page "/install/{SelectedPlatform}"
 @layout MainLayout
 
 <PageTitle>Tovik - How to Install</PageTitle>
@@ -318,11 +319,11 @@
 </article>
 
 @code {
-    private string SelectedPlatform { get; set; } = "WordPress";
+    [Parameter] public string SelectedPlatform { get; set; } = "WordPress";
     List<string> Platforms = ["WordPress", "Wix", "SquareSpace", "Webflow", "Weebly", "Shopify", "HTML"];
     List<string> ComingSoon = [];
     private void Select(string platform)
     {
-        SelectedPlatform = platform;
+        Nav.NavigateTo($"/install/{platform}");
     }
 }
