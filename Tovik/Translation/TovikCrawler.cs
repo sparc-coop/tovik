@@ -9,7 +9,17 @@ public class TovikCrawler(IConfiguration config)
     {
         var domain = new SparcDomain(url).ToUri();
         var page = SparcDomain.ToNormalizedUri(url);
-        var html = await new HttpClient().GetStringAsync(page);
+        string html = "";
+        try
+        {
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (compatible; https://tovik.app)");
+            html = await client.GetStringAsync(page);
+        }
+        catch (Exception e)
+        {
+            html = $"<html><head></head><body><h1>Error fetching URL</h1><p>{e.Message} {e.InnerException?.Message}</p></body></html>";
+        }
         var doc = new HtmlDocument();
         doc.LoadHtml(html);
         var tovik = config["Tovik"];

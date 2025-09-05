@@ -11,12 +11,14 @@ export default class TovikEngine {
         // If query parameter lang is set, use it
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.has('lang')) {
-            return urlParams.get('lang');
+            this.userLang = urlParams.get('lang');
+            return this.userLang;
         }
         // Check for data-lang on the body element
         const htmlLang = document.body.getAttribute('data-toviklang');
         if (htmlLang) {
-            return htmlLang;
+            this.userLang = htmlLang;
+            return this.userLang;
         }
         if (this.userLang)
             return this.userLang;
@@ -42,7 +44,7 @@ export default class TovikEngine {
         return await this.fetch('translate/languages');
     }
     static async setLanguage(language) {
-        if (this.userLang != language) {
+        if (this.userLang != language && !document.body.getAttribute('data-toviklang')) {
             await localStorage.setItem('tovik-lang', language);
             this.userLang = language;
             document.dispatchEvent(new CustomEvent('tovik-language-changed', { detail: this.userLang }));
