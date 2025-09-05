@@ -6,33 +6,39 @@
     <iframe srcdoc="@PreviewHtml">
     </iframe>
 
+    @if (IsPreviewing)
+    {
+        <div class="language-selector-preview">
+            <Sparc.Blossom.Content.LanguageSelector InitialLanguageId="@PreviewLang" OnLanguageChanged="UpdateLanguage" />
+        </div>
+    }
+
     <article>
         <div class="hero-background"><DashedLine Color="#FFD4BF" /></div>
         <header>
             <button @onclick=Home>
-                <img src="/images/TovikHorizontal.svg" alt="Tovik" />
+                <img src="/images/TovikWordmark.svg" alt="Tovik" />
             </button>
-            @if (IsPreviewing)
-            {
-                <Sparc.Blossom.Content.LanguageSelector InitialLanguageId="@PreviewLang" OnLanguageChanged="UpdateLanguage" />
-            }
-            else
-            {
-                <Sparc.Blossom.Content.LanguageSelector />
-            }
 
             <div class="buttons">
-                @if (IsPreviewing)
+                @if (!IsPreviewing)
                 {
-                    <button class="secondary-btn" @onclick=Home>Learn More</button>
-                }
-                @if (IsACustomer)
-                {
-                    <button class="primary-btn" @onclick=MyWebsites>My Websites</button>
+                    <Sparc.Blossom.Content.LanguageSelector />
                 }
                 else
                 {
-                    <button class="primary-btn" @onclick=Purchase>Get Tovik</button>
+                    <button class="secondary-btn" @onclick=Home>Learn More</button>
+                }
+                @if (false && IsACustomer)
+                {
+                    <a class="button primary-btn" href="/sites">My Sites</a>
+                }
+                else
+                {
+                    <a class="button primary-btn mobile-only" href="/purchase">
+                        <BuyIcon />
+                    </a>
+                    <a class="button primary-btn desktop-only" href="/purchase">Get Tovik</a>
                 }
             </div>
         </header>
@@ -77,7 +83,7 @@
                     <h2>Works On Any Website</h2>
                 </header>
                 <p>
-                    Tovik is built for 
+                    Built for
                     <a href="/install/WordPress">WordPress</a>,
                     <a href="/install/Wix">Wix</a>,
                     <a href="/install/Webflow">Webflow</a>,
@@ -90,7 +96,8 @@
                 </p>
             </section>
         </div>
-        <Tovik.Installation.Questions />
+
+        <Tovik.Installation.Pricing />
     </article>
 </div>
 
@@ -109,7 +116,6 @@
     {
         var user = await Aura.UserInfo();
         IsACustomer = user.HasProduct("Tovik");
-
         Avatar = user.Avatar;
     }
 

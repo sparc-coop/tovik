@@ -78,5 +78,9 @@
   {
     "outputFile": "Shared/NewHomeLayout.razor.css",
     "inputFile": "Shared/NewHomeLayout.razor.scss"
+  },
+  {
+    "outputFile": "Installation/Pricing.razor.css",
+    "inputFile": "Installation/Pricing.razor.scss"
   }
 ]

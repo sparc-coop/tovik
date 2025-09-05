@@ -1,0 +1,41 @@
+﻿<div class="pricing">
+    <header>
+        <h3>Honest price</h3>
+        <div>
+            <h4>@Product?.FormattedPrice</h4>
+            <h5>one time</h5>
+        </div>
+        <a class="button primary-btn desktop-only" href="/purchase">Buy Now</a>
+    </header>
+    <ul>
+        <li>
+            <strong>Unlimited</strong> languages
+        </li>
+        <li>
+            <strong>Unlimited</strong> page views
+        </li>
+        <li>
+            <strong>Unlimited</strong> domains
+        </li>
+        <li>
+            Up to <strong>500</strong> translated pages
+        </li>
+        <li>
+            No subscriptions or hidden fees
+        </li>
+    </ul>
+    <footer class="mobile-only">
+        <a class="button primary-btn" href="/purchase">Buy Now</a>
+    </footer>
+</div>
+
+@inject ISparcBilling Billing
+@inject Microsoft.Extensions.Configuration.IConfiguration Config
+@code {
+    GetProductResponse? Product;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        Product = await Billing.GetProductAsync(Config["ProductId"]!);
+    }
+}

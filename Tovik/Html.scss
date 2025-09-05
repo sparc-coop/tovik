@@ -145,6 +145,7 @@ button, a.button {
     letter-spacing: -0.14px;
     cursor: pointer;
     box-sizing: border-box;
+    text-decoration: none;
 
     &[disabled] {
         opacity: 0.3;
@@ -373,5 +374,17 @@ header.page-header {
 
     a {
         text-decoration: underline;
+    }
+}
+
+@media screen and (min-width: 800px) {
+    .mobile-only {
+        display: none !important;
+    }
+}
+
+@media screen and (max-width: 799px) {
+    .desktop-only {
+        display: none !important;
     }
 }
