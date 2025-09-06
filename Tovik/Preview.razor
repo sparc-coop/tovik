@@ -8,9 +8,7 @@
 
     @if (IsPreviewing)
     {
-        <div class="language-selector-preview">
-            <Sparc.Blossom.Content.LanguageSelector InitialLanguageId="@PreviewLang" OnLanguageChanged="UpdateLanguage" />
-        </div>
+        <Sparc.Blossom.Content.LanguageSelector WithButton=true Visible=true InitialLanguageId="@PreviewLang" OnLanguageChanged="UpdateLanguage" />
     }
 
     <article>
@@ -23,7 +21,7 @@
             <div class="buttons">
                 @if (!IsPreviewing)
                 {
-                    <Sparc.Blossom.Content.LanguageSelector />
+                    <Sparc.Blossom.Content.LanguageSelector WithButton=true />
                 }
                 else
                 {
@@ -110,7 +108,6 @@
     bool IsPreviewing;
     string? PreviewHtml;
     string PreviewLang = Sparc.Blossom.Content.Language.All.OrderBy(x => Guid.NewGuid()).First().Id;
-    Sparc.Blossom.Content.LanguageSelector? LanguageSelector;
 
     protected override async Task OnInitializedAsync()
     {
