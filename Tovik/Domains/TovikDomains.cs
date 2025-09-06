@@ -21,12 +21,23 @@ public class TovikDomains(BlossomAggregateOptions<SparcDomain> options, IReposit
         return result.OrderByDescending(x => x.TovikUsage.Sum(y => y.Value)).ToList();
     }
 
-    public SparcDomain? Verify(string url)
+    public async Task<SparcDomain?> Verify(string url)
     {
-        var domain = new SparcDomain(url);
-        var page = SparcDomain.ToNormalizedUri(url);
+        try
+        {
+            var domain = new SparcDomain(url);
+            var page = SparcDomain.ToNormalizedUri(url);
 
-        return page == null ? null : domain;
+            if (page == null || domain == null)
+                return null;
+
+            var existing = await Repository.Query
+                .Where(d => d.Domain == domain.Domain)
+                .FirstOrDefaultAsync();
+
+            return existing ?? domain;
+        }
+        catch { return null; }
     }
 
     public async Task<SparcDomain> RegisterAsync(string domainName)

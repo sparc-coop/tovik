@@ -1,5 +1,6 @@
 ﻿@page "/"
 @layout NewHomeLayout
+@using Tovik.Domains
 @using Tovik.Translation
 
 <div class="home-container @(IsPreviewing ? "previewing" : "")">
@@ -51,6 +52,10 @@
                 <input type="text" placeholder="Enter your website's URL" @bind=Url required />
                 <button class="primary-btn">Try Yourself</button>
             </form>
+            @if (ErrorMessage != null)
+            {
+                <span class="error-message">@ErrorMessage</span>
+            }
         </section>
 
         <div class="two">
@@ -101,12 +106,14 @@
 
 @inject ISparcAura Aura
 @inject TovikCrawler Crawler
+@inject TovikDomains Domains
 @code {
     [Parameter][SupplyParameterFromQuery] public required string Url { get; set; }
     BlossomAvatar? Avatar;
     bool IsACustomer;
     bool IsPreviewing;
     string? PreviewHtml;
+    string? ErrorMessage;
     string PreviewLang = Sparc.Blossom.Content.Language.All.OrderBy(x => Guid.NewGuid()).First().Id;
 
     protected override async Task OnInitializedAsync()
@@ -116,9 +123,23 @@
         Avatar = user.Avatar;
     }
 
-    void PreviewSite()
+    async Task PreviewSite()
     {
-        IsPreviewing = true;
+        ErrorMessage = null;
+        PreviewHtml = null;
+
+        var domain = await Domains.Verify(Url);
+        if (domain != null)
+        {
+            var mostTranslatedLang = domain.PagesPerLanguage.OrderByDescending(x => x.Value).Select(x => x.Key).FirstOrDefault();
+            PreviewLang = mostTranslatedLang
+                ?? Sparc.Blossom.Content.Language.All.OrderBy(x => Guid.NewGuid()).First().Id;
+            IsPreviewing = true;
+        }
+        else
+        {
+            ErrorMessage = "Please enter a valid URL.";
+        }
     }
 
     async Task UpdateLanguage(Sparc.Blossom.Content.Language lang)
