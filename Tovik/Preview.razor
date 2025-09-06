@@ -3,8 +3,16 @@
 @using Tovik.Domains
 @using Tovik.Translation
 
+<HeadContent>
+    <script type="text/javascript">
+        function changePreviewLanguage(iframe, lang) {
+            iframe.contentWindow.postMessage(lang);
+        }
+    </script>
+</HeadContent>
+
 <div class="home-container @(IsPreviewing ? "previewing" : "")">
-    <iframe srcdoc="@PreviewHtml">
+    <iframe srcdoc="@PreviewHtml" @ref=IFrame>
     </iframe>
 
     @if (IsPreviewing)
@@ -107,6 +115,7 @@
 @inject ISparcAura Aura
 @inject TovikCrawler Crawler
 @inject TovikDomains Domains
+@inject IJSRuntime Js
 @code {
     [Parameter][SupplyParameterFromQuery] public required string Url { get; set; }
     BlossomAvatar? Avatar;
@@ -115,12 +124,15 @@
     string? PreviewHtml;
     string? ErrorMessage;
     string PreviewLang = Sparc.Blossom.Content.Language.All.OrderBy(x => Guid.NewGuid()).First().Id;
+    ElementReference IFrame;
 
     protected override async Task OnInitializedAsync()
     {
         var user = await Aura.UserInfo();
         IsACustomer = user.HasProduct("Tovik");
         Avatar = user.Avatar;
+        if (!string.IsNullOrWhiteSpace(Url))
+            await PreviewSite();
     }
 
     async Task PreviewSite()
@@ -131,9 +143,15 @@
         var domain = await Domains.Verify(Url);
         if (domain != null)
         {
-            var mostTranslatedLang = domain.PagesPerLanguage.OrderByDescending(x => x.Value).Select(x => x.Key).FirstOrDefault();
+            var mostTranslatedLang = domain.PagesPerLanguage
+                .Where(x => Sparc.Blossom.Content.Language.All.Any(y => y.Id == x.Key))
+                .OrderByDescending(x => x.Value)
+                .Select(x => x.Key)
+                .FirstOrDefault();
+            
             PreviewLang = mostTranslatedLang
                 ?? Sparc.Blossom.Content.Language.All.OrderBy(x => Guid.NewGuid()).First().Id;
+            
             IsPreviewing = true;
         }
         else
@@ -145,7 +163,10 @@
     async Task UpdateLanguage(Sparc.Blossom.Content.Language lang)
     {
         PreviewLang = lang.Id;
-        PreviewHtml = await Crawler.PreviewAsync(Url, PreviewLang);
+        if (PreviewHtml == null)
+            PreviewHtml = await Crawler.PreviewAsync(Url, PreviewLang);
+        else
+            await Js.InvokeVoidAsync("changePreviewLanguage", IFrame, PreviewLang);
     }
 
     void Home()

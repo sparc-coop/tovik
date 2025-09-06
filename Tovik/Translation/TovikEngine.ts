@@ -22,6 +22,10 @@ export default class TovikEngine {
         const htmlLang = document.body.getAttribute('data-toviklang');
         if (htmlLang) {
             this.userLang = htmlLang;
+            window.addEventListener('message', async (event) => {
+                await this.setLanguage(event['data']);
+            });
+
             return this.userLang;
         }
 
@@ -53,8 +57,9 @@ export default class TovikEngine {
     }
 
     static async setLanguage(language) {
-        if (this.userLang != language && !document.body.getAttribute('data-toviklang')) {
-            await localStorage.setItem('tovik-lang', language);
+        if (this.userLang != language) {
+             if (!document.body.getAttribute('data-toviklang'))
+                await localStorage.setItem('tovik-lang', language);
             this.userLang = language;
             document.dispatchEvent(new CustomEvent('tovik-language-changed', { detail: this.userLang }));
         }
