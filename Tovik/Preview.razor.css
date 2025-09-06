@@ -18,6 +18,9 @@
   right: 0;
   transform: translateY(calc(100dvh - 90px));
 }
+.home-container.preview-first article {
+  transition: none !important;
+}
 .home-container > ::deep .language-select-container {
   position: fixed;
   bottom: 100px;
@@ -60,9 +63,9 @@ iframe {
 
 article {
   z-index: 1002;
-  transition: transform 0.8s ease-in-out;
   background-color: var(--blue-700);
   width: 100vw;
+  transition: transform 0.8s ease-in-out;
 }
 @media screen and (min-width: 800px) {
   article {

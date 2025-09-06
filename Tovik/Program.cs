@@ -26,6 +26,4 @@ builder.Services.AddHybridCache();
 
 var app = builder.Build();
 
-if (app is BlossomServerApplication server)
-    server.Host.MapGet("/internalpreview", async (TovikCrawler crawler, string url, string? lang) => Results.Content(await crawler.PreviewAsync(url, lang), "text/html"));
 await app.RunAsync<Html>();

@@ -5,13 +5,19 @@
 
 <HeadContent>
     <script type="text/javascript">
+        function initPreview(dotNet) {
+            window.addEventListener('message', (event) => {
+                dotNet.invokeMethodAsync('UpdateUrl', event.data);
+            });
+        }
+
         function changePreviewLanguage(iframe, lang) {
-            iframe.contentWindow.postMessage(lang);
+            iframe.contentWindow.postMessage('tovik-lang:' + lang);
         }
     </script>
 </HeadContent>
 
-<div class="home-container @(IsPreviewing ? "previewing" : "")">
+<div class="home-container @(IsPreviewing ? "previewing" : "") @(PreviewFirst ? "preview-first" : "")">
     <iframe srcdoc="@PreviewHtml" @ref=IFrame>
     </iframe>
 
@@ -56,7 +62,7 @@
             <p>
                 Tovik is a multilingual plugin that quietly translates your site into their native language, without relying on them to bring their own translator.
             </p>
-            <form @onsubmit=PreviewSite>
+            <form @onsubmit=GoToPreview>
                 <input type="text" placeholder="Enter your website's URL" @bind=Url required />
                 <button class="primary-btn">Try Yourself</button>
             </form>
@@ -117,13 +123,15 @@
 @inject TovikDomains Domains
 @inject IJSRuntime Js
 @code {
-    [Parameter][SupplyParameterFromQuery] public required string Url { get; set; }
+    [Parameter][SupplyParameterFromQuery] public string? Url { get; set; }
+    [Parameter][SupplyParameterFromQuery] public string? PreviewLang { get; set; }
     BlossomAvatar? Avatar;
     bool IsACustomer;
     bool IsPreviewing;
+    bool PreviewFirst;
     string? PreviewHtml;
+    string? PreviewUrl;
     string? ErrorMessage;
-    string PreviewLang = Sparc.Blossom.Content.Language.All.OrderBy(x => Guid.NewGuid()).First().Id;
     ElementReference IFrame;
 
     protected override async Task OnInitializedAsync()
@@ -131,8 +139,38 @@
         var user = await Aura.UserInfo();
         IsACustomer = user.HasProduct("Tovik");
         Avatar = user.Avatar;
-        if (!string.IsNullOrWhiteSpace(Url))
+        PreviewFirst = !string.IsNullOrWhiteSpace(Url);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await Js.InvokeVoidAsync("initPreview", DotNetObjectReference.Create(this));
+    }
+
+    [JSInvokable]
+    public async Task UpdateUrl(string url)
+    {
+        if (url != Url)
+        {
+            Url = url;
+            PreviewHtml = await Crawler.PreviewAsync(Url, PreviewLang);
+            StateHasChanged();
+        }
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (!string.IsNullOrWhiteSpace(Url) && Url != PreviewUrl)
+        {
+            PreviewUrl = Url;
             await PreviewSite();
+        }
+    }
+
+    void GoToPreview()
+    {
+        Nav.NavigateTo($"/?url={Url}");
     }
 
     async Task PreviewSite()
@@ -148,10 +186,10 @@
                 .OrderByDescending(x => x.Value)
                 .Select(x => x.Key)
                 .FirstOrDefault();
-            
+
             PreviewLang = mostTranslatedLang
                 ?? Sparc.Blossom.Content.Language.All.OrderBy(x => Guid.NewGuid()).First().Id;
-            
+
             IsPreviewing = true;
         }
         else
@@ -164,16 +202,18 @@
     {
         PreviewLang = lang.Id;
         if (PreviewHtml == null)
+        {
             PreviewHtml = await Crawler.PreviewAsync(Url, PreviewLang);
+            StateHasChanged();
+        }
         else
+        {
             await Js.InvokeVoidAsync("changePreviewLanguage", IFrame, PreviewLang);
+        }
     }
 
     void Home()
     {
         IsPreviewing = false;
     }
-
-    void MyWebsites() => Nav.NavigateTo("/sites");
-    void Purchase() => Nav.NavigateTo("/purchase");
 }

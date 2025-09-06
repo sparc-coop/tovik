@@ -5,7 +5,7 @@ namespace Tovik.Translation;
 
 public class TovikCrawler(IConfiguration config)
 {
-    public async Task<string> PreviewAsync(string url, string? lang)
+    public async Task<string> PreviewAsync(string url, string? lang = null)
     {
         var domain = new SparcDomain(url).ToUri();
         var page = SparcDomain.ToNormalizedUri(url);
@@ -67,7 +67,8 @@ public class TovikCrawler(IConfiguration config)
                 if (Uri.TryCreate(href, UriKind.RelativeOrAbsolute, out var uri) && !uri.IsAbsoluteUri)
                     href = new Uri(domain, uri).ToString();
 
-                link.SetAttributeValue("href", $"{tovik}/internalpreview?url={href}" + (lang != null ? $"&previewlang={lang}" : ""));
+                link.SetAttributeValue("href", "#");
+                link.SetAttributeValue("onclick", $"window.parent.postMessage('{href}'); return false;");
             }
         }
 

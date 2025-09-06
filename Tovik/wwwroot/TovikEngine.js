@@ -1,6 +1,6 @@
 import MD5 from "./MD5.js";
 import db from './TovikDb.js';
-const baseUrl = true || window.location.href.includes('localhost')
+const baseUrl = window.location.href.includes('localhost')
     ? 'https://localhost:7185'
     : 'https://sparcengine-preview-gzbxcbaqayb4bkhz.centralus-01.azurewebsites.net';
 export default class TovikEngine {
@@ -19,7 +19,11 @@ export default class TovikEngine {
         if (htmlLang) {
             this.userLang = htmlLang;
             window.addEventListener('message', async (event) => {
-                await this.setLanguage(event['data']);
+                var lang = event['data'];
+                if (lang && lang.startsWith('tovik-lang')) {
+                    lang = lang.split(':')[1];
+                    await this.setLanguage(lang);
+                }
             });
             return this.userLang;
         }
