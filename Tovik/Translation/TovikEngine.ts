@@ -95,13 +95,17 @@ export default class TovikEngine {
         return result;
     }
 
-    static async getOne(item, fromLang) {
-        var request = TovikEngine.toRequest(item, fromLang);
+    static async getUntranslated(items, fromLang) {
+        if (!items.length)
+            return [];
+
+        const requests = items.map(item => TovikEngine.toRequest(item, fromLang));
+
         if (!this.userLang) {
             await this.getUserLanguage();
         }
 
-        var result = await this.fetch('translate/single', request, this.userLang);
+        var result = await this.fetch('translate/untranslated', { content: requests, additionalContext: document.body.innerText }, this.userLang);
         return result;
     }
 
@@ -119,19 +123,33 @@ export default class TovikEngine {
             text: textMap(item.element)
         }));
 
-        const newTranslations = await TovikEngine.getFromCache(textsToTranslate, fromLang);
-        if (newTranslations) {
-            await Promise.all(pendingTranslations.map(async item => {
-                let translation = newTranslations.find(t => t.id === item.hash);
-                if (!translation)
-                    translation = await TovikEngine.getOne({ hash: item.hash, text: textMap(item.element) }, fromLang);
+        const existingTranslations = await TovikEngine.getFromCache(textsToTranslate, fromLang);
+        if (existingTranslations) {
+            for (let translation of existingTranslations) {
+                const pending = pendingTranslations.find(item => item.hash === translation.id);
+                if (pending) {
+                    onTranslation(pending.element, translation);
+                    db.translations.put(translation);
+                }
+            }
+        }
 
-                if (translation) {
+        const untranslated = textsToTranslate.filter(item => !existingTranslations.some(t => t.id === item.hash));
+        const batches = [];
+        for (let i = 0; i < untranslated.length; i += 25) {
+            batches.push(untranslated.slice(i, i + 25));
+        }
+
+        await Promise.all(batches.map(async batch => {
+            let newTranslations = await TovikEngine.getUntranslated(batch, fromLang);
+            for (let translation of newTranslations) {
+                const item = pendingTranslations.find(item => item.hash === translation.id);
+                if (item) {
                     onTranslation(item.element, translation);
                     db.translations.put(translation);
                 }
-            }));
-        }
+            }
+        }));
 
         for (let i = 0; i < progress.length; i++) {
             progress[i].classList.remove('show');

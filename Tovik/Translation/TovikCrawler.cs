@@ -46,6 +46,11 @@ public class TovikCrawler(IConfiguration config)
         if (baseTag == null)
         {
             var head = doc.DocumentNode.SelectSingleNode("//head");
+            if (head == null)
+            {
+                head = doc.CreateElement("head");
+                doc.DocumentNode.PrependChild(head);
+            }
             baseTag = doc.CreateElement("base");
             head.PrependChild(baseTag);
         }
