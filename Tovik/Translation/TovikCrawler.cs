@@ -35,7 +35,11 @@ public class TovikCrawler(IConfiguration config)
 
             body.SetAttributeValue("data-tovikdomain", domain.Host);
             body.SetAttributeValue("data-tovikpath", domain.AbsolutePath);
+
             body.AddClass("tovik-translating");
+            var css = doc.CreateElement("style");
+            css.InnerHtml = "body.tovik-translating { opacity: 0 !important; }";
+            body.PrependChild(css);
 
             // Inject lang into data-lang attribute of html
             if (lang != null)
@@ -54,11 +58,6 @@ public class TovikCrawler(IConfiguration config)
             }
             baseTag = doc.CreateElement("base");
             head.PrependChild(baseTag);
-
-            var css = doc.CreateElement("style");
-            css.InnerHtml = "body.tovik-translating { opacity: 0 !important; }";
-            head.AppendChild(css);
-
         }
         baseTag.SetAttributeValue("href", domain.GetLeftPart(UriPartial.Authority));
 
