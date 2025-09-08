@@ -1,6 +1,7 @@
 .home-container {
     iframe {
         display: none;
+        background-color: var(--blue-500);
     }
 
     &.previewing {

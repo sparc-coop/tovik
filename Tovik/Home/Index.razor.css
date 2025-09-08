@@ -1,5 +1,6 @@
 ﻿.home-container iframe {
   display: none;
+  background-color: var(--blue-500);
 }
 .home-container.previewing {
   position: fixed;

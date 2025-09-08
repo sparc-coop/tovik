@@ -120,7 +120,7 @@ export default class TovikEngine {
 
     static async translateAll(pendingTranslations, textMap, fromLang, onTranslation) {
         if (!pendingTranslations.length)
-                return;
+            return;
 
         var progress = document.querySelectorAll('.language-select-progress-bar');
         for (let i = 0; i < progress.length; i++) {
