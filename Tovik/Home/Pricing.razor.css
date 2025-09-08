@@ -1,5 +1,5 @@
 ﻿.pricing {
-  margin: 120px 10px 0;
+  margin: 0 10px 0;
   background: rgba(79, 129, 153, 0.2);
   border: 1px solid rgba(219, 243, 252, 0.2);
   border-radius: 24px;
@@ -40,7 +40,7 @@
 }
 .pricing ul {
   list-style: none;
-  margin-top: 80px;
+  margin-top: 32px;
 }
 .pricing ul li {
   background: url("/images/Star.svg") no-repeat left 8px;
@@ -55,21 +55,4 @@
 }
 .pricing ul strong {
   color: var(--orange-300);
-}
-@media screen and (min-width: 800px) {
-  .pricing {
-    align-items: center;
-    flex-direction: row;
-    gap: 20vw;
-    padding: 32px;
-    margin: 120px auto 0;
-    max-width: 1200px;
-    box-sizing: border-box;
-  }
-  .pricing header {
-    align-items: flex-start;
-  }
-  .pricing ul {
-    margin-top: 0;
-  }
 }

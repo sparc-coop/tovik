@@ -49,7 +49,7 @@ p.tovik-translating, div.tovik-translating, span.tovik-translating {
     background-position: 0 50%;
   }
 }
-.error-message {
+.error-message, #error-message {
   font-size: 1.6rem;
   color: var(--orange-300);
 }
@@ -80,12 +80,6 @@ html, body {
   margin: 0;
   position: relative;
   background: var(--blue-700);
-  overflow-x: hidden;
-}
-@media screen and (min-width: 1024px) {
-  html, body {
-    overflow-x: initial;
-  }
 }
 
 html ::-webkit-scrollbar, body ::-webkit-scrollbar {

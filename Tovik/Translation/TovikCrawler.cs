@@ -68,7 +68,7 @@ public class TovikCrawler(IConfiguration config)
                     href = new Uri(domain, uri).ToString();
 
                 link.SetAttributeValue("href", "#");
-                link.SetAttributeValue("onclick", $"window.parent.postMessage('{href}'); return false;");
+                link.SetAttributeValue("onclick", $"window.parent.postMessage('tovik-url:{href}'); return false;");
             }
         }
 

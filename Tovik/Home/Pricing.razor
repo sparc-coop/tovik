@@ -1,41 +1,50 @@
 ﻿<div class="pricing">
     <header>
-        <h3>Honest price</h3>
+        <h3>Get Tovik</h3>
         <div>
             <h4>@Product?.FormattedPrice</h4>
             <h5>one time</h5>
         </div>
-        <a class="button primary-btn desktop-only" href="/purchase">Buy Now</a>
+        @if (OnClick.HasDelegate)
+        {
+            <button class="primary-btn desktop-only" @onclick=OpenPurchaseSidebar>Buy Now</button>
+        }
     </header>
     <ul>
         <li>
-            <strong>Unlimited</strong> languages
+            Up to <strong>500</strong> pages
         </li>
         <li>
             <strong>Unlimited</strong> page views
         </li>
         <li>
-            <strong>Unlimited</strong> domains
+            <strong>Unlimited</strong> languages and dialects
         </li>
         <li>
-            Up to <strong>500</strong> translated pages
-        </li>
-        <li>
-            No subscriptions or hidden fees
+            <strong>Zero</strong> subscriptions or hidden fees, ever
         </li>
     </ul>
-    <footer class="mobile-only">
-        <a class="button primary-btn" href="/purchase">Buy Now</a>
-    </footer>
+    @if (OnClick.HasDelegate)
+    {
+        <footer class="mobile-only">
+            <button class="primary-btn" @onclick=OpenPurchaseSidebar>Buy Now</button>
+        </footer>
+    }
 </div>
 
 @inject ISparcBilling Billing
 @inject Microsoft.Extensions.Configuration.IConfiguration Config
 @code {
+    [Parameter] public EventCallback OnClick { get; set; }
     GetProductResponse? Product;
-    
+
     protected override async Task OnInitializedAsync()
     {
         Product = await Billing.GetProductAsync(Config["ProductId"]!);
+    }
+
+    async Task OpenPurchaseSidebar()
+    {
+        await OnClick.InvokeAsync();
     }
 }

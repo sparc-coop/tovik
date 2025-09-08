@@ -32,7 +32,7 @@ main .hero-img ::deep svg {
   height: auto;
 }
 main .hero-background {
-  width: 827px;
+  width: 100vw;
   height: auto;
   position: absolute;
   top: 0;
@@ -43,6 +43,8 @@ main .hero-background {
 }
 main .hero-background ::deep svg {
   width: 100%;
+  max-width: 100vw;
+  box-sizing: border-box;
   height: auto;
 }
 main ::deep article {

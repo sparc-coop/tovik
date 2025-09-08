@@ -67,9 +67,27 @@ article {
   width: 100vw;
   transition: transform 0.8s ease-in-out;
 }
+article ::deep .pricing {
+  margin-top: 80px;
+}
 @media screen and (min-width: 800px) {
   article {
     width: auto;
+  }
+  article ::deep .pricing {
+    align-items: center;
+    flex-direction: row;
+    gap: 20vw;
+    padding: 32px;
+    margin: 80px auto 0;
+    max-width: 1200px;
+    box-sizing: border-box;
+  }
+  article ::deep .pricing header {
+    align-items: flex-start;
+  }
+  article ::deep .pricing ul {
+    margin-top: 0;
   }
 }
 article > header {
@@ -179,6 +197,39 @@ article > section form button {
 }
 .two > section img {
   height: 30px;
+}
+
+.purchase-sidebar {
+  position: fixed;
+  top: 0;
+  right: -600px;
+  bottom: 0;
+  background-color: var(--blue-600);
+  padding: 0;
+  border-left: 1px solid var(--blue-200);
+  max-width: min(90vw, 400px);
+  overflow-y: auto;
+  z-index: 1400;
+  transition: transform 0.3s ease-in-out;
+}
+.purchase-sidebar.open {
+  transform: translateX(-600px);
+}
+.purchase-sidebar ::deep > div {
+  padding: 16px;
+}
+.purchase-sidebar > header {
+  text-align: right;
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 16px;
+  z-index: 1500;
+  background-color: var(--blue-600);
+}
+.purchase-sidebar > header ::deep svg path {
+  stroke: white;
 }
 
 ::deep .language-select {

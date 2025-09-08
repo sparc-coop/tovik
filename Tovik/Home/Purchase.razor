@@ -1,24 +1,22 @@
-﻿@page "/purchase"
-@layout HomeLayout
-
-<HeadContent>
-    <script src="https://js.stripe.com/v3"></script>
-</HeadContent>
-
-<article class="home">
-    <div class="page-container">
-        @if (User != null)
-        {
-            <section>
-                <GlobalBiller ProductId="Tovik" StripeProductId="@StripeProductId" Avatar="User.Avatar" Appearance="Appearance" />
-            </section>
-        }
-    </div>
-</article>
+﻿<div>
+    @if (PaymentIntentId == null)
+    {
+        <Tovik.Home.Pricing />
+    }
+    
+    @if (User != null)
+    {
+        <section>
+            <GlobalBiller ProductId="Tovik" Domain="@Domain" StripeProductId="@StripeProductId" Avatar="User.Avatar" Appearance="Appearance" />
+        </section>
+    }
+</div>
 
 @inject IConfiguration Config
 @inject ISparcAura Aura
 @code {
+    [Parameter] public string? Domain { get; set; }
+    [Parameter] [SupplyParameterFromQuery] public string? PaymentIntentId { get; set; }
     string? StripeProductId;
     BlossomUser? User;
     StripeAppearance? Appearance = new()

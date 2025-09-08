@@ -1,12 +1,10 @@
-::deep .currency-selector {
-    background-color: var(--blue-600);
+section {
+    margin-top: 32px;
+}
 
+::deep .currency-selector {
     &:after {
         border-top: 5px solid white;
-    }
-
-    select {
-        background-color: var(--blue-600);
     }
 
     .progress-bar-value {
@@ -20,6 +18,32 @@
 
 ::deep p {
     margin-bottom: 16px;
+}
+
+::deep label span, ::deep .currency-selector-container header h4 {
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    font-family: inherit;
+}
+
+::deep .currency-selector-container {
+    margin-bottom: 32px;
+
+    header h4 {
+        margin-bottom: 4px;
+    }
+}
+
+::deep input, ::deep select, ::deep .currency-selector {
+    background-color: var(--blue-500);
+
+    &::placeholder {
+        color: #d8dee0;
+    }
+}
+
+::deep input, ::deep .currency-selector {
+    border: 1px solid #052738 !important;
 }
 
 ::deep .purchased {

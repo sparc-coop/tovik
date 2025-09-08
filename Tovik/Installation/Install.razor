@@ -53,6 +53,9 @@
                         If that’s all you need, you’re good to go. But if you want to give users more control or tailor what gets translated, keep reading.
                     </p>
                 </div>
+                <footer>
+                    <a class="button primary-btn" href="/sites">Go To My Websites &rarr;</a>
+                </footer>
             </section>
         }
 
@@ -76,6 +79,9 @@
                     </ol>
                     <p>That's it! Your site will now start automatically translating all of your content based on your visitors' language preferences.</p>
                 </div>
+                <footer>
+                    <a class="button primary-btn" href="/sites">Go To My Websites &rarr;</a>
+                </footer>
             </section>
         }
 
@@ -101,6 +107,9 @@
                     </ol>
                     <p>That's it! Your site will now start automatically translating all of your content based on your visitors' language preferences.</p>
                 </div>
+                <footer>
+                    <a class="button primary-btn" href="/sites">Go To My Websites &rarr;</a>
+                </footer>
             </section>
         }
 
@@ -139,6 +148,9 @@
                         <li>Checkout pages generally do not support injected scripts.</li>
                     </ul>
                 </div>
+                <footer>
+                    <a class="button primary-btn" href="/sites">Go To My Websites &rarr;</a>
+                </footer>
             </section>
         }
 
@@ -168,6 +180,9 @@
                         <li>The effects of custom code appear in preview mode, but they won’t go live until your site is published. </li>
                     </ul>
                 </div>
+                <footer>
+                    <a class="button primary-btn" href="/sites">Go To My Websites &rarr;</a>
+                </footer>
             </section>
         }
 
@@ -198,6 +213,9 @@
                         <li>In Weebly’s site editor, scripts may not run. Always test on your published site.</li>
                     </ul>
                 </div>
+                <footer>
+                    <a class="button primary-btn" href="/sites">Go To My Websites &rarr;</a>
+                </footer>
             </section>
         }
 
@@ -225,6 +243,9 @@
                     </ol>
                     <p>That's it! Your site will now start automatically translating all of your content based on your visitors' language preferences.</p>
                 </div>
+                <footer>
+                    <a class="button primary-btn" href="/sites">Go To My Websites &rarr;</a>
+                </footer>
             </section>
         }
 
@@ -236,17 +257,6 @@
             <div>
                 <p>Our team will help you install Tovik on your site completely free! Yes, really!</p>
                 <p>Just send us a note at <a href="mailto:support@sparc.coop">support@sparc.coop</a>. It doesn't matter what language you speak, or what your technical expertise is, we'll be ready to help.</p>
-            </div>
-        </section>
-
-        <section class="step-1">
-            <header>
-                <aside>Step 2</aside>
-                <h3>Register Your Domain on Tovik</h3>
-            </header>
-            <div>
-                <p>Now, enter the domain name of the website where you just installed the Tovik plugin. Tovik will verify that it is installed correctly and will start tracking your page usage.</p>
-                <Tovik.Domains.AddDomain />
             </div>
         </section>
 
@@ -322,6 +332,13 @@
     [Parameter] public string SelectedPlatform { get; set; } = "WordPress";
     List<string> Platforms = ["WordPress", "Wix", "SquareSpace", "Webflow", "Weebly", "Shopify", "HTML"];
     List<string> ComingSoon = [];
+
+    protected override void OnInitialized()
+    {
+        if (string.IsNullOrWhiteSpace(SelectedPlatform))
+            Select("WordPress");
+    }
+
     private void Select(string platform)
     {
         Nav.NavigateTo($"/install/{platform}");

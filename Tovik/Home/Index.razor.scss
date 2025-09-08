@@ -79,8 +79,30 @@ article {
     width: 100vw;
     transition: transform 0.8s ease-in-out;
 
+    ::deep .pricing {
+        margin-top: 80px;
+    }
+
     @media screen and (min-width: 800px) {
         width: auto;
+
+        ::deep .pricing {
+            align-items: center;
+            flex-direction: row;
+            gap: 20vw;
+            padding: 32px;
+            margin: 80px auto 0;
+            max-width: 1200px;
+            box-sizing: border-box;
+
+            header {
+                align-items: flex-start;
+            }
+
+            ul {
+                margin-top: 0;
+            }
+        }
     }
 
     > header {
@@ -203,6 +225,42 @@ article {
     }
 }
 
+.purchase-sidebar {
+    position: fixed;
+    top: 0;
+    right: -600px;
+    bottom: 0;
+    background-color: var(--blue-600);
+    padding: 0;
+    border-left: 1px solid var(--blue-200);
+    max-width: min(90vw, 400px);
+    overflow-y: auto;
+    z-index: 1400;
+    transition: transform 0.3s ease-in-out;
+
+    &.open {
+        transform: translateX(-600px);
+    }
+
+    ::deep > div {
+        padding: 16px;
+    }
+
+    > header {
+        text-align: right;
+        position: sticky;
+        top: 0;
+        left: 0;
+        right: 0;
+        padding: 16px;
+        z-index: 1500;
+        background-color: var(--blue-600);
+
+        ::deep svg path {
+            stroke: white;
+        }
+    }
+}
 
 ::deep .language-select {
     background-color: var(--blue-600);

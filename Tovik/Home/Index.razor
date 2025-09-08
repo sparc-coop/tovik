@@ -7,7 +7,10 @@
     <script type="text/javascript">
         function initPreview(dotNet) {
             window.addEventListener('message', (event) => {
-                dotNet.invokeMethodAsync('UpdateUrl', event.data);
+                if (event.data && event.data.startsWith && event.data.startsWith('tovik')) {
+                    let url = event.data.replace('tovik-url:', '');
+                    dotNet.invokeMethodAsync('UpdateUrl', url);
+                }
             });
         }
 
@@ -15,6 +18,7 @@
             iframe.contentWindow.postMessage('tovik-lang:' + lang);
         }
     </script>
+    <script src="https://js.stripe.com/v3"></script>
 </HeadContent>
 
 <div class="home-container @(IsPreviewing ? "previewing" : "") @(PreviewFirst ? "preview-first" : "")">
@@ -48,10 +52,10 @@
                 }
                 else
                 {
-                    <a class="button primary-btn mobile-only" href="/purchase">
+                    <button class="primary-btn mobile-only" @onclick=TogglePurchaseSidebar>
                         <BuyIcon />
-                    </a>
-                    <a class="button primary-btn desktop-only" href="/purchase">Purchase</a>
+                    </button>
+                    <button class="primary-btn desktop-only" @onclick=TogglePurchaseSidebar>Purchase</button>
                 }
             </div>
         </header>
@@ -64,7 +68,7 @@
             </p>
             <form @onsubmit=GoToPreview>
                 <input type="text" placeholder="Enter your website's URL" @bind=Url required />
-                <button class="primary-btn">Try Yourself</button>
+                <button class="primary-btn">Try Tovik</button>
             </form>
             @if (ErrorMessage != null)
             {
@@ -114,9 +118,18 @@
             </section>
         </div>
 
-        <Tovik.Installation.Pricing />
+        <Tovik.Home.Pricing OnClick="TogglePurchaseSidebar" />
     </article>
 </div>
+
+<aside class="purchase-sidebar @(IsPurchaseSidebarOpen ? "open" : "")">
+    <header>
+        <button @onclick=TogglePurchaseSidebar>
+            <Sparc.Blossom.Authentication.Icons.XIcon />
+        </button>
+    </header>
+    <Tovik.Home.Purchase Domain="@PreviewUrl" />
+</aside>
 
 @inject ISparcAura Aura
 @inject TovikCrawler Crawler
@@ -125,6 +138,7 @@
 @code {
     [Parameter][SupplyParameterFromQuery] public string? Url { get; set; }
     [Parameter][SupplyParameterFromQuery] public string? PreviewLang { get; set; }
+    [Parameter][SupplyParameterFromQuery] public string? PaymentIntentId { get; set; }
     bool IsACustomer;
     bool IsPreviewing;
     bool PreviewFirst;
@@ -132,12 +146,16 @@
     string? PreviewUrl;
     string? ErrorMessage;
     ElementReference IFrame;
+    bool IsPurchaseSidebarOpen;
+    void TogglePurchaseSidebar() => IsPurchaseSidebarOpen = !IsPurchaseSidebarOpen;
 
     protected override async Task OnInitializedAsync()
     {
         var domains = await Domains.All();
         IsACustomer = domains.Any();
         PreviewFirst = !string.IsNullOrWhiteSpace(Url);
+        if (PaymentIntentId != null)
+            IsPurchaseSidebarOpen = true;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
