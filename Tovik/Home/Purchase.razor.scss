@@ -34,7 +34,7 @@ section {
     }
 }
 
-::deep input, ::deep select, ::deep .currency-selector {
+::deep input, ::deep select, ::deep option, ::deep .currency-selector {
     background-color: var(--blue-500);
 
     &::placeholder {

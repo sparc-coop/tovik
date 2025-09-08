@@ -1,4 +1,5 @@
-﻿<div class="pricing">
+﻿@using Sparc.Blossom.Realtime
+<div class="pricing">
     <header>
         <h3>Get Tovik</h3>
         <div>
@@ -34,6 +35,7 @@
 
 @inject ISparcBilling Billing
 @inject Microsoft.Extensions.Configuration.IConfiguration Config
+@inject SparcEvents Events
 @code {
     [Parameter] public EventCallback OnClick { get; set; }
     GetProductResponse? Product;
@@ -41,6 +43,13 @@
     protected override async Task OnInitializedAsync()
     {
         Product = await Billing.GetProductAsync(Config["ProductId"]!);
+        Events.CurrencyChanged += OnCurrencyChanged;
+    }
+
+    private async Task OnCurrencyChanged(SparcCurrency currency)
+    {
+        Product = await Billing.GetProductAsync(Config["ProductId"]!, currency.Id);
+        StateHasChanged();
     }
 
     async Task OpenPurchaseSidebar()
