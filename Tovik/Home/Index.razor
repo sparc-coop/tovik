@@ -124,14 +124,17 @@
     </article>
 </div>
 
-<aside class="purchase-sidebar @(IsPurchaseSidebarOpen ? "open" : "")">
-    <header>
-        <button @onclick=TogglePurchaseSidebar>
-            <Sparc.Blossom.Authentication.Icons.XIcon />
-        </button>
-    </header>
-    <Tovik.Home.Purchase Domain="@PreviewUrl" />
-</aside>
+@if (IsPurchaseSidebarInitialized)
+{
+    <aside class="purchase-sidebar @(IsPurchaseSidebarOpen ? "open" : "")">
+        <header>
+            <button @onclick=TogglePurchaseSidebar>
+                <Sparc.Blossom.Authentication.Icons.XIcon />
+            </button>
+        </header>
+        <Tovik.Home.Purchase Domain="@PreviewUrl" />
+    </aside>
+}
 
 @inject ISparcAura Aura
 @inject TovikCrawler Crawler
@@ -149,7 +152,7 @@
     string? ErrorMessage;
     ElementReference IFrame;
     bool IsPurchaseSidebarOpen;
-    void TogglePurchaseSidebar() => IsPurchaseSidebarOpen = !IsPurchaseSidebarOpen;
+    bool IsPurchaseSidebarInitialized;
 
     protected override async Task OnInitializedAsync()
     {
@@ -158,6 +161,15 @@
         PreviewFirst = !string.IsNullOrWhiteSpace(Url);
         if (PaymentIntentId != null)
             IsPurchaseSidebarOpen = true;
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (!string.IsNullOrWhiteSpace(Url) && Url != PreviewUrl)
+        {
+            PreviewUrl = Url;
+            await PreviewSite();
+        }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -177,13 +189,10 @@
         }
     }
 
-    protected override async Task OnParametersSetAsync()
+    void TogglePurchaseSidebar()
     {
-        if (!string.IsNullOrWhiteSpace(Url) && Url != PreviewUrl)
-        {
-            PreviewUrl = Url;
-            await PreviewSite();
-        }
+        IsPurchaseSidebarInitialized = true;
+        IsPurchaseSidebarOpen = !IsPurchaseSidebarOpen;
     }
 
     void GoToPreview()

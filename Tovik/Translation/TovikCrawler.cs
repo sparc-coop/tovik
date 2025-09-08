@@ -12,9 +12,15 @@ public class TovikCrawler(IConfiguration config)
         string html = "";
         try
         {
-            var client = new HttpClient();
+            var handler = new HttpClientHandler()
+            {
+                AutomaticDecompression = System.Net.DecompressionMethods.All
+            };
+
+            var client = new HttpClient(handler);
             client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (compatible; https://tovik.app)");
             html = await client.GetStringAsync(page);
+            Console.WriteLine(html);
         }
         catch (Exception e)
         {
