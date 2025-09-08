@@ -40,16 +40,8 @@
     "inputFile": "Domains/DeleteModal.razor.scss"
   },
   {
-    "outputFile": "Installation/Demo.razor.css",
-    "inputFile": "Installation/Demo.razor.scss"
-  },
-  {
-    "outputFile": "Installation/DemoComponent.razor.css",
-    "inputFile": "Installation/DemoComponent.razor.scss"
-  },
-  {
-    "outputFile": "Index.razor.css",
-    "inputFile": "Index.razor.scss"
+    "outputFile": "Home/Index.razor.css",
+    "inputFile": "Home/Index.razor.scss"
   },
   {
     "outputFile": "Shared/HomeLayout.razor.css",
@@ -60,27 +52,27 @@
     "inputFile": "Installation/Credits.razor.scss"
   },
   {
-    "outputFile": "Installation/Questions.razor.css",
-    "inputFile": "Installation/Questions.razor.scss"
+    "outputFile": "Home/Questions.razor.css",
+    "inputFile": "Home/Questions.razor.scss"
   },
   {
     "outputFile": "Domains/AddDomain.razor.css",
     "inputFile": "Domains/AddDomain.razor.scss"
   },
   {
-    "outputFile": "Preview.razor.css",
-    "inputFile": "Preview.razor.scss"
+    "outputFile": "Home/Index.razor.css",
+    "inputFile": "Home/Index.razor.scss"
   },
   {
-    "outputFile": "Purchase.razor.css",
-    "inputFile": "Purchase.razor.scss"
+    "outputFile": "Home/Purchase.razor.css",
+    "inputFile": "Home/Purchase.razor.scss"
   },
   {
     "outputFile": "Shared/NewHomeLayout.razor.css",
     "inputFile": "Shared/NewHomeLayout.razor.scss"
   },
   {
-    "outputFile": "Installation/Pricing.razor.css",
-    "inputFile": "Installation/Pricing.razor.scss"
+    "outputFile": "Home/Pricing.razor.css",
+    "inputFile": "Home/Pricing.razor.scss"
   }
 ]
