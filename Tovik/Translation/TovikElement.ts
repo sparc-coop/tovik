@@ -133,8 +133,6 @@ export default class TovikElement extends HTMLElement {
     async translateTextNodes(textNodes) {
         let pendingTranslations = [];
 
-        document.body.classList.add('tovik-translating');
-
         await Promise.all(textNodes.map(async textNode => {
             if (!textNode.textContent)
                 return;

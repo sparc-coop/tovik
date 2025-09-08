@@ -20,7 +20,7 @@ export default class TovikEngine {
             this.userLang = htmlLang;
             window.addEventListener('message', async (event) => {
                 var lang = event['data'];
-                if (lang && lang.startsWith('tovik-lang')) {
+                if (lang && lang.startsWith && lang.startsWith('tovik-lang')) {
                     lang = lang.split(':')[1];
                     await this.setLanguage(lang);
                 }
@@ -54,6 +54,8 @@ export default class TovikEngine {
         if (this.userLang != language) {
             if (!document.body.getAttribute('data-toviklang'))
                 await localStorage.setItem('tovik-lang', language);
+            else
+                document.body.classList.add('tovik-translating');
             this.userLang = language;
             document.dispatchEvent(new CustomEvent('tovik-language-changed', { detail: this.userLang }));
         }
