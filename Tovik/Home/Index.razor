@@ -81,9 +81,9 @@
             <section>
                 <header>
                     <img src="/images/Star.svg" alt="Star" />
-                    <h2>600+ Dialects Supported</h2>
+                    <h2>130+ Languages, 600+ Dialects</h2>
                 </header>
-                <p>Because every region, every voice, and every nuance deserves to be understood on its own terms.</p>
+                <p>Your visitors deserve to engage with your content in the language that feels like home.</p>
             </section>
             <section>
                 <header>
@@ -95,9 +95,9 @@
             <section>
                 <header>
                     <img src="/images/Star.svg" alt="Star" />
-                    <h2>We Don't Track Anyone</h2>
+                    <h2>No Invasive Tracking</h2>
                 </header>
-                <p>No cookies, no fingerprints, no surveillance, no data harvesting. Just simple, respectful translation.</p>
+                <p>Zero unnecessary cookies, zero fingerprints, zero surveillance, zero data harvesting. Just simple, respectful translation.</p>
             </section>
             <section>
                 <header>
@@ -211,13 +211,7 @@
         var domain = await Domains.Verify(Url);
         if (domain != null)
         {
-            var mostTranslatedLang = domain.PagesPerLanguage
-                .Where(x => Sparc.Blossom.Content.Language.All.Any(y => y.Id == x.Key))
-                .OrderByDescending(x => x.Value)
-                .Select(x => x.Key)
-                .FirstOrDefault();
-
-            PreviewLang = mostTranslatedLang
+            PreviewLang = domain.LastTranslatedLanguage
                 ?? Sparc.Blossom.Content.Language.Random.Id;
 
             IsPreviewing = true;

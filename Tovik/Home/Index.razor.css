@@ -84,9 +84,6 @@ article ::deep .pricing {
     max-width: 1200px;
     box-sizing: border-box;
   }
-  article ::deep .pricing header {
-    align-items: flex-start;
-  }
   article ::deep .pricing ul {
     margin-top: 0;
   }

@@ -3,7 +3,7 @@ import db from './TovikDb.js';
 
 const baseUrl = window.location.href.includes('localhost')
     ? 'https://localhost:7185'
-    : 'https://sparcengine-preview-gzbxcbaqayb4bkhz.centralus-01.azurewebsites.net';
+    : 'https://engine.sparc.coop';
 
 export default class TovikEngine {
     static userLang;

@@ -19,6 +19,11 @@
 .pricing header a {
   width: auto;
 }
+.pricing header > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .pricing h3 {
   border: 1px solid var(--blue-200);
   border-radius: 15px;
