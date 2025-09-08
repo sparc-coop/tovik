@@ -47,26 +47,10 @@
                 <h3>Tovik Usage</h3>
             </header>
 
-            @if (IsTrial)
-            {
-                <p>Your free trial of Tovik includes @Limit.ToString("N0") pages, with no time limits or restrictions.</p>
-            }
-            else
-            {
-                <p>Thank you for supporting Tovik with your purchase of Tovik Pro!</p>
-            }
-
             <div>
                 <h4>Pages Translated</h4>
                 <UsageMeter Usage=Usage Limit=Limit />
             </div>
-
-            @if (IsTrial)
-            {
-                <footer>
-                    <button class="primary-btn" @onclick=Buy>Upgrade to Tovik Pro</button>
-                </footer>
-            }
         </section>
     </div>
 </article>
@@ -80,37 +64,19 @@
 @code {
     List<SparcDomain> Domains = new();
     IEnumerable<Sparc.Blossom.Content.Language> Languages = [];
-    GetProductResponse? Product;
     [SupplyParameterFromQuery] public string? Welcome { get; set; }
 
     int Usage;
     int Limit;
-    bool IsTrial => Limit <= 20;
 
     protected override async Task OnInitializedAsync()
     {
         var user = await Aura.UserInfo();
-        var product = user.Product("Tovik");
-
-        var options = Welcome == "Sapient" || Welcome == "Morbidology"
-            ? new SparcProductActivationOptions(40)
-            : null;
-
-        if (product == null) // Start free trial
-            product = await Aura.Activate("Tovik", options);
 
         await LoadDomains();
-        Limit = product.MaxUsage;
+        Limit = Domains.Sum(x => x.Products.Sum(y => y.MaxUsage));
         Usage = Domains.Sum(d => d.TovikUsage);
         Languages = await Tovik.GetLanguages();
-        Product = await Billing.GetProductAsync(Config["ProductId"]!);
-    }
-
-    private async Task Buy()
-    {
-        var totp = await Aura.GetSparcCode();
-        if (totp != null)
-            Nav.NavigateTo($"{Config["SparcStore"]}?_auth=totp:{totp.Code}");
     }
 
     private async Task LoadDomains()

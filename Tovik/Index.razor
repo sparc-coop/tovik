@@ -1,156 +1,220 @@
-﻿@page "/home"
-@page "/sapient"
-@page "/morbidology"
+﻿@page "/"
+@layout NewHomeLayout
+@using Tovik.Domains
+@using Tovik.Translation
 
-@using Sparc.Blossom.Authentication
-@using Tovik.Installation
-@layout HomeLayout
+<HeadContent>
+    <script type="text/javascript">
+        function initPreview(dotNet) {
+            window.addEventListener('message', (event) => {
+                dotNet.invokeMethodAsync('UpdateUrl', event.data);
+            });
+        }
 
-<PageTitle>Tovik</PageTitle>
+        function changePreviewLanguage(iframe, lang) {
+            iframe.contentWindow.postMessage('tovik-lang:' + lang);
+        }
+    </script>
+</HeadContent>
 
+<div class="home-container @(IsPreviewing ? "previewing" : "") @(PreviewFirst ? "preview-first" : "")">
+    <iframe srcdoc="@PreviewHtml" @ref=IFrame>
+    </iframe>
 
-@if (Avatar != null)
-{
-    <article class="home">
-        <div class="page-container">
-            @if (PersonalizedWelcome != null)
-            {
-                <section class="trial mini">
-                    <div>
-                        <h2>
-                            Welcome, @PersonalizedWelcome listener!
-                        </h2>
-                        <p>
-                            As a token of your support, you can translate <strong><s>20</s> 40</strong> pages (more than 2,000 words per page!) with Tovik Free!
-                        </p>
-                    </div>
-                    <div>
-                        <a class="button primary-btn" href="@WelcomeLink">Activate This Offer &rarr;</a>
-                    </div>
-                </section>
-            }
-            else if (IsACustomer)
-            {
-                <section class="trial mini">
-                    <h2>
-                        Welcome back, friend!
-                    </h2>
-                    <a class="button primary-btn" href="@WelcomeLink">Go To My Websites &rarr;</a>
-                </section>
-            }
+    @if (IsPreviewing)
+    {
+        <Sparc.Blossom.Content.LanguageSelector WithButton=true Visible=true InitialLanguageId="@PreviewLang" OnLanguageChanged="UpdateLanguage" />
+    }
 
-            <section class="demo">
-                <header>
-                    <img src="/images/site-frame.svg" alt="Web browser facade" />
-                </header>
-                <div>
-                    <h1>Your visitors deserve to experience your site in their language.</h1>
+    <article>
+        <div class="hero-background"><DashedLine Color="#FFD4BF" /></div>
+        <header>
+            <button @onclick=Home>
+                <img src="/images/TovikWordmark.svg" alt="Tovik" />
+            </button>
 
-                    <p>
-                        Tovik is a smart website plugin that automatically translates your entire website into your visitors' language. 130+ languages, zero setup, no translator plugins required.
-                    </p>
-
-                    <footer>
-                        <a class="button primary-btn" href="/install">Get Started</a>
-                    </footer>
-                </div>
-            </section>
-
-            <section class="preview">
-                <header>
-                    <h3>See Your Site with Tovik:</h3>
-                </header>
-                <form @onsubmit=Preview>
-                    <input type="text" @bind="Url" placeholder="Enter your website's URL" />
-                    <button class="primary-btn">Go</button>
-                </form>
-            </section>
-
-            <div class="two">
-                <section class="trial">
-                    <header>
-                        <img src="/images/Star.svg" alt="Star" />
-                        <h2>Free for small sites</h2>
-                    </header>
-                    <div>
-                        @if (PersonalizedWelcome == null)
-                        {
-                            <p>
-                                If your website's under 20 pages, Tovik is free forever. No signup, no credit card, no strings attached.
-                            </p>
-                        }
-                        else
-                        {
-                            <p>
-                                If your website's under <s>20</s> 40 pages, Tovik is free forever. No signup, no credit card, no strings attached.
-                            </p>
-
-                        }
-                    </div>
-                    <footer>
-                        <a class="button primary-btn" href="/questions">Learn More</a>
-                    </footer>
-                </section>
-
-                <section class="trial">
-                    <header>
-                        <img src="/images/Star.svg" alt="Star" />
-                        <h2>Easy to install</h2>
-                    </header>
-                    <div>
-                        <p>Compatible with nearly any website, including WordPress, Wix, Webflow, Weebly, SquareSpace, Shopify, and more!</p>
-                    </div>
-                    <footer>
-                        <a class="button primary-btn" href="/install">Install Now</a>
-                    </footer>
-                </section>
+            <div class="buttons">
+                @if (!IsPreviewing)
+                {
+                    <Sparc.Blossom.Content.LanguageSelector WithButton=true />
+                }
+                else
+                {
+                    <button class="secondary-btn" @onclick=Home>Learn More</button>
+                }
+                @if (IsACustomer)
+                {
+                    <a class="button primary-btn" href="/sites">My Sites</a>
+                }
+                else
+                {
+                    <a class="button primary-btn mobile-only" href="/purchase">
+                        <BuyIcon />
+                    </a>
+                    <a class="button primary-btn desktop-only" href="/purchase">Purchase</a>
+                }
             </div>
+        </header>
 
+        <section>
+            <img src="/images/TovikChar.svg" alt="Tovik" />
+            <h1>Speaking your website visitors' language isn't optional anymore.</h1>
+            <p>
+                Tovik is a multilingual plugin that quietly translates your site into their native language, without relying on them to bring their own translator.
+            </p>
+            <form @onsubmit=GoToPreview>
+                <input type="text" placeholder="Enter your website's URL" @bind=Url required />
+                <button class="primary-btn">Try Yourself</button>
+            </form>
+            @if (ErrorMessage != null)
+            {
+                <span class="error-message">@ErrorMessage</span>
+            }
+        </section>
+
+        <div class="two">
+            <section>
+                <header>
+                    <img src="/images/Star.svg" alt="Star" />
+                    <h2>600+ Dialects Supported</h2>
+                </header>
+                <p>Because every region, every voice, and every nuance deserves to be understood on its own terms.</p>
+            </section>
+            <section>
+                <header>
+                    <img src="/images/Star.svg" alt="Star" />
+                    <h2>Built for Creators, Not Coders</h2>
+                </header>
+                <p>Tovik installs with a single line of code or a simple plugin installation, zero setup required.</p>
+            </section>
+            <section>
+                <header>
+                    <img src="/images/Star.svg" alt="Star" />
+                    <h2>We Don't Track Anyone</h2>
+                </header>
+                <p>No cookies, no fingerprints, no surveillance, no data harvesting. Just simple, respectful translation.</p>
+            </section>
+            <section>
+                <header>
+                    <img src="/images/Star.svg" alt="Star" />
+                    <h2>Works On Any Website</h2>
+                </header>
+                <p>
+                    Built for
+                    <a href="/install/WordPress">WordPress</a>,
+                    <a href="/install/Wix">Wix</a>,
+                    <a href="/install/Webflow">Webflow</a>,
+                    <a href="/install/Weebly">Weebly</a>,
+                    <a href="/install/SquareSpace">SquareSpace</a>,
+                    <a href="/install/Shopify">Shopify</a>,
+                    and we have an
+                    <a href="/install/HTML">HTML script tag</a>
+                    for the rest.
+                </p>
+            </section>
         </div>
+
+        <Tovik.Installation.Pricing />
     </article>
-}
+</div>
 
-@inject Tovik.Domains.TovikDomains TovikDomains
 @inject ISparcAura Aura
-@inject IConfiguration Config
-
+@inject TovikCrawler Crawler
+@inject TovikDomains Domains
+@inject IJSRuntime Js
 @code {
-    BlossomAvatar? Avatar;
+    [Parameter][SupplyParameterFromQuery] public string? Url { get; set; }
+    [Parameter][SupplyParameterFromQuery] public string? PreviewLang { get; set; }
     bool IsACustomer;
-    string? PersonalizedWelcome;
-    string? WelcomeLink => PersonalizedWelcome == null ? "/sites" : $"/sites?welcome={PersonalizedWelcome}";
-    Sparc.Blossom.Content.LanguageSelector? LanguageSelector;
-    string? Url;
+    bool IsPreviewing;
+    bool PreviewFirst;
+    string? PreviewHtml;
+    string? PreviewUrl;
     string? ErrorMessage;
-    Sparc.Blossom.Content.Language? PreviewLanguage;
+    ElementReference IFrame;
 
     protected override async Task OnInitializedAsync()
     {
-        var user = await Aura.UserInfo();
-        IsACustomer = user.HasProduct("Tovik");
-
-        Avatar = user.Avatar;
-
-        if (Nav.Uri.Contains("sapient"))
-            PersonalizedWelcome = "Sapient";
-        else if (Nav.Uri.Contains("morbidology"))
-            PersonalizedWelcome = "Morbidology";
+        var domains = await Domains.All();
+        IsACustomer = domains.Any();
+        PreviewFirst = !string.IsNullOrWhiteSpace(Url);
     }
 
-    async Task Preview()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        ErrorMessage = null;
+        if (firstRender)
+            await Js.InvokeVoidAsync("initPreview", DotNetObjectReference.Create(this));
+    }
+
+    [JSInvokable]
+    public async Task UpdateUrl(string url)
+    {
+        if (url != Url)
+        {
+            Url = url;
+            PreviewHtml = await Crawler.PreviewAsync(Url, PreviewLang);
+            StateHasChanged();
+        }
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (!string.IsNullOrWhiteSpace(Url) && Url != PreviewUrl)
+        {
+            PreviewUrl = Url;
+            await PreviewSite();
+        }
+    }
+
+    void GoToPreview()
+    {
+        Nav.NavigateTo($"/?url={Url}");
+    }
+
+    async Task PreviewSite()
+    {
         if (Url == null)
             return;
 
-        var domain = await TovikDomains.Verify(Url);
-        if (domain == null)
+        ErrorMessage = null;
+        PreviewHtml = null;
+
+        var domain = await Domains.Verify(Url);
+        if (domain != null)
         {
-            ErrorMessage = "That doesn't look like a valid URL.";
-            return;
+            var mostTranslatedLang = domain.PagesPerLanguage
+                .Where(x => Sparc.Blossom.Content.Language.All.Any(y => y.Id == x.Key))
+                .OrderByDescending(x => x.Value)
+                .Select(x => x.Key)
+                .FirstOrDefault();
+
+            PreviewLang = mostTranslatedLang
+                ?? Sparc.Blossom.Content.Language.All.OrderBy(x => Guid.NewGuid()).First().Id;
+
+            IsPreviewing = true;
         }
-        Nav.NavigateTo($"/preview?url={Url}");
+        else
+        {
+            ErrorMessage = "Please enter a valid URL.";
+        }
     }
 
-    private void ChangePreviewLanguage(Sparc.Blossom.Content.Language language) => PreviewLanguage = language;
+    async Task UpdateLanguage(Sparc.Blossom.Content.Language lang)
+    {
+        PreviewLang = lang.Id;
+        if (PreviewHtml == null)
+        {
+            PreviewHtml = await Crawler.PreviewAsync(Url!, PreviewLang);
+            StateHasChanged();
+        }
+        else
+        {
+            await Js.InvokeVoidAsync("changePreviewLanguage", IFrame, PreviewLang);
+        }
+    }
+
+    void Home()
+    {
+        IsPreviewing = false;
+    }
 }

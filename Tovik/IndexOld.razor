@@ -1,0 +1,150 @@
+﻿@page "/home"
+@page "/sapient"
+@page "/morbidology"
+
+@using Sparc.Blossom.Authentication
+@using Tovik.Installation
+@layout HomeLayout
+
+<PageTitle>Tovik</PageTitle>
+
+
+@if (Avatar != null)
+{
+    <article class="home">
+        <div class="page-container">
+            @if (PersonalizedWelcome != null)
+            {
+                <section class="trial mini">
+                    <div>
+                        <h2>
+                            Welcome, @PersonalizedWelcome listener!
+                        </h2>
+                        <p>
+                            As a token of your support, you can translate <strong><s>20</s> 40</strong> pages (more than 2,000 words per page!) with Tovik Free!
+                        </p>
+                    </div>
+                    <div>
+                        <a class="button primary-btn" href="@WelcomeLink">Activate This Offer &rarr;</a>
+                    </div>
+                </section>
+            }
+            else if (IsACustomer)
+            {
+                <section class="trial mini">
+                    <h2>
+                        Welcome back, friend!
+                    </h2>
+                    <a class="button primary-btn" href="@WelcomeLink">Go To My Websites &rarr;</a>
+                </section>
+            }
+
+            <section class="demo">
+                <header>
+                    <img src="/images/site-frame.svg" alt="Web browser facade" />
+                </header>
+                <div>
+                    <h1>Your visitors deserve to experience your site in their language.</h1>
+
+                    <p>
+                        Tovik is a smart website plugin that automatically translates your entire website into your visitors' language. 130+ languages, zero setup, no translator plugins required.
+                    </p>
+
+                    <footer>
+                        <a class="button primary-btn" href="/install">Get Started</a>
+                    </footer>
+                </div>
+            </section>
+
+            <section class="preview">
+                <header>
+                    <h3>See Your Site with Tovik:</h3>
+                </header>
+                <form @onsubmit=Preview>
+                    <input type="text" @bind="Url" placeholder="Enter your website's URL" />
+                    <button class="primary-btn">Go</button>
+                </form>
+            </section>
+
+            <div class="two">
+                <section class="trial">
+                    <header>
+                        <img src="/images/Star.svg" alt="Star" />
+                        <h2>Free for small sites</h2>
+                    </header>
+                    <div>
+                        @if (PersonalizedWelcome == null)
+                        {
+                            <p>
+                                If your website's under 20 pages, Tovik is free forever. No signup, no credit card, no strings attached.
+                            </p>
+                        }
+                        else
+                        {
+                            <p>
+                                If your website's under <s>20</s> 40 pages, Tovik is free forever. No signup, no credit card, no strings attached.
+                            </p>
+
+                        }
+                    </div>
+                    <footer>
+                        <a class="button primary-btn" href="/questions">Learn More</a>
+                    </footer>
+                </section>
+
+                <section class="trial">
+                    <header>
+                        <img src="/images/Star.svg" alt="Star" />
+                        <h2>Easy to install</h2>
+                    </header>
+                    <div>
+                        <p>Compatible with nearly any website, including WordPress, Wix, Webflow, Weebly, SquareSpace, Shopify, and more!</p>
+                    </div>
+                    <footer>
+                        <a class="button primary-btn" href="/install">Install Now</a>
+                    </footer>
+                </section>
+            </div>
+
+        </div>
+    </article>
+}
+
+@inject Tovik.Domains.TovikDomains TovikDomains
+@inject ISparcAura Aura
+@inject IConfiguration Config
+
+@code {
+    BlossomAvatar? Avatar;
+    bool IsACustomer;
+    string? PersonalizedWelcome;
+    string? WelcomeLink => PersonalizedWelcome == null ? "/sites" : $"/sites?welcome={PersonalizedWelcome}";
+    string? Url;
+    Sparc.Blossom.Content.Language? PreviewLanguage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var user = await Aura.UserInfo();
+        Avatar = user.Avatar;
+
+        var domains = await TovikDomains.All();
+        IsACustomer = domains.Any();
+
+        if (Nav.Uri.Contains("sapient"))
+            PersonalizedWelcome = "Sapient";
+        else if (Nav.Uri.Contains("morbidology"))
+            PersonalizedWelcome = "Morbidology";
+    }
+
+    async Task Preview()
+    {
+        if (Url == null)
+            return;
+
+        var domain = await TovikDomains.Verify(Url);
+        if (domain != null)
+            Nav.NavigateTo($"/preview?url={Url}");
+    }
+
+    private void ChangePreviewLanguage(Sparc.Blossom.Content.Language language) => PreviewLanguage = language;
+}
