@@ -1,4 +1,5 @@
 ﻿@page "/"
+@page "/preview/{Url}"
 @layout NewHomeLayout
 @using Tovik.Domains
 @using Tovik.Translation
@@ -137,7 +138,7 @@
 @inject TovikDomains Domains
 @inject IJSRuntime Js
 @code {
-    [Parameter][SupplyParameterFromQuery] public string? Url { get; set; }
+    [Parameter] public string? Url { get; set; }
     [Parameter][SupplyParameterFromQuery] public string? PreviewLang { get; set; }
     [Parameter][SupplyParameterFromQuery] public string? PaymentIntentId { get; set; }
     bool IsACustomer;
@@ -187,7 +188,7 @@
 
     void GoToPreview()
     {
-        Nav.NavigateTo($"/?url={Url}");
+        Nav.NavigateTo($"/preview/{Url}");
     }
 
     async Task PreviewSite()
@@ -208,7 +209,7 @@
                 .FirstOrDefault();
 
             PreviewLang = mostTranslatedLang
-                ?? Sparc.Blossom.Content.Language.All.OrderBy(x => Guid.NewGuid()).First().Id;
+                ?? Sparc.Blossom.Content.Language.Random.Id;
 
             IsPreviewing = true;
         }
