@@ -1,5 +1,6 @@
 ﻿@page "/"
 @page "/preview/{Url}"
+@page "/preview"
 @layout NewHomeLayout
 @using Tovik.Domains
 @using Tovik.Translation
@@ -144,6 +145,7 @@
     [Parameter] public string? Url { get; set; }
     [Parameter][SupplyParameterFromQuery] public string? PreviewLang { get; set; }
     [Parameter][SupplyParameterFromQuery] public string? PaymentIntentId { get; set; }
+    [Parameter][SupplyParameterFromQuery(Name = "u")] public string? QueryUrl { get; set; }
     bool IsACustomer;
     bool IsPreviewing;
     bool PreviewFirst;
@@ -158,7 +160,7 @@
     {
         var domains = await Domains.All();
         IsACustomer = domains.Any();
-        PreviewFirst = !string.IsNullOrWhiteSpace(Url);
+        PreviewFirst = !string.IsNullOrWhiteSpace(Url) || !string.IsNullOrWhiteSpace(QueryUrl);
         if (PaymentIntentId != null)
             IsPurchaseSidebarOpen = true;
     }
@@ -167,6 +169,12 @@
     {
         if (!string.IsNullOrWhiteSpace(Url) && Url != PreviewUrl)
         {
+            PreviewUrl = Url;
+            await PreviewSite();
+        }
+        else if (!string.IsNullOrWhiteSpace(QueryUrl) && QueryUrl != PreviewUrl)
+        {
+            Url = QueryUrl;
             PreviewUrl = Url;
             await PreviewSite();
         }
@@ -197,7 +205,7 @@
 
     void GoToPreview()
     {
-        Nav.NavigateTo($"/preview/{Url}");
+        Nav.NavigateTo($"/preview?u={Url}", PreviewUrl != null);
     }
 
     async Task PreviewSite()
