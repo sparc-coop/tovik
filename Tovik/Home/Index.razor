@@ -142,19 +142,19 @@
 @inject TovikDomains Domains
 @inject IJSRuntime Js
 @code {
-    [Parameter] public string? Url { get; set; }
-    [Parameter][SupplyParameterFromQuery] public string? PreviewLang { get; set; }
-    [Parameter][SupplyParameterFromQuery] public string? PaymentIntentId { get; set; }
-    [Parameter][SupplyParameterFromQuery(Name = "u")] public string? QueryUrl { get; set; }
-    bool IsACustomer;
-    bool IsPreviewing;
-    bool PreviewFirst;
-    string? PreviewHtml;
-    string? PreviewUrl;
-    string? ErrorMessage;
-    ElementReference IFrame;
-    bool IsPurchaseSidebarOpen;
-    bool IsPurchaseSidebarInitialized;
+        [Parameter] public string? Url { get; set; }
+        [Parameter][SupplyParameterFromQuery] public string? PreviewLang { get; set; }
+        [Parameter][SupplyParameterFromQuery] public string? PaymentIntentId { get; set; }
+        [Parameter][SupplyParameterFromQuery(Name = "u")] public string? QueryUrl { get; set; }
+        bool IsACustomer;
+        bool IsPreviewing;
+        bool PreviewFirst;
+        string? PreviewHtml;
+        string? PreviewUrl;
+        string? ErrorMessage;
+        ElementReference IFrame;
+        bool IsPurchaseSidebarOpen;
+        bool IsPurchaseSidebarInitialized;
 
     protected override async Task OnInitializedAsync()
     {
@@ -162,7 +162,10 @@
         IsACustomer = domains.Any();
         PreviewFirst = !string.IsNullOrWhiteSpace(Url) || !string.IsNullOrWhiteSpace(QueryUrl);
         if (PaymentIntentId != null)
+        {
+            IsPurchaseSidebarInitialized = true;
             IsPurchaseSidebarOpen = true;
+        }
     }
 
     protected override async Task OnParametersSetAsync()
