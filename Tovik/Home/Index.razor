@@ -30,6 +30,9 @@
     @if (IsPreviewing)
     {
         <Sparc.Blossom.Content.LanguageSelector WithButton=true Visible=true InitialLanguageId="@PreviewLang" OnLanguageChanged="UpdateLanguage" />
+        <div class="fine-print">
+            You are viewing a preview of <strong>@Url</strong> with Tovik installed. Some site functionality may not work as expected due to preview browser limitations.
+        </div>
     }
 
     <article>
@@ -247,5 +250,6 @@
     void Home()
     {
         IsPreviewing = false;
+        PreviewHtml = null;
     }
 }

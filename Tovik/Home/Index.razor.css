@@ -22,6 +22,22 @@
 .home-container.preview-first article {
   transition: none !important;
 }
+.home-container .fine-print {
+  position: fixed;
+  bottom: 90px;
+  width: 100vw;
+  background-color: var(--blue-700);
+  color: white;
+  z-index: 1020;
+  font-size: 1.4rem;
+  padding: 8px 32px;
+  box-sizing: border-box;
+  text-align: center;
+  border-bottom: 1px solid var(--blue-500);
+}
+.home-container .fine-print a {
+  text-decoration: underline;
+}
 .home-container > ::deep .language-select-container {
   position: fixed;
   bottom: 100px;

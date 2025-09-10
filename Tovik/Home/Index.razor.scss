@@ -30,6 +30,25 @@
         }
     }
 
+    .fine-print {
+        position: fixed;
+        bottom: 90px;
+        width: 100vw;
+        background-color: var(--blue-700);
+        color: white;
+        z-index: 1020;
+        font-size: 1.4rem;
+        padding: 8px 32px;
+        box-sizing: border-box;
+        text-align: center;
+        border-bottom: 1px solid var(--blue-500);
+
+        a {
+            text-decoration: underline;
+        }
+
+    }
+
     > ::deep .language-select-container {
         position: fixed;
         bottom: 100px;
