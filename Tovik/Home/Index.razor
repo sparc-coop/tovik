@@ -54,10 +54,7 @@
                 }
                 else
                 {
-                    <button class="primary-btn mobile-only" @onclick=TogglePurchaseSidebar>
-                        <BuyIcon />
-                    </button>
-                    <button class="primary-btn desktop-only" @onclick=TogglePurchaseSidebar>Purchase</button>
+                    <button class="primary-btn" @onclick=TogglePurchaseSidebar>Get Tovik</button>
                 }
             </div>
         </header>
@@ -66,7 +63,7 @@
             <img src="/images/TovikChar.svg" alt="Tovik" />
             <h1>Speaking your website visitors' language isn't optional anymore.</h1>
             <p>
-                Tovik is a multilingual plugin that quietly translates your site into their native language, without relying on them to bring their own translator.
+                Tovik is a multilingual translation plugin that quietly translates your site into their native language, without relying on them to bring their own translator.
             </p>
             <form @onsubmit=GoToPreview>
                 <input type="text" placeholder="Enter your website's URL" @bind=Url required />

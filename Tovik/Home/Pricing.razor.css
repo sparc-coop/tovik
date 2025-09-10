@@ -43,6 +43,10 @@
   font-size: 2.11rem;
   font-weight: 700;
 }
+.pricing h6 {
+  font-size: 1.4rem;
+  font-weight: 500;
+}
 .pricing ul {
   list-style: none;
   margin-top: 32px;

@@ -90,13 +90,14 @@ article {
         ::deep .pricing {
             align-items: center;
             flex-direction: row;
-            gap: 20vw;
+            gap: 10vw;
             padding: 32px;
             margin: 80px auto 0;
             max-width: 1200px;
             box-sizing: border-box;
 
             header {
+                min-width: 200px;
             }
 
             ul {
