@@ -10,8 +10,14 @@
         function initPreview(dotNet) {
             window.addEventListener('message', (event) => {
                 if (event.data && event.data.startsWith && event.data.startsWith('tovik')) {
-                    let url = event.data.replace('tovik-url:', '');
-                    dotNet.invokeMethodAsync('UpdateUrl', url);
+                    if (event.data.startsWith('tovik-url')) {
+                        let url = event.data.replace('tovik-url:', '');
+                        dotNet.invokeMethodAsync('UpdateUrl', url);
+                    } else if (event.data.startsWith('tovik-translating')) {
+                        dotNet.invokeMethodAsync('SetPreviewLoading', true);
+                    } else if (event.data.startsWith('tovik-translated')) {
+                        dotNet.invokeMethodAsync('SetPreviewLoading', false);
+                    }
                 }
             });
         }
@@ -29,7 +35,7 @@
 
     @if (IsPreviewing)
     {
-        <Sparc.Blossom.Content.LanguageSelector WithButton=true Visible=true InitialLanguageId="@PreviewLang" OnLanguageChanged="UpdateLanguage" />
+        <Sparc.Blossom.Content.LanguageSelector IsLoading="IsPreviewLoading" WithButton=true Visible=true InitialLanguageId="@PreviewLang" OnLanguageChanged="UpdateLanguage" />
         <div class="fine-print">
             This is a sneak peek of <a href="@("https://" + PreviewUrl)">@Url</a> with Tovik, letting you see how multilingual visitors will experience your site once it's installed.
         </div>
@@ -142,19 +148,20 @@
 @inject TovikDomains Domains
 @inject IJSRuntime Js
 @code {
-        [Parameter] public string? Url { get; set; }
-        [Parameter][SupplyParameterFromQuery] public string? PreviewLang { get; set; }
-        [Parameter][SupplyParameterFromQuery] public string? PaymentIntentId { get; set; }
-        [Parameter][SupplyParameterFromQuery(Name = "u")] public string? QueryUrl { get; set; }
-        bool IsACustomer;
-        bool IsPreviewing;
-        bool PreviewFirst;
-        string? PreviewHtml;
-        string? PreviewUrl;
-        string? ErrorMessage;
-        ElementReference IFrame;
-        bool IsPurchaseSidebarOpen;
-        bool IsPurchaseSidebarInitialized;
+    [Parameter] public string? Url { get; set; }
+    [Parameter][SupplyParameterFromQuery] public string? PreviewLang { get; set; }
+    [Parameter][SupplyParameterFromQuery] public string? PaymentIntentId { get; set; }
+    [Parameter][SupplyParameterFromQuery(Name = "u")] public string? QueryUrl { get; set; }
+    bool IsACustomer;
+    bool IsPreviewing;
+    bool IsPreviewLoading;
+    bool PreviewFirst;
+    string? PreviewHtml;
+    string? PreviewUrl;
+    string? ErrorMessage;
+    ElementReference IFrame;
+    bool IsPurchaseSidebarOpen;
+    bool IsPurchaseSidebarInitialized;
 
     protected override async Task OnInitializedAsync()
     {
@@ -198,6 +205,13 @@
             PreviewHtml = await Crawler.PreviewAsync(Url, PreviewLang);
             StateHasChanged();
         }
+    }
+
+    [JSInvokable]
+    public void SetPreviewLoading(bool isLoading)
+    {
+        IsPreviewLoading = isLoading;
+        StateHasChanged();
     }
 
     void TogglePurchaseSidebar()

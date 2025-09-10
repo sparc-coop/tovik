@@ -40,6 +40,7 @@ export default class TovikEngine {
         return this.userLang;
     }
     static async hi() {
+        document.body.classList.add('tovik-translating');
         let lang = await this.getUserLanguage();
         this.documentLang = document.documentElement.lang;
         await this.setLanguage(lang);
@@ -54,8 +55,6 @@ export default class TovikEngine {
         if (this.userLang != language) {
             if (!document.body.getAttribute('data-toviklang'))
                 await localStorage.setItem('tovik-lang', language);
-            else
-                document.body.classList.add('tovik-translating');
             this.userLang = language;
             document.dispatchEvent(new CustomEvent('tovik-language-changed', { detail: this.userLang }));
         }

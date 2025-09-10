@@ -119,6 +119,8 @@ export default class TovikElement extends HTMLElement {
                 //        textNode.parentElement.classList.add('tovik-translating');
             }
         }));
+        if (window.parent && window.parent.postMessage)
+            window.parent.postMessage('tovik-translating');
         await TovikEngine.translateAll(pendingTranslations, node => node.originalText, this.#originalLang, (el, translation) => {
             el.textContent =
                 (el.preWhiteSpace ? ' ' : '')
@@ -128,6 +130,8 @@ export default class TovikElement extends HTMLElement {
             el.translated = true;
         });
         document.body.classList.remove('tovik-translating');
+        if (window.parent && window.parent.postMessage)
+            window.parent.postMessage('tovik-translated');
     }
 }
 //# sourceMappingURL=TovikElement.js.map
