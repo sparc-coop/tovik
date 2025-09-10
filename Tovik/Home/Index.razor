@@ -234,7 +234,7 @@
         PreviewHtml = null;
 
         var domain = await Domains.Verify(Url);
-        if (domain != null)
+        if (domain != null && !domain.IsBlocked)
         {
             PreviewLang = domain.LastTranslatedLanguage
                 ?? Sparc.Blossom.Content.Language.Random.Id;
@@ -243,7 +243,7 @@
         }
         else
         {
-            ErrorMessage = "Please enter a valid URL.";
+            ErrorMessage = domain?.IsBlocked == true ? "This domain is not compatible with Tovik." : "Please enter a valid URL.";
         }
     }
 
