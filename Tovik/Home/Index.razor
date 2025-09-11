@@ -37,7 +37,7 @@
     {
         <Sparc.Blossom.Content.LanguageSelector IsLoading="IsPreviewLoading" WithButton=true Visible=true InitialLanguageId="@PreviewLang" OnLanguageChanged="UpdateLanguage" />
         <div class="fine-print">
-            This is a sneak peek of <a href="@("https://" + PreviewUrl)">@Url</a> with Tovik, letting you see how multilingual visitors will experience your site once it's installed.
+            This is a glimpse of your site through the eyes of a native @PreviewLanguageName speaker, exactly how it would look and feel once you install Tovik.
         </div>
     }
 
@@ -159,6 +159,7 @@
     string? PreviewHtml;
     string? PreviewUrl;
     string? ErrorMessage;
+    string? PreviewLanguageName;
     ElementReference IFrame;
     bool IsPurchaseSidebarOpen;
     bool IsPurchaseSidebarInitialized;
@@ -239,6 +240,7 @@
             PreviewLang = domain.LastTranslatedLanguage
                 ?? Sparc.Blossom.Content.Language.Random.Id;
 
+            PreviewLanguageName = Sparc.Blossom.Content.Language.Find(PreviewLang)?.LanguageDisplayName;
             IsPreviewing = true;
         }
         else
@@ -250,6 +252,7 @@
     async Task UpdateLanguage(Sparc.Blossom.Content.Language lang)
     {
         PreviewLang = lang.Id;
+        PreviewLanguageName = Sparc.Blossom.Content.Language.Find(PreviewLang)?.LanguageDisplayName;
         if (PreviewHtml == null)
         {
             PreviewHtml = await Crawler.PreviewAsync(Url!, PreviewLang);
