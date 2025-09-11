@@ -10,22 +10,16 @@ public class TovikCrawler(IConfiguration config)
         var domain = new SparcDomain(url).ToUri();
         var page = SparcDomain.ToNormalizedUri(url);
         string html = "";
-        try
-        {
-            var handler = new HttpClientHandler()
-            {
-                AutomaticDecompression = System.Net.DecompressionMethods.All
-            };
 
-            var client = new HttpClient(handler);
-            client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (compatible; https://tovik.app)");
-            html = await client.GetStringAsync(page);
-            Console.WriteLine(html);
-        }
-        catch (Exception e)
+        var handler = new HttpClientHandler()
         {
-            html = $"<html><head></head><body><h1>Error fetching URL</h1><p>{e.Message} {e.InnerException?.Message}</p></body></html>";
-        }
+            AutomaticDecompression = System.Net.DecompressionMethods.All
+        };
+
+        var client = new HttpClient(handler);
+        client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (compatible; https://tovik.app)");
+        html = await client.GetStringAsync(page);
+
         var doc = new HtmlDocument();
         doc.LoadHtml(html);
         var tovik = config["Tovik"];

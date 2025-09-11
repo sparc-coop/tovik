@@ -37,7 +37,7 @@
     {
         <Sparc.Blossom.Content.LanguageSelector IsLoading="IsPreviewLoading" WithButton=true Visible=true InitialLanguageId="@PreviewLang" OnLanguageChanged="UpdateLanguage" />
         <div class="fine-print">
-            This is a glimpse of your site through the eyes of a native @PreviewLanguageName speaker, exactly how it would look and feel once you install Tovik.
+            This is how your site could look for a native @PreviewLanguageName speaker. <a href="" @onclick=Home @onclick:preventDefault>Install Tovik now</a> to make your content make sense to them.
         </div>
     }
 
@@ -251,16 +251,26 @@
 
     async Task UpdateLanguage(Sparc.Blossom.Content.Language lang)
     {
+        ErrorMessage = null;
         PreviewLang = lang.Id;
         PreviewLanguageName = Sparc.Blossom.Content.Language.Find(PreviewLang)?.LanguageDisplayName;
-        if (PreviewHtml == null)
+        try
         {
-            PreviewHtml = await Crawler.PreviewAsync(Url!, PreviewLang);
-            StateHasChanged();
+            if (PreviewHtml == null)
+            {
+                PreviewHtml = await Crawler.PreviewAsync(Url!, PreviewLang);
+                StateHasChanged();
+            }
+            else
+            {
+                await Js.InvokeVoidAsync("changePreviewLanguage", IFrame, PreviewLang);
+            }
         }
-        else
+        catch (Exception e)
         {
-            await Js.InvokeVoidAsync("changePreviewLanguage", IFrame, PreviewLang);
+            IsPreviewing = false;
+            ErrorMessage = e.Message;
+            StateHasChanged();
         }
     }
 

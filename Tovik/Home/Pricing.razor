@@ -1,7 +1,7 @@
 ﻿@using Sparc.Blossom.Realtime
 <div class="pricing">
     <header>
-        <h3>Get Tovik</h3>
+        <h3>Honest pricing</h3>
         <div>
             <h4>@Product?.FormattedPrice</h4>
             <h5>one time</h5>
@@ -9,27 +9,27 @@
         </div>
         @if (OnClick.HasDelegate)
         {
-            <button class="primary-btn desktop-only" @onclick=OpenPurchaseSidebar>Buy Now</button>
+            <button class="primary-btn desktop-only" @onclick=OpenPurchaseSidebar>Get Tovik</button>
         }
     </header>
     <ul>
         <li>
-            <strong>Unlimited</strong> visitors
+            <strong>Unlimited</strong> visitors and pageviews
         </li>
         <li>
-            <strong>Unlimited</strong> languages
+            <strong>Unlimited</strong> languages and dialects
         </li>
         <li>
-            <strong>Unlimited</strong> content
+            <strong>Unlimited</strong> translations
         </li>
         <li>
-            <strong>500</strong> pages per domain
+            Up to <strong>500</strong> pages per domain
         </li>
     </ul>
     @if (OnClick.HasDelegate)
     {
         <footer class="mobile-only">
-            <button class="primary-btn" @onclick=OpenPurchaseSidebar>Buy Now</button>
+            <button class="primary-btn" @onclick=OpenPurchaseSidebar>Get Tovik</button>
         </footer>
     }
 </div>

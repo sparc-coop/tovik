@@ -30,7 +30,7 @@
 @inject ISparcAura Aura
 @inject Microsoft.Extensions.Configuration.IConfiguration Config
 @code {
-    bool IsExpanded;
+    bool IsExpanded = true;
     void Expand() => IsExpanded = true;
     int Limit => IsExpanded ? FAQ.Count : 3;
 
