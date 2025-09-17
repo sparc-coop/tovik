@@ -6,29 +6,23 @@
   font-size: 1.6rem;
 }
 .install-page > footer {
-  position: sticky;
-  bottom: 0;
-  left: 0;
-  right: 0;
   padding: 32px;
-  background: rgba(2, 16, 23, 0.2);
-  backdrop-filter: blur(4px);
 }
 .install-page > footer p {
   font-size: 1.2rem;
   margin-bottom: 16px;
 }
+.install-page > footer ::deep input {
+  background-color: var(--blue-700);
+}
 .install-page > header {
   padding: 32px;
-  position: sticky;
-  top: 0;
-  background: rgba(2, 16, 23, 0.2);
-  backdrop-filter: blur(4px);
+  background: var(--blue-700);
 }
 .install-page > header .platforms {
   list-style: none;
   display: flex;
-  gap: 16px;
+  gap: 8px;
   flex-wrap: wrap;
   padding: 16px 0;
 }
@@ -51,15 +45,18 @@
   width: auto;
   margin: 16px 0;
 }
-.install-page .step-1 {
+.install-page .step-1, .install-page .step-2 {
   padding: 32px;
-  padding-bottom: 200px;
 }
-.install-page .step-1 p, .install-page .step-1 li {
+.install-page .step-1 p, .install-page .step-1 li, .install-page .step-2 p, .install-page .step-2 li {
   font-size: 1.4rem;
 }
-.install-page .step-1 header aside {
+.install-page .step-1 header aside, .install-page .step-2 header aside {
   font-size: 1.4rem;
+}
+.install-page footer aside {
+  font-size: 1.4rem;
+  margin-bottom: 8px;
 }
 .install-page section {
   display: flex;

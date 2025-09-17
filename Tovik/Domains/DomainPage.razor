@@ -14,10 +14,10 @@
 
 <article class="domain-page">
     <div class="page-container">
-        <div class="back">
+@*         <div class="back">
             <button class="back-btn secondary-btn" @onclick=NavBack><ArrowLeftIcon /> Back to My Websites</button>
         </div>
-
+ *@
         @if (Domain != null)
         {
             <DomainCard Domain="Domain" PageType="Page" Languages="Languages" />
@@ -27,9 +27,6 @@
             <header>
                 <h3>Preview Your Site In Other Languages</h3>
             </header>
-            <p>
-                Choose a language from the dropdown to preview your site in any language.
-            </p>
 
             @if (Domain != null && Domain.DateConnected == null)
             {
@@ -157,7 +154,7 @@
     string Exemption = "";
     string? PreviewLanguage;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
         Domain = await TovikDomains.Get(Id);
         Languages = await Tovik.GetLanguages();

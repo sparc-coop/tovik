@@ -59,7 +59,6 @@
 </article>
 
 @inject Tovik.Domains.TovikDomains TovikDomains
-@inject ISparcAura Aura
 @inject IConfiguration Config
 @inject ISparcBilling Billing
 @inject ITovik Tovik
@@ -74,8 +73,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var user = await Aura.UserInfo();
-
         await LoadDomains();
         Limit = Domains.Sum(x => x.Products.Sum(y => y.MaxUsage));
         Usage = Domains.Sum(d => d.TovikUsage);

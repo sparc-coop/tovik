@@ -1,1 +1,1 @@
-﻿form{display:grid;grid-template-columns:auto 80px;align-items:center;gap:8px;}form label input{width:var(--container-width);}
+﻿form{display:grid;grid-template-columns:auto 80px;align-items:center;gap:8px;}form label input{width:var(--container-width);}.error-message{margin-top:16px;}

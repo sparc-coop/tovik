@@ -1,6 +1,5 @@
 ﻿<article class="install-page">
 	<header>
-		<h2>Install Tovik in Minutes</h2>
 		<p>Choose your website's platform:</p>
 		<ul class="platforms">
 			@foreach (var platform in Platforms)
@@ -17,7 +16,6 @@
 	@if (SelectedPlatform == "HTML")
 	{
 		<section class="step-1">
-			<img src="/images/Star.svg" alt="Star" />
 			<header>
 				<aside>Step 1 (required)</aside>
 				<h3>Add Tovik To Your Site</h3>
@@ -42,9 +40,6 @@
 					If that’s all you need, you’re good to go. But if you want to give users more control or tailor what gets translated, keep reading.
 				</p>
 			</div>
-			<footer>
-				<a class="button primary-btn" href="/sites">Go To My Websites &rarr;</a>
-			</footer>
 		</section>
 	}
 
@@ -66,11 +61,7 @@
 					<li>Click <strong>Install Now</strong>.</li>
 					<li>Once installed, click <strong>Activate Plugin</strong>.</li>
 				</ol>
-				<p>That's it! Your site will now start automatically translating all of your content based on your visitors' language preferences.</p>
 			</div>
-			<footer>
-				<a class="button primary-btn" href="/sites">Go To My Websites &rarr;</a>
-			</footer>
 		</section>
 	}
 
@@ -94,11 +85,7 @@
 					<li>Click <strong>Activate Tovik</strong>.</li>
 					<li>Publish your site to apply the changes.</li>
 				</ol>
-				<p>That's it! Your site will now start automatically translating all of your content based on your visitors' language preferences.</p>
 			</div>
-			<footer>
-				<a class="button primary-btn" href="/sites">Go To My Websites &rarr;</a>
-			</footer>
 		</section>
 	}
 
@@ -127,7 +114,6 @@
 					</CodeBlock>
 					<li>Click <strong>Save</strong>.</li>
 				</ol>
-				<p>That's it! Your site will now start automatically translating all of your content based on your visitors' language preferences.</p>
 
 				<h3>Notes</h3>
 				<ul>
@@ -137,9 +123,6 @@
 					<li>Checkout pages generally do not support injected scripts.</li>
 				</ul>
 			</div>
-			<footer>
-				<a class="button primary-btn" href="/sites">Go To My Websites &rarr;</a>
-			</footer>
 		</section>
 	}
 
@@ -161,7 +144,6 @@
 					</CodeBlock>
 					<li>Click <strong>Save changes</strong>.</li>
 				</ol>
-				<p>That's it! Your site will now start automatically translating all of your content based on your visitors' language preferences.</p>
 
 				<h3>Notes</h3>
 				<ul>
@@ -169,9 +151,6 @@
 					<li>The effects of custom code appear in preview mode, but they won’t go live until your site is published. </li>
 				</ul>
 			</div>
-			<footer>
-				<a class="button primary-btn" href="/sites">Go To My Websites &rarr;</a>
-			</footer>
 		</section>
 	}
 
@@ -194,7 +173,6 @@
 					</CodeBlock>
 					<li>Click <strong>Save</strong>.</li>
 				</ol>
-				<p>That's it! Your site will now start automatically translating all of your content based on your visitors' language preferences.</p>
 
 				<h3>Notes</h3>
 				<ul>
@@ -202,9 +180,6 @@
 					<li>In Weebly’s site editor, scripts may not run. Always test on your published site.</li>
 				</ul>
 			</div>
-			<footer>
-				<a class="button primary-btn" href="/sites">Go To My Websites &rarr;</a>
-			</footer>
 		</section>
 	}
 
@@ -230,20 +205,15 @@
 					</CodeBlock>
 					<li>Click <strong>Save</strong>.</li>
 				</ol>
-				<p>That's it! Your site will now start automatically translating all of your content based on your visitors' language preferences.</p>
 			</div>
-			<footer>
-				<a class="button primary-btn" href="/sites">Go To My Websites &rarr;</a>
-			</footer>
 		</section>
 	}
 
 	@if (SelectedPlatform == "HTML")
 	{
 		<section class="step-2">
-			<img src="/images/Star.svg" alt="Star" />
 			<header>
-				<aside>Step 3 (recommended, intermediate)</aside>
+				<aside>Step 2 (recommended, intermediate)</aside>
 				<h3>Let Your Visitors Choose Their Language</h3>
 			</header>
 			<div>
@@ -270,10 +240,9 @@
 			</div>
 		</section>
 
-		<section>
-			<img src="/images/Star.svg" alt="Star" />
+		<section class="step-2">
 			<header>
-				<aside>Step 4 (optional, advanced)</aside>
+				<aside>Step 3 (optional, advanced)</aside>
 				<h3>Choose What Gets Translated</h3>
 			</header>
 			<div>
@@ -296,19 +265,18 @@
 					@("<tovik-translate for=\".translate\"></tovik-translate>")
 				</CodeBlock>
 			</div>
-
-			<h4>That's It</h4>
-			<p>
-				Whether you want plug-and-play simplicity or more control, Tovik is built to meet you where you are—no developer required.
-			</p>
 		</section>
 	}
 
-	<footer>
-		<h3>Verify Your Tovik Installation</h3>
-		<p>Once you finish installing the Tovik script or plugin, enter your domain name here to activate Tovik on your site.</p>
-		<Tovik.Domains.AddDomain />
-	</footer>
+	@if (SelectedPlatform != null)
+	{
+		<footer>
+			<aside>Step 2</aside>
+			<h3>Verify Your Tovik Installation</h3>
+			<p>Once you've installed Tovik on your site, enter your domain name here to activate it:</p>
+			<Tovik.Domains.AddDomain />
+		</footer>
+	}
 </article>
 
 @code {

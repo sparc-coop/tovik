@@ -46,12 +46,12 @@
             <li>
                 <PageIcon />
                 Pages Translated
-                <span>@Domain.TovikUsage.ToString("N0")</span>
+                <span>@Domain.TovikUsage.ToString("N0") / @Domain.Product("Tovik")?.MaxUsage</span>
             </li>
             <li>
                 <LanguageIcon />
                 Languages Translated
-                <span>@Domain.PagesPerLanguage.Count</span>
+                <span>@Domain.PagesPerLanguage.Count / unlimited</span>
             </li>
         </ul>
 

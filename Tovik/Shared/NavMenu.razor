@@ -8,8 +8,12 @@
     <div class="nav-menu @(showMobileMenu ? "show" : "")">
         <SecondaryLogo />
         <ul>
-            <li><NavLink class="nav-link" href="/sites" Match=NavLinkMatch.Prefix ActiveClass="active" @onclick=ToggleMobileMenu><BubbleTail />My Websites</NavLink></li>
-            <li><NavLink class="nav-link" href="/install" ActiveClass="active" @onclick=ToggleMobileMenu><BubbleTail />How To Install</NavLink></li>
+            @foreach (var domain in Domains)
+            {
+                <li>
+                    <NavLink class="nav-link" href="@("/sites/" + domain.Id)" Match=NavLinkMatch.Prefix ActiveClass="active" @onclick=ToggleMobileMenu><BubbleTail />@domain.Domain</NavLink>
+                </li>
+            }
             <li><NavLink class="nav-link" href="/credits" ActiveClass="active" @onclick=ToggleMobileMenu><BubbleTail />Made with ❤️</NavLink></li>
         </ul>
     </div>
@@ -22,17 +26,28 @@
     <div class="nav-menu @(showMobileMenu ? "show" : "")">
         <PrimaryLogo FontColor="#FF945E" />
         <ul>
-            <li><NavLink class="nav-link" href="/sites" Match=NavLinkMatch.Prefix ActiveClass="active" @onclick=ToggleMobileMenu><BubbleTail />My Websites</NavLink></li>
-            <li><NavLink class="nav-link" href="/install" ActiveClass="active" @onclick=ToggleMobileMenu><BubbleTail />How To Install</NavLink></li>
+            @foreach (var domain in Domains)
+            {
+                <li>
+                    <NavLink class="nav-link" href="@("/sites/" + domain.Id)" Match=NavLinkMatch.Prefix ActiveClass="active" @onclick=ToggleMobileMenu><BubbleTail />@domain.Domain</NavLink>
+                </li>
+            }
             <li><NavLink class="nav-link" href="/credits" ActiveClass="active" @onclick=ToggleMobileMenu><BubbleTail />Made with ❤️</NavLink></li>
         </ul>
     </div>
 </div>
 
+@inject Tovik.Domains.TovikDomains TovikDomains
 @code {
     bool showMobileMenu;
     bool showOverlay;
     bool hideOverlay;
+    List<SparcDomain> Domains = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        Domains = await TovikDomains.All();
+    }
 
     async Task ToggleMobileMenu()
     {

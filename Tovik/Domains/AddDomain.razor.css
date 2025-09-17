@@ -7,3 +7,7 @@
 form label input {
   width: var(--container-width);
 }
+
+.error-message {
+  margin-top: 16px;
+}

@@ -9,32 +9,28 @@
     }
 
     > footer {
-        position: sticky;
-        bottom: 0;
-        left: 0;
-        right: 0;
         padding: 32px;
-        background: rgba(2, 16, 23, 0.2);
-        backdrop-filter: blur(4px);
+        //background: var(--blue-700);
 
         p {
             font-size: 1.2rem;
             margin-bottom: 16px;
         }
+
+        ::deep input {
+            background-color: var(--blue-700);
+        }
     }
 
     > header {
         padding: 32px;
-        position: sticky;
-        top: 0;
-        background: rgba(2, 16, 23, 0.2);
-        backdrop-filter: blur(4px);
+        background: var(--blue-700);
 
 
         .platforms {
             list-style: none;
             display: flex;
-            gap: 16px;
+            gap: 8px;
             flex-wrap: wrap;
             padding: 16px 0;
 
@@ -67,9 +63,8 @@
         margin: 16px 0;
     }
 
-    .step-1 {
+    .step-1, .step-2 {
         padding: 32px;
-        padding-bottom: 200px;
 
         p, li {
             font-size: 1.4rem;
@@ -78,6 +73,11 @@
         header aside {
             font-size: 1.4rem;
         }
+    }
+
+    footer aside {
+        font-size: 1.4rem;
+        margin-bottom: 8px;
     }
 
     section {

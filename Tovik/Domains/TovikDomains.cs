@@ -52,8 +52,8 @@ public class TovikDomains(BlossomAggregateOptions<SparcDomain> options, IReposit
         if (existing == null)
         {
             existing = new SparcDomain(host);
-            //if (!await existing.VerifyAsync())
-            //    throw new Exception($"{host} does not contain the expected Tovik script: https://tovik.app/tovik.js. Please ensure Tovik is installed correctly on this domain.");
+            if (!await existing.VerifyAsync())
+                throw new Exception($"{host} does not contain the expected Tovik script: https://tovik.app/tovik.js. Please ensure Tovik is installed correctly on this domain.");
 
             await Repository.AddAsync(existing);
         }
@@ -61,10 +61,11 @@ public class TovikDomains(BlossomAggregateOptions<SparcDomain> options, IReposit
         if (existing.TovikUserId != null)
             throw new Exception("This domain is already registered with Tovik.");
 
-        //if (existing.DateConnected == null && !await existing.VerifyAsync())
-        //    throw new Exception($"{host} does not contain the expected Tovik script: https://tovik.app/tovik.js. Please ensure Tovik is installed correctly on this domain.");
+        if (existing.DateConnected == null && !await existing.VerifyAsync())
+            throw new Exception($"{host} does not contain the expected Tovik script: https://tovik.app/tovik.js. Please ensure Tovik is installed correctly on this domain.");
 
         existing.TovikUserId = User.Id();
+        existing.Fulfill(new Sparc.Blossom.Billing.SparcProduct("Tovik") { MaxUsage = 20 }, User.Id());
         await Repository.UpdateAsync(existing);
 
         return existing;

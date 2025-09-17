@@ -84,7 +84,7 @@ nav {
         padding: 120px 24px 24px 24px;
         box-sizing: border-box;
         background: var(--blue-700);
-        transform: translateX(100vw);
+        transform: translateX(120vw);
         transition: transform 0.3s ease-in;
 
         &.show {
@@ -136,7 +136,7 @@ nav {
                 color: var(--blue-50, #EFF7F9);
                 text-align: center;
                 font-family: var(--brother-printed);
-                font-size: 3.235rem;
+                font-size: 2.4rem;
                 font-style: normal;
                 font-weight: 700;
                 line-height: normal;

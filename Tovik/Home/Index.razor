@@ -71,10 +71,10 @@
 			<img src="/images/TovikChar.svg" alt="Tovik" />
 			<h1>What if your visitors could read your site in their own language?</h1>
 			<p>
-				Meet Tovik, your website’s new multilingual sidekick—a plugin that automatically translates your site’s content to reach users around the world.
+				Meet Tovik, your website’s new multilingual sidekick. Tovik is a plugin that automatically translates your site’s content to reach users around the world.
 			</p>
 			<p>
-				Want to see how it works? Paste your URL below and get a preview of how Tovik will work on your site!
+				Want to see how it works? Enter your URL below and get a preview of how Tovik will work on your site!
 			</p>
 			<form @onsubmit=GoToPreview>
 				<input type="text" placeholder="Enter your website's URL" @bind=Url required />
@@ -197,6 +197,7 @@
 
 <aside class="purchase-sidebar @(IsSidebarOpen ? "open" : "")">
 	<header>
+		<h2>Install Tovik in Minutes</h2>
 		<button @onclick=ToggleSidebar>
 			<Sparc.Blossom.Authentication.Icons.XIcon />
 		</button>
