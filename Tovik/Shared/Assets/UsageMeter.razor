@@ -1,16 +1,31 @@
 ﻿<div class="usage-meter">
-    <div>
-        <span>@Usage.ToString("N0")</span> / <span>@Limit.ToString("N0")</span>
-    </div>
-    <div class="meter-container">
-        <div class="meter-fill" style="width: @FillPercentage%"></div>
-    </div>
+	<header>
+		<div>
+			<span>@Usage.ToString("N0")</span> 
+			/ 
+			<span>@Limit.ToString("N0")</span>
+		</div>
+
+		@if (Limit < 500)
+		{
+			<button class="primary-btn" @onclick=Upgrade>Upgrade to Tovik Pro</button>
+		}
+	</header>
+	<div class="meter-container">
+		<div class="meter-fill" style="width: @FillPercentage%"></div>
+	</div>
 </div>
 
 @code {
-    [Parameter] public int Usage { get; set; }
-    [Parameter] public int Limit { get; set; }
-    int Remaining => Limit - Usage;
+	[Parameter] public int Usage { get; set; }
+	[Parameter] public int Limit { get; set; }
+	[Parameter] public EventCallback OnUpgrade { get; set; }
+	int Remaining => Limit - Usage;
 
-    int FillPercentage => Limit > 0 ? (int)((double)Usage / Limit * 100) : 0;
+	int FillPercentage => Limit > 0 ? (int)((double)Usage / Limit * 100) : 0;
+
+	async Task Upgrade()
+	{
+		await OnUpgrade.InvokeAsync();
+	}
 }

@@ -10,6 +10,7 @@
     <script>
         gtag('event', 'conversion', {'send_to': 'AW-11084766602/LSImCPXjhYQbEIq70KUp'});
     </script>
+    <script src="https://js.stripe.com/v3"></script>
 </HeadContent>
 
 <article class="domain-page">
@@ -40,30 +41,8 @@
 
         <section class="domain-summary">
             <header>
-                <h3>Languages Translated</h3>
-            </header>
-            <div>
-                @foreach (var language in LanguageStats.OrderByDescending(x => x.Value))
-                {
-                    <div class="language">
-                        <header>
-                            @language.Key.NativeName (@language.Key.DisplayName)
-                        </header>
-                        <div class="meter-container">
-                            <div class="meter-fill" style="width: @FillPercentage(language.Key)%"></div>
-                        </div>
-                    </div>
-                }
-                @if (!LanguageStats.Any())
-                {
-                    <aside>Nothing to see here yet!</aside>
-                }
-            </div>
-        </section>
-
-        <section class="domain-summary">
-            <header>
                 <h3>Pages Translated</h3>
+                <UsageMeter Usage="Usage" Limit="Limit" OnUpgrade="Upgrade" />
             </header>
             <div>
                 @foreach (var webpage in Pages)
@@ -87,6 +66,30 @@
                 }
 
                 @if (!Pages.Any())
+                {
+                    <aside>Nothing to see here yet!</aside>
+                }
+            </div>
+        </section>
+
+
+        <section class="domain-summary">
+            <header>
+                <h3>Languages Translated</h3>
+            </header>
+            <div>
+                @foreach (var language in LanguageStats.OrderByDescending(x => x.Value))
+                {
+                    <div class="language">
+                        <header>
+                            @language.Key.NativeName (@language.Key.DisplayName)
+                        </header>
+                        <div class="meter-container">
+                            <div class="meter-fill" style="width: @FillPercentage(language.Key)%"></div>
+                        </div>
+                    </div>
+                }
+                @if (!LanguageStats.Any())
                 {
                     <aside>Nothing to see here yet!</aside>
                 }
@@ -141,11 +144,24 @@
     </div>
 </article>
 
+@if (IsPurchaseSidebarInitialized)
+{
+    <aside class="purchase-sidebar @(IsSidebarOpen ? "open" : "")">
+        <header>
+            <h2>Upgrade to Tovik Pro</h2>
+            <button @onclick=ToggleSidebar>
+                <Sparc.Blossom.Authentication.Icons.XIcon />
+            </button>
+        </header>
+        <Tovik.Home.Purchase Domain="@Domain?.Domain" />
+    </aside>
+}
 @inject TovikDomains TovikDomains
 @inject ITovik Tovik
 
 @code {
     [Parameter] public required string Id { get; set; }
+    [Parameter][SupplyParameterFromQuery] public string? PaymentIntentId { get; set; }
 
     SparcDomain? Domain;
     List<Page> Pages = [];
@@ -153,6 +169,11 @@
     Dictionary<Language, int> LanguageStats = [];
     string Exemption = "";
     string? PreviewLanguage;
+    int Limit;
+    int Usage;
+    bool IsSidebarOpen = false;
+    bool IsPurchaseSidebarInitialized;
+    void ToggleSidebar() => IsSidebarOpen = !IsSidebarOpen;
 
     protected override async Task OnParametersSetAsync()
     {
@@ -165,6 +186,18 @@
             .SelectMany(x => x.TovikUsage)
             .GroupBy(x => Language(x.Key)!)
             .ToDictionary(g => g.Key, g => g.Sum(x => x.Value));
+
+        Usage = Pages.Count;
+        Limit = Domain?.Product("Tovik")?.MaxUsage ?? 20;
+
+        if (PaymentIntentId != null)
+            Upgrade();
+    }
+
+    void Upgrade()
+    {
+        IsPurchaseSidebarInitialized = true;
+        IsSidebarOpen = true;
     }
 
     Language? Language(string id) => Languages.FirstOrDefault(x => x.Matches(id));

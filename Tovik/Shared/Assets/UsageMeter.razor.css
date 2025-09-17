@@ -6,15 +6,23 @@
   gap: 14px;
   margin-bottom: 8px;
 }
-.usage-meter div:first-child {
+.usage-meter header {
   color: white;
   font-family: var(--brother-printed);
   font-size: 2rem;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
 }
-.usage-meter div:first-child span:first-child {
+.usage-meter header button {
+  align-self: initial;
+  width: auto;
+}
+.usage-meter header span:first-child {
   font-size: 3.125rem;
 }
 .usage-meter .meter-container {

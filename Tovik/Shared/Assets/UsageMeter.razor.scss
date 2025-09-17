@@ -6,22 +6,30 @@
     gap: 14px;
     margin-bottom: 8px;
 
-    div {
-        &:first-child {
-            color: white;
-            font-family: var(--brother-printed);
-            font-size: 2rem;
-            font-style: normal;
-            font-weight: 700;
-            line-height: normal;
+    header {
+        color: white;
+        font-family: var(--brother-printed);
+        font-size: 2rem;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
 
-            span {
-                &:first-child {
-                    font-size: 3.125rem;
-                }
+        button {
+            align-self: initial;
+            width: auto;
+        }
+
+        span {
+            &:first-child {
+                font-size: 3.125rem;
             }
         }
     }
+
 
     .meter {
         &-container {
