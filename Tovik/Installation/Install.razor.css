@@ -1,32 +1,48 @@
-﻿.install-page ul {
-  padding-left: 0;
+﻿.install-page h2 {
+  font-size: 2.4rem;
+  margin-bottom: 16px;
 }
-.install-page .preview header {
-  justify-content: flex-start;
-  align-items: flex-start;
+.install-page h3 {
+  font-size: 1.6rem;
 }
-.install-page .preview img {
-  height: 30px;
-  margin: 0;
-  width: auto;
+.install-page > footer {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 32px;
+  background: rgba(2, 16, 23, 0.2);
+  backdrop-filter: blur(4px);
 }
-.install-page .page-header .platforms {
+.install-page > footer p {
+  font-size: 1.2rem;
+  margin-bottom: 16px;
+}
+.install-page > header {
+  padding: 32px;
+  position: sticky;
+  top: 0;
+  background: rgba(2, 16, 23, 0.2);
+  backdrop-filter: blur(4px);
+}
+.install-page > header .platforms {
   list-style: none;
   display: flex;
   gap: 16px;
   flex-wrap: wrap;
+  padding: 16px 0;
 }
-.install-page .page-header .platforms button {
+.install-page > header .platforms button {
   background: var(--orange-100);
   border: 0;
   opacity: 0.3;
   padding: 8px 16px;
 }
-.install-page .page-header .platforms li:hover button, .install-page .page-header .platforms li.selected button {
+.install-page > header .platforms li:hover button, .install-page > header .platforms li.selected button {
   background: var(--orange-300);
   opacity: 1;
 }
-.install-page .page-header .platforms li.comingsoon button {
+.install-page > header .platforms li.comingsoon button {
   pointer-events: none;
 }
 .install-page a.button {
@@ -34,6 +50,16 @@
   display: inline-block;
   width: auto;
   margin: 16px 0;
+}
+.install-page .step-1 {
+  padding: 32px;
+  padding-bottom: 200px;
+}
+.install-page .step-1 p, .install-page .step-1 li {
+  font-size: 1.4rem;
+}
+.install-page .step-1 header aside {
+  font-size: 1.4rem;
 }
 .install-page section {
   display: flex;

@@ -1,6 +1,6 @@
 ﻿<form @onsubmit=Add>
     <label>
-        <input type="text" placeholder="Enter a domain name" @bind="NewDomain" @bind:event="oninput" />
+        <input type="text" placeholder="Enter your domain name" @bind="NewDomain" @bind:event="oninput" />
     </label>
 
     <button class="add-btn primary-btn" type="submit" disabled="@IsVerifying">

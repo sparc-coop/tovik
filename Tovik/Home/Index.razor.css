@@ -329,13 +329,12 @@ h4 {
 }
 .purchase-sidebar > header {
   text-align: right;
-  position: sticky;
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
   padding: 16px;
   z-index: 1500;
-  background-color: var(--blue-600);
 }
 .purchase-sidebar > header ::deep svg path {
   stroke: white;
