@@ -1,54 +1,58 @@
 ﻿<section class="faq">
-    <dl>
-        @foreach (var question in FAQ.Take(Limit))
-        {
-            <div class="question">
-                <span>?</span>
-                <BubbleTail Fill="#FF945E" />
-            </div>
-            <dt>
-                @question.Key
-            </dt>
-            <div class="answer">
-                <span>!</span>
-                <BubbleTail Fill="#BBE0F5" />
-            </div>
-            <dd>@((MarkupString)question.Value)</dd>
-        }
-    </dl>
+	<dl>
+		@foreach (var question in FAQ.Take(Limit))
+		{
+			<div @onclick="@(() => Select(question.Key))" class="@(question.Key == SelectedQuestion ? "selected" : "")">
+				<span>@( question.Key == SelectedQuestion ? "-" : "+")</span>
+				<dt>
+					@question.Key
+				</dt>
+				<dd>@((MarkupString)question.Value)</dd>
+			</div>
+		}
+	</dl>
 
-    <footer>
-        @if (!IsExpanded)
-        {
-            <button class="secondary-btn" @onclick=Expand>View More</button>
-        }
-        Have additional questions?  <a href="mailto:support@sparc.coop">support@sparc.coop</a>
-    </footer>
+	<footer>
+		@if (!IsExpanded)
+		{
+			<button class="secondary-btn" @onclick=Expand>View More</button>
+		}
+		Have additional questions?  <a href="mailto:support@sparc.coop">support@sparc.coop</a>
+	</footer>
 </section>
 
 @inject ISparcBilling Billing
 @inject ISparcAura Aura
 @inject Microsoft.Extensions.Configuration.IConfiguration Config
 @code {
-    bool IsExpanded = true;
-    void Expand() => IsExpanded = true;
-    int Limit => IsExpanded ? FAQ.Count : 3;
+	bool IsExpanded = false;
+	void Expand() => IsExpanded = true;
+	string? SelectedQuestion;
+	int Limit => IsExpanded ? FAQ.Count : 5;
+	
+	void Select(string question)
+	{
+		if (SelectedQuestion == question)
+			SelectedQuestion = null;
+		else
+			SelectedQuestion = question;
+	}
 
-    Dictionary<string, string> FAQ = new()
-    {
-        { "What is Tovik?", "Tovik is a multilingual translation plugin that instantly translates your website into 130+ languages and 600+ dialects with a single, simple one-time installation." },
-        { "Why do I need Tovik if other translation tools exist?", "Most tools expect your visitors to do the work to install their own translation plugin. Tovik thinks differently. Once installed on your site, Tovik handles translation automatically for your visitors, catering your entire site to their native language, with zero work required on their part." },
-        { "How does Tovik work?", "Tovik detects each visitor’s preferred language using their browser settings. When their language doesn’t match your site’s language, Tovik kicks in and translates every content element on the page. Results are nearly instantaneous, and translations are securely cached for future users that visit the same page in the same language and dialect." },
-        { "Do I need coding experience to install Tovik?", "Not at all. Tovik has plug-and-play support for WordPress, Wix, Webflow, Weebly, SquareSpace, and Shopify. Or just drop one line of HTML into your site, and you're done." },
-        { "How do I install Tovik?", "You either download and install the Tovik plugin for your website's platform, or you can copy a single line of HTML into your website. Full instructions are <a href=\"/Install\">in our docs</a>, and it takes less than a minute." },
-        { "Is Tovik compatible with my website?", "If your site uses a standard CMS (like WordPress or Wix), or you can add custom HTML (like a Google Analytics tag), you’re good to go. Tovik works with WordPress, Wix, Webflow, Weebly, SquareSpace, Shopify, and pretty much anything else." },
-        { "How many languages does Tovik support?", "Tovik speaks over 130 languages, and over 600 dialects of those languages. This covers most of the world’s major languages and regions." },
-        { "Do you track user data or visitors?", "Never! Tovik prides itself on it. The only data we track is the count of pages translated per language. All your visitors' preferences stay entirely local in their browser, and we never use, track, or store their data." },
-        { "What does Tovik include?", "Your purchase of Tovik unlocks up to 500 translated pages across your domain and as many aliases for that domain as you need. Page views, languages, dialects, visitor count, content, and bandwidth, are all unlimited, included with your one-time purchase." },
-        { "Is there a subscription fee?", "Nope! Tovik is a one-time purchase. We are proud to have created a translation engine that requires no subscriptions, no recurring charges, and no surprises. Really." },
-        { "Can I use Tovik on multiple domains?", "Yes, as long as the additional domains are aliases of your originally purchased domain, with substantially the same content on each domain. To install Tovik on additional non-aliased domains, you will just need to purchase Tovik for that specific domain." },
-        { "What if I have more than 500 pages of content?", "It's likely no problem, as we are only tracking page counts to monitor fair use of Tovik. If we notice, we may reach out and inquire about your particular scenario, but we won't ever shut off your services because of high page count without a conversation." },
-        { "Can I get a refund if Tovik doesn't work for my site?", "Absolutely. Just send us a message at the email below letting us know, and we'll refund your purchase right away, no questions asked." },
-        { "How do I get support?", "You can click the link below to email our team anytime. We’re always here to help with setup, troubleshooting, or anything else you may need." }
-    };
+	Dictionary<string, string> FAQ = new()
+	{
+		{ "What is Tovik?", "Tovik is a website plugin that instantly translates your website into 130+ languages and 600+ dialects with a simple one-time installation." },
+		{ "Why Tovik?", "Other translation tools expect the site visitors to do the translation and they shouldn’t have to. Tovik automatically translates your site for every visitor in their preferred language." },
+		{ "How does it work?", "Tovik detects a visitor’s language from their browser and translates your content instantly. Translations are then saved for future visitors." },
+		{ "Do I need to know how to code?", "Nope! Tovik has plug-and-play support for WordPress, Wix, Webflow, Weebly, SquareSpace, and Shopify. Or just drop one line of HTML into your site, and you're done." },
+		{ "How do I install it?", "Download the plugin for your platform, or copy the line of HTML into your website. Click the Start Free button at the top of this page to see the installation instructions." },
+		{ "Will Tovik work with my site?", "If you can add a plugin or a line of HTML, Tovik works. This includes most CMS platforms." },
+		{ "How many languages will Tovik translate my website to?", "Over 130 languages and 600+ dialects covering all major languages and most of the world!" },
+		{ "Do you track user or visitor data?", "Nope! We only keep track of how many pages you’ve translated. Your visitors’ data stays private in their browser and we never use, track, or store their data." },
+		{ "What does Tovik include?", "Tovik Free includes up to 20 pages per domain. Tovik Pro includes up to 500 translated pages per domain. Both have unlimited aliases, page views, languages, and bandwidth. No subscription and no hidden fees." },
+		{ "So there’s no subscription fee?", "Nope! Tovik is a one-time purchase. We are proud to have created a translation engine that requires no subscriptions, no recurring charges, and no surprises." },
+		{ "Can I use Tovik on multiple domains?", "Yes, for aliases of your purchased domain. Non-aliased domains will require a separate purchase." },
+		{ "What if I have more than 500 pages of content?", "No problem! We track usage to ensure everyone is using Tovik fairly. We’ll reach out if needed, but we’ll never stop your service without getting in touch." },
+		{ "Can I get a refund if Tovik doesn't work for my site?", "Absolutely. Send us an email at <a href=\"mailto:support@sparc.coop\">support@sparc.coop</a> and we’ll refund your purchase right away." },
+		{ "How do I get support?", "You can always email us at <a href=\"mailto:support@sparc.coop\">support@sparc.coop</a>. We’re here to help with anything you may need." }
+	};
 }

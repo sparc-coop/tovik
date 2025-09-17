@@ -157,7 +157,7 @@ article > section {
   flex-direction: column;
   align-items: center;
   gap: 32px;
-  max-width: min(90vw, 800px);
+  max-width: min(85vw, 700px);
   margin: 80px auto 0;
   text-align: center;
 }
@@ -224,7 +224,88 @@ article > section form button {
   margin-top: 32px;
 }
 .two > section img, ::deep section.faq img {
-  height: 30px;
+  height: 80px;
+}
+
+.two > section {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+}
+.two > section h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+@media screen and (min-width: 800px) {
+  .two > section {
+    grid-template-columns: 80px 1fr;
+  }
+  .two > section img {
+    justify-self: center;
+  }
+}
+
+h3 {
+  font-weight: 700;
+  font-size: 2rem;
+  color: var(--blue-200);
+  padding: 16px;
+}
+
+h4 {
+  font-weight: 700;
+  font-size: 3.125rem;
+  color: var(--blue-50);
+  margin-bottom: 40px;
+}
+
+.pricing-new button {
+  width: auto;
+  align-self: initial;
+  margin-bottom: 40px;
+}
+.pricing-new .table-container {
+  padding: 40px;
+  border-radius: 32px;
+  background: rgba(2, 16, 23, 0.2);
+  backdrop-filter: blur(4px);
+  width: 100%;
+  padding: 40px;
+}
+.pricing-new table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.pricing-new table tr th, .pricing-new table tr td {
+  padding: 40px 0;
+  border-bottom: 1px solid #4f8199;
+}
+.pricing-new table thead th {
+  text-align: center;
+}
+.pricing-new table tbody th {
+  text-align: left;
+}
+.pricing-new table tbody td {
+  color: var(--orange-300);
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+.pricing-new table th {
+  color: var(--blue-50);
+  font-family: var(--brother-printed);
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+@media screen and (min-width: 800px) {
+  .pricing-new table th {
+    font-size: 2rem;
+  }
+  .pricing-new table tbody td {
+    font-size: 1.6rem;
+  }
 }
 
 .purchase-sidebar {

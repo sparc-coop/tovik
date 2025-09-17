@@ -6,277 +6,338 @@
 @using Tovik.Translation
 
 <HeadContent>
-    <script type="text/javascript">
-        function initPreview(dotNet) {
-            window.addEventListener('message', (event) => {
-                if (event.data && event.data.startsWith && event.data.startsWith('tovik')) {
-                    if (event.data.startsWith('tovik-url')) {
-                        let url = event.data.replace('tovik-url:', '');
-                        dotNet.invokeMethodAsync('UpdateUrl', url);
-                    } else if (event.data.startsWith('tovik-translating')) {
-                        dotNet.invokeMethodAsync('SetPreviewLoading', true);
-                    } else if (event.data.startsWith('tovik-translated')) {
-                        dotNet.invokeMethodAsync('SetPreviewLoading', false);
-                    }
-                }
-            });
-        }
+	<script type="text/javascript">
+		function initPreview(dotNet) {
+			window.addEventListener('message', (event) => {
+				if (event.data && event.data.startsWith && event.data.startsWith('tovik')) {
+					if (event.data.startsWith('tovik-url')) {
+						let url = event.data.replace('tovik-url:', '');
+						dotNet.invokeMethodAsync('UpdateUrl', url);
+					} else if (event.data.startsWith('tovik-translating')) {
+						dotNet.invokeMethodAsync('SetPreviewLoading', true);
+					} else if (event.data.startsWith('tovik-translated')) {
+						dotNet.invokeMethodAsync('SetPreviewLoading', false);
+					}
+				}
+			});
+		}
 
-        function changePreviewLanguage(iframe, lang) {
-            iframe.contentWindow.postMessage('tovik-lang:' + lang);
-        }
-    </script>
-    <script src="https://js.stripe.com/v3"></script>
+		function changePreviewLanguage(iframe, lang) {
+			iframe.contentWindow.postMessage('tovik-lang:' + lang);
+		}
+	</script>
 </HeadContent>
 
 <div class="home-container @(IsPreviewing ? "previewing" : "") @(PreviewFirst ? "preview-first" : "")">
-    <iframe srcdoc="@PreviewHtml" @ref=IFrame>
-    </iframe>
+	<iframe srcdoc="@PreviewHtml" @ref=IFrame>
+	</iframe>
 
-    @if (IsPreviewing)
-    {
-        <Sparc.Blossom.Content.LanguageSelector IsLoading="IsPreviewLoading" WithButton=true Visible=true InitialLanguageId="@PreviewLang" OnLanguageChanged="UpdateLanguage" />
-        <div class="fine-print">
-            This is how your site could look for a native @PreviewLanguageName speaker. <a href="" @onclick=Home @onclick:preventDefault>Install Tovik now</a> to make your content make sense to them.
-        </div>
-    }
+	@if (IsPreviewing)
+	{
+		<Sparc.Blossom.Content.LanguageSelector IsLoading="IsPreviewLoading" WithButton=true Visible=true InitialLanguageId="@PreviewLang" OnLanguageChanged="UpdateLanguage" />
+		<div class="fine-print">
+			This is how your site will look for a native @PreviewLanguageName speaker. <a href="" @onclick=ToggleSidebar @onclick:preventDefault>Install Tovik now</a> to make your content make sense to them.
+		</div>
+	}
 
-    <article>
-        <div class="hero-background"><DashedLine Color="#FFD4BF" /></div>
-        <header>
-            <button @onclick=Home>
-                <img src="/images/TovikWordmark.svg" alt="Tovik" />
-            </button>
+	<article>
+		<div class="hero-background"><DashedLine Color="#FFD4BF" /></div>
+		<header>
+			<button @onclick=Home>
+				<img src="/images/TovikWordmark.svg" alt="Tovik" />
+			</button>
 
-            <div class="buttons">
-                @if (!IsPreviewing)
-                {
-                    <Sparc.Blossom.Content.LanguageSelector WithButton=true />
-                }
-                else
-                {
-                    <button class="secondary-btn" @onclick=Home>Learn More</button>
-                }
-                @if (IsACustomer)
-                {
-                    <a class="button primary-btn" href="/sites">My Sites</a>
-                }
-                else
-                {
-                    <button class="primary-btn" @onclick=TogglePurchaseSidebar>Get Tovik</button>
-                }
-            </div>
-        </header>
+			<div class="buttons">
+				@if (!IsPreviewing)
+				{
+					<Sparc.Blossom.Content.LanguageSelector WithButton=true />
+				}
+				else
+				{
+					<button class="secondary-btn" @onclick=Home>Learn More</button>
+				}
+				@if (IsACustomer)
+				{
+					<a class="button primary-btn" href="/sites">My Sites</a>
+				}
+				else
+				{
+					<button class="primary-btn" @onclick=ToggleSidebar>Start Free</button>
+				}
+			</div>
+		</header>
 
-        <section>
-            <img src="/images/TovikChar.svg" alt="Tovik" />
-            <h1>Speaking your website visitors' language isn't optional anymore.</h1>
-            <p>
-                Tovik is a multilingual translation plugin that quietly translates your site into their native language, without relying on them to bring their own translator.
-            </p>
-            <form @onsubmit=GoToPreview>
-                <input type="text" placeholder="Enter your website's URL" @bind=Url required />
-                <button class="primary-btn">Try Tovik</button>
-            </form>
-            @if (ErrorMessage != null)
-            {
-                <span class="error-message">@ErrorMessage</span>
-            }
-        </section>
+		<section>
+			<img src="/images/TovikChar.svg" alt="Tovik" />
+			<h1>What if your visitors could read your site in their own language?</h1>
+			<p>
+				Meet Tovik, your website’s new multilingual sidekick—a plugin that automatically translates your site’s content to reach users around the world.
+			</p>
+			<p>
+				Want to see how it works? Paste your URL below and get a preview of how Tovik will work on your site!
+			</p>
+			<form @onsubmit=GoToPreview>
+				<input type="text" placeholder="Enter your website's URL" @bind=Url required />
+				<button class="primary-btn">Preview</button>
+			</form>
+			@if (ErrorMessage != null)
+			{
+				<span class="error-message">@ErrorMessage</span>
+			}
+		</section>
 
-        <div class="two">
-            <section>
-                <header>
-                    <img src="/images/Star.svg" alt="Star" />
-                    <h2>130+ Languages, 600+ Dialects</h2>
-                </header>
-                <p>Your visitors deserve to engage with your content in the language that feels like home.</p>
-            </section>
-            <section>
-                <header>
-                    <img src="/images/Star.svg" alt="Star" />
-                    <h2>Built for Creators, Not Coders</h2>
-                </header>
-                <p>Tovik installs with a single line of code or a simple plugin installation, zero setup required.</p>
-            </section>
-            <section>
-                <header>
-                    <img src="/images/Star.svg" alt="Star" />
-                    <h2>No Invasive Tracking</h2>
-                </header>
-                <p>Zero unnecessary cookies, zero fingerprints, zero surveillance, zero data harvesting. Just simple, respectful translation.</p>
-            </section>
-            <section>
-                <header>
-                    <img src="/images/Star.svg" alt="Star" />
-                    <h2>Works On Any Website</h2>
-                </header>
-                <p>
-                    Built for
-                    <a href="/install/WordPress">WordPress</a>,
-                    <a href="/install/Wix">Wix</a>,
-                    <a href="/install/Webflow">Webflow</a>,
-                    <a href="/install/Weebly">Weebly</a>,
-                    <a href="/install/SquareSpace">SquareSpace</a>,
-                    <a href="/install/Shopify">Shopify</a>,
-                    and we have an
-                    <a href="/install/HTML">HTML script tag</a>
-                    for the rest.
-                </p>
-            </section>
-        </div>
+		<div class="two">
+			<section>
+				<img src="/images/TiltedWorldIcon.svg" alt="Tilted World" />
+				<div>
+					<h2>Translates Your Site to 130+ Languages &amp; 600+ Dialects</h2>
+					<p>Make your audience feel at home with automatic site translations into their preferred language.</p>
+				</div>
+			</section>
+			<section>
+				<img src="/images/LightbulbIcon.svg" alt="Lightbulb" />
+				<div>
+					<h2>Easy to Install</h2>
+					<p>
+						Tovik requires minimal setup, just a single line of code or a simple plugin installation. Questions? We’re here to help!
+					</p>
+				</div>
+			</section>
+			<section>
+				<img src="/images/LockIcon.svg" alt="Lock" />
+				<div>
+					<h2>No Invasive Tracking</h2>
+					<p>
+						No data tracking. Yours or your visitors’. We’ll never ask for access to your site or unnecessary cookies (although they’re tasty!).
+					</p>
+				</div>
+			</section>
+			<section>
+				<img src="/images/TranslateIcon.svg" alt="Translate" />
+				<div>
+					<h2>Works On Any Website</h2>
+					<p>
+						Built for WordPress, Wix, Webflow, Weebly, SquareSpace, Shopify, and we have an HTML tag for the rest.
+					</p>
+				</div>
+			</section>
+		</div>
 
-        <Tovik.Home.Pricing OnClick="TogglePurchaseSidebar" />
-        <Questions />
-    </article>
+		<section class="pricing-new">
+			<header>
+				<h3>Honest price</h3>
+				<h4>Tired of subscription services? So are we!</h4>
+				<p>
+					We believe in honest pricing which is exactly why Tovik is just a simple, one time fee. (Yes, really!)
+					We believe everyone should have access to translation technology, so we set our pricing with small businesses, non-profits, and individuals like you in mind.
+				</p>
+			</header>
+			<button class="primary-btn" @onclick="ToggleSidebar">Start Free</button>
+
+			<div class="table-container">
+				<table>
+					<thead>
+						<tr>
+							<th></th>
+							<th>Tovik Free</th>
+							<th>Tovik Pro</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th>Price</th>
+							<td>$0</td>
+							<td>$20</td>
+						</tr>
+						<tr>
+							<th>Frequency</th>
+							<td>N/A</td>
+							<td>One time fee</td>
+						</tr>
+						<tr>
+							<th>Page limit</th>
+							<td>20</td>
+							<td>500</td>
+						</tr>
+						<tr>
+							<th>Word limit</th>
+							<td>Unlimited</td>
+							<td>Unlimited</td>
+						</tr>
+						<tr>
+							<th>Language limit</th>
+							<td>Unlimited</td>
+							<td>Unlimited</td>
+						</tr>
+						<tr>
+							<th>Installation</th>
+							<td>One line of code</td>
+							<td>One line of code</td>
+						</tr>
+						<tr>
+							<th>Website Builder Plugin</th>
+							<td>Supported</td>
+							<td>Supported</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</section>
+
+		<section>
+			<header>
+				<h3>Ask us anything</h3>
+				<h4>Frequently Asked Questions</h4>
+			</header>
+		</section>
+
+		<Questions />
+	</article>
 </div>
 
-@if (IsPurchaseSidebarInitialized)
-{
-    <aside class="purchase-sidebar @(IsPurchaseSidebarOpen ? "open" : "")">
-        <header>
-            <button @onclick=TogglePurchaseSidebar>
-                <Sparc.Blossom.Authentication.Icons.XIcon />
-            </button>
-        </header>
-        <Tovik.Home.Purchase Domain="@PreviewUrl" />
-    </aside>
-}
+<aside class="purchase-sidebar @(IsSidebarOpen ? "open" : "")">
+	<header>
+		<button @onclick=ToggleSidebar>
+			<Sparc.Blossom.Authentication.Icons.XIcon />
+		</button>
+	</header>
+	<Tovik.Installation.Install Domain="@PreviewUrl" />
+</aside>
 
 @inject ISparcAura Aura
 @inject TovikCrawler Crawler
 @inject TovikDomains Domains
 @inject IJSRuntime Js
 @code {
-    [Parameter] public string? Url { get; set; }
-    [Parameter][SupplyParameterFromQuery] public string? PreviewLang { get; set; }
-    [Parameter][SupplyParameterFromQuery] public string? PaymentIntentId { get; set; }
-    [Parameter][SupplyParameterFromQuery(Name = "u")] public string? QueryUrl { get; set; }
-    bool IsACustomer;
-    bool IsPreviewing;
-    bool IsPreviewLoading;
-    bool PreviewFirst;
-    string? PreviewHtml;
-    string? PreviewUrl;
-    string? ErrorMessage;
-    string? PreviewLanguageName;
-    ElementReference IFrame;
-    bool IsPurchaseSidebarOpen;
-    bool IsPurchaseSidebarInitialized;
+	[Parameter] public string? Url { get; set; }
+	[Parameter][SupplyParameterFromQuery] public string? PreviewLang { get; set; }
+	[Parameter][SupplyParameterFromQuery] public string? PaymentIntentId { get; set; }
+	[Parameter][SupplyParameterFromQuery(Name = "u")] public string? QueryUrl { get; set; }
+	bool IsACustomer;
+	bool IsPreviewing;
+	bool IsPreviewLoading;
+	bool PreviewFirst;
+	string? PreviewHtml;
+	string? PreviewUrl;
+	string? ErrorMessage;
+	string? PreviewLanguageName;
+	ElementReference IFrame;
+	bool IsSidebarOpen;
+	bool IsPurchaseSidebarInitialized;
 
-    protected override async Task OnInitializedAsync()
-    {
-        var domains = await Domains.All();
-        IsACustomer = domains.Any();
-        PreviewFirst = !string.IsNullOrWhiteSpace(Url) || !string.IsNullOrWhiteSpace(QueryUrl);
-        if (PaymentIntentId != null)
-        {
-            IsPurchaseSidebarInitialized = true;
-            IsPurchaseSidebarOpen = true;
-        }
-    }
+	protected override async Task OnInitializedAsync()
+	{
+		var domains = await Domains.All();
+		IsACustomer = domains.Any();
+		PreviewFirst = !string.IsNullOrWhiteSpace(Url) || !string.IsNullOrWhiteSpace(QueryUrl);
+		if (PaymentIntentId != null)
+		{
+			IsPurchaseSidebarInitialized = true;
+			IsSidebarOpen = true;
+		}
+	}
 
-    protected override async Task OnParametersSetAsync()
-    {
-        if (!string.IsNullOrWhiteSpace(Url) && Url != PreviewUrl)
-        {
-            PreviewUrl = Url;
-            await PreviewSite();
-        }
-        else if (!string.IsNullOrWhiteSpace(QueryUrl) && QueryUrl != PreviewUrl)
-        {
-            Url = QueryUrl;
-            PreviewUrl = Url;
-            await PreviewSite();
-        }
-    }
+	protected override async Task OnParametersSetAsync()
+	{
+		if (!string.IsNullOrWhiteSpace(Url) && Url != PreviewUrl)
+		{
+			PreviewUrl = Url;
+			await PreviewSite();
+		}
+		else if (!string.IsNullOrWhiteSpace(QueryUrl) && QueryUrl != PreviewUrl)
+		{
+			Url = QueryUrl;
+			PreviewUrl = Url;
+			await PreviewSite();
+		}
+	}
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-            await Js.InvokeVoidAsync("initPreview", DotNetObjectReference.Create(this));
-    }
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender)
+			await Js.InvokeVoidAsync("initPreview", DotNetObjectReference.Create(this));
+	}
 
-    [JSInvokable]
-    public async Task UpdateUrl(string url)
-    {
-        if (url != Url)
-        {
-            Url = url;
-            PreviewHtml = await Crawler.PreviewAsync(Url, PreviewLang);
-            StateHasChanged();
-        }
-    }
+	[JSInvokable]
+	public async Task UpdateUrl(string url)
+	{
+		if (url != Url)
+		{
+			Url = url;
+			PreviewHtml = await Crawler.PreviewAsync(Url, PreviewLang);
+			StateHasChanged();
+		}
+	}
 
-    [JSInvokable]
-    public void SetPreviewLoading(bool isLoading)
-    {
-        IsPreviewLoading = isLoading;
-        StateHasChanged();
-    }
+	[JSInvokable]
+	public void SetPreviewLoading(bool isLoading)
+	{
+		IsPreviewLoading = isLoading;
+		StateHasChanged();
+	}
 
-    void TogglePurchaseSidebar()
-    {
-        IsPurchaseSidebarInitialized = true;
-        IsPurchaseSidebarOpen = !IsPurchaseSidebarOpen;
-    }
+	void ToggleSidebar()
+	{
+		IsPurchaseSidebarInitialized = true;
+		IsSidebarOpen = !IsSidebarOpen;
+	}
 
-    void GoToPreview()
-    {
-        Nav.NavigateTo($"/preview?u={Url}", PreviewUrl != null);
-    }
+	void GoToPreview()
+	{
+		Nav.NavigateTo($"/preview?u={Url}", PreviewUrl != null);
+	}
 
-    async Task PreviewSite()
-    {
-        if (Url == null)
-            return;
+	async Task PreviewSite()
+	{
+		if (Url == null)
+			return;
 
-        ErrorMessage = null;
-        PreviewHtml = null;
+		ErrorMessage = null;
+		PreviewHtml = null;
 
-        var domain = await Domains.Verify(Url);
-        if (domain != null && !domain.IsBlocked)
-        {
-            PreviewLang = domain.LastTranslatedLanguage
-                ?? Sparc.Blossom.Content.Language.Random.Id;
+		var domain = await Domains.Verify(Url);
+		if (domain != null && !domain.IsBlocked)
+		{
+			PreviewLang = domain.LastTranslatedLanguage
+				?? Sparc.Blossom.Content.Language.Random.Id;
 
-            PreviewLanguageName = Sparc.Blossom.Content.Language.Find(PreviewLang)?.LanguageDisplayName;
-            IsPreviewing = true;
-        }
-        else
-        {
-            ErrorMessage = domain?.IsBlocked == true ? "This domain is not compatible with Tovik." : "Please enter a valid URL.";
-        }
-    }
+			PreviewLanguageName = Sparc.Blossom.Content.Language.Find(PreviewLang)?.LanguageDisplayName;
+			IsPreviewing = true;
+		}
+		else
+		{
+			ErrorMessage = domain?.IsBlocked == true ? "This domain is not compatible with Tovik." : "Please enter a valid URL.";
+		}
+	}
 
-    async Task UpdateLanguage(Sparc.Blossom.Content.Language lang)
-    {
-        ErrorMessage = null;
-        PreviewLang = lang.Id;
-        PreviewLanguageName = Sparc.Blossom.Content.Language.Find(PreviewLang)?.LanguageDisplayName;
-        try
-        {
-            if (PreviewHtml == null)
-            {
-                PreviewHtml = await Crawler.PreviewAsync(Url!, PreviewLang);
-                StateHasChanged();
-            }
-            else
-            {
-                await Js.InvokeVoidAsync("changePreviewLanguage", IFrame, PreviewLang);
-            }
-        }
-        catch (Exception e)
-        {
-            IsPreviewing = false;
-            ErrorMessage = e.Message;
-            StateHasChanged();
-        }
-    }
+	async Task UpdateLanguage(Sparc.Blossom.Content.Language lang)
+	{
+		ErrorMessage = null;
+		PreviewLang = lang.Id;
+		PreviewLanguageName = Sparc.Blossom.Content.Language.Find(PreviewLang)?.LanguageDisplayName;
+		try
+		{
+			if (PreviewHtml == null)
+			{
+				PreviewHtml = await Crawler.PreviewAsync(Url!, PreviewLang);
+				StateHasChanged();
+			}
+			else
+			{
+				await Js.InvokeVoidAsync("changePreviewLanguage", IFrame, PreviewLang);
+			}
+		}
+		catch (Exception e)
+		{
+			IsPreviewing = false;
+			ErrorMessage = e.Message;
+			StateHasChanged();
+		}
+	}
 
-    void Home()
-    {
-        IsPreviewing = false;
-        PreviewHtml = null;
-    }
+	void Home()
+	{
+		IsPreviewing = false;
+		PreviewHtml = null;
+	}
 }

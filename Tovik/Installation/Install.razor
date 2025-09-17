@@ -1,9 +1,4 @@
-﻿@page "/install"
-@page "/install/{SelectedPlatform}"
-@layout MainLayout
-
-<PageTitle>Tovik - How to Install</PageTitle>
-<article class="install-page">
+﻿<article class="install-page">
     <div class="page-container">
 
         <header class="page-header">
@@ -326,10 +321,17 @@
             </section>
         }
     </div>
+
+    <footer>
+        <h3>Verify Your Tovik Installation</h3>
+        <p>Once you finish installing the Tovik script or plugin, enter your domain name here to activate Tovik on your site.</p>
+        <Tovik.Domains.AddDomain />
+    </footer>
 </article>
 
 @code {
     [Parameter] public string SelectedPlatform { get; set; } = "WordPress";
+    [Parameter] public string? Domain { get; set; }
     List<string> Platforms = ["WordPress", "Wix", "SquareSpace", "Webflow", "Weebly", "Shopify", "HTML"];
     List<string> ComingSoon = [];
 
@@ -342,5 +344,10 @@
     private void Select(string platform)
     {
         Nav.NavigateTo($"/install/{platform}");
+    }
+
+    private void Claim()
+    {
+        
     }
 }
