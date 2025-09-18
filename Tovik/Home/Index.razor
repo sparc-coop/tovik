@@ -36,7 +36,7 @@
 	{
 		<Sparc.Blossom.Content.LanguageSelector IsLoading="IsPreviewLoading" WithButton=true Visible=true InitialLanguageId="@PreviewLang" OnLanguageChanged="UpdateLanguage" />
 		<div class="fine-print">
-			This is how your site will look for a native @PreviewLanguageName speaker. <a href="" @onclick=ToggleSidebar @onclick:preventDefault>Install Tovik now</a> to make your content make sense to them.
+			This is a preview of your site with Tovik, from the eyes of a native @PreviewLanguageName speaker. <a href="" @onclick=ToggleSidebar @onclick:preventDefault>Install Tovik now</a>, and make your content make sense to them.
 		</div>
 	}
 
@@ -62,7 +62,7 @@
 				}
 				else
 				{
-					<button class="primary-btn" @onclick=ToggleSidebar>Start Free</button>
+					<button class="primary-btn" @onclick=ToggleSidebar>Install Now</button>
 				}
 			</div>
 		</header>
@@ -71,14 +71,12 @@
 			<img src="/images/TovikChar.svg" alt="Tovik" />
 			<h1>What if your visitors could read your site in their own language?</h1>
 			<p>
-				Meet Tovik, your website’s new multilingual sidekick. Tovik is a plugin that automatically translates your site’s content to reach users around the world.
-			</p>
-			<p>
-				Want to see how it works? Enter your URL below and get a preview of how Tovik will work on your site!
+				Are you tired of complicated installations or expensive subscriptions for translation services? <br />
+				Tovik is a simple plugin that quietly translates your site, helping you reach a global audience.
 			</p>
 			<form @onsubmit=GoToPreview>
 				<input type="text" placeholder="Enter your website's URL" @bind=Url required />
-				<button class="primary-btn">Preview</button>
+				<button class="primary-btn">Preview Your Translated Site</button>
 			</form>
 			@if (ErrorMessage != null)
 			{
@@ -99,7 +97,7 @@
 				<div>
 					<h2>Easy to Install</h2>
 					<p>
-						Tovik requires minimal setup, just a single line of code or a simple plugin installation. Questions? We’re here to help!
+						Tovik requires minimal setup, just a single line of code or a simple plugin installation.
 					</p>
 				</div>
 			</section>
@@ -128,11 +126,11 @@
 				<h3>Honest price</h3>
 				<h4>Tired of subscription services? So are we!</h4>
 				<p>
-					We believe in honest pricing which is exactly why Tovik is just a simple, one time fee. (Yes, really!)
+					We believe in honest pricing, and Tovik is just a simple, one time fee. (Yes, really!)
 					We believe everyone should have access to translation technology, so we set our pricing with small businesses, non-profits, and individuals like you in mind.
 				</p>
 			</header>
-			<button class="primary-btn" @onclick="ToggleSidebar">Start Free</button>
+			<button class="primary-btn" @onclick="ToggleSidebar">Install Tovik Free</button>
 
 			<div class="table-container">
 				<table>
@@ -229,7 +227,7 @@
 		var domains = await Domains.All();
 		IsACustomer = domains.Any();
 		PreviewFirst = !string.IsNullOrWhiteSpace(Url) || !string.IsNullOrWhiteSpace(QueryUrl);
-		
+
 	}
 
 	protected override async Task OnParametersSetAsync()

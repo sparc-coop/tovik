@@ -15,11 +15,17 @@
 
 @inject Tovik.Domains.TovikDomains TovikDomains
 @code {
-	[Parameter] public EventCallback OnAdded { get; set; }
+    [Parameter] public EventCallback OnAdded { get; set; }
+    [Parameter] public string? Domain { get; set; }
     bool IsVerifying;
     string NewDomain = "";
     string? Error;
     
+    protected override void OnParametersSet()
+    {
+        if (!string.IsNullOrWhiteSpace(Domain))
+            NewDomain = Domain;
+	}
 
     private async Task Add()
     {
