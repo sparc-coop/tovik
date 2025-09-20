@@ -132,6 +132,7 @@ article > header ::deep .language-select {
   position: fixed;
   top: 100px;
   right: 16px;
+  border-radius: 20px;
 }
 article > header img {
   height: 24px;
@@ -144,8 +145,11 @@ article > header .buttons {
 article > header button, article > header a.button {
   width: auto;
   padding: 12px 16px;
-  border-radius: 50px;
+  border-radius: 20px;
   white-space: nowrap;
+}
+article > header button.logo, article > header a.button.logo {
+  padding: 0;
 }
 @media screen and (min-width: 800px) {
   article > header {
@@ -261,13 +265,13 @@ h4 {
   font-weight: 700;
   font-size: 3.125rem;
   color: var(--blue-50);
-  margin-bottom: 40px;
+  margin-bottom: 24px;
 }
 
 .pricing-new button {
   width: auto;
   align-self: initial;
-  margin-bottom: 40px;
+  margin-bottom: 8px;
 }
 .pricing-new .table-container {
   padding: 40px;
@@ -284,6 +288,9 @@ h4 {
 .pricing-new table tr th, .pricing-new table tr td {
   padding: 40px 0;
   border-bottom: 1px solid #4f8199;
+}
+.pricing-new table tr:last-child th, .pricing-new table tr:last-child td {
+  border-bottom: 0;
 }
 .pricing-new table thead th {
   text-align: center;

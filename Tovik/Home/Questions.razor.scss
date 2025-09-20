@@ -1,10 +1,10 @@
 .faq {
     max-width: 1200px;
-    margin: 80px 10px;
+    margin: 16px 10px 80px;
     box-sizing: border-box;
 
     @media screen and (min-width: 800px) {
-        margin: 80px auto;
+        margin: 16px auto 80px;
     }
 
     .question, .answer {
@@ -74,10 +74,11 @@
         margin-bottom: 16px;
         padding-right: 64px;
         text-align: left;
+        margin-bottom: 0;
     }
 
     dd {
-        margin: 0 0 36px 0;
+        margin: 16px 0 0 0;
         color: var(--blue-200);
         text-align: left;
         display: none;
