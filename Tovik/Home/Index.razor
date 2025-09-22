@@ -144,13 +144,13 @@
 					<tbody>
 						<tr>
 							<th>Price</th>
-							<td>$0</td>
-							<td>$20</td>
+							<td>@Product?.FormattedZeroPrice</td>
+							<td>@Product?.FormattedPrice</td>
 						</tr>
 						<tr>
-							<th>Frequency</th>
+							<th>Billing Frequency</th>
 							<td>N/A</td>
-							<td>One time fee</td>
+							<td>Once</td>
 						</tr>
 						<tr>
 							<th>Page limit</th>
@@ -207,6 +207,9 @@
 @inject TovikCrawler Crawler
 @inject TovikDomains Domains
 @inject IJSRuntime Js
+@inject ISparcBilling Billing
+@inject Microsoft.Extensions.Configuration.IConfiguration Config
+
 @code {
 	[Parameter] public string? Url { get; set; }
 	[Parameter][SupplyParameterFromQuery] public string? PreviewLang { get; set; }
@@ -221,13 +224,14 @@
 	string? PreviewLanguageName;
 	ElementReference IFrame;
 	bool IsSidebarOpen;
+	GetProductResponse? Product;
 
 	protected override async Task OnInitializedAsync()
 	{
 		var domains = await Domains.All();
 		IsACustomer = domains.Any();
 		PreviewFirst = !string.IsNullOrWhiteSpace(Url) || !string.IsNullOrWhiteSpace(QueryUrl);
-
+		Product = await Billing.GetProductAsync(Config["ProductId"]!);
 	}
 
 	protected override async Task OnParametersSetAsync()
