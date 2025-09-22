@@ -1,6 +1,6 @@
 import MD5 from "./MD5.js";
 import db from './TovikDb.js';
-const baseUrl = true || window.location.href.includes('localhost')
+const baseUrl = window.location.href.includes('localhost')
     ? 'https://localhost:7185'
     : 'https://engine.sparc.coop';
 export default class TovikEngine {
