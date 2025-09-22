@@ -8,6 +8,7 @@ const baseUrl = window.location.href.includes('localhost')
 export default class TovikEngine {
     static userLang;
     static documentLang;
+    static model;
     static rtlLanguages = ['ar', 'fa', 'he', 'ur', 'ps', 'ku', 'dv', 'yi', 'sd', 'ug'];
 
     static async getUserLanguage() {
@@ -21,6 +22,7 @@ export default class TovikEngine {
         // Check for data-lang on the body element
         const htmlLang = document.body.getAttribute('data-toviklang');
         if (htmlLang) {
+            this.model = 'Live';
             this.userLang = htmlLang;
             window.addEventListener('message', async (event) => {
                 var lang = event['data'];
@@ -190,6 +192,9 @@ export default class TovikEngine {
         };
 
         if (body) {
+            if (this.model)
+                body.model = this.model;
+
             options.headers.append('Content-Type', 'application/json');
             options.body = JSON.stringify(body);
         }

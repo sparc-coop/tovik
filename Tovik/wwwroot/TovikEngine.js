@@ -1,11 +1,12 @@
 import MD5 from "./MD5.js";
 import db from './TovikDb.js';
-const baseUrl = window.location.href.includes('localhost')
+const baseUrl = true || window.location.href.includes('localhost')
     ? 'https://localhost:7185'
     : 'https://engine.sparc.coop';
 export default class TovikEngine {
     static userLang;
     static documentLang;
+    static model;
     static rtlLanguages = ['ar', 'fa', 'he', 'ur', 'ps', 'ku', 'dv', 'yi', 'sd', 'ug'];
     static async getUserLanguage() {
         // If query parameter lang is set, use it
@@ -17,6 +18,7 @@ export default class TovikEngine {
         // Check for data-lang on the body element
         const htmlLang = document.body.getAttribute('data-toviklang');
         if (htmlLang) {
+            this.model = 'DeepL';
             this.userLang = htmlLang;
             window.addEventListener('message', async (event) => {
                 var lang = event['data'];
@@ -156,6 +158,8 @@ export default class TovikEngine {
             headers: new Headers()
         };
         if (body) {
+            if (this.model)
+                body.model = this.model;
             options.headers.append('Content-Type', 'application/json');
             options.body = JSON.stringify(body);
         }
