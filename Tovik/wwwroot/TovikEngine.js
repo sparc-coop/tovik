@@ -18,7 +18,7 @@ export default class TovikEngine {
         // Check for data-lang on the body element
         const htmlLang = document.body.getAttribute('data-toviklang');
         if (htmlLang) {
-            this.model = 'DeepL';
+            this.model = 'Live';
             this.userLang = htmlLang;
             window.addEventListener('message', async (event) => {
                 var lang = event['data'];
