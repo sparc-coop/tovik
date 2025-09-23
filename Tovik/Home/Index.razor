@@ -294,8 +294,7 @@
 		var domain = await Domains.Verify(Url);
 		if (domain != null && !domain.IsBlocked)
 		{
-			PreviewLang = domain.LastTranslatedLanguage
-				?? Sparc.Blossom.Content.Language.Random.Id;
+			PreviewLang = Sparc.Blossom.Content.Language.Random.Id;
 
 			PreviewLanguageName = Sparc.Blossom.Content.Language.Find(PreviewLang)?.LanguageDisplayName;
 			IsPreviewing = true;
