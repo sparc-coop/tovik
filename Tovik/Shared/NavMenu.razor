@@ -1,69 +1,49 @@
-﻿<nav>
-    <div class="right">
-        <SparcAura />
-        <button class="menu-btn" @onclick=ToggleMobileMenu>
-            <MenuIcon />
-        </button>
-    </div>
-    <div class="nav-menu @(showMobileMenu ? "show" : "")">
-        <SecondaryLogo />
-        <ul>
-            @foreach (var domain in Domains)
-            {
-                <li>
-                    <NavLink class="nav-link" href="@("/sites/" + domain.Id)" Match=NavLinkMatch.Prefix ActiveClass="active" @onclick=ToggleMobileMenu><BubbleTail />@domain.Domain</NavLink>
-                </li>
-            }
-            <li><NavLink class="nav-link" href="/credits" ActiveClass="active" @onclick=ToggleMobileMenu><BubbleTail />Made with ❤️</NavLink></li>
-        </ul>
-    </div>
-    <div class="nav-mask">
-        <img src="/images/NavShape.png" />
-    </div>
+﻿@using Tovik.Domains
+
+<nav>
+	<button class="logo" @onclick=Home>
+		<img src="/images/TovikWordmark.svg" alt="Tovik" />
+	</button>
+
+	<div class="buttons">
+		@if (!IsPreviewing)
+		{
+			<Sparc.Blossom.Content.LanguageSelector WithButton=true />
+		}
+		else
+		{
+			<button class="secondary-btn" @onclick=Home>Learn More</button>
+		}
+		@if (IsACustomer)
+		{
+			<a class="button primary-btn" href="/sites">My Sites</a>
+		}
+		else
+		{
+			<button class="primary-btn" @onclick=ToggleSidebar>Install Now</button>
+		}
+	</div>
 </nav>
-<div class="nav-overlay @(showOverlay ? "show" : "") @(hideOverlay ? "hiding" :"")" @onclick=ToggleMobileMenu></div>
-<div class="nav-sidebar">
-    <div class="nav-menu @(showMobileMenu ? "show" : "")">
-        <PrimaryLogo FontColor="#FF945E" />
-        <ul>
-            @foreach (var domain in Domains)
-            {
-                <li>
-                    <NavLink class="nav-link" href="@("/sites/" + domain.Id)" Match=NavLinkMatch.Prefix ActiveClass="active" @onclick=ToggleMobileMenu><BubbleTail />@domain.Domain</NavLink>
-                </li>
-            }
-            <li><NavLink class="nav-link" href="/credits" ActiveClass="active" @onclick=ToggleMobileMenu><BubbleTail />Made with ❤️</NavLink></li>
-        </ul>
-    </div>
-</div>
 
-@inject Tovik.Domains.TovikDomains TovikDomains
+<aside class="@(IsSidebarOpen ? "open" : "")">
+</aside>
+
+@inject TovikDomains Domains
 @code {
-    bool showMobileMenu;
-    bool showOverlay;
-    bool hideOverlay;
-    List<SparcDomain> Domains = [];
+	[Parameter] public bool IsPreviewing { get; set; }
+	[Parameter] public EventCallback OnPreviewExited { get; set; }
+	bool IsSidebarOpen;
+	bool IsACustomer;
 
-    protected override async Task OnInitializedAsync()
-    {
-        Domains = await TovikDomains.All();
-    }
+	protected override async Task OnInitializedAsync()
+	{
+		IsACustomer = (await Domains.All()).Any();
+	}
 
-    async Task ToggleMobileMenu()
-    {
-        showMobileMenu = !showMobileMenu;
+	async Task Home() => await OnPreviewExited.InvokeAsync();
 
-        if (showMobileMenu)
-        {
-            showOverlay = true;
-            hideOverlay = false;
-        } else
-        {
-            hideOverlay = true;
-            StateHasChanged();
-            await Task.Delay(800);
-            showOverlay = false;
-            hideOverlay = false;
-        }
-    }
+	void ToggleSidebar()
+	{
+		IsSidebarOpen = !IsSidebarOpen;
+	}
 }

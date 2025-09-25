@@ -1,96 +1,125 @@
-﻿.install-page h2 {
-  font-size: 2.4rem;
-  margin-bottom: 16px;
-}
-.install-page h3 {
-  font-size: 1.6rem;
-}
-.install-page > footer {
-  padding: 32px;
-}
-.install-page > footer p {
-  font-size: 1.4rem;
-  margin-bottom: 16px;
-}
-.install-page > footer ::deep input {
-  background-color: var(--blue-700);
-}
-.install-page > header {
-  padding: 32px;
-  background: var(--blue-700);
-}
-.install-page > header .platforms {
-  list-style: none;
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  padding: 16px 0;
-}
-.install-page > header .platforms button {
-  background: var(--orange-100);
-  border: 0;
-  opacity: 0.3;
-  padding: 8px 16px;
-}
-.install-page > header .platforms li:hover button, .install-page > header .platforms li.selected button {
-  background: var(--orange-300);
-  opacity: 1;
-}
-.install-page > header .platforms li.comingsoon button {
-  pointer-events: none;
-}
-.install-page a.button {
-  text-decoration: none;
-  display: inline-block;
-  width: auto;
-  margin: 16px 0;
-}
-.install-page .step-1, .install-page .step-2 {
-  padding: 32px;
-}
-.install-page .step-1 p, .install-page .step-1 li, .install-page .step-2 p, .install-page .step-2 li {
-  font-size: 1.4rem;
-}
-.install-page .step-1 header aside, .install-page .step-2 header aside {
-  font-size: 1.4rem;
-}
-.install-page footer aside {
-  font-size: 1.4rem;
-  margin-bottom: 8px;
-}
-.install-page section {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  align-items: flex-start;
-}
-.install-page section ol, .install-page section ul {
-  padding-left: 32px;
-}
-.install-page section ol li, .install-page section ul li {
-  margin-bottom: 8px;
-}
-.install-page section ol strong, .install-page section ol code, .install-page section ul strong, .install-page section ul code {
-  color: var(--orange-300);
-}
-.install-page section > img {
-  height: 30px;
-}
-.install-page section header {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.install-page section > div {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-  color: var(--blue-50, #EFF7F9);
-  font-family: var(--articulat);
-  font-size: 1.6rem;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  max-width: 100%;
-  box-sizing: border-box;
+.install-page {
+    h2 {
+        font-size: 2.4rem;
+        margin-bottom: 16px;
+    }
+
+    h3 {
+        font-size: 1.6rem;
+    }
+
+    > footer {
+        padding: 32px;
+        //background: var(--blue-700);
+
+        p {
+            font-size: 1.4rem;
+            margin-bottom: 16px;
+        }
+
+        ::deep input {
+            background-color: var(--blue-700);
+        }
+    }
+
+    > header {
+        padding: 32px;
+        background: var(--blue-700);
+
+
+        .platforms {
+            list-style: none;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            padding: 16px 0;
+
+            button {
+                background: var(--orange-100);
+                border: 0;
+                opacity: 0.3;
+                padding: 8px 16px;
+            }
+
+            li:hover, li.selected {
+                button {
+                    background: var(--orange-300);
+                    opacity: 1;
+                }
+            }
+
+            li.comingsoon {
+                button {
+                    pointer-events: none;
+                }
+            }
+        }
+    }
+
+    a.button {
+        text-decoration: none;
+        display: inline-block;
+        width: auto;
+        margin: 16px 0;
+    }
+
+    .step-1, .step-2 {
+        padding: 32px;
+
+        p, li {
+            font-size: 1.4rem;
+        }
+
+        header aside {
+            font-size: 1.4rem;
+        }
+    }
+
+    footer aside {
+        font-size: 1.4rem;
+        margin-bottom: 8px;
+    }
+
+    section {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        align-items: flex-start;
+
+        ol, ul {
+            padding-left: 32px;
+
+            li {
+                margin-bottom: 8px;
+            }
+
+            strong, code {
+                color: var(--orange-300);
+            }
+        }
+
+        > img {
+            height: 30px;
+        }
+
+        header {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        > div {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            color: var(--blue-50, #EFF7F9);
+            font-family: var(--articulat);
+            font-size: 1.6rem;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+    }
 }

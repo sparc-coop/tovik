@@ -1,38 +1,4 @@
 ﻿@using Sparc.Blossom.Realtime
-<div class="pricing">
-    <header>
-        <h3>Tovik Pro</h3>
-        <div>
-            <h4>@Product?.FormattedPrice</h4>
-            <h5>one time</h5>
-            <h6>(no subscriptions!)</h6>
-        </div>
-        @if (OnClick.HasDelegate)
-        {
-            <button class="primary-btn desktop-only" @onclick=OpenPurchaseSidebar>Get Tovik</button>
-        }
-    </header>
-    <ul>
-        <li>
-            <strong>Unlimited</strong> visitors and pageviews
-        </li>
-        <li>
-            <strong>Unlimited</strong> languages and dialects
-        </li>
-        <li>
-            <strong>Unlimited</strong> translations
-        </li>
-        <li>
-            Up to <strong>500</strong> pages per domain
-        </li>
-    </ul>
-    @if (OnClick.HasDelegate)
-    {
-        <footer class="mobile-only">
-            <button class="primary-btn" @onclick=OpenPurchaseSidebar>Get Tovik</button>
-        </footer>
-    }
-</div>
 
 @inject ISparcBilling Billing
 @inject Microsoft.Extensions.Configuration.IConfiguration Config

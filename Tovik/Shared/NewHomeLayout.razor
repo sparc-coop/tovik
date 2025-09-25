@@ -1,13 +1,74 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="layout-container">
-    <main>
-        @Body
-    </main>
 
-    <footer>
-        &copy; Sparc Cooperative Association.
-        <a href="/Privacy">Privacy</a> |
-        <a href="/Terms">Terms of Use</a>
-    </footer>
+<div class="home-container @(IsPreviewing ? "previewing" : "") @(PreviewFirst ? "preview-first" : "")">
+	<Tovik.Home.Preview />
+
+	<main>
+		<div class="hero-background"><DashedLine Color="#FFD4BF" /></div>
+		<header>
+			<NavMenu IsPreviewing=IsPreviewing OnPreviewExited=StopPreviewing />
+		</header>
+
+		@Body
+
+		<footer>
+			&copy; Sparc Cooperative Association.
+			<a href="/Privacy">Privacy</a> |
+			<a href="/Terms">Terms of Use</a>
+		</footer>
+	</main>
 </div>
+
+@code {
+	[Parameter][SupplyParameterFromQuery(Name = "u")] public string? QueryUrl { get; set; }
+	[Parameter][SupplyParameterFromQuery] public string? PreviewLang { get; set; }
+
+	bool IsSidebarOpen;
+	bool IsPreviewing;
+	bool PreviewFirst;
+
+	protected override void OnInitialized()
+	{
+		PreviewFirst = !string.IsNullOrWhiteSpace(QueryUrl);
+	}
+
+	void StopPreviewing() => IsPreviewing = false;
+
+	protected override async Task OnParametersSetAsync()
+	{
+		if (!string.IsNullOrWhiteSpace(Url) && Url != PreviewUrl)
+		{
+			PreviewUrl = Url;
+			await PreviewSite();
+		}
+		else if (!string.IsNullOrWhiteSpace(QueryUrl) && QueryUrl != PreviewUrl)
+		{
+			Url = QueryUrl;
+			PreviewUrl = Url;
+			await PreviewSite();
+		}
+	}
+
+	async Task PreviewSite()
+	{
+		if (Url == null)
+			return;
+
+		ErrorMessage = null;
+		PreviewHtml = null;
+
+		var domain = await Domains.Verify(Url);
+		if (domain != null && !domain.IsBlocked)
+		{
+			PreviewLang = Sparc.Blossom.Content.Language.Random.Id;
+
+			PreviewLanguageName = Sparc.Blossom.Content.Language.Find(PreviewLang)?.LanguageDisplayName;
+			IsPreviewing = true;
+		}
+		else
+		{
+			ErrorMessage = domain?.IsBlocked == true ? "This domain is not compatible with Tovik." : "Please enter a valid URL.";
+		}
+	}
+}

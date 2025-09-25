@@ -1,1 +1,0 @@
-﻿main{margin-top:0;padding:0;padding-bottom:24px;color:var(--blue-50);}main .main-grid{width:100%;display:grid;grid-template-columns:repeat(4,1fr);column-gap:16px;}main .main-grid ::deep article{grid-column:1/span 4;margin-top:200px;}

@@ -5,334 +5,97 @@
 @using Tovik.Domains
 @using Tovik.Translation
 
-<HeadContent>
-	<script type="text/javascript">
-		function initPreview(dotNet) {
-			window.addEventListener('message', (event) => {
-				if (event.data && event.data.startsWith && event.data.startsWith('tovik')) {
-					if (event.data.startsWith('tovik-url')) {
-						let url = event.data.replace('tovik-url:', '');
-						dotNet.invokeMethodAsync('UpdateUrl', url);
-					} else if (event.data.startsWith('tovik-translating')) {
-						dotNet.invokeMethodAsync('SetPreviewLoading', true);
-					} else if (event.data.startsWith('tovik-translated')) {
-						dotNet.invokeMethodAsync('SetPreviewLoading', false);
-					}
-				}
-			});
+<article>
+	<section>
+		<img src="/images/TovikChar.svg" alt="Tovik" />
+		<h1>What if your visitors could read your site in their own language?</h1>
+		<p>
+			Are you tired of complicated installations or expensive subscriptions for translation services? <br />
+			Tovik is a simple plugin that quietly translates your site, helping you reach a global audience.
+		</p>
+		<form @onsubmit=GoToPreview>
+			<input type="text" placeholder="Enter your website's URL" @bind=Url required />
+			<button class="primary-btn">Preview Your Translated Site</button>
+		</form>
+		@if (ErrorMessage != null)
+		{
+			<span class="error-message">@ErrorMessage</span>
 		}
+	</section>
 
-		function changePreviewLanguage(iframe, lang) {
-			iframe.contentWindow.postMessage('tovik-lang:' + lang);
-		}
-	</script>
-</HeadContent>
-
-<div class="home-container @(IsPreviewing ? "previewing" : "") @(PreviewFirst ? "preview-first" : "")">
-	<iframe srcdoc="@PreviewHtml" @ref=IFrame>
-	</iframe>
-
-	@if (IsPreviewing)
-	{
-		<Sparc.Blossom.Content.LanguageSelector IsLoading="IsPreviewLoading" WithButton=true Visible=true InitialLanguageId="@PreviewLang" OnLanguageChanged="UpdateLanguage" />
-		<div class="fine-print">
-			This is a preview of your site with Tovik, from the eyes of a native @PreviewLanguageName speaker. <a href="" @onclick=ToggleSidebar @onclick:preventDefault>Install Tovik now</a>, and make your content make sense to them.
-		</div>
-	}
-
-	<article>
-		<div class="hero-background"><DashedLine Color="#FFD4BF" /></div>
-		<header>
-			<button class="logo" @onclick=Home>
-				<img src="/images/TovikWordmark.svg" alt="Tovik" />
-			</button>
-
-			<div class="buttons">
-				@if (!IsPreviewing)
-				{
-					<Sparc.Blossom.Content.LanguageSelector WithButton=true />
-				}
-				else
-				{
-					<button class="secondary-btn" @onclick=Home>Learn More</button>
-				}
-				@if (IsACustomer)
-				{
-					<a class="button primary-btn" href="/sites">My Sites</a>
-				}
-				else
-				{
-					<button class="primary-btn" @onclick=ToggleSidebar>Install Now</button>
-				}
-			</div>
-		</header>
-
+	<div class="two">
 		<section>
-			<img src="/images/TovikChar.svg" alt="Tovik" />
-			<h1>What if your visitors could read your site in their own language?</h1>
-			<p>
-				Are you tired of complicated installations or expensive subscriptions for translation services? <br />
-				Tovik is a simple plugin that quietly translates your site, helping you reach a global audience.
-			</p>
-			<form @onsubmit=GoToPreview>
-				<input type="text" placeholder="Enter your website's URL" @bind=Url required />
-				<button class="primary-btn">Preview Your Translated Site</button>
-			</form>
-			@if (ErrorMessage != null)
-			{
-				<span class="error-message">@ErrorMessage</span>
-			}
+			<img src="/images/TiltedWorldIcon.svg" alt="Tilted World" />
+			<div>
+				<h2>Translate Your Site to 130+ Languages &amp; 600+ Dialects</h2>
+				<p>Make your audience feel at home with automatic site translations into their preferred language.</p>
+			</div>
 		</section>
-
-		<div class="two">
-			<section>
-				<img src="/images/TiltedWorldIcon.svg" alt="Tilted World" />
-				<div>
-					<h2>Translate Your Site to 130+ Languages &amp; 600+ Dialects</h2>
-					<p>Make your audience feel at home with automatic site translations into their preferred language.</p>
-				</div>
-			</section>
-			<section>
-				<img src="/images/LightbulbIcon.svg" alt="Lightbulb" />
-				<div>
-					<h2>Easy to Install</h2>
-					<p>
-						Tovik requires minimal setup, just a single line of code or a simple plugin installation.
-					</p>
-				</div>
-			</section>
-			<section>
-				<img src="/images/NoSubscriptions.svg" alt="No Subscriptions" />
-				<div>
-					<h2>Buy Once, Yours Forever</h2>
-					<p>
-						Tovik is sustainably built, ethically priced, and entirely free from monthly subscriptions.
-					</p>
-				</div>
-			</section>
-			<section>
-				<img src="/images/TranslateIcon.svg" alt="Translate" />
-				<div>
-					<h2>Works On Any Website</h2>
-					<p>
-						Built for WordPress, Wix, Webflow, Weebly, SquareSpace, Shopify, and we have an HTML tag for the rest.
-					</p>
-				</div>
-			</section>
-		</div>
-
-		<section class="pricing-new">
-			<header>
-				<h3>Honest price</h3>
-				<h4>Tired of subscription services? So are we!</h4>
+		<section>
+			<img src="/images/LightbulbIcon.svg" alt="Lightbulb" />
+			<div>
+				<h2>Easy to Install</h2>
 				<p>
-					We believe in honest pricing, and Tovik is just a simple, one time fee. (Yes, really!)
-					We believe everyone should have access to translation technology, so we set our pricing with small businesses, non-profits, and individuals like you in mind.
+					Tovik requires minimal setup, just a single line of code or a simple plugin installation.
 				</p>
-			</header>
-			<button class="primary-btn" @onclick="ToggleSidebar">Install Tovik Free</button>
-
-			<div class="table-container">
-				<table>
-					<thead>
-						<tr>
-							<th></th>
-							<th>Tovik Free</th>
-							<th>Tovik Pro</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<th>Price</th>
-							<td>@Product?.FormattedZeroPrice</td>
-							<td>@Product?.FormattedPrice</td>
-						</tr>
-						<tr>
-							<th>Billing Frequency</th>
-							<td>N/A</td>
-							<td>Once</td>
-						</tr>
-						<tr>
-							<th>Page limit</th>
-							<td>20</td>
-							<td>500</td>
-						</tr>
-						<tr>
-							<th>Word limit</th>
-							<td>Unlimited</td>
-							<td>Unlimited</td>
-						</tr>
-						<tr>
-							<th>Language limit</th>
-							<td>Unlimited</td>
-							<td>Unlimited</td>
-						</tr>
-						<tr>
-							<th>Installation</th>
-							<td>One line of code</td>
-							<td>One line of code</td>
-						</tr>
-						<tr>
-							<th>Website Builder Plugin</th>
-							<td>Supported</td>
-							<td>Supported</td>
-						</tr>
-					</tbody>
-				</table>
 			</div>
 		</section>
-
 		<section>
-			<header>
-				<h3>Ask us anything</h3>
-				<h4>Frequently Asked Questions</h4>
-			</header>
+			<img src="/images/NoSubscriptions.svg" alt="No Subscriptions" />
+			<div>
+				<h2>Buy Once, Yours Forever</h2>
+				<p>
+					Tovik is sustainably built, ethically priced, and entirely free from monthly subscriptions.
+				</p>
+			</div>
 		</section>
+		<section>
+			<img src="/images/TranslateIcon.svg" alt="Translate" />
+			<div>
+				<h2>Works On Any Website</h2>
+				<p>
+					Built for WordPress, Wix, Webflow, Weebly, SquareSpace, Shopify, and we have an HTML tag for the rest.
+				</p>
+			</div>
+		</section>
+	</div>
 
-		<Questions />
-	</article>
-</div>
+	<section class="pricing-new">
+		<header>
+			<h3>Honest price</h3>
+			<h4>Tired of subscription services? So are we!</h4>
+			<p>
+				We believe in honest pricing, and Tovik is just a simple, one time fee. (Yes, really!)
+				We believe everyone should have access to translation technology, so we set our pricing with small businesses, non-profits, and individuals like you in mind.
+			</p>
+		</header>
+		<a class="primary-btn" href="/install">Install Tovik Free</a>
 
-<aside class="purchase-sidebar @(IsSidebarOpen ? "open" : "")">
-	<header>
-		<h2>Install Tovik in Minutes</h2>
-		<button @onclick=ToggleSidebar>
-			<Sparc.Blossom.Authentication.Icons.XIcon />
-		</button>
-	</header>
-	<Tovik.Installation.Install Domain="@PreviewUrl" />
-</aside>
+		<PricingTable Product="Product " />
+	</section>
 
-@inject ISparcAura Aura
-@inject TovikCrawler Crawler
-@inject TovikDomains Domains
-@inject IJSRuntime Js
-@inject ISparcBilling Billing
-@inject Microsoft.Extensions.Configuration.IConfiguration Config
+	<section>
+		<header>
+			<h3>Ask us anything</h3>
+			<h4>Frequently Asked Questions</h4>
+		</header>
+	</section>
+
+	<Questions />
+</article>
 
 @code {
 	[Parameter] public string? Url { get; set; }
 	[Parameter][SupplyParameterFromQuery] public string? PreviewLang { get; set; }
-	[Parameter][SupplyParameterFromQuery(Name = "u")] public string? QueryUrl { get; set; }
-	bool IsACustomer;
-	bool IsPreviewing;
-	bool IsPreviewLoading;
-	bool PreviewFirst;
-	string? PreviewHtml;
-	string? PreviewUrl;
 	string? ErrorMessage;
-	string? PreviewLanguageName;
-	ElementReference IFrame;
-	bool IsSidebarOpen;
 	GetProductResponse? Product;
 
 	protected override async Task OnInitializedAsync()
 	{
-		var domains = await Domains.All();
-		IsACustomer = domains.Any();
-		PreviewFirst = !string.IsNullOrWhiteSpace(Url) || !string.IsNullOrWhiteSpace(QueryUrl);
-		Product = await Billing.GetProductAsync(Config["ProductId"]!);
-	}
-
-	protected override async Task OnParametersSetAsync()
-	{
-		if (!string.IsNullOrWhiteSpace(Url) && Url != PreviewUrl)
-		{
-			PreviewUrl = Url;
-			await PreviewSite();
-		}
-		else if (!string.IsNullOrWhiteSpace(QueryUrl) && QueryUrl != PreviewUrl)
-		{
-			Url = QueryUrl;
-			PreviewUrl = Url;
-			await PreviewSite();
-		}
-	}
-
-	protected override async Task OnAfterRenderAsync(bool firstRender)
-	{
-		if (firstRender)
-			await Js.InvokeVoidAsync("initPreview", DotNetObjectReference.Create(this));
-	}
-
-	[JSInvokable]
-	public async Task UpdateUrl(string url)
-	{
-		if (url != Url)
-		{
-			Url = url;
-			PreviewHtml = await Crawler.PreviewAsync(Url, PreviewLang);
-			StateHasChanged();
-		}
-	}
-
-	[JSInvokable]
-	public void SetPreviewLoading(bool isLoading)
-	{
-		IsPreviewLoading = isLoading;
-		StateHasChanged();
-	}
-
-	void ToggleSidebar()
-	{
-		IsSidebarOpen = !IsSidebarOpen;
 	}
 
 	void GoToPreview()
 	{
-		Nav.NavigateTo($"/preview?u={Url}", PreviewUrl != null);
-	}
-
-	async Task PreviewSite()
-	{
-		if (Url == null)
-			return;
-
-		ErrorMessage = null;
-		PreviewHtml = null;
-
-		var domain = await Domains.Verify(Url);
-		if (domain != null && !domain.IsBlocked)
-		{
-			PreviewLang = Sparc.Blossom.Content.Language.Random.Id;
-
-			PreviewLanguageName = Sparc.Blossom.Content.Language.Find(PreviewLang)?.LanguageDisplayName;
-			IsPreviewing = true;
-		}
-		else
-		{
-			ErrorMessage = domain?.IsBlocked == true ? "This domain is not compatible with Tovik." : "Please enter a valid URL.";
-		}
-	}
-
-	async Task UpdateLanguage(Sparc.Blossom.Content.Language lang)
-	{
-		ErrorMessage = null;
-		PreviewLang = lang.Id;
-		PreviewLanguageName = Sparc.Blossom.Content.Language.Find(PreviewLang)?.LanguageDisplayName;
-		try
-		{
-			if (PreviewHtml == null)
-			{
-				PreviewHtml = await Crawler.PreviewAsync(Url!, PreviewLang);
-				StateHasChanged();
-			}
-			else
-			{
-				await Js.InvokeVoidAsync("changePreviewLanguage", IFrame, PreviewLang);
-			}
-		}
-		catch (Exception e)
-		{
-			IsPreviewing = false;
-			ErrorMessage = e.Message;
-			StateHasChanged();
-		}
-	}
-
-	void Home()
-	{
-		IsPreviewing = false;
-		PreviewHtml = null;
+		Nav.NavigateTo($"/preview?u={Url}");
 	}
 }

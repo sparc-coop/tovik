@@ -1,0 +1,105 @@
+﻿@using Sparc.Blossom.Realtime
+@if (ShowCards)
+{
+	<div class="pricing-card">
+		<header>
+			<h3>Basic</h3>
+			<p>Perfect for small websites</p>
+		</header>
+		<h4>
+			@Product?.FormattedZeroPrice
+			<span>/ forever</span>
+		</h4>
+		<footer>
+			<a class="primary-btn" href="/install">Install Now</a>
+		</footer>
+	</div>
+
+	<div class="pricing-card">
+		<header>
+			<h3>Premium</h3>
+			<p></p>
+		</header>
+		<h4>
+			@Product?.FormattedPrice
+			<span>/ one time</span>
+		</h4>
+		<footer>
+			<a class="primary-btn" href="/purchase">Purchase Now</a>
+		</footer>
+	</div>
+}
+
+@if (ShowExtendedInfo)
+{
+	<div class="table-container">
+		<table>
+			<thead>
+				<tr>
+					<th></th>
+					<th>Tovik Free</th>
+					<th>Tovik Pro</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<th>Price</th>
+					<td>@Product?.FormattedZeroPrice</td>
+					<td>@Product?.FormattedPrice</td>
+				</tr>
+				<tr>
+					<th>Billing Frequency</th>
+					<td>N/A</td>
+					<td>Once</td>
+				</tr>
+				<tr>
+					<th>Page limit</th>
+					<td>20</td>
+					<td>500</td>
+				</tr>
+				<tr>
+					<th>Word limit</th>
+					<td>Unlimited</td>
+					<td>Unlimited</td>
+				</tr>
+				<tr>
+					<th>Language limit</th>
+					<td>Unlimited</td>
+					<td>Unlimited</td>
+				</tr>
+				<tr>
+					<th>Installation</th>
+					<td>One line of code</td>
+					<td>One line of code</td>
+				</tr>
+				<tr>
+					<th>Website Builder Plugin</th>
+					<td>Supported</td>
+					<td>Supported</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+}
+
+@inject ISparcBilling Billing
+@inject Microsoft.Extensions.Configuration.IConfiguration Config
+@inject SparcEvents Events
+@code
+{
+	[Parameter] public bool ShowCards { get; set; }
+	[Parameter] public bool ShowExtendedInfo { get; set; }
+	GetProductResponse? Product;
+
+	protected override async Task OnInitializedAsync()
+	{
+		Product = await Billing.GetProductAsync(Config["ProductId"]!);
+		Events.CurrencyChanged += OnCurrencyChanged;
+	}
+
+	private async Task OnCurrencyChanged(SparcCurrency currency)
+	{
+		Product = await Billing.GetProductAsync(Config["ProductId"]!, currency.Id);
+		StateHasChanged();
+	}
+}

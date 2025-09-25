@@ -1,0 +1,135 @@
+﻿@using Tovik.Domains
+@using Tovik.Translation
+<HeadContent>
+	<script type="text/javascript">
+		function initPreview(dotNet) {
+			window.addEventListener('message', (event) => {
+				if (event.data && event.data.startsWith && event.data.startsWith('tovik')) {
+					if (event.data.startsWith('tovik-url')) {
+						let url = event.data.replace('tovik-url:', '');
+						dotNet.invokeMethodAsync('UpdateUrl', url);
+					} else if (event.data.startsWith('tovik-translating')) {
+						dotNet.invokeMethodAsync('SetPreviewLoading', true);
+					} else if (event.data.startsWith('tovik-translated')) {
+						dotNet.invokeMethodAsync('SetPreviewLoading', false);
+					}
+				}
+			});
+		}
+
+		function changePreviewLanguage(iframe, lang) {
+			iframe.contentWindow.postMessage('tovik-lang:' + lang);
+		}
+	</script>
+</HeadContent>
+
+<iframe class="@(IsPreviewing ? "open" : "")" srcdoc="@PreviewHtml" @ref=IFrame>
+</iframe>
+
+@if (IsPreviewing)
+{
+	<Sparc.Blossom.Content.LanguageSelector IsLoading="IsPreviewLoading" WithButton=true Visible=true InitialLanguageId="@PreviewLang" OnLanguageChanged="UpdateLanguage" />
+	<div class="fine-print">
+		This is a preview of your site with Tovik, from the eyes of a native @PreviewLanguageName speaker. <a href="" @onclick=ToggleSidebar @onclick:preventDefault>Install Tovik now</a>, and make your content make sense to them.
+	</div>
+}
+
+@inject TovikCrawler Crawler
+@inject TovikDomains Domains
+@code {
+	[Parameter] public string? Url { get; set; }
+	[Parameter] public string? PreviewLang { get; set; }
+	[Parameter][SupplyParameterFromQuery(Name = "u")] public string? QueryUrl { get; set; }
+
+	bool IsPreviewing;
+	bool IsPreviewLoading;
+	bool PreviewFirst;
+	string? PreviewHtml;
+	string? PreviewUrl;
+	ElementReference IFrame;
+	string? PreviewLanguageName;
+
+	protected override async Task OnParametersSetAsync()
+	{
+		if (!string.IsNullOrWhiteSpace(Url) && Url != PreviewUrl)
+		{
+			PreviewUrl = Url;
+			await PreviewSite();
+		}
+		else if (!string.IsNullOrWhiteSpace(QueryUrl) && QueryUrl != PreviewUrl)
+		{
+			Url = QueryUrl;
+			PreviewUrl = Url;
+			await PreviewSite();
+		}
+	}
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender)
+			await Js.InvokeVoidAsync("initPreview", DotNetObjectReference.Create(this));
+	}
+
+	async Task PreviewSite()
+	{
+		if (Url == null)
+			return;
+
+		PreviewHtml = null;
+
+		var domain = await Domains.Verify(Url);
+		if (domain != null && !domain.IsBlocked)
+		{
+			PreviewLang = Sparc.Blossom.Content.Language.Random.Id;
+
+			PreviewLanguageName = Sparc.Blossom.Content.Language.Find(PreviewLang)?.LanguageDisplayName;
+			IsPreviewing = true;
+		}
+		else
+		{
+			throw new Exception(domain?.IsBlocked == true ? "This domain is not compatible with Tovik." : "Please enter a valid URL.");
+		}
+	}
+
+	async Task UpdateLanguage(Sparc.Blossom.Content.Language lang)
+	{
+		PreviewLang = lang.Id;
+		PreviewLanguageName = Sparc.Blossom.Content.Language.Find(PreviewLang)?.LanguageDisplayName;
+		try
+		{
+			if (PreviewHtml == null)
+			{
+				PreviewHtml = await Crawler.PreviewAsync(Url!, PreviewLang);
+				StateHasChanged();
+			}
+			else
+			{
+				await Js.InvokeVoidAsync("changePreviewLanguage", IFrame, PreviewLang);
+			}
+		}
+		catch (Exception e)
+		{
+			IsPreviewing = false;
+			StateHasChanged();
+			throw (e);
+		}
+	}
+
+	[JSInvokable]
+	public async Task UpdateUrl(string url)
+	{
+		if (url != Url)
+		{
+			Url = url;
+			PreviewHtml = await Crawler.PreviewAsync(Url, PreviewLang);
+			StateHasChanged();
+		}
+	}
+
+	[JSInvokable]
+	public void SetPreviewLoading(bool isLoading)
+	{
+		IsPreviewLoading = isLoading;
+		StateHasChanged();
+	}
+}

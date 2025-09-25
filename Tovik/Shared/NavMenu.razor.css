@@ -1,209 +1,106 @@
-﻿nav {
-  width: var(--app-width);
-  display: flex;
-  flex-direction: row;
-  justify-content: end;
-  height: 28px;
-  padding: 16px;
-  background-image: url("/images/navbar.svg");
-  background-position: bottom left;
-  background-repeat: no-repeat;
-  background-size: cover;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 500;
-}
-nav .right {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0;
-  position: absolute;
-  bottom: -28px;
-  right: 32px;
-  background-image: url("/images/top-nav-mobile.svg");
-  padding: 4px 8px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: bottom center;
-}
-nav .right button {
-  aspect-ratio: 1/1;
-  height: 53px;
-  width: auto;
-  padding: 12px;
-  border-radius: 30px;
-}
-nav .right .profile-container {
-  aspect-ratio: 1/1;
-  padding: 12px;
-  border-radius: 30px;
-}
-nav .right .profile-container ::deep .account-btn {
-  aspect-ratio: 1/1;
-  padding: 0px;
-  background: var(--white);
-  border-radius: 20px;
-  position: relative;
-}
-nav .right .profile-container ::deep .account-btn svg circle {
-  fill: var(--purple);
-  position: absolute;
-  top: 16px;
-}
-nav .right .menu-btn ::deep svg {
-  width: 22px;
-  height: auto;
-}
-nav .right .menu-btn ::deep svg path {
-  stroke: var(--blue-900);
-}
-nav .nav-menu {
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  align-items: center;
-  gap: 140px;
-  position: fixed;
-  top: 0;
-  right: 0;
-  z-index: 500;
-  height: 100vh;
-  width: auto;
-  padding: 120px 24px 24px 24px;
-  box-sizing: border-box;
-  background: var(--blue-700);
-  transform: translateX(120vw);
-  transition: transform 0.3s ease-in;
-}
-nav .nav-menu.show {
-  transform: translateX(0);
-  transition: transform 0.3s ease-in-out;
-}
-nav .nav-mask {
-  display: none;
+.hero-background {
+    width: 100%;
+    height: auto;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 0;
+    opacity: 0.2;
+    pointer-events: none;
+
+    ::deep svg {
+        width: 100%;
+        height: auto;
+    }
 }
 
-.nav-menu {
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  align-items: center;
-  gap: 100px;
-  top: 0;
-  right: 0;
-  z-index: 500;
-  height: 100vh;
-  width: 387px;
-  padding-top: 100px;
-}
-.nav-menu ::deep svg {
-  height: 160px;
-  width: auto;
-}
-.nav-menu ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-}
-.nav-menu ul li {
-  margin: 0;
-  text-align: center;
-}
-.nav-menu ul li ::deep .nav-link {
-  padding: 0 34px;
-  border-radius: 24px;
-  border-bottom-left-radius: 16px;
-  color: var(--blue-50, #EFF7F9);
-  text-align: center;
-  font-family: var(--brother-printed);
-  font-size: 2.4rem;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  position: relative;
-}
-.nav-menu ul li ::deep .nav-link svg {
-  width: 26px;
-  height: auto;
-  position: absolute;
-  left: -2px;
-  bottom: -2px;
-}
-.nav-menu ul li ::deep .nav-link svg path {
-  fill: var(--blue-700);
-}
-.nav-menu ul li ::deep .nav-link.active {
-  background: var(--blue-50);
-  color: var(--blue-700);
-}
-.nav-menu ul li ::deep .nav-link.active svg path {
-  fill: var(--blue-50);
-}
-.nav-menu ul li ::deep .nav-link:hover {
-  background: #365d71;
-  color: var(--blue-50);
-}
-.nav-menu ul li ::deep .nav-link:hover svg path {
-  fill: #365d71;
+nav {
+    position: sticky;
+    top: 0;
+    z-index: 1003;
+    display: flex;
+    justify-content: space-between;
+    background: rgba(7, 55, 79, 0.8);
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(40px);
+    padding: 16px;
+
+    ::deep .language-select {
+        position: fixed;
+        top: 100px;
+        right: 16px;
+        border-radius: 20px;
+    }
+
+    img {
+        height: 24px;
+    }
+
+    .buttons {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 8px;
+    }
+
+    button, a.button {
+        width: auto;
+        padding: 12px 16px;
+        border-radius: 20px;
+        white-space: nowrap;
+
+        &.logo {
+            padding: 0;
+        }
+    }
+
+    @media screen and (min-width: 800px) {
+        padding: 16px 32px;
+    }
 }
 
-.nav-overlay {
-  display: none;
-  width: 100vw;
-  height: 100vh;
-  position: fixed;
-  top: 0;
-  left: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 100;
-  animation: fadeOut 0.8s;
-}
-.nav-overlay.show {
-  display: block;
-  animation: fadeIn 0.8s;
-}
-.nav-overlay.hiding {
-  animation: fadeOut 0.8s;
-  pointer-events: none;
-}
+aside {
+    position: fixed;
+    top: 0;
+    right: -600px;
+    bottom: 0;
+    background-color: var(--blue-600);
+    padding: 0;
+    border-left: 1px solid var(--blue-200);
+    max-width: min(90vw, 400px);
+    overflow-y: auto;
+    z-index: 1400;
+    transition: transform 0.3s ease-in-out;
 
-.nav-sidebar {
-  display: none;
-}
+    &.open {
+        transform: translateX(-600px);
+    }
 
-@media only screen and (min-width: 1024px) {
-  nav .right {
-    background-image: url("/images/aura-background.svg");
-    background-position: center center;
-    padding: 10px;
-  }
-  nav .right .menu-btn {
-    display: none;
-  }
-  .nav-sidebar {
-    display: block;
-    z-index: 10;
-  }
-}
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-@keyframes fadeOut {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
+    ::deep > div {
+        padding: 16px;
+    }
+
+    > header {
+        text-align: right;
+        position: sticky;
+        top: 0;
+        right: 0;
+        left: 0;
+        padding: 16px;
+        z-index: 1500;
+        background: var(--blue-700);
+        display: grid;
+        grid-template-columns: auto 36px;
+        align-items: center;
+        justify-content: space-between;
+
+        h2 {
+            font-size: 2.4rem;
+            padding-left: 16px;
+        }
+
+        ::deep svg path {
+            stroke: white;
+        }
+    }
 }
