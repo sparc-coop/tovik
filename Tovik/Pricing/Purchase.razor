@@ -1,7 +1,9 @@
-﻿<div>
+﻿@page "/purchase"
+
+<div>
     @if (PaymentIntentId == null)
     {
-        <Tovik.Home.Pricing />
+		<PricingCard Type="Premium" />
     }
     
     @if (User != null)

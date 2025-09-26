@@ -1,0 +1,45 @@
+﻿@using Sparc.Blossom.Realtime
+
+@if (Product != null)
+{
+	<div>
+		<header>
+			<h3>@Type</h3>
+			<p>@(Type == "Basic" ? "Perfect for small websites" : "For larger and growing websites")</p>
+		</header>
+		<h4>
+			@(Type == "Basic" ? Product.FormattedZeroPrice : Product.FormattedPrice)
+			<span>/ @(Type == "Basic" ? "forever" : "once")</span>
+		</h4>
+		<footer>
+			@if (Type == "Basic")
+			{
+				<a class="primary-btn" href="/install">Install Now</a>
+			}
+			else
+			{
+				<a class="primary-btn" href="/purchase">Purchase Now</a>
+			}
+		</footer>
+	</div>
+}
+
+@inject ISparcBilling Billing
+@inject Microsoft.Extensions.Configuration.IConfiguration Config
+@inject SparcEvents Events
+@code {
+	[Parameter] public string Type { get; set; } = "Premium";
+	GetProductResponse? Product;
+
+	protected override async Task OnInitializedAsync()
+	{
+		Product = await Billing.GetProductAsync(Config["ProductId"]!);
+		Events.CurrencyChanged += OnCurrencyChanged;
+	}
+
+	private async Task OnCurrencyChanged(SparcCurrency currency)
+	{
+		Product = await Billing.GetProductAsync(Config["ProductId"]!, currency.Id);
+		StateHasChanged();
+	}
+}
