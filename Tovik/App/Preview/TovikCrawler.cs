@@ -1,7 +1,7 @@
 ﻿using HtmlAgilityPack;
 using Sparc.Blossom.Authentication;
 
-namespace Tovik.Translation;
+namespace Tovik.App.Preview;
 
 public class TovikCrawler(IConfiguration config)
 {
