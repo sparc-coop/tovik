@@ -1,49 +1,100 @@
 ﻿@using Tovik.Domains
 
-<nav>
-	<button class="logo" @onclick=Home>
-		<img src="/images/TovikWordmark.svg" alt="Tovik" />
-	</button>
-
-	<div class="buttons">
-		@if (!IsPreviewing)
+<header>
+	@if (Domains != null)
+	{
+		@if (SelectedDomain != null)
 		{
-			<Sparc.Blossom.Content.LanguageSelector WithButton=true />
+			<div>
+				<img src="@SelectedDomain.FaviconUri" alt="@SelectedDomain.Domain" onerror="this.src='/images/Star.svg'" />
+				<h1>@SelectedDomain.Domain</h1>
+			</div>
 		}
 		else
 		{
-			<button class="secondary-btn" @onclick=Home>Learn More</button>
+			<div>
+				<h1>Welcome to Tovik</h1>
+			</div>
 		}
-		@if (IsACustomer)
-		{
-			<a class="button primary-btn" href="/sites">My Sites</a>
-		}
-		else
-		{
-			<button class="primary-btn" @onclick=ToggleSidebar>Install Now</button>
-		}
-	</div>
-</nav>
 
-<aside class="@(IsSidebarOpen ? "open" : "")">
-</aside>
+		<div>
+			<select @onchange="Go">
+				@foreach (var domain in Domains)
+				{
+					<option value="@domain.Id">@domain.Domain</option>
+				}
+			</select>
 
-@inject TovikDomains Domains
+			@if (HasNoDomains)
+			{
+				<button @onclick="AddDomain">Add Your First Domain</button>
+			}
+			else if (IsClaimable)
+			{
+				<button @onclick="ClaimDomain">Finish Setup</button>
+			}
+			else if (IsUpgradable)
+			{
+				<button @onclick="Upgrade">Upgrade to Premium</button>
+			}
+		</div>
+	}
+
+	<nav>
+		<ul>
+			<li>
+				<NavLink href="@Overview">Overview</NavLink>
+			</li>
+			<li>
+				<NavLink href="@Vocabulary">Vocabulary</NavLink>
+			</li>
+			<li>
+				<NavLink href="@Setup">Setup</NavLink>
+			</li>
+		</ul>
+	</nav>
+</header>
+
+<Sparc.Blossom.Shared.BlossomDialog @ref="AddDialog">
+	<Tovik.App.Domains.AddDomain />
+</Sparc.Blossom.Shared.BlossomDialog>
+
+@inject TovikDomains TovikDomains
 @code {
-	[Parameter] public bool IsPreviewing { get; set; }
-	[Parameter] public EventCallback OnPreviewExited { get; set; }
-	bool IsSidebarOpen;
-	bool IsACustomer;
+	[Parameter] public string? DomainId { get; set; }
+	List<SparcDomain>? Domains;
+	SparcDomain? SelectedDomain;
+	Sparc.Blossom.Shared.BlossomDialog? AddDialog;
 
 	protected override async Task OnInitializedAsync()
 	{
-		IsACustomer = (await Domains.All()).Any();
+		Domains = await TovikDomains.All();
+		if (DomainId != null)
+			SelectedDomain = await TovikDomains.Get(DomainId);
 	}
 
-	async Task Home() => await OnPreviewExited.InvokeAsync();
+	string Overview => $"/app/{DomainId}/overview";
+	string Vocabulary => $"/app/{DomainId}/vocabulary";
+	string Setup => $"/app/{DomainId}/setup";
 
-	void ToggleSidebar()
+	bool HasNoDomains => Domains != null && (Domains.Count == 0 || SelectedDomain == null);
+	bool IsClaimable => SelectedDomain != null && SelectedDomain.TovikUserId == null;
+	bool IsUpgradable => Domains != null
+		&& SelectedDomain != null
+		&& Domains.Any(x => x.Id == SelectedDomain.Id)
+		&& SelectedDomain.Product("Tovik")?.MaxUsage < 50;
+
+	async Task AddDomain()
 	{
-		IsSidebarOpen = !IsSidebarOpen;
+		if (AddDialog != null)
+			await AddDialog.OpenModalAsync();
+	}
+
+	void ClaimDomain() => Nav.NavigateTo($"/app/{SelectedDomain!.Id}/setup");
+	void Upgrade() => Nav.NavigateTo($"/app/{SelectedDomain!.Id}/upgrade");
+
+	private void Go(ChangeEventArgs args)
+	{
+		Nav.NavigateTo($"/app/{args.Value}/overview");
 	}
 }

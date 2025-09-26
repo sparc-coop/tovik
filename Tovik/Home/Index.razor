@@ -1,7 +1,4 @@
 ﻿@page "/"
-@page "/preview/{Url}"
-@page "/preview"
-@layout NewHomeLayout
 @using Tovik.Domains
 @using Tovik.Translation
 
@@ -10,17 +7,9 @@
 		<img src="/images/TovikChar.svg" alt="Tovik" />
 		<h1>What if your visitors could read your site in their own language?</h1>
 		<p>
-			Are you tired of complicated installations or expensive subscriptions for translation services? <br />
-			Tovik is a simple plugin that quietly translates your site, helping you reach a global audience.
+			Tovik is a simple plugin that quietly translates your site for you, helping you reach a global audience.
 		</p>
-		<form @onsubmit=GoToPreview>
-			<input type="text" placeholder="Enter your website's URL" @bind=Url required />
-			<button class="primary-btn">Preview Your Translated Site</button>
-		</form>
-		@if (ErrorMessage != null)
-		{
-			<span class="error-message">@ErrorMessage</span>
-		}
+		<Tovik.App.Domains.AddDomain ButtonText="Get Started" />
 	</section>
 
 	<div class="two">
@@ -65,14 +54,12 @@
 			<h3>Honest price</h3>
 			<h4>Tired of subscription services? So are we!</h4>
 			<p>
-				We believe in honest pricing, and Tovik is just a simple, one time fee. (Yes, really!)
+				We believe in honest pricing, and Tovik is just a simple, one time purchase. (Yes, really!)
 				We believe everyone should have access to translation technology, so we set our pricing with small businesses, non-profits, and individuals like you in mind.
 			</p>
 		</header>
-		<div class="buttons">
-			<a class="primary-btn" href="/install">Start Free</a>
-			<a class="secondary-btn" href="/pricing">Learn More</a>
-		</div>
+		<a class="primary-btn" href="/app">Start Free</a>
+		<a class="secondary-btn" href="/pricing">Learn More</a>
 	</section>
 
 	<section>
@@ -80,23 +67,8 @@
 			<h3>Ask us anything</h3>
 			<h4>Frequently Asked Questions</h4>
 		</header>
+		<p>Have additional questions? Email us at <a href="mailto:support@sparc.coop">support@sparc.coop</a>.</p>
 	</section>
 
 	<Questions />
 </article>
-
-@code {
-	[Parameter] public string? Url { get; set; }
-	[Parameter][SupplyParameterFromQuery] public string? PreviewLang { get; set; }
-	string? ErrorMessage;
-	GetProductResponse? Product;
-
-	protected override async Task OnInitializedAsync()
-	{
-	}
-
-	void GoToPreview()
-	{
-		Nav.NavigateTo($"/preview?u={Url}");
-	}
-}

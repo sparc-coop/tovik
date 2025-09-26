@@ -4,7 +4,7 @@
     </label>
 
     <button class="add-btn primary-btn" type="submit" disabled="@IsVerifying">
-        Activate
+        @(ButtonText ?? "Add Domain")
     </button>
 </form>
 
@@ -15,8 +15,8 @@
 
 @inject Tovik.Domains.TovikDomains TovikDomains
 @code {
-    [Parameter] public EventCallback OnAdded { get; set; }
     [Parameter] public string? Domain { get; set; }
+    [Parameter] public string? ButtonText { get; set; }
     bool IsVerifying;
     string NewDomain = "";
     string? Error;
@@ -36,10 +36,7 @@
         {
             var newDomain = await TovikDomains.RegisterAsync(NewDomain);
             NewDomain = "";
-            if (OnAdded.HasDelegate)
-                await OnAdded.InvokeAsync();
-			else
-                Nav.NavigateTo($"/sites/{newDomain.Id}");
+            Nav.NavigateTo($"/app/{newDomain.Id}");
         }
         catch (Exception ex)
         {

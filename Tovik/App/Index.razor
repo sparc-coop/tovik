@@ -1,13 +1,15 @@
-﻿@page "/sites"
+﻿@page "/app"
 @using Sparc.Blossom.Content
 @using Tovik.Installation
 @layout MainLayout
 
 <PageTitle>Tovik - My Websites</PageTitle>
 
+<NavMenu />
+
 <article class="home">
     <div class="page-container">
-        @if (Limit > 0 && !Domains.Any())
+        @if (Domains != null)
         {
             <section class="welcome">
                 <img src="/images/Star.svg" alt="Star" />
@@ -21,26 +23,12 @@
                     Tovik is designed to make it easy to translate your website into multiple languages, so you can reach a global audience without the hassle of managing translations manually.
                 </p>
                 <p>
-                    To get started, <span>enter the domain name</span> for the website where you'd like to install Tovik. Next, we'll guide you through adding a single line of code to get Tovik up and running.
+                    To get started, <span>enter the domain name</span> for the website where you'd like to install Tovik.
                 </p>
+
+                <Tovik.App.Domains.AddDomain />
             </section>
         }
-
-        <section class="manage-domains">
-            <header>
-                <h3>My Websites</h3>
-            </header>
-            <p>
-                Manage your Tovik-enabled websites here. You can add as many domains as you'd like!
-            </p>
-
-            <Tovik.Domains.AddDomain />
-
-            @foreach (var domain in Domains)
-            {
-                <DomainCard Domain=domain PageType="home" Languages=Languages />
-            }
-        </section>
     </div>
 </article>
 
@@ -50,23 +38,13 @@
 @inject ITovik Tovik
 
 @code {
-    List<SparcDomain> Domains = new();
-    IEnumerable<Sparc.Blossom.Content.Language> Languages = [];
+    List<SparcDomain>? Domains;
     [SupplyParameterFromQuery] public string? Welcome { get; set; }
-
-    int Usage;
-    int Limit;
 
     protected override async Task OnInitializedAsync()
     {
-        await LoadDomains();
-        Limit = Domains.Sum(x => x.Products.Sum(y => y.MaxUsage));
-        Usage = Domains.Sum(d => d.TovikUsage);
-        Languages = await Tovik.GetLanguages();
-    }
-
-    private async Task LoadDomains()
-    {
         Domains = await TovikDomains.All();
+        if (Domains.Any())
+            Nav.NavigateTo($"/app/{Domains.First().Id}/overview");
     }
 }

@@ -1,0 +1,36 @@
+﻿@using Sparc.Blossom.Content
+<section>
+	<header>
+		<h3>Preview Your Site In Other Languages</h3>
+	</header>
+
+	@if (Domain.DateConnected == null)
+	{
+		<p>Heads up: Since Tovik isn't yet installed on @Domain.Domain, some functions of this preview may not behave as expected. For the full experience, <a href="@SetupLink">install Tovik on your site</a>.</p>
+	}
+
+	<div>
+		<LanguageSelector OnLanguageChanged="UpdatePreviewLanguage" />
+		<button class="primary-btn" @onclick=Preview>Preview</button>
+	</div>
+</section>
+
+@code {
+	[Parameter] public required SparcDomain Domain { get; set; }
+	string? PreviewLanguage;
+
+	void UpdatePreviewLanguage(Language language) => PreviewLanguage = language.Id;
+	async Task Preview()
+	{
+		if (Domain == null || string.IsNullOrWhiteSpace(PreviewLanguage))
+			return;
+
+		var baseUrl = Domain.DateConnected == null
+			? $"/app/{Domain.Id}/preview"
+			: Domain.ToUri().ToString();
+
+		var url = baseUrl + "?lang=" + PreviewLanguage;
+		await Js.InvokeVoidAsync("open", url, "_blank");
+	}
+	string SetupLink => $"/app/{Domain.Id}/setup";
+}

@@ -1,0 +1,127 @@
+﻿@page "/app/{Id}/preview"
+@using Tovik.Domains
+@using Tovik.Translation
+
+<HeadContent>
+	<script type="text/javascript">
+		function initPreview(dotNet) {
+			window.addEventListener('message', (event) => {
+				if (event.data && event.data.startsWith && event.data.startsWith('tovik')) {
+					if (event.data.startsWith('tovik-url')) {
+						let url = event.data.replace('tovik-url:', '');
+						dotNet.invokeMethodAsync('UpdateUrl', url);
+					} else if (event.data.startsWith('tovik-translating')) {
+						dotNet.invokeMethodAsync('SetPreviewLoading', true);
+					} else if (event.data.startsWith('tovik-translated')) {
+						dotNet.invokeMethodAsync('SetPreviewLoading', false);
+					}
+				}
+			});
+		}
+
+		function changePreviewLanguage(iframe, lang) {
+			iframe.contentWindow.postMessage('tovik-lang:' + lang);
+		}
+	</script>
+</HeadContent>
+
+<iframe srcdoc="@PreviewHtml" @ref=IFrame>
+</iframe>
+
+<Sparc.Blossom.Content.LanguageSelector IsLoading="IsPreviewLoading" WithButton=true Visible=true InitialLanguageId="@Lang" OnLanguageChanged="UpdateLanguage" />
+@if (Error != null)
+{
+	<footer class="error">
+		Tovik had some trouble loading this page: @Error
+	</footer>
+}
+else
+{
+	<footer>
+		This is a preview of your site with Tovik, from the eyes of a native @Language?.DisplayName speaker. <a href="@SetupLink">Install Tovik now</a>, and make your content make sense to them.
+	</footer>
+}
+
+
+@inject TovikCrawler Crawler
+@inject TovikDomains Domains
+@code {
+	[Parameter] public required string Id { get; set; }
+	[Parameter] public string? Lang { get; set; }
+	[Parameter][SupplyParameterFromQuery] public string? Url { get; set; }
+
+	bool IsPreviewLoading;
+
+	string? CurrentUrl;
+	string? PreviewHtml;
+	ElementReference IFrame;
+	Sparc.Blossom.Content.Language? Language;
+	SparcDomain? Domain;
+	string? Error;
+	string SetupLink => $"/app/{Id}/setup";
+
+	protected override async Task OnParametersSetAsync()
+	{
+		Domain = await Domains.Get(Id);
+		Language = Lang == null
+			? Sparc.Blossom.Content.Language.Random
+			: Sparc.Blossom.Content.Language.Find(Lang);
+		
+		await UpdateUrl(Url);
+	}
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender)
+			await Js.InvokeVoidAsync("initPreview", DotNetObjectReference.Create(this));
+	}
+
+	async Task LoadPreview()
+	{
+		if (Domain == null)
+			return;
+
+		Error = null;
+		try
+		{
+			if (PreviewHtml == null)
+			{
+				PreviewHtml = await Crawler.PreviewAsync(Url!, Language!.Id);
+				StateHasChanged();
+			}
+			else
+			{
+				await Js.InvokeVoidAsync("changePreviewLanguage", IFrame, Language!.Id);
+			}
+		}
+		catch (Exception e)
+		{
+			Error = e.Message;
+		}
+	}
+
+	async Task UpdateLanguage(Sparc.Blossom.Content.Language lang)
+	{
+		Language = lang;
+		await LoadPreview();
+	}
+
+	[JSInvokable]
+	public async Task UpdateUrl(string? url)
+	{
+		var currentUrl = Domain!.ToAbsoluteUrl(url);
+
+		if (currentUrl != CurrentUrl)
+		{
+			CurrentUrl = currentUrl;
+			await LoadPreview();
+		}
+	}
+
+	[JSInvokable]
+	public void SetPreviewLoading(bool isLoading)
+	{
+		IsPreviewLoading = isLoading;
+		StateHasChanged();
+	}
+}

@@ -1,4 +1,5 @@
-﻿<div class="usage-meter">
+﻿@using Tovik.Domains
+<div class="usage-meter">
 	<header>
 		<div>
 			<span>@Usage.ToString("N0")</span> 
@@ -8,7 +9,7 @@
 
 		@if (Limit < 500)
 		{
-			<button class="primary-btn" @onclick=Upgrade>Upgrade to Tovik Pro</button>
+			<a class="button secondary-btn" href="@UpgradeLink">Upgrade</a>
 		}
 	</header>
 	<div class="meter-container">
@@ -16,16 +17,20 @@
 	</div>
 </div>
 
+@inject TovikDomains Domains
 @code {
-	[Parameter] public int Usage { get; set; }
-	[Parameter] public int Limit { get; set; }
-	[Parameter] public EventCallback OnUpgrade { get; set; }
-	int Remaining => Limit - Usage;
+	[Parameter] public required SparcDomain Domain { get; set; }
+	int Usage;
+	int Limit;
 
-	int FillPercentage => Limit > 0 ? (int)((double)Usage / Limit * 100) : 0;
-
-	async Task Upgrade()
+	protected override async Task OnParametersSetAsync()
 	{
-		await OnUpgrade.InvokeAsync();
+		var pages = await Domains.GetPages(Domain.Domain);
+		Usage = pages.Count;
+		Limit = Domain?.Product("Tovik")?.MaxUsage ?? 20;
 	}
+
+	int Remaining => Limit - Usage;
+	int FillPercentage => Limit > 0 ? (int)((double)Usage / Limit * 100) : 0;
+	string UpgradeLink => $"/app/{Domain.Id}/upgrade";
 }

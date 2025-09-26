@@ -1,0 +1,41 @@
+﻿@page "/app/{Id}"
+@using Sparc.Blossom.Content
+@using Tovik.Domains
+@using Tovik.Installation
+@layout MainLayout
+
+<PageTitle>@(Domain != null ? Domain.Domain : "Your Domain") | Tovik</PageTitle>
+@* <HeadContent>
+    <!-- Event snippet for Domain Added conversion page -->
+    <script>
+        gtag('event', 'conversion', {'send_to': 'AW-11084766602/LSImCPXjhYQbEIq70KUp'});
+    </script>
+</HeadContent>
+ *@
+
+<NavMenu DomainId="@Id" />
+
+@if (Domain != null)
+{
+	<article class="domain-page">
+		<div class="page-container">
+			<Tovik.App.Preview.PreviewCard Domain="Domain" />
+			<Tovik.App.Analytics.PageStats Domain="Domain" />
+			<Tovik.App.Analytics.LanguageStats Domain="Domain" />
+		</div>
+	</article>
+}
+
+@inject TovikDomains TovikDomains
+@inject ITovik Tovik
+@code {
+	[Parameter] public required string Id { get; set; }
+
+	SparcDomain? Domain;
+	string SetupLink => $"/app/{Id}/setup";
+
+	protected override async Task OnParametersSetAsync()
+	{
+		Domain = await TovikDomains.Get(Id);
+	}
+}

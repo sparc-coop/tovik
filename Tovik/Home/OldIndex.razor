@@ -4,7 +4,7 @@
 
 @using Sparc.Blossom.Authentication
 @using Tovik.Installation
-@layout HomeLayout
+@layout OldHomeLayout
 
 <PageTitle>Tovik</PageTitle>
 
@@ -118,7 +118,7 @@
     BlossomAvatar? Avatar;
     bool IsACustomer;
     string? PersonalizedWelcome;
-    string? WelcomeLink => PersonalizedWelcome == null ? "/sites" : $"/sites?welcome={PersonalizedWelcome}";
+    string? WelcomeLink => PersonalizedWelcome == null ? "/app" : $"/app?welcome={PersonalizedWelcome}";
     string? Url;
     Sparc.Blossom.Content.Language? PreviewLanguage;
 

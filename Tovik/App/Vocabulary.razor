@@ -1,0 +1,93 @@
+﻿@page "/app/{Id}"
+@using Sparc.Blossom.Content
+@using Tovik.Domains
+@using Tovik.Installation
+@layout MainLayout
+
+<PageTitle>@(Domain != null ? Domain.Domain : "Your Domain") | Tovik</PageTitle>
+
+<NavMenu DomainId="@Id" />
+
+<article class="domain-page">
+	<div class="page-container">
+		<section class="add-exemption">
+			<header>
+				<h3>Add Exempt Words or Phrases</h3>
+				<p class="subheader">Do you have any words or phrases on this website that you would like Tovik to ignore? Add them here!</p>
+			</header>
+			<label>
+				<input type="text" @bind=Exemption placeholder="Enter a word or phrase..." />
+			</label>
+			<div class="btn-container">
+				<button class="add-btn primary-btn" @onclick=AddExemption>Add to Exemptions List</button>
+			</div>
+		</section>
+
+		@if (Domain?.Exemptions.Any() == true)
+		{
+			<section class="exemptions">
+				<header>
+					<h3>Exempt Words and Phrases</h3>
+				</header>
+				<table class="exempt-table">
+					<thead>
+						<tr>
+							<td>Word or Phrase</td>
+							<td></td>
+						</tr>
+					</thead>
+					<tbody>
+						@if (Domain != null)
+						{
+							@foreach (var word in Domain.Exemptions)
+							{
+								<tr>
+									<td>@word</td>
+									<td>
+										<div class="exempt-actions">
+											<button class="delete-exempt-btn secondary-btn" @onclick="(() => DeleteExemption(word))"><TrashIcon /></button>
+										</div>
+									</td>
+								</tr>
+							}
+						}
+					</tbody>
+				</table>
+			</section>
+		}
+	</div>
+</article>
+
+@inject TovikDomains TovikDomains
+@inject ITovik Tovik
+@code {
+	[Parameter] public required string Id { get; set; }
+
+	SparcDomain? Domain;
+	List<Page> Pages = [];
+	string Exemption = "";
+
+	protected override async Task OnParametersSetAsync()
+	{
+		Domain = await TovikDomains.Get(Id);
+	}
+
+	async Task AddExemption()
+	{
+		if (Domain != null && !string.IsNullOrWhiteSpace(Exemption))
+		{
+			Domain.Exemptions.Add(Exemption);
+			await TovikDomains.Update(Domain);
+			Exemption = string.Empty; // Clear the input after adding
+		}
+	}
+
+	async Task DeleteExemption(string word)
+	{
+		if (Domain != null && Domain.Exemptions.Contains(word))
+		{
+			Domain.Exemptions.Remove(word);
+			await TovikDomains.Update(Domain);
+		}
+	}
+}

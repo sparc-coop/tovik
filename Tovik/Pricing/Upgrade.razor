@@ -1,4 +1,5 @@
-﻿@page "/purchase"
+﻿@page "/app/{DomainId}/upgrade"
+@using Tovik.Domains
 
 <div>
     @if (PaymentIntentId == null)
@@ -6,21 +7,23 @@
 		<PricingCard Type="Premium" />
     }
     
-    @if (User != null)
+    @if (User != null && Domain != null)
     {
         <section>
-            <GlobalBiller ProductId="Tovik" Domain="@Domain" StripeProductId="@StripeProductId" Avatar="User.Avatar" Appearance="Appearance" />
+            <GlobalBiller ProductId="Tovik" Domain="@Domain.Domain" StripeProductId="@StripeProductId" Avatar="User.Avatar" Appearance="Appearance" />
         </section>
     }
 </div>
 
 @inject IConfiguration Config
 @inject ISparcAura Aura
+@inject TovikDomains TovikDomains
 @code {
-    [Parameter] public string? Domain { get; set; }
+    [Parameter] public required string DomainId { get; set; }
     [Parameter] [SupplyParameterFromQuery] public string? PaymentIntentId { get; set; }
     string? StripeProductId;
     BlossomUser? User;
+    SparcDomain? Domain;
     StripeAppearance? Appearance = new()
     {
         Theme = "flat",
@@ -44,5 +47,6 @@
     {
         StripeProductId = Config["Tovik"]!.Contains("localhost") ? "prod_SW5yY8O8KprzFu" : "prod_SlQhkHsXb7ZyXb";
         User = await Aura.UserInfo();
+        Domain = await TovikDomains.Get(DomainId);
     }
 }

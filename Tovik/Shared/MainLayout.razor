@@ -1,23 +1,26 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="layout-container">
-    <NavMenu />
 
-    <main>
-        <div class="main-grid">
-            <div class="hero">
-                <div class="hero-img">
-                    <PrimaryLogo FontColor="#FF945E" />
-                </div>
-                <div class="hero-background"><DashedLine Color="#FFD4BF" /></div>
-            </div>
-            @Body
-        </div>
-    </main>
+<div class="hero-background"><DashedLine Color="#FFD4BF" /></div>
+<header>
+	<a class="logo" href="/">
+		<img src="/images/TovikWordmark.svg" alt="Tovik" />
+	</a>
 
-    <footer>
-        &copy; Sparc Cooperative Association.
-        <a href="/Privacy">Privacy</a> |
-        <a href="/Terms">Terms of Use</a>
-    </footer>
-</div>
+	<div class="buttons">
+		<Sparc.Blossom.Content.LanguageSelector WithButton=true />
+		<a class="button primary-btn" href="/app">Start</a>
+	</div>
+</header>
+
+<main>
+	@Body
+</main>
+
+<footer>
+	&copy; Sparc Cooperative Association.
+	<a href="/Privacy">Privacy</a> |
+	<a href="/Terms">Terms of Use</a>
+</footer>
+
+
