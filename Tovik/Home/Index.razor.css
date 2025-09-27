@@ -30,13 +30,13 @@ article {
         }
     }
 
-    
-    > section {
+
+    > header, > section {
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 32px;
-        max-width: min(85vw, 800px);
+        max-width: min(92vw, 800px);
         margin: 80px auto 0;
         text-align: center;
 
@@ -58,22 +58,8 @@ article {
             font-size: 2rem;
         }
 
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-
-            input {
-                width: 300px;
-            }
-
-            button {
-                white-space: nowrap;
-            }
-
-            @media screen and (min-width: 800px) {
-                flex-direction: row;
-            }
+        a {
+            text-decoration: underline;
         }
     }
 }
@@ -83,7 +69,7 @@ article {
     grid-template-columns: 1fr;
     gap: 15px;
     max-width: 1200px;
-    margin: 120px auto 0;
+    margin: 80px auto 0;
     padding: 0 10px;
 
     a {
@@ -95,24 +81,24 @@ article {
     }
 }
 
-.two > section, ::deep section.faq {
+.two > section {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    padding: 24px;
+    padding: 30px;
     background: rgba(79, 129, 153, 0.20);
     border: 1px solid rgba(219, 243, 252, 0.20);
     border-radius: 24px;
     backdrop-filter: blur(4px);
 
     h2 {
-        font-size: 2.5rem;
+        font-size: 2rem;
         font-weight: 700;
         margin-top: 32px;
     }
 
     img {
-        height: 80px;
+        height: 53px;
     }
 }
 
@@ -121,11 +107,10 @@ article {
     grid-template-columns: 1fr;
     align-items: center;
     justify-content: center;
-    gap: 32px;
+    gap: 16px;
 
     h2 {
         margin-top: 0;
-        margin-bottom: 20px;
     }
 
     @media screen and (min-width: 800px) {
@@ -141,53 +126,34 @@ h3 {
     font-weight: 700;
     font-size: 2rem;
     color: var(--blue-200);
-    padding: 16px;
+    padding: 0;
 }
 
 h4 {
     font-weight: 700;
-    font-size: 3.125rem;
+    font-size: 2.5rem;
     color: var(--blue-50);
-    margin-bottom: 24px;
 }
 
-.pricing-new {
+section {
     button {
         width: auto;
         align-self: initial;
         margin-bottom: 8px;
     }
 
-    
-}
-
-
-
-::deep .language-select {
-    background-color: var(--blue-600);
-    border: 1px solid var(--blue-500);
-    max-width: min(60vw, 400px);
-
-    &:after {
-        border-top: 5px solid white;
+    header {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
     }
 
-    select {
-        background-color: var(--blue-600);
-
-        option {
-            &:checked {
-                color: var(--orange-300);
-            }
-        }
-    }
-
-    .progress-bar-value {
-        background-color: var(--blue-300);
+    .buttons {
+        display: flex;
+        gap: 10px;
     }
 }
 
-::deep .language-select-container button.selected {
-    background-color: var(--blue-600);
-    border: 1px solid var(--blue-500);
-}
+
+
+

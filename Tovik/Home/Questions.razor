@@ -3,7 +3,14 @@
 		@foreach (var question in FAQ.Take(Limit))
 		{
 			<div @onclick="@(() => Select(question.Key))" class="@(question.Key == SelectedQuestion ? "selected" : "")">
-				<span>@( question.Key == SelectedQuestion ? "-" : "+")</span>
+				@if (question.Key == SelectedQuestion)
+				{
+					<img src="/icons/Collapse.svg" alt="Collapse" />
+				}
+				else
+				{
+					<img src="/icons/Expand.svg" alt="Expand" />
+				}
 				<dt>
 					@question.Key
 				</dt>
@@ -17,7 +24,6 @@
 		{
 			<button class="secondary-btn" @onclick=Expand>View More</button>
 		}
-		Have additional questions?  <a href="mailto:support@sparc.coop">support@sparc.coop</a>
 	</footer>
 </section>
 

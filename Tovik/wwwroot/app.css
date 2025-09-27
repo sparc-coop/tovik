@@ -101,6 +101,7 @@ h1, h2, h3, h4, h5, h6, h7 {
     margin: 0;
     padding: 0;
     font-family: var(--brother-printed), sans-serif;
+    line-height: 120%;
 }
 
 p, ul, ol, li {
@@ -140,7 +141,9 @@ a {
         letter-spacing: -0.14px;
         cursor: pointer;
         box-sizing: border-box;
-        text-decoration: none;
+        text-decoration: none !important;
+        white-space: nowrap;
+        line-height: 100%;
 
         &[disabled] {
             opacity: 0.3;
@@ -168,7 +171,6 @@ a {
             font-size: 16px;
             font-style: normal;
             font-weight: 500;
-            line-height: normal;
             transition: background-color 0.05s ease-in;
 
             &:hover {
@@ -235,6 +237,11 @@ input {
     font-weight: 400;
     line-height: normal;
 }
+
+    input::placeholder {
+            color: white;
+            opacity: 0.5;
+    }
 
 select {
     display: flex;

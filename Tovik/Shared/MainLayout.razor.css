@@ -21,17 +21,11 @@ header {
     z-index: 1003;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     background: rgba(7, 55, 79, 0.8);
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.08);
     backdrop-filter: blur(40px);
-    padding: 16px;
-
-    ::deep .language-select {
-        position: fixed;
-        top: 100px;
-        right: 16px;
-        border-radius: 20px;
-    }
+    padding: 8px;
 
     img {
         height: 24px;
@@ -51,6 +45,45 @@ header {
 
         &.logo {
             padding: 0;
+        }
+    }
+
+    ::deep .language-select {
+        position: fixed;
+        top: 80px;
+        right: 16px;
+        border-radius: 20px;
+        background-color: var(--blue-600);
+        border: 1px solid var(--blue-500);
+        max-width: min(90vw, 300px);
+
+        select {
+            background-color: var(--blue-600);
+
+            option {
+                &:checked {
+                    color: var(--orange-300);
+                }
+            }
+        }
+
+        .progress-bar-value {
+            background-color: var(--blue-300);
+        }
+    }
+
+        ::deep .language-select:after {
+            border-top: 5px solid white;
+        }
+
+    ::deep .language-select-container {
+        button.secondary-btn {
+            padding: 12px 16px;
+        }
+
+        button.selected {
+            background-color: var(--blue-600);
+            border: 1px solid var(--blue-500);
         }
     }
 
@@ -75,6 +108,16 @@ main {
             grid-column: 1 / span 4;
             margin-top: 200px;
         }
+    }
+}
+
+footer {
+    font-size: 1.4rem;
+    text-align: center;
+    padding: 64px 16px 16px 16px;
+
+    a {
+        text-decoration: underline;
     }
 }
 
@@ -109,6 +152,10 @@ main {
 
         @media screen and (min-width: 800px) {
             bottom: 140px;
+        }
+
+        button.secondary-btn {
+            padding: 12px 16px;
         }
 
         .language-select {
