@@ -1,4 +1,6 @@
-﻿@inherits LayoutComponentBase
+﻿@using Microsoft.AspNetCore.Components.Sections
+@using Tovik.Domains
+@inherits LayoutComponentBase
 
 
 <div class="hero-background"><DashedLine Color="#FFD4BF" /></div>
@@ -8,8 +10,10 @@
 	</a>
 
 	<div class="buttons">
-		<Sparc.Blossom.Content.LanguageSelector Visible=true WithButton=true />
-		<a class="button primary-btn" href="/app">Start</a>
+		<Sparc.Blossom.Content.LanguageSelector WithButton=true />
+		<button class="no-btn" @onclick=Toggle>
+			<img src="@SelectedDomainImage(SelectedDomain)" alt="@(SelectedDomain?.Domain ?? "Select a domain...")" onerror="this.src='/images/Star.svg'" />
+		</button>
 	</div>
 </header>
 
@@ -17,10 +21,77 @@
 	@Body
 </main>
 
+@if (IsOpen)
+{
+	<div class="overlay" @onclick=Toggle></div>
+}
+
+<aside class="@(IsOpen ? "open" : "")">
+	<header>
+		<h3>My Domains</h3>
+	</header>
+	@if (Domains != null)
+	{
+		<ul>
+			@foreach (var domain in Domains)
+			{
+				<li>
+					<NavLink href="@Overview(domain)" Match="NavLinkMatch.Prefix">
+						<img src="@domain.FaviconUri" alt="@domain.Domain" onerror="this.src='/images/Star.svg'" />
+						@domain.Domain
+					</NavLink>
+				</li>
+			}
+
+			@if (SelectedDomain != null && IsPreview)
+			{
+				<li class="preview">
+					<NavLink href="@Overview(SelectedDomain)" Match="NavLinkMatch.Prefix">
+						<img src="@SelectedDomain.FaviconUri" alt="@SelectedDomain.Domain" onerror="this.src='/images/Star.svg'" />
+						@SelectedDomain.Domain (preview)
+					</NavLink>
+				</li>
+			}
+		</ul>
+	}
+
+	<footer>
+		<Tovik.App.Domains.AddDomain />
+	</footer>
+</aside>
+
 <footer>
 	&copy; Sparc Cooperative Association.
 	<a href="/Privacy">Privacy</a> |
 	<a href="/Terms">Terms of Use</a>
 </footer>
 
+@inject TovikDomains TovikDomains
+@code {
+	[CascadingParameter] public RouteData? RouteData { get; set; }
+	SparcDomain? SelectedDomain;
+	List<SparcDomain>? Domains;
+	bool IsOpen;
+	void Toggle() => IsOpen = !IsOpen;
 
+	protected override async Task OnInitializedAsync()
+	{
+		Domains = await TovikDomains.All();
+	}
+
+	protected override async Task OnParametersSetAsync()
+	{
+		var domainId = RouteData?.RouteValues["Id"]?.ToString();
+		if (domainId != null)
+		{
+			if (SelectedDomain != null && SelectedDomain.Id != domainId)
+				IsOpen = false;
+
+			SelectedDomain = await TovikDomains.Get(domainId);
+		}
+	}
+
+	string Overview(SparcDomain domain) => $"/app/{domain.Id}";
+	string SelectedDomainImage(SparcDomain? domain) => domain?.FaviconUri ?? "/images/Star.svg";
+	bool IsPreview => Domains != null && SelectedDomain != null && !Domains.Any(x => x.Id == SelectedDomain.Id);
+}

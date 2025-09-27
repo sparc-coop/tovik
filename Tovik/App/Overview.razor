@@ -39,4 +39,11 @@
 	{
 		Domain = await TovikDomains.Get(Id);
 	}
+
+	bool IsClaimable => Domain != null && Domain.TovikUserId == null;
+	// bool IsUpgradable => Domains != null
+	// 	&& SelectedDomain != null
+	// 	&& Domains.Any(x => x.Id == SelectedDomain.Id)
+	// 	&& Domain.Product("Tovik")?.MaxUsage < 50;
+
 }
