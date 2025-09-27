@@ -15,5 +15,9 @@ form {
 
     @media screen and (min-width: 800px) {
         flex-direction: row;
+
+        input {
+            width: 300px;
+        }
     }
 }
