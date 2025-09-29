@@ -65,7 +65,12 @@ article {
         @media screen and (min-width: 800px) {
             margin-top: 120px;
         }
+    }
+}
 
+::deep header form {
+    @media screen and (min-width: 800px) {
+        flex-direction: row;
     }
 }
 

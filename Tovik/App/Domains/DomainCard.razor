@@ -1,7 +1,7 @@
 ﻿@using Sparc.Blossom.Content
 <div id="@Domain.Id" class="domain-card @("domain-card__" + PageType)">
     <header>
-        <img src="@Domain.FaviconUri" alt="@Domain.Domain" onerror="this.src='/images/Star.svg'" />
+        <Favicon Domain="Domain" />
         <h2>
             @Domain.Domain
             @if (Domain.DateConnected != null)

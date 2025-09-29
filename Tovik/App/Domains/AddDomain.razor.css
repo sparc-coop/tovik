@@ -7,17 +7,14 @@ form {
     flex-direction: column;
     gap: 8px;
     width: 100%;
-    max-width: 400px;
+    max-width: 500px;
+
+    label {
+        flex: 2;
+    }
 
     button {
         white-space: nowrap;
-    }
-
-    @media screen and (min-width: 800px) {
-        flex-direction: row;
-
-        input {
-            width: 300px;
-        }
+        flex: 1;
     }
 }

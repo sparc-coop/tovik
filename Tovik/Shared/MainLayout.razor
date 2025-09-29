@@ -12,7 +12,7 @@
 	<div class="buttons">
 		<Sparc.Blossom.Content.LanguageSelector WithButton=true />
 		<button class="no-btn" @onclick=Toggle>
-			<img src="@SelectedDomainImage(SelectedDomain)" alt="@(SelectedDomain?.Domain ?? "Select a domain...")" onerror="this.src='/images/Star.svg'" />
+			<Favicon Domain="SelectedDomain" />
 		</button>
 	</div>
 </header>
@@ -37,7 +37,7 @@
 			{
 				<li>
 					<NavLink href="@Overview(domain)" Match="NavLinkMatch.Prefix">
-						<img src="@domain.FaviconUri" alt="@domain.Domain" onerror="this.src='/images/Star.svg'" />
+						<Favicon Domain="domain" />
 						@domain.Domain
 					</NavLink>
 				</li>
@@ -47,7 +47,7 @@
 			{
 				<li class="preview">
 					<NavLink href="@Overview(SelectedDomain)" Match="NavLinkMatch.Prefix">
-						<img src="@SelectedDomain.FaviconUri" alt="@SelectedDomain.Domain" onerror="this.src='/images/Star.svg'" />
+						<Favicon Domain="SelectedDomain" />
 						@SelectedDomain.Domain (preview)
 					</NavLink>
 				</li>
@@ -92,6 +92,5 @@
 	}
 
 	string Overview(SparcDomain domain) => $"/app/{domain.Id}";
-	string SelectedDomainImage(SparcDomain? domain) => domain?.FaviconUri ?? "/images/Star.svg";
 	bool IsPreview => Domains != null && SelectedDomain != null && !Domains.Any(x => x.Id == SelectedDomain.Id);
 }

@@ -1,0 +1,5 @@
+﻿<img src="@(Domain?.FaviconUri ?? "/images/Star.svg")" alt="@(Domain?.Domain)" onerror="this.src='/images/Star.svg'" />
+
+@code {
+	[Parameter] public required SparcDomain Domain { get; set; }
+}

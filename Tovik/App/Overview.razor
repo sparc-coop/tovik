@@ -14,16 +14,20 @@
 </HeadContent>
  *@
 
-<NavMenu DomainId="@Id" />
-
 @if (Domain != null)
 {
 	<article class="domain-page">
-		<div class="page-container">
+		<header>
+			<h1>
+				<Favicon Domain="Domain" />
+				@Domain.Domain
+			</h1>
+			<NavMenu DomainId="@Id" />
+
+		</header>
 			<Tovik.App.Preview.PreviewCard Domain="Domain" />
 			<Tovik.App.Analytics.PageStats Domain="Domain" />
 			<Tovik.App.Analytics.LanguageStats Domain="Domain" />
-		</div>
 	</article>
 }
 
