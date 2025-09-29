@@ -1,18 +1,21 @@
 ﻿@using Sparc.Blossom.Content
-<section>
+<section class="tovik-card">
 	<header>
 		<h3>Preview Your Site In Other Languages</h3>
 	</header>
+	
+	<div>
+		<LanguageSelector OnLanguageChanged="UpdatePreviewLanguage" />
+		<button class="secondary-btn" @onclick=Preview>Preview</button>
+	</div>
 
 	@if (Domain.DateConnected == null)
 	{
-		<p>Heads up: Since Tovik isn't yet installed on @Domain.Domain, some functions of this preview may not behave as expected. For the full experience, <a href="@SetupLink">install Tovik on your site</a>.</p>
+		<p>
+			Note: This preview is simulated, so some functions may not behave as expected.
+			<a href="@SetupLink">Install Tovik on @Domain.Domain</a> to enable the full preview experience.
+		</p>
 	}
-
-	<div>
-		<LanguageSelector OnLanguageChanged="UpdatePreviewLanguage" />
-		<button class="primary-btn" @onclick=Preview>Preview</button>
-	</div>
 </section>
 
 @code {

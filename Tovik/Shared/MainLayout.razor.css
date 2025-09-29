@@ -124,6 +124,11 @@ main {
             margin-top: 200px;
         }
     }
+
+    @media screen and (min-width: 800px) {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
 }
 
 .overlay {

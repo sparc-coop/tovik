@@ -81,13 +81,13 @@
 
 	protected override async Task OnParametersSetAsync()
 	{
-		var domainId = RouteData?.RouteValues["Id"]?.ToString();
-		if (domainId != null)
+		object? domainId;
+		if (RouteData?.RouteValues.TryGetValue("Id", out domainId) == true)
 		{
-			if (SelectedDomain != null && SelectedDomain.Id != domainId)
+			if (SelectedDomain != null && SelectedDomain.Id != domainId!.ToString())
 				IsOpen = false;
 
-			SelectedDomain = await TovikDomains.Get(domainId);
+			SelectedDomain = await TovikDomains.Get(domainId!);
 		}
 	}
 

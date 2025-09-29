@@ -45,6 +45,6 @@
     {
         Domains = await TovikDomains.All();
         if (Domains.Any())
-            Nav.NavigateTo($"/app/{Domains.First().Id}/overview");
+            Nav.NavigateTo($"/app/{Domains.First().Id}");
     }
 }

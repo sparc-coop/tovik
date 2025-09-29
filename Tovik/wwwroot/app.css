@@ -40,6 +40,24 @@ p, div, span {
     }
 }
 
+.tovik-card {
+    padding: 24px;
+    border-radius: 32px;
+    border: 1px solid rgba(219, 243, 252, 0.20);
+    background: rgba(79, 129, 153, 0.20);
+    backdrop-filter: blur(4px);
+    margin: 10px 0;
+
+    > header {
+        margin-bottom: 32px;
+    }
+
+
+    h3 {
+        font-size: 2rem;
+    }
+}
+
 @keyframes animate-background {
     0% {
         background-position: 0 50%;

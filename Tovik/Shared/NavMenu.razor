@@ -16,7 +16,7 @@
 		</li>
 		<li>
 			<NavLink href="@Setup">
-				<img src="/icons/Setup.svg" alt="Setup" />
+				<img src="/icons/Settings.svg" alt="Setup" />
 				Setup
 			</NavLink>
 		</li>
@@ -27,7 +27,7 @@
 @code {
 	[Parameter] public required string DomainId { get; set; }
 
-	string Overview => $"/app/{DomainId}/overview";
+	string Overview => $"/app/{DomainId}";
 	string Vocabulary => $"/app/{DomainId}/vocabulary";
 	string Setup => $"/app/{DomainId}/setup";
 }

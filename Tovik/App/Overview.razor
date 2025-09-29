@@ -16,12 +16,22 @@
 
 @if (Domain != null)
 {
-	<article class="domain-page">
+	<article>
 		<header>
 			<h1>
 				<Favicon Domain="Domain" />
 				@Domain.Domain
 			</h1>
+
+			@if (Domain.DateConnected == null)
+			{
+				<p>Status: Inactive</p>
+			}
+			else if (Domain.LastTranslatedDate != null)
+			{
+				<p>Status: Actively Translating</p>
+			}
+
 			<NavMenu DomainId="@Id" />
 
 		</header>

@@ -1,26 +1,24 @@
 ﻿@using Sparc.Blossom.Content
 @using Tovik.Domains
-<section class="domain-summary">
+<section class="tovik-card">
 	<header>
 		<h3>Languages Translated</h3>
 	</header>
-	<div>
+	<ul>
 		@foreach (var language in Stats.OrderByDescending(x => x.Value))
 		{
-			<div class="language">
-				<header>
-					@language.Key.NativeName (@language.Key.DisplayName)
+			<li>
+				<header translate="no">
+					@language.Key.NativeName (@language.Key.Id)
+					<span>
+						@Pretty(language.Value)
+					</span>
 				</header>
-				<div class="meter-container">
-					<div class="meter-fill" style="width: @FillPercentage(language.Key)%"></div>
+				<div class="meter-container" style="width: @FillPercentage(language.Key)%; background-color: @Color(language.Key.Id)">
 				</div>
-			</div>
+			</li>
 		}
-		@if (!Stats.Any())
-		{
-			<aside>Nothing to see here yet!</aside>
-		}
-	</div>
+	</ul>
 </section>
 
 @inject TovikDomains Domains
@@ -53,4 +51,23 @@
 		return 0;
 	}
 
+	string Pretty(int count)
+	{
+		if (count >= 1_000_000_000)
+			return (count / 1_000_000_000D).ToString("0.#") + "B";
+		if (count >= 1_000_000)
+			return (count / 1_000_000D).ToString("0.#") + "M";
+		if (count >= 1_000)
+			return (count / 1_000D).ToString("0.#") + "K";
+		return count.ToString();
+	}
+
+	string Color(string languageId)
+	{
+		var hash = languageId.Split("-").First().GetHashCode();
+		var r = (hash & 0xFF0000) >> 16;
+		var g = (hash & 0x00FF00) >> 8;
+		var b = (hash & 0x0000FF);
+		return $"rgb({r},{g},{b})";
+	}
 }

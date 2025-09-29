@@ -1,41 +1,35 @@
 ﻿@using Sparc.Blossom.Content
 @using Tovik.Domains
 
-<section class="domain-summary">
+<section class="tovik-card">
 	<header>
 		<h3>Pages Translated</h3>
 		<UsageMeter Domain="Domain" />
 	</header>
-	<div>
+	<ul>
 		@foreach (var webpage in Pages)
 		{
-			<div class="page">
+			<li>
 				<header translate="no">
 					@webpage.Path
+					<span>
+						@Pretty(webpage.TovikUsage.Sum(x => x.Value))
+					</span>
+
 				</header>
-				<ul>
+				<div class="meter-container" style="width: @FillPercentage(webpage)%">
 					@foreach (var languageId in webpage.TovikUsage.Keys.OrderByDescending(x => webpage.TovikUsage[x]))
 					{
-						var language = Language.Find(languageId);
-						if (language != null)
-						{
-							<li title="@language.NativeName (@language.DisplayName)">
-								<a href="@webpage.AbsolutePath(languageId)" target="_blank">
-									<span class="language-id">@language.NativeName</span>
-									<span class="count">@Pretty(webpage.TovikUsage[languageId])</span>
-								</a>
-							</li>
-						}
+						<div class="meter-fill"
+							 title="@Title(webpage, languageId)"
+							 style="width: @FillPercentage(webpage, languageId)%; background-color: @Color(languageId)">
+							<span>@languageId</span>
+						 </div>
 					}
-				</ul>
-			</div>
+				</div>
+			</li>
 		}
-
-		@if (!Pages.Any())
-		{
-			<aside>Nothing to see here yet!</aside>
-		}
-	</div>
+	</ul>
 </section>
 
 @inject TovikDomains Domains
@@ -48,7 +42,51 @@
 		Pages = await Domains.GetPages(Domain.Domain);
 	}
 
-	private string Pretty(int count)
+	decimal FillPercentage(Page page)
+	{
+		if (Domain == null || Domain.TovikUsage == 0)
+			return 0;
+
+		var max = Pages.Max(x => x.TovikUsage.Sum(y => y.Value));
+		if (max == 0)
+			return 0;
+
+		return (decimal)page.TovikUsage.Sum(x => x.Value) / max * 100;
+	}
+
+	decimal FillPercentage(Page page, string languageId)
+	{
+		if (Domain == null || Domain.TovikUsage == 0)
+			return 0;
+
+		var sum = page.TovikUsage.Sum(x => x.Value);
+		if (sum == 0)
+			return 0;
+
+		return (decimal)page.TovikUsage[languageId] / sum * 100;
+	}
+
+	string Title(Page page, string languageId)
+	{
+		if (!page.TovikUsage.ContainsKey(languageId))
+			return "";
+
+		var language = Language.Find(languageId);
+		if (language == null)
+			return $"{languageId}: {Pretty(page.TovikUsage[languageId])} visits";
+		return $"{language.NativeName}: {Pretty(page.TovikUsage[languageId])} visits";
+	}
+
+	string Color(string languageId)
+	{
+		var hash = languageId.Split("-").First().GetHashCode();
+		var r = (hash & 0xFF0000) >> 16;
+		var g = (hash & 0x00FF00) >> 8;
+		var b = (hash & 0x0000FF);
+		return $"rgb({r},{g},{b})";
+	}
+
+	string Pretty(int count)
 	{
 		if (count >= 1_000_000_000)
 			return (count / 1_000_000_000D).ToString("0.#") + "B";
