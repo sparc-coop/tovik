@@ -31,7 +31,7 @@
 		var pages = await Domains.GetPages(Domain.Domain);
 
 		Stats = pages
-			.SelectMany(x => x.TovikUsage)
+			.SelectMany(x => x.Visits)
 			.GroupBy(x => Language.Find(x.Key)!)
 			.ToDictionary(g => g.Key, g => g.Sum(x => x.Value));
 	}

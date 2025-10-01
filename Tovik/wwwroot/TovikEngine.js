@@ -42,6 +42,7 @@ export default class TovikEngine {
         return this.userLang;
     }
     static async hi() {
+        this.fetch('translate/visit', { Domain: window.location.host, Path: window.location.pathname });
         document.body.classList.add('tovik-translating');
         let lang = await this.getUserLanguage();
         this.documentLang = document.documentElement.lang;
