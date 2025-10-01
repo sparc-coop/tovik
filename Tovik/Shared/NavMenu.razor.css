@@ -1,3 +1,7 @@
+h1 {
+    font-size: 3.125rem;
+}
+
 ul {
     display: flex;
     list-style: none;
