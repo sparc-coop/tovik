@@ -7,7 +7,11 @@
 			<span>@Limit.ToString("N0")</span>
 		</div>
 
-		@if (Limit < 500)
+		@if (Domain.DateConnected == null)
+		{
+			<a class="button secondary-btn" href="@SetupLink">Install On Your Site</a>
+		}
+		else if (Limit < 500)
 		{
 			<a class="button secondary-btn" href="@UpgradeLink">Upgrade</a>
 		}
@@ -33,4 +37,5 @@
 	int Remaining => Limit - Usage;
 	int FillPercentage => Limit > 0 ? (int)((double)Usage / Limit * 100) : 0;
 	string UpgradeLink => $"/app/{Domain.Id}/upgrade";
+	string SetupLink => $"/app/{Domain.Id}/setup";
 }

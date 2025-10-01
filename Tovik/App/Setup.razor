@@ -1,0 +1,170 @@
+﻿@page "/app/{Id}/setup"
+@using Tovik.Domains
+
+<PageTitle>@(Domain != null ? Domain.Domain : "Your Domain") | Tovik</PageTitle>
+
+
+<article>
+	<header>
+		<NavMenu Domain="Domain" />
+	</header>
+
+	<section class="tovik-card">
+		<header>
+			<h3>Install Tovik On Your Site</h3>
+		</header>
+
+		<select @bind="SelectedPlatform">
+			<option selected disabled>Choose your website's platform...</option>
+			@foreach (var platform in Platforms)
+			{
+				<option value="@platform">@platform</option>
+			}
+		</select>
+
+		@switch (SelectedPlatform)
+		{
+			case "HTML":
+				<ol>
+					<li>
+						To install Tovik, add this line of code to your site (preferably just before the closing <code translate="no">&lt;&sol;body&gt;</code> tag):<br /><br />
+						<CodeBlock CanCopy=true>
+							@("<script type=\"module\" src=\"https://tovik.app/tovik.js\"></script>")
+						</CodeBlock>
+					</li>
+					<li>
+						That’s it. Tovik will now detect your visitors’ browser language and display your site accordingly.
+					</li>
+				</ol>
+				break;
+			case "WordPress":
+					<ol>
+						<li>
+							Download the official Tovik WordPress plugin here:<br />
+							<a href="/plugins/wordpress/tovik.zip" class="button primary-btn">Download Tovik for WordPress</a>
+						</li>
+						<li>Go to your WordPress admin dashboard and navigate to <strong>Plugins</strong> &gt; <strong>Add New</strong>.</li>
+						<li>Click <strong>Upload Plugin</strong> and select the downloaded <code translate="no">tovik.zip</code> file.</li>
+						<li>Click <strong>Install Now</strong>.</li>
+						<li>Once installed, click <strong>Activate Plugin</strong>.</li>
+					</ol>
+				break;
+			case "Wix":
+					<ol>
+						<li>
+							Open the Tovik install link:<br />
+							<a href="https://wix.to/AmoRmd7" class="button primary-btn" target="_blank" rel="noopener">Install Tovik for Wix</a>
+						</li>
+						<li>Click <strong>Add to Site</strong>.</li>
+						<li>Choose the Wix site you want to install Tovik on and click <strong>Continue</strong>.</li>
+						<li>Review the requested permissions, then click <strong>Accept &amp; Add</strong>.</li>
+						<li>You’ll be redirected to your Wix dashboard → the Tovik app panel will open.</li>
+						<li>Click <strong>Activate Tovik</strong>.</li>
+						<li>Publish your site to apply the changes.</li>
+					</ol>
+				break;
+			case "SquareSpace":
+					<ol>
+						<li>Log in to your Squarespace account.</li>
+						<li>Open the site on which you want to enable Tovik.</li>
+						<li>Click <strong>Edit Site</strong> to open the site editor.</li>
+						<li>
+							In the left-hand menu, look for the <strong>Code Injection</strong> panel. Depending on your Squarespace version, it may appear under:
+							<ul>
+								<li><strong>Pages → Custom Code → Code Injection</strong>, OR</li>
+								<li><strong>Settings → Advanced (or Website Tools) → Code Injection</strong>.</li>
+							</ul>
+						</li>
+						<li>Paste the following snippet into the section labeled <strong>Footer</strong>:</li>
+						<CodeBlock CanCopy=true>
+							@("<script type=\"module\" src=\"https://tovik.app/tovik.js\"></script>")
+						</CodeBlock>
+						<li>Click <strong>Save</strong>.</li>
+					</ol>
+					<h3>Notes</h3>
+					<ul>
+						<li>The menu location may vary, but the option is always called <strong>Code Injection</strong>.</li>
+						<li>Add the code to the section labeled <strong>Footer</strong> so the script loads at the end of the <code translate="no">&lt;&sol;body&gt;</code>.</li>
+						<li>In Squarespace’s site editor, scripts may not run. Always test on your published site in an incognito/private window.</li>
+						<li>Checkout pages generally do not support injected scripts.</li>
+					</ul>
+				break;
+			case "Webflow":
+					<ol>
+						<li>Log in to your Webflow account.</li>
+						<li>Click the button labeled <strong>Site Settings</strong> on the site in which you want to enable Tovik.</li>
+						<li>In the left-hand menu, click <strong>Custom Code</strong>:</li>
+						<li>Paste the following snippet into the section labeled <strong>Footer code</strong>:</li>
+						<CodeBlock CanCopy=true>
+							@("<script type=\"module\" src=\"https://tovik.app/tovik.js\"></script>")
+						</CodeBlock>
+						<li>Click <strong>Save changes</strong>.</li>
+					</ol>
+					<h3>Notes</h3>
+					<ul>
+						<li>Add the code to the section labeled <strong>Footer code</strong> so the script loads at the end of the <code translate="no">&lt;&sol;body&gt;</code>.</li>
+						<li>The effects of custom code appear in preview mode, but they won’t go live until your site is published. </li>
+					</ul>
+				break;
+			case "Weebly":
+					<ol>
+						<li>Log in to your Weebly account.</li>
+						<li>Click <strong>Edit Site</strong> to open the site editor.</li>
+						<li>In the top menu, click <strong>Settings</strong>.</li>
+						<li>In the left-hand menu, click <strong>SEO</strong>.</li>
+						<li>Paste the following snippet into the section labeled <strong>Footer Code</strong>:</li>
+						<CodeBlock CanCopy=true>
+							@("<script type=\"module\" src=\"https://tovik.app/tovik.js\"></script>")
+						</CodeBlock>
+						<li>Click <strong>Save</strong>.</li>
+					</ol>
+					<h3>Notes</h3>
+					<ul>
+						<li>Add the code to the section labeled <strong>Footer Code</strong> so the script loads at the end of the <code translate="no">&lt;&sol;body&gt;</code>.</li>
+						<li>In Weebly’s site editor, scripts may not run. Always test on your published site.</li>
+					</ul>
+				break;
+			case "Shopify":
+					<ol>
+						<li>Log in to your Shopify account.</li>
+						<li>Open the site on which you want to enable Tovik.</li>
+						<li>Click the <strong>three-dots button</strong> for more actions.</li>
+						<li>Select <strong>Edit code</strong>.</li>
+						<li>You’ll be redirected to the code editor.</li>
+						<li>In the left-hand menu, expand <strong>layout</strong>.</li>
+						<li>Click <strong>theme.liquid</strong>.</li>
+						<li>Paste the following snippet immediately above the <strong><code translate="no">&lt;&sol;body&gt;</code></strong> tag (on the line directly before it):</li>
+						<CodeBlock CanCopy=true>
+							@("<script type=\"module\" src=\"https://tovik.app/tovik.js\"></script>")
+						</CodeBlock>
+						<li>Click <strong>Save</strong>.</li>
+					</ol>
+				break;
+			default:
+				<div>
+					<p>Please select your website's platform from the dropdown above to see specific installation instructions.</p>
+				</div>
+				break;
+		}
+	</section>
+</article>
+
+@inject TovikDomains TovikDomains
+@code {
+	[Parameter] public required string Id { get; set; }
+
+	SparcDomain? Domain;
+	string SetupLink => $"/app/{Id}/setup";
+	List<string> Platforms = ["WordPress", "Wix", "SquareSpace", "Webflow", "Weebly", "Shopify", "HTML"];
+	string? SelectedPlatform { get; set; }
+
+	protected override async Task OnParametersSetAsync()
+	{
+		Domain = await TovikDomains.Get(Id);
+	}
+
+	private void Select(string platform)
+	{
+		SelectedPlatform = platform;
+	}
+}

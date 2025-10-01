@@ -1,9 +1,23 @@
 ﻿@using Tovik.Domains
 
+<h1>
+	<Favicon Domain="Domain" />
+	@Domain?.Domain
+</h1>
+
+@if (Domain != null && Domain.DateConnected == null)
+{
+	<p>Status: Inactive</p>
+}
+else if (Domain?.LastTranslatedDate != null)
+{
+	<p>Status: Actively Translating</p>
+}
+
 <nav>
 	<ul>
 		<li>
-			<NavLink href="@Overview">
+			<NavLink href="@Overview" Match="NavLinkMatch.All">
 				<img src="/icons/Overview.svg" alt="Overview" />
 				Overview
 			</NavLink>
@@ -25,9 +39,9 @@
 
 @inject TovikDomains TovikDomains
 @code {
-	[Parameter] public required string DomainId { get; set; }
+	[Parameter] public required SparcDomain Domain { get; set; }
 
-	string Overview => $"/app/{DomainId}";
-	string Vocabulary => $"/app/{DomainId}/vocabulary";
-	string Setup => $"/app/{DomainId}/setup";
+	string Overview => $"/app/{Domain?.Id}";
+	string Vocabulary => $"/app/{Domain?.Id}/vocabulary";
+	string Setup => $"/app/{Domain?.Id}/setup";
 }

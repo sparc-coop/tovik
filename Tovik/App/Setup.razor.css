@@ -1,0 +1,26 @@
+article {
+    a.button {
+        text-decoration: none;
+        display: inline-block;
+        width: auto;
+        margin: 16px 0;
+    }
+
+    section {
+        ol, ul {
+            padding-left: 32px;
+
+            li {
+                margin-bottom: 8px;
+            }
+
+            strong, code {
+                color: var(--orange-300);
+            }
+        }
+    }
+
+    select {
+        margin-bottom: 32px;
+    }
+}

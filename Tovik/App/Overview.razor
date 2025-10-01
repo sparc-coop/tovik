@@ -2,7 +2,6 @@
 @page "/app/{Id}/overview"
 @using Sparc.Blossom.Content
 @using Tovik.Domains
-@using Tovik.Installation
 @layout MainLayout
 
 <PageTitle>@(Domain != null ? Domain.Domain : "Your Domain") | Tovik</PageTitle>
@@ -18,21 +17,7 @@
 {
 	<article>
 		<header>
-			<h1>
-				<Favicon Domain="Domain" />
-				@Domain.Domain
-			</h1>
-
-			@if (Domain.DateConnected == null)
-			{
-				<p>Status: Inactive</p>
-			}
-			else if (Domain.LastTranslatedDate != null)
-			{
-				<p>Status: Actively Translating</p>
-			}
-
-			<NavMenu DomainId="@Id" />
+			<NavMenu Domain="Domain" />
 
 		</header>
 			<Tovik.App.Preview.PreviewCard Domain="Domain" />
