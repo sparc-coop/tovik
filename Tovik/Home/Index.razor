@@ -50,7 +50,7 @@
 			<div class="buttons">
 				@if (!IsPreviewing)
 				{
-					<Sparc.Blossom.Content.LanguageSelector WithButton=true />
+					<Sparc.Blossom.Content.LanguageSelector WithButton=true Visible=true />
 				}
 				else
 				{
@@ -62,21 +62,20 @@
 				}
 				else
 				{
-					<button class="primary-btn" @onclick=ToggleSidebar>Install Now</button>
+					<button class="primary-btn" @onclick=ToggleSidebar>Get Started</button>
 				}
 			</div>
 		</header>
 
 		<section>
 			<img src="/images/TovikChar.svg" alt="Tovik" />
-			<h1>What if your visitors could read your site in their own language?</h1>
+			<h1>A website works best when everyone understands it.</h1>
 			<p>
-				Are you tired of complicated installations or expensive subscriptions for translation services? <br />
-				Tovik is a simple plugin that quietly translates your site, helping you reach a global audience.
+				Meet Tovik, a modern translation plugin that instantly turns your site multilingual, with precise, native-level translation that preserves your voice.
 			</p>
 			<form @onsubmit=GoToPreview>
 				<input type="text" placeholder="Enter your website's URL" @bind=Url required />
-				<button class="primary-btn">Preview Your Translated Site</button>
+				<button class="primary-btn">Preview Your Site With Tovik</button>
 			</form>
 			@if (ErrorMessage != null)
 			{
@@ -88,34 +87,36 @@
 			<section>
 				<img src="/images/TiltedWorldIcon.svg" alt="Tilted World" />
 				<div>
-					<h2>Translate Your Site to 130+ Languages &amp; 600+ Dialects</h2>
-					<p>Make your audience feel at home with automatic site translations into their preferred language.</p>
+					<h2>
+						130+ Languages, 600+ Dialects
+					</h2>
+					<p>Make your site instantly understandable worldwide with instant and precise translations.</p>
 				</div>
 			</section>
 			<section>
 				<img src="/images/LightbulbIcon.svg" alt="Lightbulb" />
 				<div>
-					<h2>Easy to Install</h2>
+					<h2>Preserves Your Authentic Voice</h2>
 					<p>
-						Tovik requires minimal setup, just a single line of code or a simple plugin installation.
+						Tovik doesn’t just translate words. It carries your tone, style, and intent across languages, ensuring your message feels natural and true to its original meaning.
 					</p>
 				</div>
 			</section>
 			<section>
 				<img src="/images/NoSubscriptions.svg" alt="No Subscriptions" />
 				<div>
-					<h2>Buy Once, Yours Forever</h2>
+					<h2>Fair, Accessible Pricing</h2>
 					<p>
-						Tovik is sustainably built, ethically priced, and entirely free from monthly subscriptions.
+						Multilingual access shouldn't be a luxury. Start for free, and when you're ready to grow, buy it once. No subscriptions, no hidden fees.
 					</p>
 				</div>
 			</section>
 			<section>
 				<img src="/images/TranslateIcon.svg" alt="Translate" />
 				<div>
-					<h2>Works On Any Website</h2>
+					<h2>Made for Your Platform</h2>
 					<p>
-						Built for WordPress, Wix, Webflow, Weebly, SquareSpace, Shopify, and we have an HTML tag for the rest.
+						You can install Tovik in minutes, whether you’re on WordPress, Wix, Webflow, Shopify, or something custom.
 					</p>
 				</div>
 			</section>
@@ -123,14 +124,13 @@
 
 		<section class="pricing-new">
 			<header>
-				<h3>Honest price</h3>
-				<h4>Tired of subscription services? So are we!</h4>
+				<h3>Ethically priced</h3>
+				<h4>Tovik is proudly subscription-free.</h4>
 				<p>
-					We believe in honest pricing, and Tovik is just a simple, one time fee. (Yes, really!)
-					We believe everyone should have access to translation technology, so we set our pricing with small businesses, non-profits, and individuals like you in mind.
+					Everyone deserves access to the latest translation technology. Tovik's pricing is fair and built with access in mind.
 				</p>
 			</header>
-			<button class="primary-btn" @onclick="ToggleSidebar">Install Tovik Free</button>
+			<button class="primary-btn" @onclick="ToggleSidebar">Get Started</button>
 
 			<div class="table-container">
 				<table>
@@ -153,17 +153,17 @@
 							<td>Once</td>
 						</tr>
 						<tr>
-							<th>Page limit</th>
+							<th>Pages Included</th>
 							<td>20</td>
 							<td>500</td>
 						</tr>
 						<tr>
-							<th>Word limit</th>
+							<th>Words Included</th>
 							<td>Unlimited</td>
 							<td>Unlimited</td>
 						</tr>
 						<tr>
-							<th>Language limit</th>
+							<th>Languages Included</th>
 							<td>Unlimited</td>
 							<td>Unlimited</td>
 						</tr>
