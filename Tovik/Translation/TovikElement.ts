@@ -168,10 +168,12 @@ export default class TovikElement extends HTMLElement {
                     + (el.postWhiteSpace ? ' ' : '');
                 el.translating = false;
                 el.translated = true;
+
+                if (window.parent && window.parent.postMessage)
+                    window.parent.postMessage('tovik-translated');
             });
 
         document.body.classList.remove('tovik-translating');
-        if (window.parent && window.parent.postMessage)
-            window.parent.postMessage('tovik-translated');
+        
     }
 }

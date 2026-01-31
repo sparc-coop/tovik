@@ -67,7 +67,7 @@
 
                 @if (!Pages.Any())
                 {
-                    <aside>Nothing to see here yet!</aside>
+                    <aside>Nothing to see here yet! Once Tovik has translated your first page, you will see visit and language stats here.</aside>
                 }
             </div>
         </section>
@@ -91,7 +91,7 @@
                 }
                 @if (!LanguageStats.Any())
                 {
-                    <aside>Nothing to see here yet!</aside>
+                    <aside>Nothing to see here yet! Once Tovik has translated your first page, you will see visit and language stats here.</aside>
                 }
             </div>
         </section>
@@ -188,7 +188,7 @@
             .ToDictionary(g => g.Key, g => g.Sum(x => x.Value));
 
         Usage = Pages.Count;
-        Limit = Domain?.Product("Tovik")?.MaxUsage ?? 20;
+        Limit = Domain?.Product("Tovik")?.MaxUsage ?? 5;
 
         if (PaymentIntentId != null)
             Upgrade();

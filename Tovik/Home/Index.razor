@@ -36,7 +36,9 @@
     {
         <Sparc.Blossom.Content.LanguageSelector IsLoading="IsPreviewLoading" WithButton=true Visible=true InitialLanguageId="@PreviewLang" OnLanguageChanged="UpdateLanguage" />
         <div class="fine-print">
-            This is how <strong>@PreviewUrl</strong> will look to native @PreviewLanguageName visitors once you add Tovik to your site.
+            <span>
+                You're previewing a Tovik‑enabled <strong>@PreviewUrl</strong> for native @PreviewLanguageName speakers.
+            </span>
         </div>
     }
 
@@ -67,15 +69,18 @@
             </div>
         </header>
 
-        <section>
+        <section class="first">
             <img src="/images/TovikChar.svg" alt="Tovik" />
-            <h1>Unlock more visitors by removing the language barrier.</h1>
+            <div>
+                <h1>Are language barriers keeping visitors from engaging with your website?</h1>
+                <h2 class="hero">Then you need Tovik.</h2>
+            </div>
             <p>
-                Tovik makes your website multilingual instantly, delivering precise, native‑level translation that keeps your voice clear and authentic.
+                Tovik is a website plugin that translates your content automatically and naturally into your visitor's language, while preserving your authentic voice.
             </p>
             <form @onsubmit=GoToPreview>
                 <input type="text" placeholder="Enter your website's URL" @bind=Url required />
-                <button class="primary-btn">Preview</button>
+                <button class="primary-btn">Preview Tovik On Your Site</button>
             </form>
             @if (ErrorMessage != null)
             {
@@ -90,7 +95,7 @@
                     <h2>
                         130+ Languages, 600+ Dialects
                     </h2>
-                    <p>Your site becomes readable to millions more the moment you install Tovik.</p>
+                    <p>The moment you install Tovik, your site becomes accessible to eight billion people across the world.</p>
                 </div>
             </section>
             <section>
@@ -98,16 +103,16 @@
                 <div>
                     <h2>Preserves Your Authentic Voice</h2>
                     <p>
-                        Your message stays unmistakably yours. Tovik carries your tone, style, and intent across every language so visitors hear you, not a machine.
+                        Tovik carries your tone, style, and intent across every language, so that your message stays unmistakably yours.
                     </p>
                 </div>
             </section>
             <section>
                 <img src="/images/NoSubscriptions.svg" alt="No Subscriptions" />
                 <div>
-                    <h2>Fair, Accessible Pricing</h2>
+                    <h2>Ethically Priced</h2>
                     <p>
-                        Global reach shouldn't be a luxury. Start for free, and when you're ready to grow, buy it once. No subscriptions, no hidden fees.
+                        Start for free, and when you're ready to grow, buy it once. No subscriptions or hidden fees, ever.
                     </p>
                 </div>
             </section>
@@ -127,7 +132,7 @@
                 <h3>Ethically Priced, Zero Subscriptions</h3>
                 <h4>Just <strong>@Product?.FormattedPrice</strong>, once.</h4>
                 <p>
-                    No recurring charges or creeping costs. Just a single, honest price for technology that helps your site reach more people.
+                    Yes, really. We believe it's time for software to be subscription-free again.
                 </p>
             </header>
             <button class="primary-btn" @onclick="ToggleSidebar">Add Tovik To Your Site</button>

@@ -65,7 +65,7 @@ public class TovikDomains(BlossomAggregateOptions<SparcDomain> options, IReposit
             throw new Exception($"{host} does not contain the expected Tovik script: https://tovik.app/tovik.js. Please ensure Tovik is installed correctly on this domain.");
 
         existing.TovikUserId = User.Id();
-        existing.Fulfill(new Sparc.Blossom.Billing.SparcProduct("Tovik") { MaxUsage = 20 }, User.Id());
+        existing.Fulfill(new Sparc.Blossom.Billing.SparcProduct("Tovik") { MaxUsage = 5 }, User.Id());
         await Repository.UpdateAsync(existing);
 
         return existing;

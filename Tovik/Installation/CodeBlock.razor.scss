@@ -24,6 +24,17 @@
             font-weight: 400;
             line-height: normal;
         }
+
+        ::-webkit-scrollbar {
+            display: initial;
+            background: var(--blue-600);
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--blue-400);
+            border-radius: 8px;
+        }
     }
 
     &.can-copy {

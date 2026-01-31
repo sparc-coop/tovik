@@ -226,16 +226,16 @@
 					It comes pre-loaded with supported languages and behaves like a regular HTML element, so you can customize the look to match your brand. Here’s some example styling:
 				</p>
 				<CodeBlock CanCopy=true Language="css">
-					tovik-language select {
-					appearance: none; /* Removes default styling */
-					background-color: #f9f9f9;
-					color: #333;
-					padding: 10px 14px;
-					border: 1px solid #ccc;
-					border-radius: 6px;
-					font-size: 16px;
-					font-family: sans-serif;
-					}
+tovik-language select {
+	appearance: none; /* Removes default styling */
+	background-color: #f9f9f9;
+	color: #333;
+	padding: 10px 14px;
+	border: 1px solid #ccc;
+	border-radius: 6px;
+	font-size: 16px;
+	font-family: sans-serif;
+}
 				</CodeBlock>
 			</div>
 		</section>
@@ -283,7 +283,7 @@
 	[Parameter] public string? Domain { get; set; }
 	List<string> Platforms = ["WordPress", "Wix", "SquareSpace", "Webflow", "Weebly", "Shopify", "HTML"];
 	List<string> ComingSoon = [];
-	string? SelectedPlatform { get; set; }
+	string? SelectedPlatform { get; set; } = "WordPress";
 
 	private void Select(string platform)
 	{

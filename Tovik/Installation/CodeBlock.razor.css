@@ -24,6 +24,15 @@
   font-weight: 400;
   line-height: normal;
 }
+.code-block pre ::-webkit-scrollbar {
+  display: initial;
+  background: var(--blue-600);
+  height: 8px;
+}
+.code-block pre ::-webkit-scrollbar-thumb {
+  background: var(--blue-400);
+  border-radius: 8px;
+}
 .code-block.can-copy {
   position: relative;
 }
