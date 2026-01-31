@@ -124,11 +124,12 @@ export default class TovikEngine {
         for (let i = 0; i < untranslated.length; i += 25) {
             batches.push(untranslated.slice(i, i + 25));
         }
+        console.log('pending translations', pendingTranslations);
         await Promise.all(batches.map(async (batch) => {
             let newTranslations = await TovikEngine.getUntranslated(batch, fromLang);
             for (let translation of newTranslations) {
-                const item = pendingTranslations.find(item => item.hash === translation.id);
-                if (item) {
+                const items = pendingTranslations.filter(item => item.hash === translation.id);
+                for (let item of items) {
                     onTranslation(item.element, translation);
                     db.translations.put(translation);
                 }
