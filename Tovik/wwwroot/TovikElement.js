@@ -132,6 +132,8 @@ export default class TovikElement extends HTMLElement {
                 window.parent.postMessage('tovik-translated');
         });
         document.body.classList.remove('tovik-translating');
+        if (window.parent && window.parent.postMessage)
+            window.parent.postMessage('tovik-translated');
     }
 }
 //# sourceMappingURL=TovikElement.js.map

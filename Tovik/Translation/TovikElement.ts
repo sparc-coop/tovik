@@ -174,6 +174,7 @@ export default class TovikElement extends HTMLElement {
             });
 
         document.body.classList.remove('tovik-translating');
-        
+        if (window.parent && window.parent.postMessage)
+            window.parent.postMessage('tovik-translated');
     }
 }
