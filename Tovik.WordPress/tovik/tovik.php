@@ -6,9 +6,10 @@
  * Author: Sparc Cooperative
  * Author URI: https://sparc.coop/
  * License: GPL v2 or later
- * Text Domain: Tovik
+ * Text Domain: tovik
  */
 
+ if ( ! defined( 'ABSPATH' ) ) exit;
 
 function tovik_scripts() {
     wp_enqueue_script_module('tovik', 'https://tovik.app/tovik.js');
