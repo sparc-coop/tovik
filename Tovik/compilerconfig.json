@@ -74,5 +74,9 @@
   {
     "outputFile": "Home/Pricing.razor.css",
     "inputFile": "Home/Pricing.razor.scss"
+  },
+  {
+    "outputFile": "Home/IndexJourney.razor.css",
+    "inputFile": "Home/IndexJourney.razor.scss"
   }
 ]

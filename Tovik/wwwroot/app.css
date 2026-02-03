@@ -331,10 +331,13 @@ header.page-header h2 {
 }
 
 .layout-container > footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px;
   font-size: 1.4rem;
   text-align: center;
-  padding: 64px 16px 16px 16px;
-  position: relative;
   z-index: 1000;
 }
 .layout-container > footer a {

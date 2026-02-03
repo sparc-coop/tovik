@@ -1,26 +1,33 @@
 .home-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto;
+
     iframe {
-        display: none;
-        background-color: var(--blue-500);
+        background-color: var(--blue-200);
+        margin: 32px;
+        width: calc(100dvw - 64px);
+        height: 100%;
+        max-height: 0;
+        box-sizing: border-box;
+        z-index: 1100;
+        transition: max-height ease-in-out 2s;
+        //box-shadow: rgba(0, 0, 0, 0.3) 10px 10px inset;
     }
 
     &.previewing {
-        position: fixed;
         width: 100dvw;
-        height: calc(100dvh - 90px);
+        height: 100dvh;
         overflow: hidden;
         z-index: 1001;
 
         iframe {
             display: block;
+            max-height: 100%;
         }
 
         article {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            transform: translateY(calc(100dvh - 90px));
+            display: none;
         }
 
         article > header .primary-btn {
@@ -41,22 +48,42 @@
     }
 
     .fine-print {
-        position: fixed;
-        bottom: 90px;
         width: 100vw;
-        background-color: var(--blue-700);
         color: white;
-        z-index: 1020;
+        z-index: 1101;
         font-size: 1.4rem;
-        padding: 48px 32px 8px;
-        min-height: 95px;
+        padding: 64px;
         box-sizing: border-box;
         text-align: center;
-        border-top: 1px solid var(--blue-600);
-        border-bottom: 1px solid var(--blue-600);
         display: flex;
-        align-items: flex-end;
+        flex-direction: column;
+        gap: 16px;
+        align-items: center;
         justify-content: center;
+        box-sizing: border-box;
+        opacity: 0;
+        animation: fadein 2s ease-in forwards;
+
+        > img {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 20vw;
+            max-width: 200px;
+            display: none;
+
+            @media screen and (min-width: 800px) {
+                display: block;
+            }
+        }
+
+        h2 {
+            font-size: 2rem;
+
+            @media screen and (min-width: 800px) {
+                font-size: 3rem;
+            }
+        }
 
         a {
             color: var(--orange-300);
@@ -65,6 +92,15 @@
             &:hover {
                 text-decoration: underline;
             }
+        }
+
+        button {
+            max-width: 240px;
+            align-self: center;
+            align-items: flex-end;
+            font-size: 2rem;
+            gap: 8px;
+            color: var(--blue-200);
         }
 
         aside {
@@ -108,12 +144,8 @@
 }
 
 iframe {
-    position: fixed;
-    top: 0;
     border: 1px solid transparent;
     border-radius: 10px 10px 0 0;
-    width: 100vw;
-    height: calc(100vh - 90px);
     border-top-width: 0;
 }
 
@@ -210,10 +242,26 @@ article {
             width: 110px;
         }
 
+        .hero {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+
+            p {
+                margin: 32px;
+            }
+
+            img {
+                width: 80vw;
+                max-width: 400px;
+            }
+        }
+
         h1 {
             font-size: 4.125rem;
             font-weight: 700;
             line-height: 120%;
+            margin-top: 32px;
 
             @media screen and (min-width: 800px) {
                 font-size: 6.5rem;
@@ -221,7 +269,8 @@ article {
         }
 
         h2 {
-            font-size: 2rem;
+            margin-top: 16px;
+            font-size: 3rem;
 
             &.hero {
                 margin-top: 16px;
@@ -232,17 +281,15 @@ article {
             }
         }
 
-        form {
-            display: flex;
-            flex-direction: column;
+        .hero form {
+            display: grid;
+            grid-template-columns: 200px auto;
+            justify-content: center;
             gap: 8px;
-
-            input {
-                width: 300px;
-            }
 
             button {
                 white-space: nowrap;
+                width: 80px;
             }
 
             @media screen and (min-width: 800px) {
@@ -436,7 +483,7 @@ h4 {
 ::deep .language-select {
     background-color: var(--blue-600);
     border: 1px solid var(--blue-500);
-    max-width: min(60vw, 400px);
+    max-width: min(80vw, 400px);
 
     &:after {
         border-top: 5px solid white;
@@ -460,4 +507,13 @@ h4 {
 ::deep .language-select-container button.selected {
     background-color: var(--blue-600);
     border: 1px solid var(--blue-500);
+}
+
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }

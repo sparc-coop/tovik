@@ -1,6 +1,6 @@
-﻿@page "/old"
-@page "/oldpreview/{Url}"
-@page "/oldpreview"
+﻿@page "/"
+@page "/preview/{Url}"
+@page "/preview"
 @layout NewHomeLayout
 @using Tovik.Domains
 @using Tovik.Translation
@@ -29,136 +29,54 @@
 </HeadContent>
 
 <div class="home-container @(IsPreviewing ? "previewing" : "") @(PreviewFirst ? "preview-first" : "")">
+    <div class="hero-background"><DashedLine Color="#FFD4BF" /></div>
+
     <iframe srcdoc="@PreviewHtml" @ref=IFrame>
     </iframe>
 
     @if (IsPreviewing)
     {
-        <Sparc.Blossom.Content.LanguageSelector IsLoading="IsPreviewLoading" WithButton=true Visible=true InitialLanguageId="@PreviewLang" OnLanguageChanged="UpdateLanguage" />
         <div class="fine-print">
-            <span>
-                This is a simulated preview of <strong>@PreviewUrl</strong> in @PreviewLanguageName. Some site functionality may not work as expected.
-            </span>
+            <img src="./images/SecondaryLogo.svg" />
+            <header>
+                <h2>Imagine if they could understand every word.</h2>
+            </header>
+
+            <div>
+                <h3>Make these languages part of @PreviewUrl:</h3>
+                <Sparc.Blossom.Content.LanguageSelector IsLoading="IsPreviewLoading" WithButton=false Visible=true InitialLanguageId="@PreviewLang" OnLanguageChanged="UpdateLanguage" />
+            </div>
+
+            <button class="secondary-btn" @onclick=Home>
+                Get <img src="./images/TovikHorizontal.svg" />
+
+            </button>
         </div>
     }
 
     <article>
         <div class="hero-background"><DashedLine Color="#FFD4BF" /></div>
-        <header>
-            <button class="logo" @onclick=Home>
-                <img src="/images/TovikWordmark.svg" alt="Tovik" />
-            </button>
-
-            <div class="buttons">
-                @if (!IsPreviewing)
-                {
-                }
-                else
-                {
-                    <button class="secondary-btn" @onclick=Home>Learn More</button>
-                }
-                @if (IsACustomer)
-                {
-                    <a class="button primary-btn" href="/sites">My Sites</a>
-                }
-                else
-                {
-                    <button class="primary-btn" @onclick=ToggleSidebar>Get Tovik</button>
-                }
-            </div>
-        </header>
 
         <section class="first">
-            <img src="/images/TovikChar.svg" alt="Tovik" />
-            <div>
-                <h1>Your message deserves to be understood.</h1>
-                <h2>In all of these languages and dialects:</h2>
-                <Sparc.Blossom.Content.LanguageSelector WithButton=false Visible=true />
-            </div>
-            <p>
-                Whether you’re a small business, a museum, or a community organization, your website is the way you welcome people in.
-                Tovik helps you makes that welcome universal, translating your site into 130+ languages and 600+ dialects, while keeping your authentic voice intact.
-            </p>
-            <form @onsubmit=GoToPreview>
-                <input type="text" placeholder="Enter your website's URL" @bind=Url required />
-                <button class="primary-btn">Preview Your Site With Tovik</button>
-            </form>
-            @if (ErrorMessage != null)
-            {
-                <span class="error-message">@ErrorMessage</span>
-            }
-        </section>
-
-        <div class="two">
-            <section>
-                <img src="/images/TiltedWorldIcon.svg" alt="Tilted World" />
-                <div>
-                    <h2>
-                        A website accessible to all 8 billion people
-                    </h2>
-                    <p>Your message becomes accessible to nearly everyone on Earth the moment you install it.</p>
-                </div>
-            </section>
-            <section>
-                <img src="/images/LightbulbIcon.svg" alt="Lightbulb" />
-                <div>
-                    <h2>Your voice, preserved</h2>
-                    <p>
-                        Tovik carries your unique tone, style, and intent across any language, so that your message stays unmistakably yours.
-                    </p>
-                </div>
-            </section>
-            <section>
-                <img src="/images/NoSubscriptions.svg" alt="No Subscriptions" />
-                <div>
-                    <h2>No Subscription Fees</h2>
-                    <p>
-                        Start for free, and when you're ready to grow, buy Tovik once.
-                    </p>
-                </div>
-            </section>
-            <section>
-                <img src="/images/TranslateIcon.svg" alt="Translate" />
-                <div>
-                    <h2>Works with your platform</h2>
-                    <p>
-                        Whether it's WordPress, Wix, Webflow, Shopify, Squarespace, or custom HTML, Tovik fits wherever your site lives.
-                    </p>
-                </div>
-            </section>
-        </div>
-
-        <section class="pricing-new">
-            <header>
-                <h3>Ethically Priced, Zero Subscriptions</h3>
-                <h4>Just <strong>@Product?.FormattedPrice</strong>, once.</h4>
+            <div class="hero">
+                <img src="/images/TovikChar.svg" alt="Tovik" />
+                <h1>Every website speaks.</h1>
+                <h2>Not every visitor understands.</h2>
                 <p>
-                    Yes, really. We believe it's time for software to be subscription-free again.
+                    Enter your URL and see how Tovik can help:
                 </p>
-            </header>
-            <button class="primary-btn" @onclick="ToggleSidebar">Add Tovik To Your Site</button>
+                <form @onsubmit=GoToPreview>
+                    <input type="text" placeholder="tovik.app" @bind=Url required />
+                    <button class="primary-btn">Go &rarr;</button>
+                </form>
+                @if (ErrorMessage != null)
+                {
+                    <span class="error-message">@ErrorMessage</span>
+                }
+            </div>
         </section>
-
-        <section>
-            <header>
-                <h3>Ask us anything</h3>
-                <h4>Frequently Asked Questions</h4>
-            </header>
-        </section>
-
-        <Questions />
     </article>
 </div>
-
-<aside class="purchase-sidebar @(IsSidebarOpen ? "open" : "")">
-    <header>
-        <h2>Add Tovik To Your Site</h2>
-        <button @onclick=ToggleSidebar>
-            <Sparc.Blossom.Authentication.Icons.XIcon />
-        </button>
-    </header>
-    <Tovik.Installation.Install Domain="@PreviewUrl" />
-</aside>
 
 @inject ISparcAura Aura
 @inject TovikCrawler Crawler
@@ -203,6 +121,14 @@
             Url = QueryUrl;
             PreviewUrl = Url;
             await PreviewSite();
+        }
+        else
+        {
+            Url = null;
+            PreviewUrl = null;
+            IsPreviewing = false;
+            PreviewHtml = null;
+            ErrorMessage = null;    
         }
     }
 

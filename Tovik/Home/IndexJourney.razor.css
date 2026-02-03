@@ -1,23 +1,30 @@
-﻿.home-container iframe {
-  display: none;
-  background-color: var(--blue-500);
+﻿.home-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr auto;
+}
+.home-container iframe {
+  background-color: var(--blue-200);
+  margin: 32px;
+  width: calc(100dvw - 64px);
+  height: 100%;
+  max-height: 0;
+  box-sizing: border-box;
+  z-index: 1100;
+  transition: max-height ease-in-out 2s;
 }
 .home-container.previewing {
-  position: fixed;
   width: 100dvw;
-  height: calc(100dvh - 90px);
+  height: 100dvh;
   overflow: hidden;
   z-index: 1001;
 }
 .home-container.previewing iframe {
   display: block;
+  max-height: 100%;
 }
 .home-container.previewing article {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  transform: translateY(calc(100dvh - 90px));
+  display: none;
 }
 .home-container.previewing article > header .primary-btn {
   display: none;
@@ -31,22 +38,42 @@
   transition: none !important;
 }
 .home-container .fine-print {
-  position: fixed;
-  bottom: 90px;
   width: 100vw;
-  background-color: var(--blue-700);
   color: white;
-  z-index: 1020;
+  z-index: 1101;
   font-size: 1.4rem;
-  padding: 48px 32px 8px;
-  min-height: 95px;
+  padding: 64px;
   box-sizing: border-box;
   text-align: center;
-  border-top: 1px solid var(--blue-600);
-  border-bottom: 1px solid var(--blue-600);
   display: flex;
-  align-items: flex-end;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
   justify-content: center;
+  box-sizing: border-box;
+  opacity: 0;
+  animation: fadein 2s ease-in forwards;
+}
+.home-container .fine-print > img {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 20vw;
+  max-width: 200px;
+  display: none;
+}
+@media screen and (min-width: 800px) {
+  .home-container .fine-print > img {
+    display: block;
+  }
+}
+.home-container .fine-print h2 {
+  font-size: 2rem;
+}
+@media screen and (min-width: 800px) {
+  .home-container .fine-print h2 {
+    font-size: 3rem;
+  }
 }
 .home-container .fine-print a {
   color: var(--orange-300);
@@ -54,6 +81,14 @@
 }
 .home-container .fine-print a:hover {
   text-decoration: underline;
+}
+.home-container .fine-print button {
+  max-width: 240px;
+  align-self: center;
+  align-items: flex-end;
+  font-size: 2rem;
+  gap: 8px;
+  color: var(--blue-200);
 }
 .home-container .fine-print aside {
   font-size: 1.1rem;
@@ -90,12 +125,8 @@
 }
 
 iframe {
-  position: fixed;
-  top: 0;
   border: 1px solid transparent;
   border-radius: 10px 10px 0 0;
-  width: 100vw;
-  height: calc(100vh - 90px);
   border-top-width: 0;
 }
 
@@ -182,10 +213,23 @@ article > section.first {
 article > section > img {
   width: 110px;
 }
+article > section .hero {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+}
+article > section .hero p {
+  margin: 32px;
+}
+article > section .hero img {
+  width: 80vw;
+  max-width: 400px;
+}
 article > section h1 {
   font-size: 4.125rem;
   font-weight: 700;
   line-height: 120%;
+  margin-top: 32px;
 }
 @media screen and (min-width: 800px) {
   article > section h1 {
@@ -193,7 +237,8 @@ article > section h1 {
   }
 }
 article > section h2 {
-  font-size: 2rem;
+  margin-top: 16px;
+  font-size: 3rem;
 }
 article > section h2.hero {
   margin-top: 16px;
@@ -203,19 +248,18 @@ article > section h2.hero {
     font-size: 3rem;
   }
 }
-article > section form {
-  display: flex;
-  flex-direction: column;
+article > section .hero form {
+  display: grid;
+  grid-template-columns: 200px auto;
+  justify-content: center;
   gap: 8px;
 }
-article > section form input {
-  width: 300px;
-}
-article > section form button {
+article > section .hero form button {
   white-space: nowrap;
+  width: 80px;
 }
 @media screen and (min-width: 800px) {
-  article > section form {
+  article > section .hero form {
     flex-direction: row;
   }
 }
@@ -384,7 +428,7 @@ h4 {
 ::deep .language-select {
   background-color: var(--blue-600);
   border: 1px solid var(--blue-500);
-  max-width: min(60vw, 400px);
+  max-width: min(80vw, 400px);
 }
 ::deep .language-select:after {
   border-top: 5px solid white;
@@ -402,4 +446,13 @@ h4 {
 ::deep .language-select-container button.selected {
   background-color: var(--blue-600);
   border: 1px solid var(--blue-500);
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
