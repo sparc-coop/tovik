@@ -4,7 +4,6 @@
   grid-template-rows: 1fr auto;
 }
 .home-container iframe {
-  background-color: var(--blue-200);
   margin: 32px;
   width: calc(100dvw - 64px);
   height: 100%;
@@ -20,6 +19,7 @@
   z-index: 1001;
 }
 .home-container.previewing iframe {
+  background-color: var(--blue-200);
   display: block;
   max-height: 100%;
 }
@@ -392,7 +392,7 @@ h4 {
   background-color: var(--blue-600);
   padding: 0;
   border-left: 1px solid var(--blue-200);
-  max-width: min(90vw, 400px);
+  max-width: min(90vw, 600px);
   overflow-y: auto;
   z-index: 1400;
   transition: transform 0.3s ease-in-out;

@@ -47,9 +47,8 @@
                 <Sparc.Blossom.Content.LanguageSelector IsLoading="IsPreviewLoading" WithButton=false Visible=true InitialLanguageId="@PreviewLang" OnLanguageChanged="UpdateLanguage" />
             </div>
 
-            <button class="secondary-btn" @onclick=Home>
+            <button class="secondary-btn" @onclick=ToggleSidebar>
                 Get <img src="./images/TovikHorizontal.svg" />
-
             </button>
         </div>
     }
@@ -77,6 +76,16 @@
         </section>
     </article>
 </div>
+
+<aside class="purchase-sidebar @(IsSidebarOpen ? "open" : "")">
+    <header>
+        <h2>Add Tovik To @(PreviewUrl ?? "Your Site")</h2>
+        <button @onclick=ToggleSidebar>
+            <Sparc.Blossom.Authentication.Icons.XIcon />
+        </button>
+    </header>
+    <Tovik.Installation.Install Domain="@PreviewUrl" />
+</aside>
 
 @inject ISparcAura Aura
 @inject TovikCrawler Crawler
