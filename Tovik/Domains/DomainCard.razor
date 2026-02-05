@@ -1,4 +1,5 @@
 ﻿@using Sparc.Blossom.Content
+
 <div id="@Domain.Id" class="domain-card @("domain-card__" + PageType)">
     <header>
         <img src="@Domain.FaviconUri" alt="@Domain.Domain" onerror="this.src='/images/Star.svg'" />
@@ -6,10 +7,23 @@
             @Domain.Domain
             @if (Domain.DateConnected != null)
             {
-                <VerifiedIcon />                
+                <VerifiedIcon />
             }
         </h2>
-        <p>Last translated: @(Domain.LastTranslatedDate == null ? "Never" : Domain.LastTranslatedDate.Value.ToShortDateString())</p>
+
+        <dl>
+            <dt>Edition:</dt>
+            <dd>@(IsTrial ? "Trial (up to 10 pages)" : "Full (up to 500 pages)")</dd>
+            <dt>Date Activated:</dt>
+            <dd class="@(Domain.DateConnected == null ? "no" : "")">@(Domain.DateConnected != null ? Domain.DateConnected.Value.ToShortDateString() : "Not Yet Activated")</dd>
+            <dt>Last Translation Activity:</dt>
+            <dd class="@(Domain.LastTranslatedDate == null ? "no" : "")">@(Domain.LastTranslatedDate == null ? "Never" : Domain.LastTranslatedDate.Value.ToShortDateString())</dd>
+        </dl>
+
+        @if (IsTrial && OnUpgrade.HasDelegate)
+        {
+            <button class="primary-btn" @onclick=Upgrade>Upgrade Tovik</button>
+        }
     </header>
 
     @if (PageType == "home")
@@ -23,18 +37,6 @@
     }
     else
     {
-        @if (Domain.DateConnected == null)
-        {
-            <p class="error-message">It looks like Tovik isn't yet installed on your domain. <a href="/install">Follow the install instructions here!</a></p>
-            <button class="primary-btn" @onclick=Verify>Retry Verification</button>
-        }
-        else
-        {
-            <p>
-                <VerifiedIcon /> Tovik is installed and active on this domain! Last checked @Domain.DateConnected.Value.ToShortDateString()
-            </p>
-        }
-
         @if (!string.IsNullOrEmpty(ErrorMessage))
         {
             <p class="error-message">@ErrorMessage</p>
@@ -68,23 +70,38 @@
 
 <DeleteModal Domain=Domain ShowModal=showDeleteModal OnClose=ToggleDeleteModal OnDelete="DeleteDomain" />
 
+<aside class="purchase-sidebar @(IsSidebarOpen ? "open" : "")">
+    <header>
+        <h2>Add Tovik To Your Site</h2>
+        <button @onclick=ToggleSidebar>
+            <Sparc.Blossom.Authentication.Icons.XIcon />
+        </button>
+    </header>
+    <Tovik.Installation.Install Domain="@Domain" />
+</aside>
+
 @inject Tovik.Domains.TovikDomains TovikDomains
 @code {
     [Parameter] public required SparcDomain Domain { get; set; }
     [Parameter] public required IEnumerable<Language> Languages { get; set; }
     [Parameter] public string? PageType { get; set; }
+    [Parameter] public EventCallback OnUpgrade { get; set; }
     string? ErrorMessage;
+    bool IsSidebarOpen = false;
+    bool IsTrial => !(Domain.Product("Tovik")?.MaxUsage > 100);
 
     bool showDeleteModal = false;
-    // bool showDomainActions = false;
-
-    // private void ToggleDomainActions()
-    // {
-    //     Js.InvokeVoidAsync("hideAllDomainActions");
-    //     showDomainActions = !showDomainActions;
-    // }
 
     Language? Language(string id) => Languages.FirstOrDefault(x => x.Matches(id));
+    async Task Upgrade()
+    {
+        await OnUpgrade.InvokeAsync();
+    }
+
+    void ToggleSidebar()
+    {
+        IsSidebarOpen = !IsSidebarOpen;
+    }
 
     private void ToggleDeleteModal()
     {

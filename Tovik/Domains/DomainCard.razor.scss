@@ -6,11 +6,22 @@
     box-sizing: border-box;
     backdrop-filter: blur(4px);
 
+    dl {
+        display: grid;
+        grid-template-columns: auto 1fr;
+    }
+
+    dd.no {
+        color: var(--orange-300);
+    }
+
     a {
         text-decoration: underline;
     }
 
     header {
+        position: relative;
+
         img {
             height: 32px;
         }
@@ -25,6 +36,13 @@
             ::deep svg {
                 margin-left: 8px;
             }
+        }
+
+        button {
+            position: absolute;
+            top: 0;
+            right: 0;
+            max-width: 200px;
         }
     }
 
@@ -98,6 +116,52 @@
 
         @media screen and (min-width: 600px) {
             margin-top: 0;
+        }
+    }
+}
+
+.purchase-sidebar {
+    position: fixed;
+    top: 0;
+    right: -600px;
+    bottom: 0;
+    background-color: var(--blue-600);
+    padding: 0;
+    border-left: 1px solid var(--blue-200);
+    max-width: min(90vw, 400px);
+    overflow-y: auto;
+    z-index: 14000;
+    transition: transform 0.3s ease-in-out;
+
+    &.open {
+        transform: translateX(-600px);
+    }
+
+    ::deep > div {
+        padding: 16px;
+    }
+
+    > header {
+        text-align: right;
+        position: sticky;
+        top: 0;
+        right: 0;
+        left: 0;
+        padding: 16px;
+        z-index: 1500;
+        background: var(--blue-700);
+        display: grid;
+        grid-template-columns: auto 36px;
+        align-items: center;
+        justify-content: space-between;
+
+        h2 {
+            font-size: 2.4rem;
+            padding-left: 16px;
+        }
+
+        ::deep svg path {
+            stroke: white;
         }
     }
 }

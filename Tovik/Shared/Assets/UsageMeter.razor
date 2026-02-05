@@ -5,20 +5,10 @@
 			/ 
 			<span>@Limit.ToString("N0")</span>
 		</div>
-
-		@if (Limit < 100)
-		{
-			<button class="primary-btn" @onclick=Upgrade>Upgrade</button>
-		}
 	</header>
 	<div class="meter-container">
 		<div class="meter-fill" style="width: @FillPercentage%"></div>
 	</div>
-
-	@if (Limit < 100)
-	{
-		<aside>Note: You are currently in a free trial of Tovik, with up to 5 pages of free translation.</aside>
-	}
 </div>
 
 @code {
@@ -28,9 +18,4 @@
 	int Remaining => Limit - Usage;
 
 	int FillPercentage => Limit > 0 ? (int)((double)Usage / Limit * 100) : 0;
-
-	async Task Upgrade()
-	{
-		await OnUpgrade.InvokeAsync();
-	}
 }

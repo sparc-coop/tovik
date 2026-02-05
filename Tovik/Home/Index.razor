@@ -150,16 +150,6 @@
     </article>
 </div>
 
-<aside class="purchase-sidebar @(IsSidebarOpen ? "open" : "")">
-    <header>
-        <h2>Add Tovik To Your Site</h2>
-        <button @onclick=ToggleSidebar>
-            <Sparc.Blossom.Authentication.Icons.XIcon />
-        </button>
-    </header>
-    <Tovik.Installation.Install Domain="@PreviewUrl" />
-</aside>
-
 @inject ISparcAura Aura
 @inject TovikCrawler Crawler
 @inject TovikDomains Domains

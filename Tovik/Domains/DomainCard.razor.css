@@ -6,8 +6,18 @@
   box-sizing: border-box;
   backdrop-filter: blur(4px);
 }
+.domain-card dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+}
+.domain-card dd.no {
+  color: var(--orange-300);
+}
 .domain-card a {
   text-decoration: underline;
+}
+.domain-card header {
+  position: relative;
 }
 .domain-card header img {
   height: 32px;
@@ -21,6 +31,12 @@
 }
 .domain-card header h2 ::deep svg {
   margin-left: 8px;
+}
+.domain-card header button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  max-width: 200px;
 }
 .domain-card ul.languages {
   display: flex;
@@ -87,4 +103,45 @@
   .domain-card .delete-btn {
     margin-top: 0;
   }
+}
+
+.purchase-sidebar {
+  position: fixed;
+  top: 0;
+  right: -600px;
+  bottom: 0;
+  background-color: var(--blue-600);
+  padding: 0;
+  border-left: 1px solid var(--blue-200);
+  max-width: min(90vw, 400px);
+  overflow-y: auto;
+  z-index: 14000;
+  transition: transform 0.3s ease-in-out;
+}
+.purchase-sidebar.open {
+  transform: translateX(-600px);
+}
+.purchase-sidebar ::deep > div {
+  padding: 16px;
+}
+.purchase-sidebar > header {
+  text-align: right;
+  position: sticky;
+  top: 0;
+  right: 0;
+  left: 0;
+  padding: 16px;
+  z-index: 1500;
+  background: var(--blue-700);
+  display: grid;
+  grid-template-columns: auto 36px;
+  align-items: center;
+  justify-content: space-between;
+}
+.purchase-sidebar > header h2 {
+  font-size: 2.4rem;
+  padding-left: 16px;
+}
+.purchase-sidebar > header ::deep svg path {
+  stroke: white;
 }

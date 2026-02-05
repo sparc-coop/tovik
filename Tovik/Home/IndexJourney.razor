@@ -31,6 +31,13 @@
 <div class="home-container @(IsPreviewing ? "previewing" : "") @(PreviewFirst ? "preview-first" : "")">
     <div class="hero-background"><DashedLine Color="#FFD4BF" /></div>
 
+    @if (IsACustomer)
+    {
+        <div class="is-a-customer">
+            <a class="button secondary-btn" href="/sites">My Sites</a>
+        </div>
+    }
+
     <iframe srcdoc="@PreviewHtml" @ref=IFrame>
     </iframe>
 
@@ -39,15 +46,17 @@
         <div class="fine-print">
             <img src="./images/SecondaryLogo.svg" />
             <header>
-                <h2>Imagine if they could understand every word.</h2>
+                <h2>
+                    With Tovik, everyone can understand.
+                </h2>
             </header>
 
             <div>
-                <h3>Get Tovik and make all these languages part of @PreviewUrl:</h3>
+                <h3>Tovik gives @PreviewUrl a voice in 130 languages and 600 dialects:</h3>
                 <Sparc.Blossom.Content.LanguageSelector IsLoading="IsPreviewLoading" WithButton=false Visible=true InitialLanguageId="@PreviewLang" OnLanguageChanged="UpdateLanguage" />
             </div>
 
-            <button class="secondary-btn get-tovik" @onclick=ToggleSidebar>
+            <button class="secondary-btn get-tovik" @onclick=Register>
                 Get <img src="./images/TovikHorizontal.svg" />
             </button>
         </div>
@@ -59,10 +68,10 @@
         <section class="first">
             <div class="hero">
                 <img src="/images/TovikChar.svg" alt="Tovik" />
-                <h1>Your website speaks to everyone.</h1>
-                <h2>But do they understand?</h2>
+                <h1>Your website speaks your language.</h1>
+                <h2>Does it speak theirs?</h2>
                 <p>
-                    Get Tovik and they'll understand every word.
+                    With Tovik, everyone can understand.
                 </p>
                 <form @onsubmit=GoToPreview>
                     <input type="text" placeholder="Enter your URL" @bind=Url required />
@@ -79,16 +88,6 @@
     </article>
 </div>
 
-<aside class="purchase-sidebar @(IsSidebarOpen ? "open" : "")">
-    <header>
-        <h2>Add Tovik To @(PreviewUrl ?? "Your Site")</h2>
-        <button @onclick=ToggleSidebar>
-            <Sparc.Blossom.Authentication.Icons.XIcon />
-        </button>
-    </header>
-    <Tovik.Installation.Install Domain="@PreviewUrl" />
-</aside>
-
 @inject ISparcAura Aura
 @inject TovikCrawler Crawler
 @inject TovikDomains Domains
@@ -98,7 +97,7 @@
 
 @code {
     [Parameter] public string? Url { get; set; }
-    [Parameter][SupplyParameterFromQuery] public string? PreviewLang { get; set; }
+    [Parameter][SupplyParameterFromQuery(Name = "l")] public string? PreviewLang { get; set; }
     [Parameter][SupplyParameterFromQuery(Name = "u")] public string? QueryUrl { get; set; }
     bool IsACustomer;
     bool IsPreviewing;
@@ -109,7 +108,6 @@
     string? ErrorMessage;
     string? PreviewLanguageName;
     ElementReference IFrame;
-    bool IsSidebarOpen;
     GetProductResponse? Product;
 
     protected override async Task OnInitializedAsync()
@@ -167,11 +165,6 @@
         StateHasChanged();
     }
 
-    void ToggleSidebar()
-    {
-        IsSidebarOpen = !IsSidebarOpen;
-    }
-
     void GoToPreview()
     {
         Nav.NavigateTo($"/preview?u={Url}", PreviewUrl != null);
@@ -184,12 +177,12 @@
 
         ErrorMessage = null;
         PreviewHtml = null;
+        if (string.IsNullOrWhiteSpace(PreviewLang))
+            PreviewLang = Sparc.Blossom.Content.Language.Random.Id;
 
         var domain = await Domains.Verify(Url);
         if (domain != null && !domain.IsBlocked)
         {
-            PreviewLang = Sparc.Blossom.Content.Language.Random.Id;
-
             PreviewLanguageName = Sparc.Blossom.Content.Language.Find(PreviewLang)?.LanguageDisplayName;
             IsPreviewing = true;
         }
@@ -221,6 +214,23 @@
             IsPreviewing = false;
             ErrorMessage = e.Message;
             StateHasChanged();
+        }
+    }
+
+    private async Task Register()
+    {
+        if (string.IsNullOrWhiteSpace(PreviewUrl))
+            return;
+
+        try
+        {
+            var newDomain = await Domains.RegisterAsync(PreviewUrl);
+            Nav.NavigateTo($"/sites/{newDomain.Id}");
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = ex.Message;
+            PreviewUrl = "";
         }
     }
 

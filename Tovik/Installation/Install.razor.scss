@@ -1,125 +1,121 @@
-.install-page {
-    h2 {
-        font-size: 2.4rem;
-        margin-bottom: 16px;
+h2 {
+    font-size: 2.4rem;
+    margin-bottom: 16px;
+}
+
+h3 {
+    font-size: 1.6rem;
+}
+
+footer {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+
+    button {
+        max-width: 200px;
     }
 
-    h3 {
-        font-size: 1.6rem;
+    @media (min-width: 800px) {
+        grid-template-columns: auto 200px;
+    }
+}
+
+.platforms {
+    list-style: none;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 16px 0;
+
+    button {
+        background: var(--blue-100);
+        border: 1px solid transparent;
+        opacity: 0.3;
+        padding: 8px 16px;
     }
 
-    > footer {
-        padding: 32px;
-        //background: var(--blue-700);
-
-        p {
-            font-size: 1.4rem;
-            margin-bottom: 16px;
-        }
-
-        ::deep input {
-            background-color: var(--blue-700);
-        }
-    }
-
-    > header {
-        padding: 32px;
-        background: var(--blue-700);
-
-
-        .platforms {
-            list-style: none;
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            padding: 16px 0;
-
-            button {
-                background: var(--orange-100);
-                border: 0;
-                opacity: 0.3;
-                padding: 8px 16px;
-            }
-
-            li:hover, li.selected {
-                button {
-                    background: var(--orange-300);
-                    opacity: 1;
-                }
-            }
-
-            li.comingsoon {
-                button {
-                    pointer-events: none;
-                }
-            }
+    li:hover, li.selected {
+        button {
+            background: var(--blue-700);
+            border: 1px solid var(--blue-500);
+            color: white;
+            opacity: 1;
         }
     }
 
-    a.button {
-        text-decoration: none;
-        display: inline-block;
-        width: auto;
-        margin: 16px 0;
-    }
-
-    .step-1, .step-2 {
-        padding: 32px;
-
-        p, li {
-            font-size: 1.4rem;
-        }
-
-        header aside {
-            font-size: 1.4rem;
+    li.comingsoon {
+        button {
+            pointer-events: none;
         }
     }
+}
 
-    footer aside {
+
+a.button {
+    text-decoration: none !important;
+    display: inline-block;
+    width: auto;
+    margin: 16px 0;
+}
+
+.step-1, .step-2 {
+    padding: 32px;
+
+    p, li {
         font-size: 1.4rem;
-        margin-bottom: 8px;
     }
 
-    section {
+    header aside {
+        font-size: 1.4rem;
+    }
+}
+
+footer aside {
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+}
+
+section {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    align-items: flex-start;
+
+    ol, ul {
+        padding-left: 32px;
+
+        li {
+            margin: 8px 0;
+        }
+
+        strong, code {
+            color: var(--orange-300);
+        }
+    }
+
+    > img {
+        height: 30px;
+    }
+
+    header {
         display: flex;
         flex-direction: column;
-        gap: 24px;
         align-items: flex-start;
+        gap: 8px;
+    }
 
-        ol, ul {
-            padding-left: 32px;
-
-            li {
-                margin-bottom: 8px;
-            }
-
-            strong, code {
-                color: var(--orange-300);
-            }
-        }
-
-        > img {
-            height: 30px;
-        }
-
-        header {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        > div {
-            display: flex;
-            flex-direction: column;
-            gap: 32px;
-            color: var(--blue-50, #EFF7F9);
-            font-family: var(--articulat);
-            font-size: 1.6rem;
-            font-style: normal;
-            font-weight: 400;
-            line-height: normal;
-            max-width: 100%;
-            box-sizing: border-box;
-        }
+    > div {
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+        color: var(--blue-50, #EFF7F9);
+        font-family: var(--articulat);
+        font-size: 1.6rem;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        max-width: 100%;
+        box-sizing: border-box;
     }
 }

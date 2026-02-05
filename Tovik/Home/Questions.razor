@@ -25,7 +25,7 @@
 @inject ISparcAura Aura
 @inject Microsoft.Extensions.Configuration.IConfiguration Config
 @code {
-	bool IsExpanded = false;
+	bool IsExpanded = true;
 	void Expand() => IsExpanded = true;
 	string? SelectedQuestion;
 	int Limit => IsExpanded ? FAQ.Count : 5;
@@ -44,11 +44,11 @@
 		{ "Why Tovik?", "Most tools expect your visitors to install their own translation plugin just to browse sites in other languages. Tovik thinks differently. Once you still Tovik on your site, it handles translation automatically for all of your visitors, and your entire site will be browsable in their native language, with zero work required on their part or yours." },
 		{ "How does Tovik work?", "Tovik detects each visitor’s preferred language using their browser settings. When their language doesn’t match your site’s language, Tovik kicks in and translates every content element on the page into their native language. Results are nearly instantaneous, and translations are securely cached for future users that visit the same page in the same language and dialect." },
 		{ "There’s really no subscription fee?", "Nope! Tovik is a one-time purchase. We are proud to have created a translation engine that requires no subscriptions or recurring charges." },
-		{ "How do I install it?", "You either download and install the Tovik plugin for your website's platform, or you can copy a single line of HTML into your website. It takes just a couple of minutes! Click the Start Free button at the top of this page to see the installation instructions." },
+		{ "How do I install it?", "You either download and install the Tovik plugin for your website's platform, or you can copy a single line of HTML into your website. It takes just a couple of minutes! Installation instructions are on each domain page if the domain has not yet been activated." },
 		{ "Will Tovik work with my site?", "If your site uses a standard CMS (like WordPress or Wix), or you can add custom HTML (like a Google Analytics tag), you’re good to go. Tovik works with WordPress, Wix, Webflow, Weebly, SquareSpace, Shopify, and pretty much anything else." },
 		{ "How many languages will Tovik translate my website to?", "Tovik speaks over 130 languages, and over 600 dialects of those languages. This covers most of the world’s major languages and regions." },
 		{ "Do you track user or visitor data?", "Nope! We only keep track of how many pages you’ve translated. Your visitors’ data stays private in their browser and we never use, track, or store their data." },
-		{ "What does Tovik include?", "The Tovik trial edition includes up to 5 pages per domain. Tovik includes up to 500 translated pages per domain. Tovik comes with unlimited page views, unlimited languages, and unlimited bandwidth, and never has a subscription or hidden fees." },
+		{ "What does Tovik include?", "The Tovik free edition includes up to 10 pages per domain. Once you purchase Tovik, it will cover up to 500 translated pages per domain. Tovik comes with unlimited page views, unlimited languages, and unlimited bandwidth, and never has a subscription or hidden fees." },
 		{ "Can I use Tovik on multiple domains?", "Yes, for aliases of your purchased domain. Non-aliased domains will require a separate purchase." },
 		{ "What if I have more than 500 pages of content?", "No problem! We track usage to ensure everyone is using Tovik fairly. We’ll reach out if needed, but we’ll never stop your service without getting in touch." },
 		{ "Can I get a refund if Tovik doesn't work for my site?", "Absolutely. Send us an email at <a href=\"mailto:support@sparc.coop\">support@sparc.coop</a> and we’ll refund your purchase right away." },
