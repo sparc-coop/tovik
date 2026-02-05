@@ -4,13 +4,31 @@
   grid-template-rows: 1fr auto;
 }
 .home-container iframe {
-  margin: 32px;
-  width: calc(100dvw - 64px);
+  margin: 16px;
+  width: calc(100dvw - 32px);
   height: 100%;
   max-height: 0;
   box-sizing: border-box;
   z-index: 1100;
   transition: max-height ease-in-out 2s;
+}
+@media screen and (min-width: 800px) {
+  .home-container iframe {
+    margin: 32px;
+    width: calc(100dvw - 64px);
+  }
+}
+.home-container .hero p {
+  font-size: 2rem;
+}
+.home-container .get-tovik {
+  max-width: 240px;
+  align-self: center;
+  align-items: flex-end;
+  font-size: 2rem;
+  gap: 8px;
+  color: var(--blue-200);
+  border: 1px solid var(--blue-500);
 }
 .home-container.previewing {
   width: 100dvw;
@@ -52,7 +70,7 @@
   justify-content: center;
   box-sizing: border-box;
   opacity: 0;
-  animation: fadein 2s ease-in forwards;
+  animation: fadein 4s ease-in forwards;
 }
 .home-container .fine-print > img {
   position: fixed;
@@ -68,11 +86,11 @@
   }
 }
 .home-container .fine-print h2 {
-  font-size: 2rem;
+  font-size: 2.4rem;
 }
 @media screen and (min-width: 800px) {
   .home-container .fine-print h2 {
-    font-size: 3rem;
+    font-size: 3.5rem;
   }
 }
 .home-container .fine-print a {
@@ -82,17 +100,14 @@
 .home-container .fine-print a:hover {
   text-decoration: underline;
 }
-.home-container .fine-print button {
-  max-width: 240px;
-  align-self: center;
-  align-items: flex-end;
-  font-size: 2rem;
-  gap: 8px;
-  color: var(--blue-200);
-}
 .home-container .fine-print aside {
   font-size: 1.1rem;
   padding-top: 4px;
+}
+.home-container .fine-print > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .home-container > ::deep .language-select-container {
   position: fixed;
@@ -250,13 +265,12 @@ article > section h2.hero {
 }
 article > section .hero form {
   display: grid;
-  grid-template-columns: 200px auto;
+  grid-template-columns: 300px auto;
   justify-content: center;
   gap: 8px;
 }
 article > section .hero form button {
   white-space: nowrap;
-  width: 80px;
 }
 @media screen and (min-width: 800px) {
   article > section .hero form {
@@ -449,10 +463,13 @@ h4 {
 }
 
 @keyframes fadein {
-  from {
+  0% {
     opacity: 0;
   }
-  to {
+  50% {
+    opacity: 0;
+  }
+  100% {
     opacity: 1;
   }
 }

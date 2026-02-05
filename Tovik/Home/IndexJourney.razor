@@ -43,11 +43,11 @@
             </header>
 
             <div>
-                <h3>Make these languages part of @PreviewUrl:</h3>
+                <h3>Get Tovik and make all these languages part of @PreviewUrl:</h3>
                 <Sparc.Blossom.Content.LanguageSelector IsLoading="IsPreviewLoading" WithButton=false Visible=true InitialLanguageId="@PreviewLang" OnLanguageChanged="UpdateLanguage" />
             </div>
 
-            <button class="secondary-btn" @onclick=ToggleSidebar>
+            <button class="secondary-btn get-tovik" @onclick=ToggleSidebar>
                 Get <img src="./images/TovikHorizontal.svg" />
             </button>
         </div>
@@ -59,14 +59,16 @@
         <section class="first">
             <div class="hero">
                 <img src="/images/TovikChar.svg" alt="Tovik" />
-                <h1>Every website speaks.</h1>
-                <h2>Not every visitor understands.</h2>
+                <h1>Your website speaks to everyone.</h1>
+                <h2>But do they understand?</h2>
                 <p>
-                    Enter your URL and see how Tovik can help:
+                    Get Tovik and they'll understand every word.
                 </p>
                 <form @onsubmit=GoToPreview>
-                    <input type="text" placeholder="tovik.app" @bind=Url required />
-                    <button class="primary-btn">Go &rarr;</button>
+                    <input type="text" placeholder="Enter your URL" @bind=Url required />
+                    <button class="primary-btn">
+                        Go &rarr;
+                    </button>
                 </form>
                 @if (ErrorMessage != null)
                 {
