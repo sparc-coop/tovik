@@ -38,8 +38,17 @@
         </div>
     }
 
-    <iframe srcdoc="@PreviewHtml" @ref=IFrame>
-    </iframe>
+    <div class="iframe-container">
+        <iframe srcdoc="@PreviewHtml" @ref=IFrame>
+        </iframe>
+        @if (IsPreviewing)
+        {
+            <aside>
+                Note: This is a limited preview, so a few features might not work here. For the complete experience, 
+                install Tovik on @PreviewUrl.
+            </aside>
+        }
+    </div>
 
     @if (IsPreviewing)
     {
@@ -70,9 +79,6 @@
                 <img src="/images/TovikChar.svg" alt="Tovik" />
                 <h1>Your website speaks your language.</h1>
                 <h2>Does it speak theirs?</h2>
-                <p>
-                    With Tovik, everyone can understand.
-                </p>
                 <form @onsubmit=GoToPreview>
                     <input type="text" placeholder="Enter your URL" @bind=Url required />
                     <button class="primary-btn">
@@ -83,6 +89,9 @@
                 {
                     <span class="error-message">@ErrorMessage</span>
                 }
+                <p>
+                    With Tovik, everyone can understand.
+                </p>
             </div>
         </section>
     </article>
