@@ -87,10 +87,11 @@ html, body {
     margin: 0;
     position: relative;
     background: var(--blue-700);
+    //overflow-x: hidden;
 }
 
-html ::-webkit-scrollbar, body ::-webkit-scrollbar {
-    display: none;
+body {
+    container-type: inline-size;
 }
 
 html.modal-open, body.modal-open {
@@ -358,6 +359,11 @@ header.page-header {
             line-height: 150%;
         }
     }
+}
+
+.layout-container {
+    width: 100vw;
+    width: 100cqw;
 }
 
 .layout-container > footer {

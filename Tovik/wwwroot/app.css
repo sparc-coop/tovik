@@ -82,8 +82,8 @@ html, body {
   background: var(--blue-700);
 }
 
-html ::-webkit-scrollbar, body ::-webkit-scrollbar {
-  display: none;
+body {
+  container-type: inline-size;
 }
 
 html.modal-open, body.modal-open {
@@ -328,6 +328,11 @@ header.page-header h2 {
 .terms ul li, .terms ol li {
   padding: 8px 0;
   line-height: 150%;
+}
+
+.layout-container {
+  width: 100vw;
+  width: 100cqw;
 }
 
 .layout-container > footer {

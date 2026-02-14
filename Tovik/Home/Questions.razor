@@ -27,7 +27,7 @@
 @code {
 	bool IsExpanded = true;
 	void Expand() => IsExpanded = true;
-	string? SelectedQuestion;
+	string? SelectedQuestion = "What is Tovik?";
 	int Limit => IsExpanded ? FAQ.Count : 5;
 	
 	void Select(string question)
