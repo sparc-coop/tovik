@@ -80,6 +80,26 @@ p, div, span {
     }
 }
 
+.currency-selector {
+    background-color: var(--blue-600);
+    border: 1px solid var(--blue-500) !important;
+    max-width: min(80vw, 400px);
+
+    &:after {
+        border-top: 5px solid white;
+    }
+
+    select {
+        background-color: var(--blue-600) !important;
+
+        option {
+            &:checked {
+                color: var(--orange-300);
+            }
+        }
+    }
+}
+
 html, body {
     font-size: 62.5%;
     font-family: var(--articulat), Helvetica, sans-serif;

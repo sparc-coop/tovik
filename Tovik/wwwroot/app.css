@@ -73,6 +73,21 @@ p.tovik-translating, div.tovik-translating, span.tovik-translating {
   appearance: none;
 }
 
+.currency-selector {
+  background-color: var(--blue-600);
+  border: 1px solid var(--blue-500) !important;
+  max-width: min(80vw, 400px);
+}
+.currency-selector:after {
+  border-top: 5px solid white;
+}
+.currency-selector select {
+  background-color: var(--blue-600) !important;
+}
+.currency-selector select option:checked {
+  color: var(--orange-300);
+}
+
 html, body {
   font-size: 62.5%;
   font-family: var(--articulat), Helvetica, sans-serif;

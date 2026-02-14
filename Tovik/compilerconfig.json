@@ -82,5 +82,9 @@
   {
     "outputFile": "Home/Install.razor.css",
     "inputFile": "Home/Install.razor.scss"
+  },
+  {
+    "outputFile": "Shared/EmptyLayout.razor.css",
+    "inputFile": "Shared/EmptyLayout.razor.scss"
   }
 ]

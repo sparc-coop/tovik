@@ -1,5 +1,7 @@
 ﻿@page "/pricing"
+@layout NewHomeLayout
 @using Sparc.Blossom.Realtime
+
 
 <article>
     <header>
@@ -7,6 +9,14 @@
             Introducing Tovik
         </h1>
         <p>Tovik is a website plugin that makes it easy to translate your website into multiple languages, so you can reach a global audience without the hassle of managing translations manually.</p>
+        @if (User != null)
+        {
+            <div class="currency">
+                See pricing in your preferred currency:
+                <CurrencySelector Avatar="User.Avatar" />
+            </div>
+        }
+
     </header>
 
     <section>
@@ -16,10 +26,10 @@
                 <p>Perfect for small websites</p>
                 <h3>@Tiers("Free")?.FormattedPrice</h3>
             </header>
-            <a class="primary-btn" href="/Install">Install Now</a>
+            <a class="button primary-btn" href="/Purchase/Free">Install Now</a>
             <ul>
                 <li>
-                    <strong>10 pages free, forever</strong>
+                    <strong>For domains up to 10 pages</strong>
                 </li>
                 <li>
                     Unlimited visitors &amp; page visits
@@ -35,11 +45,17 @@
 
         <div>
             <header>
-                <h2>Indie</h2>
-                <p>For your personal blog or small business site</p>
-                <h3>@Tiers("Indie")?.FormattedPrice</h3>
+                <h2>
+                    <img src="./icons/Premium.svg" alt="Indie" />
+                    Indie
+                </h2>
+                <p>Blogs and small business sites</p>
+                <h3>
+                    @Tiers("Indie")?.FormattedPrice
+                    <strong>/one time fee</strong>
+                </h3>
             </header>
-            <a class="primary-btn" href="/Purchase/Indie">Purchase Now</a>
+            <a class="button primary-btn" href="/Purchase/Indie">Purchase Now</a>
             <ul>
                 <li>
                     <strong>For domains up to 100 pages</strong>
@@ -58,11 +74,17 @@
 
         <div>
             <header>
-                <h2>Premium</h2>
-                <p>For medium-sized sites and beyond</p>
-                <h3>@Tiers("Premium")?.FormattedPrice</h3>
+                <h2>
+                    <img src="./icons/Premium.svg" alt="Premium" />
+                    Premium
+                </h2>
+                <p>Above and beyond</p>
+                <h3>
+                    @Tiers("Premium")?.FormattedPrice
+                    <strong>/one time fee</strong>
+                </h3>
             </header>
-            <a class="primary-btn" href="/Purchase/Premium">Purchase Now</a>
+            <a class="button primary-btn" href="/Purchase/Premium">Purchase Now</a>
             <ul>
                 <li>
                     <strong>For domains up to 1,000 pages</strong>
@@ -79,15 +101,14 @@
             </ul>
         </div>
     </section>
-
-    @if (User != null)
-    {
-        <footer>
-            See pricing in your preferred currency:
-            <CurrencySelector Avatar="User.Avatar" />
-        </footer>
-    }
+    <footer>
+        <h4>Tovik is ethically priced, with no monthly subscriptions.</h4>
+        <p>
+            Yes, really. We believe it's time for software to be subscription-free again.
+        </p>
+    </footer>
 </article>
+
 
 @inject ISparcBilling Billing
 @inject ISparcAura Aura
