@@ -1,60 +1,115 @@
-﻿@using Sparc.Blossom.Realtime
-<div class="pricing">
+﻿@page "/pricing"
+@using Sparc.Blossom.Realtime
+
+<article>
     <header>
-        <h3>Tovik</h3>
-        <div>
-            <h4>@Product?.FormattedPrice</h4>
-            <h5>one time</h5>
-            <h6>(no subscriptions!)</h6>
-        </div>
-        @if (OnClick.HasDelegate)
-        {
-            <button class="primary-btn desktop-only" @onclick=OpenPurchaseSidebar>Get Tovik</button>
-        }
+        <h1>
+            Introducing Tovik
+        </h1>
+        <p>Tovik is a website plugin that makes it easy to translate your website into multiple languages, so you can reach a global audience without the hassle of managing translations manually.</p>
     </header>
-    <ul>
-        <li>
-            <strong>500</strong> pages per site
-        </li>
-        <li>
-            <strong>Unlimited</strong> visitors &amp; pageviews
-        </li>
-        <li>
-            <strong>Unlimited</strong> languages &amp; dialects
-        </li>
-        <li>
-            <strong>Unlimited</strong> translations
-        </li>
-    </ul>
-    @if (OnClick.HasDelegate)
+
+    <section>
+        <div>
+            <header>
+                <h2>Free</h2>
+                <p>Perfect for small websites</p>
+                <h3>@Tiers("Free")?.FormattedPrice</h3>
+            </header>
+            <a class="primary-btn" href="/Install">Install Now</a>
+            <ul>
+                <li>
+                    <strong>10 pages free, forever</strong>
+                </li>
+                <li>
+                    Unlimited visitors &amp; page visits
+                </li>
+                <li>
+                    Unlimited languages &amp; dialects
+                </li>
+                <li>
+                    Unlimited translations
+                </li>
+            </ul>
+        </div>
+
+        <div>
+            <header>
+                <h2>Indie</h2>
+                <p>For your personal blog or small business site</p>
+                <h3>@Tiers("Indie")?.FormattedPrice</h3>
+            </header>
+            <a class="primary-btn" href="/Purchase/Indie">Purchase Now</a>
+            <ul>
+                <li>
+                    <strong>For domains up to 100 pages</strong>
+                </li>
+                <li>
+                    Unlimited visitors &amp; page visits
+                </li>
+                <li>
+                    Unlimited languages &amp; dialects
+                </li>
+                <li>
+                    Unlimited translations
+                </li>
+            </ul>
+        </div>
+
+        <div>
+            <header>
+                <h2>Premium</h2>
+                <p>For medium-sized sites and beyond</p>
+                <h3>@Tiers("Premium")?.FormattedPrice</h3>
+            </header>
+            <a class="primary-btn" href="/Purchase/Premium">Purchase Now</a>
+            <ul>
+                <li>
+                    <strong>For domains up to 1,000 pages</strong>
+                </li>
+                <li>
+                    Unlimited visitors &amp; page visits
+                </li>
+                <li>
+                    Unlimited languages &amp; dialects
+                </li>
+                <li>
+                    Unlimited translations
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    @if (User != null)
     {
-        <footer class="mobile-only">
-            <button class="primary-btn" @onclick=OpenPurchaseSidebar>Get Tovik</button>
+        <footer>
+            See pricing in your preferred currency:
+            <CurrencySelector Avatar="User.Avatar" />
         </footer>
     }
-</div>
+</article>
 
 @inject ISparcBilling Billing
+@inject ISparcAura Aura
 @inject Microsoft.Extensions.Configuration.IConfiguration Config
 @inject SparcEvents Events
 @code {
     [Parameter] public EventCallback OnClick { get; set; }
     GetProductResponse? Product;
+    BlossomUser? User;
 
     protected override async Task OnInitializedAsync()
     {
-        Product = await Billing.GetProductAsync(Config["ProductId"]!);
         Events.CurrencyChanged += OnCurrencyChanged;
+        User = await Aura.UserInfo();
+        await OnCurrencyChanged(User.Avatar.Currency);
     }
 
-    private async Task OnCurrencyChanged(SparcCurrency currency)
+    async Task OnCurrencyChanged(SparcCurrency? currency)
     {
-        Product = await Billing.GetProductAsync(Config["ProductId"]!, currency.Id);
+        Product = await Billing.GetProductAsync(Config["ProductId"]!, currency?.Id);
         StateHasChanged();
     }
 
-    async Task OpenPurchaseSidebar()
-    {
-        await OnClick.InvokeAsync();
-    }
+    ProductTier? Tiers(string tierName) => Product?.Tiers.FirstOrDefault(t => t.Name == tierName);
 }

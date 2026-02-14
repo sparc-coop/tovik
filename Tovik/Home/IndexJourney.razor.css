@@ -131,16 +131,9 @@
   display: flex;
   gap: 16px;
 }
-.home-container .second button {
+.home-container .second button, .home-container .second a.button {
   align-self: inherit;
   width: auto;
-}
-.home-container .second a {
-  color: var(--orange-300);
-  font-weight: 600;
-}
-.home-container .second a:hover {
-  text-decoration: underline;
 }
 .home-container .second aside {
   font-size: 1.1rem;

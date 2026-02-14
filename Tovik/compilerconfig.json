@@ -78,5 +78,9 @@
   {
     "outputFile": "Home/IndexJourney.razor.css",
     "inputFile": "Home/IndexJourney.razor.scss"
+  },
+  {
+    "outputFile": "Home/Install.razor.css",
+    "inputFile": "Home/Install.razor.scss"
   }
 ]
