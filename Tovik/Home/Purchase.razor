@@ -1,24 +1,81 @@
-﻿<div>
-    @if (PaymentIntentId == null)
+﻿@page "/Purchase/{TierId}"
+@page "/Install"
+@layout ModalLayout
+@using Sparc.Blossom.Realtime
+
+<article>
+    <header>
+        <nav>
+            <ul>
+                <li>
+                    <figure class="@(ActiveTab == "Purchase" ? "active" : "")" @onclick=@(() => ChangeTab("Purchase"))>
+                        <img src="./icons/Purchase.svg" alt="Purchase" />
+                        <figcaption>1. Purchase</figcaption>
+                    </figure>
+                </li>
+                <li>
+                    <figure class="@(ActiveTab == "Install" ? "active" : "")" @onclick=@(() => ChangeTab("Install"))>
+                        <img src="./icons/MagicWand.svg" alt="Install" />
+                        <figcaption>2. Installation</figcaption>
+                    </figure>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    @if (Tier != null)
     {
-        <Tovik.Home.Pricing />
+        <section>
+            <header>
+                <h1>
+                    @if (Tier.Name != "Free")
+                    {
+                        <img src="./icons/Premium.svg" alt="@Tier.Name" />
+                    }
+                    @Tier.Name
+                </h1>
+                <p>@Tier.Description</p>
+                <h3>@Tier.FormattedPrice</h3>
+            </header>
+            <ul>
+                <li>
+                    <strong>For domains up to @Tier.ItemQuantity.ToString("N0") pages</strong>
+                </li>
+                <li>
+                    Unlimited visitors &amp; page visits
+                </li>
+                <li>
+                    Unlimited languages &amp; dialects
+                </li>
+                <li>
+                    Unlimited translations
+                </li>
+            </ul>
+        </section>
     }
-    
+
     @if (User != null)
     {
         <section>
-            <GlobalBiller ProductId="Tovik" Domain="@Domain" StripeProductId="@StripeProductId" Avatar="User.Avatar" Appearance="Appearance" />
+            <GlobalBiller ProductId="Tovik" TierId="@TierId" Domain="@Domain" Avatar="User.Avatar" Appearance="Appearance" />
         </section>
     }
-</div>
+</article>
 
 @inject IConfiguration Config
 @inject ISparcAura Aura
+@inject ISparcBilling Billing
+@inject SparcEvents Events
+
 @code {
-    [Parameter] public string? Domain { get; set; }
-    [Parameter] [SupplyParameterFromQuery] public string? PaymentIntentId { get; set; }
-    string? StripeProductId;
+    [Parameter][SupplyParameterFromQuery] public required string Domain { get; set; }
+    [Parameter] public string? TierId { get; set; }
+    [Parameter][SupplyParameterFromQuery] public string? PaymentIntentId { get; set; }
+
+    string? ActiveTab;
     BlossomUser? User;
+    SparcProduct? Product;
+    ProductTier? Tier => Product?.Tiers.FirstOrDefault(t => t.Name == TierId);
     StripeAppearance? Appearance = new()
     {
         Theme = "flat",
@@ -40,7 +97,21 @@
 
     protected override async Task OnInitializedAsync()
     {
-        StripeProductId = Config["Tovik"]!.Contains("localhost") ? "prod_SW5yY8O8KprzFu" : "prod_SlQhkHsXb7ZyXb";
+        Events.CurrencyChanged += OnCurrencyChanged;
         User = await Aura.UserInfo();
+        await OnCurrencyChanged(User.Avatar.Currency);
+
+        ActiveTab = TierId == null ? "Install" : "Purchase";
+    }
+
+    async Task OnCurrencyChanged(SparcCurrency? currency)
+    {
+        Product = await Billing.GetProductAsync("Tovik", currency?.Id);
+        StateHasChanged();
+    }
+
+    void ChangeTab(string tab)
+    {
+        ActiveTab = tab;
     }
 }

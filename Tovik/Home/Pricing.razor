@@ -1,6 +1,7 @@
 ﻿@page "/pricing"
-@layout NewHomeLayout
+@layout ModalLayout
 @using Sparc.Blossom.Realtime
+@using Tovik.Domains
 
 
 <article>
@@ -19,88 +20,57 @@
 
     </header>
 
-    <section>
-        <div>
-            <header>
-                <h2>Free</h2>
-                <p>Perfect for small websites</p>
-                <h3>@Tiers("Free")?.FormattedPrice</h3>
-            </header>
-            <a class="button primary-btn" href="/Purchase/Free">Install Now</a>
-            <ul>
-                <li>
-                    <strong>For domains up to 10 pages</strong>
-                </li>
-                <li>
-                    Unlimited visitors &amp; page visits
-                </li>
-                <li>
-                    Unlimited languages &amp; dialects
-                </li>
-                <li>
-                    Unlimited translations
-                </li>
-            </ul>
-        </div>
+    @if (Product != null)
+    {
+        <section>
+            @foreach (var tier in Product.Tiers)
+            {
+                <div>
+                    <header>
+                        <h2>
+                            @if (tier.Name != "Free")
+                            {
+                                <img src="./icons/Premium.svg" alt="@tier.Name" />
+                            }
+                            @tier.Name
+                        </h2>
+                        <p>@tier.Description</p>
+                        <h3>
+                            @tier.FormattedPrice
+                            <strong>/one time fee</strong>
+                        </h3>
+                    </header>
+                    @if (CurrentTier == tier.Name)
+                    {
+                        <a class="button secondary-btn" href="/sites" disabled>Current Plan</a>
+                    }
+                    else if (tier.Name == "Free")
+                    {
+                        <a class="button primary-btn" href="/Install?domain=@Domain">Install Now</a>
+                    }
+                    else
+                    {
+                        <a class="button primary-btn" href="/Purchase/@tier.Name?domain=@Domain">Purchase Now</a>
+                    }
+                    <ul>
+                        <li>
+                            <strong>For domains up to @tier.ItemQuantity.ToString("N0") pages</strong>
+                        </li>
+                        <li>
+                            Unlimited visitors &amp; page visits
+                        </li>
+                        <li>
+                            Unlimited languages &amp; dialects
+                        </li>
+                        <li>
+                            Unlimited translations
+                        </li>
+                    </ul>
+                </div>
+            }
+        </section>
+    }
 
-        <div>
-            <header>
-                <h2>
-                    <img src="./icons/Premium.svg" alt="Indie" />
-                    Indie
-                </h2>
-                <p>Blogs and small business sites</p>
-                <h3>
-                    @Tiers("Indie")?.FormattedPrice
-                    <strong>/one time fee</strong>
-                </h3>
-            </header>
-            <a class="button primary-btn" href="/Purchase/Indie">Purchase Now</a>
-            <ul>
-                <li>
-                    <strong>For domains up to 100 pages</strong>
-                </li>
-                <li>
-                    Unlimited visitors &amp; page visits
-                </li>
-                <li>
-                    Unlimited languages &amp; dialects
-                </li>
-                <li>
-                    Unlimited translations
-                </li>
-            </ul>
-        </div>
-
-        <div>
-            <header>
-                <h2>
-                    <img src="./icons/Premium.svg" alt="Premium" />
-                    Premium
-                </h2>
-                <p>Above and beyond</p>
-                <h3>
-                    @Tiers("Premium")?.FormattedPrice
-                    <strong>/one time fee</strong>
-                </h3>
-            </header>
-            <a class="button primary-btn" href="/Purchase/Premium">Purchase Now</a>
-            <ul>
-                <li>
-                    <strong>For domains up to 1,000 pages</strong>
-                </li>
-                <li>
-                    Unlimited visitors &amp; page visits
-                </li>
-                <li>
-                    Unlimited languages &amp; dialects
-                </li>
-                <li>
-                    Unlimited translations
-                </li>
-            </ul>
-        </div>
-    </section>
     <footer>
         <h4>Tovik is ethically priced, with no monthly subscriptions.</h4>
         <p>
@@ -112,15 +82,22 @@
 
 @inject ISparcBilling Billing
 @inject ISparcAura Aura
-@inject Microsoft.Extensions.Configuration.IConfiguration Config
+@inject TovikDomains Domains
 @inject SparcEvents Events
+
 @code {
     [Parameter] public EventCallback OnClick { get; set; }
-    GetProductResponse? Product;
+    [Parameter][SupplyParameterFromQuery] public required string Domain { get; set; }
+    SparcProduct? Product;
     BlossomUser? User;
+    SparcDomain? SparcDomain;
+    string? CurrentTier;
 
     protected override async Task OnInitializedAsync()
     {
+        SparcDomain = await Domains.Verify(Domain);
+        CurrentTier = SparcDomain?.Product("Tovik")?.TierId;
+
         Events.CurrencyChanged += OnCurrencyChanged;
         User = await Aura.UserInfo();
         await OnCurrencyChanged(User.Avatar.Currency);
@@ -128,7 +105,7 @@
 
     async Task OnCurrencyChanged(SparcCurrency? currency)
     {
-        Product = await Billing.GetProductAsync(Config["ProductId"]!, currency?.Id);
+        Product = await Billing.GetProductAsync("Tovik", currency?.Id);
         StateHasChanged();
     }
 

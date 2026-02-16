@@ -13,14 +13,14 @@
 
         <dl>
             <dt>Edition:</dt>
-            <dd>@(Tovik?.TierId) (up to @Tovik?.MaxUsage pages)</dd>
+            <dd>@(License?.TierId) (up to @License?.MaxUsage pages)</dd>
             <dt>Date Activated:</dt>
             <dd class="@(Domain.DateConnected == null ? "no" : "")">@(Domain.DateConnected != null ? Domain.DateConnected.Value.ToShortDateString() : "Not Yet Activated")</dd>
             <dt>Last Translation Activity:</dt>
             <dd class="@(Domain.LastTranslatedDate == null ? "no" : "")">@(Domain.LastTranslatedDate == null ? "Never" : Domain.LastTranslatedDate.Value.ToShortDateString())</dd>
         </dl>
 
-        @if (Tovik != null && Tovik.TierId != "Premium" && OnUpgrade.HasDelegate)
+        @if (License != null && License.TierId != "Premium" && OnUpgrade.HasDelegate)
         {
             <button class="primary-btn" @onclick=Upgrade>Upgrade Tovik</button>
         }
@@ -88,7 +88,7 @@
     [Parameter] public EventCallback OnUpgrade { get; set; }
     string? ErrorMessage;
     bool IsSidebarOpen = false;
-    SparcProduct? Tovik => Domain.Product("Tovik");
+    SparcLicense? License => Domain.Product("Tovik");
 
     bool showDeleteModal = false;
 

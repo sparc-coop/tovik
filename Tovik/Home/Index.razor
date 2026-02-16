@@ -1,7 +1,7 @@
 ﻿@page "/old"
 @page "/oldpreview/{Url}"
 @page "/oldpreview"
-@layout NewHomeLayout
+@layout ModalLayout
 @using Tovik.Domains
 @using Tovik.Translation
 
@@ -171,14 +171,14 @@
     string? PreviewLanguageName;
     ElementReference IFrame;
     bool IsSidebarOpen;
-    GetProductResponse? Product;
+    SparcProduct? Product;
 
     protected override async Task OnInitializedAsync()
     {
         var domains = await Domains.All();
         IsACustomer = domains.Any();
         PreviewFirst = !string.IsNullOrWhiteSpace(Url) || !string.IsNullOrWhiteSpace(QueryUrl);
-        Product = await Billing.GetProductAsync(Config["ProductId"]!);
+        Product = await Billing.GetProductAsync("Tovik");
     }
 
     protected override async Task OnParametersSetAsync()

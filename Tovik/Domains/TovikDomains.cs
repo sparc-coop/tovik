@@ -51,8 +51,10 @@ public class TovikDomains(BlossomAggregateOptions<SparcDomain> options, IReposit
 
         if (existing == null)
         {
-            existing = new SparcDomain(host);
-            existing.Fulfill(new Sparc.Blossom.Billing.SparcProduct("Tovik") { MaxUsage = 10 }, User.Id());
+            existing = new SparcDomain(host)
+            {
+                TovikUserId = User.Id()
+            };
             await Repository.AddAsync(existing);
         }
 

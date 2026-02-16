@@ -1,7 +1,7 @@
 ﻿@page "/"
 @page "/preview/{Url}"
 @page "/preview"
-@layout NewHomeLayout
+@layout EmptyLayout
 @using Tovik.Domains
 @using Tovik.Translation
 
@@ -93,10 +93,10 @@
                             <Sparc.Blossom.Content.LanguageSelector IsLoading="IsPreviewLoading" WithButton=false Visible=true InitialLanguageId="@PreviewLang" OnLanguageChanged="UpdateLanguage" />
 
                             <div class="buttons">
-                                <a class="button primary-btn" href="/Install">
+                                <a class="button primary-btn" href="/Install?domain=@PreviewUrl">
                                     Install for Free
                                 </a>
-                                <a class="button secondary-btn" href="/Pricing">
+                                <a class="button secondary-btn" href="/Pricing?domain=@PreviewUrl">
                                     See Pricing Plans
                                 </a>
                             </div>
@@ -136,14 +136,12 @@
     string? ErrorMessage;
     string? PreviewLanguageName;
     ElementReference IFrame;
-    GetProductResponse? Product;
 
     protected override async Task OnInitializedAsync()
     {
         var domains = await Domains.All();
         IsACustomer = domains.Any();
         PreviewFirst = !string.IsNullOrWhiteSpace(Url) || !string.IsNullOrWhiteSpace(QueryUrl);
-        Product = await Billing.GetProductAsync(Config["ProductId"]!);
     }
 
     protected override async Task OnParametersSetAsync()
