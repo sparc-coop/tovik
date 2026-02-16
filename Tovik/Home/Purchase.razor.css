@@ -58,7 +58,7 @@ article section h3 {
   font-family: var(--articulat);
   font-size: 4.8rem;
   font-weight: 700;
-  margin: 32px 0;
+  margin: 32px 0 0 0;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -144,7 +144,7 @@ nav ul figure.active {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 ::deep #payment-form input, ::deep #payment-form select {
-  max-width: 50vw;
+  max-width: max(50vw, 100%);
 }
 
 ::deep input, ::deep select, ::deep option, ::deep .currency-selector {
