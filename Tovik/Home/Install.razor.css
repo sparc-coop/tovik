@@ -1,1 +1,160 @@
-﻿
+﻿article {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+  margin: 10vh 0;
+  padding: 0 6vw;
+}
+article > header {
+  width: 100%;
+  max-width: 1150px;
+}
+article a.back {
+  font-size: 2.5rem;
+  font-weight: 700;
+  font-family: var(--brother-printed);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+article a.back img {
+  padding: 12px;
+  border-radius: 20px;
+  border: 1px solid var(--blue-600);
+  background: var(--blue-700);
+}
+article section {
+  border-radius: 32px;
+  width: 100%;
+  border: 1px solid rgba(219, 243, 252, 0.2);
+  background: rgba(79, 129, 153, 0.2);
+  backdrop-filter: blur(4px);
+  padding: 24px;
+  max-width: 1150px;
+}
+article section.pricing {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+article section h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+article section h3 {
+  color: var(--blue-50);
+  font-family: var(--articulat);
+  font-size: 4.8rem;
+  font-weight: 700;
+  margin: 32px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+article section h3 strong {
+  color: var(--orange-300);
+  font-size: 2.11rem;
+}
+article section ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+article section ul li {
+  background: url("/images/Star.svg") no-repeat left 8px;
+  background-size: 12px 12px;
+  padding-left: 24px;
+  font-size: 1.6rem;
+  font-weight: 400;
+  font-family: var(--articulat);
+}
+article section ul strong {
+  color: var(--orange-300);
+}
+
+nav ul {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  list-style: none;
+  align-items: center;
+  background: none;
+  cursor: pointer;
+}
+nav ul figure {
+  display: grid;
+  width: 100%;
+  grid-template-rows: 72px auto;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  opacity: 0.4;
+}
+nav ul figure figcaption {
+  font-family: var(--brother-printed);
+  font-weight: 700;
+  font-size: 2rem;
+}
+nav ul figure img {
+  display: block;
+  margin: 0 auto;
+}
+nav ul figure.active {
+  opacity: 1;
+}
+
+::deep .currency-selector:after {
+  border-top: 5px solid white;
+}
+::deep .currency-selector .progress-bar-value {
+  background-color: var(--blue-300);
+}
+
+::deep h2 {
+  font-size: 2.2rem;
+}
+
+::deep p {
+  margin-bottom: 16px;
+}
+
+::deep label span, ::deep .currency-selector-container header h4 {
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  font-family: inherit;
+}
+
+::deep #payment-form header h4 {
+  font-size: 13px;
+  font-weight: 500;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+::deep #payment-form input, ::deep #payment-form select {
+  max-width: 50vw;
+}
+
+::deep input, ::deep select, ::deep option, ::deep .currency-selector {
+  background-color: var(--blue-500) !important;
+}
+::deep input::placeholder, ::deep select::placeholder, ::deep option::placeholder, ::deep .currency-selector::placeholder {
+  color: #d8dee0;
+}
+
+::deep input, ::deep .currency-selector {
+  border: 1px solid #052738 !important;
+}
+
+::deep .purchased h4 {
+  margin-bottom: 16px;
+  padding: 16px;
+  border: 1px solid white;
+  font-size: 2.8rem;
+  border-radius: 20px;
+  display: inline-block;
+}

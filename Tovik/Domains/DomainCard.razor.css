@@ -32,11 +32,12 @@
 .domain-card header h2 ::deep svg {
   margin-left: 8px;
 }
-.domain-card header button {
+.domain-card header a.button {
   position: absolute;
   top: 0;
   right: 0;
   max-width: 200px;
+  text-decoration: none;
 }
 .domain-card ul.languages {
   display: flex;

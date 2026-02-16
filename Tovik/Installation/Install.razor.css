@@ -1,10 +1,19 @@
-﻿h2 {
+﻿.welcome header img {
+  height: 60px;
+  width: auto;
+}
+
+h2 {
   font-size: 2.4rem;
   margin-bottom: 16px;
 }
 
 h3 {
-  font-size: 1.6rem;
+  font-size: 2rem;
+}
+
+p {
+  margin-bottom: 0;
 }
 
 footer {
@@ -14,11 +23,6 @@ footer {
 }
 footer button {
   max-width: 200px;
-}
-@media (min-width: 800px) {
-  footer {
-    grid-template-columns: auto 200px;
-  }
 }
 
 .platforms {

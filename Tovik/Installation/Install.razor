@@ -1,8 +1,11 @@
 ﻿@using Tovik.Domains
 <section class="welcome">
     <header>
-        <img src="./images/TovikChar.svg" style="height: 60px" />
-        <h3 style="margin-top: 20px">Activate Tovik on @Domain.Domain</h3>
+        @if (SparcDomain != null)
+        {
+            <img src="@SparcDomain.FaviconUri" alt="@SparcDomain.Domain" onerror="this.src='/images/Star.svg'" />
+        }
+        <h3 style="margin-top: 20px">Activate Tovik on @Domain</h3>
     </header>
 
     @if (SelectedPlatform == null)
@@ -177,7 +180,6 @@
     @if (SelectedPlatform != null)
     {
         <footer>
-            <p>Once you've followed the installation instructions for your platform, click here to activate Tovik:</p>
             <button class="primary-btn" @onclick="Activate">Activate Tovik</button>
             @if (Error != null)
             {
@@ -189,11 +191,18 @@
 
 @inject TovikDomains Domains
 @code {
-    [Parameter] public required SparcDomain Domain { get; set; }
+    [Parameter][SupplyParameterFromQuery] public required string Domain { get; set; }
+    [Parameter][SupplyParameterFromQuery] public string? TierId { get; set; }
+    SparcDomain? SparcDomain { get; set; }
     List<string> Platforms = ["WordPress", "Wix", "SquareSpace", "Webflow", "Weebly", "Shopify", "HTML"];
     List<string> ComingSoon = [];
     string? SelectedPlatform { get; set; } = null;
     string? Error;
+
+    protected override async Task OnInitializedAsync()
+    {
+        SparcDomain = await Domains.Verify(Domain);
+    }
 
     private void Select(string platform)
     {
@@ -209,18 +218,21 @@
 
     async Task Activate()
     {
+        if (SparcDomain == null)
+            return;
+
         Error = null;
         try
         {
-            var result = await Domain.VerifyAsync();
+            var result = await SparcDomain.VerifyAsync();
             if (result)
             {
-                await Domains.Update(Domain);
-                Nav.Refresh(true);
+                await Domains.Update(SparcDomain);
+                Nav.NavigateTo("/sites/" + SparcDomain.Id);
             }
             else
             {
-                Error = $"Tovik does not yet appear to be installed on {Domain.Domain}. Please double-check the install instructions and try again!";
+                Error = $"Tovik does not yet appear to be installed on {SparcDomain.Domain}. Please double-check the install instructions and try again!";
             }
         }
         catch (Exception e)
@@ -228,4 +240,13 @@
             Error = e.Message + " " + e.InnerException?.Message + " Please double-check the install instructions and try again!";
         }
     }
+
+    void ChangeTab(string tab)
+    {
+        if (tab == "Install")
+            Nav.NavigateTo("/Install?domain=" + Domain, true);
+        else if (tab == "Purchase")
+            Nav.NavigateTo("/Purchase/" + TierId + "?domain=" + Domain, true);
+    }
+
 }

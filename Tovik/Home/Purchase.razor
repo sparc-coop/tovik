@@ -1,20 +1,24 @@
 ﻿@page "/Purchase/{TierId}"
-@page "/Install"
+
 @layout ModalLayout
 @using Sparc.Blossom.Realtime
 
 <article>
     <header>
+        <a class="back" href="/Pricing?domain=@Domain">
+            <img src="./icons/ChevronLeft.svg" alt="Back" />
+            Back to Plans
+        </a>
         <nav>
             <ul>
                 <li>
-                    <figure class="@(ActiveTab == "Purchase" ? "active" : "")" @onclick=@(() => ChangeTab("Purchase"))>
+                    <figure class="active" @onclick=@(() => ChangeTab("Purchase"))>
                         <img src="./icons/Purchase.svg" alt="Purchase" />
                         <figcaption>1. Purchase</figcaption>
                     </figure>
                 </li>
                 <li>
-                    <figure class="@(ActiveTab == "Install" ? "active" : "")" @onclick=@(() => ChangeTab("Install"))>
+                    <figure @onclick=@(() => ChangeTab("Install"))>
                         <img src="./icons/MagicWand.svg" alt="Install" />
                         <figcaption>2. Installation</figcaption>
                     </figure>
@@ -23,19 +27,23 @@
         </nav>
     </header>
 
+
     @if (Tier != null)
     {
-        <section>
+        <section class="pricing">
             <header>
-                <h1>
+                <h2>
                     @if (Tier.Name != "Free")
                     {
                         <img src="./icons/Premium.svg" alt="@Tier.Name" />
                     }
                     @Tier.Name
-                </h1>
+                </h2>
                 <p>@Tier.Description</p>
-                <h3>@Tier.FormattedPrice</h3>
+                <h3>
+                    @Tier.FormattedPrice
+                    <strong>/one time fee</strong>
+                </h3>
             </header>
             <ul>
                 <li>
@@ -72,7 +80,6 @@
     [Parameter] public string? TierId { get; set; }
     [Parameter][SupplyParameterFromQuery] public string? PaymentIntentId { get; set; }
 
-    string? ActiveTab;
     BlossomUser? User;
     SparcProduct? Product;
     ProductTier? Tier => Product?.Tiers.FirstOrDefault(t => t.Name == TierId);
@@ -100,8 +107,6 @@
         Events.CurrencyChanged += OnCurrencyChanged;
         User = await Aura.UserInfo();
         await OnCurrencyChanged(User.Avatar.Currency);
-
-        ActiveTab = TierId == null ? "Install" : "Purchase";
     }
 
     async Task OnCurrencyChanged(SparcCurrency? currency)
@@ -112,6 +117,7 @@
 
     void ChangeTab(string tab)
     {
-        ActiveTab = tab;
+        if (tab == "Install")
+            Nav.NavigateTo("/Install?domain=" + Domain + "&tierId=" + TierId + "&paymentIntentId=" + PaymentIntentId, true);
     }
 }

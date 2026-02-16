@@ -22,7 +22,7 @@
 
         @if (License != null && License.TierId != "Premium" && OnUpgrade.HasDelegate)
         {
-            <button class="primary-btn" @onclick=Upgrade>Upgrade Tovik</button>
+            <a class="button primary-btn" href="/Pricing?domain=@Domain.Domain">Upgrade Tovik</a>
         }
     </header>
 
@@ -69,16 +69,6 @@
 </div>
 
 <DeleteModal Domain=Domain ShowModal=showDeleteModal OnClose=ToggleDeleteModal OnDelete="DeleteDomain" />
-
-<aside class="purchase-sidebar @(IsSidebarOpen ? "open" : "")">
-    <header>
-        <h2>Add Tovik To Your Site</h2>
-        <button @onclick=ToggleSidebar>
-            <Sparc.Blossom.Authentication.Icons.XIcon />
-        </button>
-    </header>
-    <Tovik.Installation.Install Domain="@Domain" />
-</aside>
 
 @inject Tovik.Domains.TovikDomains TovikDomains
 @code {

@@ -38,11 +38,12 @@
             }
         }
 
-        button {
+        a.button {
             position: absolute;
             top: 0;
             right: 0;
             max-width: 200px;
+            text-decoration: none;
         }
     }
 

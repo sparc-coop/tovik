@@ -1,14 +1,55 @@
-﻿<article>
+﻿@page "/Install"
+@layout ModalLayout
+
+<article>
     <header>
-        <h1>
-            Introducing Tovik
-        </h1>
-        <p>Tovik is a website plugin that makes it easy to translate your website into multiple languages, so you can reach a global audience without the hassle of managing translations manually.</p>
+        <a class="back" href="/Pricing?domain=@Domain">
+            <img src="./icons/ChevronLeft.svg" alt="Back" />
+            Back to Plans
+        </a>
+        <nav>
+            <ul>
+                <li>
+                    <figure @onclick=@(() => ChangeTab("Purchase"))>
+                        <img src="./icons/Purchase.svg" alt="Purchase" />
+                        <figcaption>1. Purchase</figcaption>
+                    </figure>
+                </li>
+                <li>
+                    <figure class="active" @onclick=@(() => ChangeTab("Install"))>
+                        <img src="./icons/MagicWand.svg" alt="Install" />
+                        <figcaption>2. Installation</figcaption>
+                    </figure>
+                </li>
+            </ul>
+        </nav>
     </header>
 
+    <section>
+        <Tovik.Installation.Install />
+    </section>
 
 </article>
 
-@code {
+@inject IConfiguration Config
+@inject ISparcBilling Billing
 
+@code {
+    [Parameter][SupplyParameterFromQuery] public required string Domain { get; set; }
+    [Parameter][SupplyParameterFromQuery] public string? TierId { get; set; }
+    [Parameter][SupplyParameterFromQuery] public string? PaymentIntentId { get; set; }
+
+    SparcProduct? Product;
+    ProductTier? Tier => Product?.Tiers.FirstOrDefault(t => t.Name == TierId);
+
+    void ChangeTab(string tab)
+    {
+        if (tab == "Purchase")
+        {
+            if (string.IsNullOrWhiteSpace(TierId))
+                Nav.NavigateTo("/Pricing?domain=" + Domain);
+            else
+                Nav.NavigateTo("/Purchase/" + TierId + "?domain=" + Domain + "&paymentIntentId=" + PaymentIntentId, true);
+        }
+    }
 }
