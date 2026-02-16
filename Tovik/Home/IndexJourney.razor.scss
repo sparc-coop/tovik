@@ -191,7 +191,11 @@ article {
         text-align: center;
 
         &.first {
-            margin-top: 120px;
+            margin-top: 60px;
+
+            @media screen and (min-width: 800px) {
+                margin-top: 120px;
+            }
         }
 
         .hero {
@@ -253,7 +257,7 @@ footer {
     font-size: 1.4rem;
     text-align: center;
     z-index: 1000;
-    position: fixed;
+    position: static;
     bottom: 0;
     left: 0;
     right: 0;

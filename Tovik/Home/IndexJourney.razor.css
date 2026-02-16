@@ -172,7 +172,12 @@ article > section {
   text-align: center;
 }
 article > section.first {
-  margin-top: 120px;
+  margin-top: 60px;
+}
+@media screen and (min-width: 800px) {
+  article > section.first {
+    margin-top: 120px;
+  }
 }
 article > section .hero p {
   margin: 32px;
@@ -226,7 +231,7 @@ footer {
   font-size: 1.4rem;
   text-align: center;
   z-index: 1000;
-  position: fixed;
+  position: static;
   bottom: 0;
   left: 0;
   right: 0;
