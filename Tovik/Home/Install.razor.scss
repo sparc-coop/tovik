@@ -37,6 +37,7 @@ article {
         backdrop-filter: blur(4px);
         padding: 24px;
         max-width: 1150px;
+        box-sizing: border-box;
 
         &.pricing {
             display: grid;
@@ -107,6 +108,7 @@ nav ul {
         justify-content: center;
         gap: 16px;
         opacity: 0.4;
+        margin: 0;
 
         figcaption {
             font-family: var(--brother-printed);

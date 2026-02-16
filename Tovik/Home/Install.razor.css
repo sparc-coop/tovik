@@ -34,6 +34,7 @@ article section {
   backdrop-filter: blur(4px);
   padding: 24px;
   max-width: 1150px;
+  box-sizing: border-box;
 }
 article section.pricing {
   display: grid;
@@ -95,6 +96,7 @@ nav ul figure {
   justify-content: center;
   gap: 16px;
   opacity: 0.4;
+  margin: 0;
 }
 nav ul figure figcaption {
   font-family: var(--brother-printed);
