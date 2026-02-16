@@ -190,10 +190,14 @@
 </section>
 
 @inject TovikDomains Domains
+@inject ISparcBilling Billing
+@inject ISparcAura Aura
 @code {
     [Parameter][SupplyParameterFromQuery] public required string Domain { get; set; }
     [Parameter][SupplyParameterFromQuery] public string? TierId { get; set; }
-    SparcDomain? SparcDomain { get; set; }
+    SparcDomain? SparcDomain;
+    SparcProduct? SparcProduct;
+    BlossomUser? User;
     List<string> Platforms = ["WordPress", "Wix", "SquareSpace", "Webflow", "Weebly", "Shopify", "HTML"];
     List<string> ComingSoon = [];
     string? SelectedPlatform { get; set; } = null;
@@ -202,6 +206,8 @@
     protected override async Task OnInitializedAsync()
     {
         SparcDomain = await Domains.Verify(Domain);
+        SparcProduct = await Billing.GetProductAsync("Tovik");
+        User = await Aura.UserInfo();
     }
 
     private void Select(string platform)
@@ -227,6 +233,11 @@
             var result = await SparcDomain.VerifyAsync();
             if (result)
             {
+                // Check for existing license
+                var license = SparcDomain.Product("Tovik");
+                if (license == null && SparcProduct != null && User != null)
+                   SparcDomain.Fulfill(SparcProduct, "Free", "Free", User.Id);
+                
                 await Domains.Update(SparcDomain);
                 Nav.NavigateTo("/sites/" + SparcDomain.Id);
             }
