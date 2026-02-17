@@ -68,9 +68,9 @@
                 <div>
                     @foreach (var language in LanguageStats.OrderByDescending(x => x.Value))
                     {
-                        <div class="language">
+                        <div class="language" title="@language.Key.NativeName (@language.Key.DisplayName)">
                             <header>
-                                @language.Key.NativeName (@language.Key.DisplayName)
+                                @language.Key.DisplayName
                             </header>
                             <div class="meter-container">
                                 <div class="meter-fill" style="width: @FillPercentage(language.Key)%"></div>
