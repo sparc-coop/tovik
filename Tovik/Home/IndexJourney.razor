@@ -91,7 +91,6 @@
                         <section>
                             <h3>Tovik can give <strong>@PreviewUrl</strong> a voice in 130 languages and 600 dialects:</h3>
                             <Sparc.Blossom.Content.LanguageSelector IsLoading="IsPreviewLoading" WithButton=false Visible=true InitialLanguageId="@PreviewLang" OnLanguageChanged="UpdateLanguage" />
-
                             <div class="buttons">
                                 <a class="button primary-btn" href="/Install?domain=@PreviewUrl">
                                     Install for Free
@@ -146,12 +145,13 @@
 
     protected override async Task OnParametersSetAsync()
     {
+        PreviewFirst = !string.IsNullOrWhiteSpace(Url) || !string.IsNullOrWhiteSpace(QueryUrl);
         if (!string.IsNullOrWhiteSpace(Url) && Url != PreviewUrl)
         {
             PreviewUrl = Url;
             await PreviewSite();
         }
-        else if (!string.IsNullOrWhiteSpace(QueryUrl) && QueryUrl != PreviewUrl)
+        else if (!string.IsNullOrWhiteSpace(QueryUrl))
         {
             Url = QueryUrl;
             PreviewUrl = Url;
@@ -227,7 +227,7 @@
         {
             if (PreviewHtml == null)
             {
-                PreviewHtml = await Crawler.PreviewAsync(Url!, PreviewLang);
+                PreviewHtml = await Crawler.PreviewAsync(Url ?? QueryUrl, PreviewLang);
                 StateHasChanged();
             }
             else
