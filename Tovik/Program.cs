@@ -26,4 +26,6 @@ builder.Services.AddHybridCache();
 
 var app = builder.Build();
 
-await app.RunAsync<Html>();
+(app as BlossomServerApplication)?.Host.MapControllers();
+
+await app!.RunAsync<Html>();

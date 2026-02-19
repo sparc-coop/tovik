@@ -33,7 +33,7 @@
 
     <main>
         <div class="iframe-container">
-            <iframe srcdoc="@PreviewHtml" @ref=IFrame>
+            <iframe src="@PreviewFrameSrc" @ref=IFrame>
             </iframe>
             @if (IsPreviewing)
             {
@@ -130,7 +130,7 @@
     bool IsPreviewing;
     bool IsPreviewLoading;
     bool PreviewFirst;
-    string? PreviewHtml;
+    string? PreviewFrameSrc;
     string? PreviewUrl;
     string? ErrorMessage;
     string? PreviewLanguageName;
@@ -162,7 +162,7 @@
             Url = null;
             PreviewUrl = null;
             IsPreviewing = false;
-            PreviewHtml = null;
+            PreviewFrameSrc = null;
             ErrorMessage = null;
         }
     }
@@ -179,8 +179,7 @@
         if (url != Url)
         {
             Url = url;
-            PreviewHtml = await Crawler.PreviewAsync(Url, PreviewLang);
-            StateHasChanged();
+            ChangeUrl();
         }
     }
 
@@ -202,7 +201,7 @@
             return;
 
         ErrorMessage = null;
-        PreviewHtml = null;
+
         if (string.IsNullOrWhiteSpace(PreviewLang))
             PreviewLang = Sparc.Blossom.Content.Language.Random.Id;
 
@@ -211,11 +210,23 @@
         {
             PreviewLanguageName = Sparc.Blossom.Content.Language.Find(PreviewLang)?.LanguageDisplayName;
             IsPreviewing = true;
+
+            ChangeUrl();
         }
         else
         {
             ErrorMessage = domain?.IsBlocked == true ? "This domain is not compatible with Tovik." : "Please enter a valid URL.";
         }
+    }
+
+    void ChangeUrl()
+    {
+        var url = Url ?? QueryUrl ?? "";
+        if (url.Contains("/proxy/page"))
+            return;
+
+        PreviewFrameSrc = $"/proxy/page?url={Uri.EscapeDataString(url)}&l={PreviewLang}";
+        StateHasChanged();
     }
 
     async Task UpdateLanguage(Sparc.Blossom.Content.Language lang)
@@ -225,15 +236,10 @@
         PreviewLanguageName = Sparc.Blossom.Content.Language.Find(PreviewLang)?.LanguageDisplayName;
         try
         {
-            if (PreviewHtml == null)
-            {
-                PreviewHtml = await Crawler.PreviewAsync(Url ?? QueryUrl, PreviewLang);
-                StateHasChanged();
-            }
+            if (PreviewFrameSrc == null)
+                ChangeUrl();
             else
-            {
                 await Js.InvokeVoidAsync("changePreviewLanguage", IFrame, PreviewLang);
-            }
         }
         catch (Exception e)
         {
@@ -258,11 +264,5 @@
             ErrorMessage = ex.Message;
             PreviewUrl = "";
         }
-    }
-
-    void Home()
-    {
-        IsPreviewing = false;
-        PreviewHtml = null;
     }
 }
