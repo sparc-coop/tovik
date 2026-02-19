@@ -56,3 +56,13 @@ function disableBodyScrolling(bool) {
         document.body.classList.remove("modal-open");
     }
 }
+
+function scrollToElementId(elementId) {
+    var element = document.getElementById(elementId);
+    if (!element) {
+        return false;
+    }
+    element.scrollIntoView({ block: "end" });
+
+    return true;
+}

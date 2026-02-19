@@ -255,7 +255,13 @@ input {
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+
+    &::placeholder {
+        color: white;
+        opacity: 0.5;
+    }
 }
+
 
 select {
     display: flex;
@@ -395,6 +401,7 @@ header.page-header {
     font-size: 1.4rem;
     text-align: center;
     z-index: 1000;
+    color: var(--blue-200);
 
     a {
         text-decoration: underline;

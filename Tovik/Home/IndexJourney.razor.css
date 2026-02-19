@@ -1,7 +1,7 @@
 ﻿.iframe-container {
   position: fixed;
   top: 0;
-  height: calc(100dvh - 350px);
+  height: calc(100dvh - 50px);
   opacity: 0;
   transition: opacity ease-in-out 1.5s;
   z-index: 1700;
@@ -45,7 +45,7 @@
 .home-container .hero p {
   font-size: 1.8rem;
   font-weight: 400;
-  margin: 32px;
+  margin: 32px 0;
   color: var(--blue-200);
   font-family: var(--brother-printed);
 }
@@ -70,11 +70,11 @@
   color: white;
   z-index: 1101;
   font-size: 1.4rem;
-  padding: 32px;
+  padding: 48px 7.5vw 32px 7.5vw;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 43px;
+  gap: 24px;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
@@ -85,12 +85,14 @@
 @media screen and (min-width: 800px) {
   .home-container .second {
     flex-direction: row;
+    gap: 43px;
+    padding: 48px 32px 32px 32px;
   }
 }
 .home-container .second > header {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   gap: 32px;
 }
@@ -100,15 +102,23 @@
   }
 }
 .home-container .second > header img {
-  width: 100%;
+  width: min(160px, 100%);
+}
+.home-container .second > header img.grabber {
+  width: 24px;
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 .home-container .second > section {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 8px;
 }
 .home-container .second h2 {
-  font-size: 1.9rem;
+  font-size: 2.6rem;
+  line-height: 120%;
   color: var(--blue-100);
 }
 @media screen and (min-width: 800px) {
@@ -122,18 +132,23 @@
   font-family: var(--articulat);
   font-size: 1.6rem;
   padding: 0;
+  line-height: 140%;
+  margin-bottom: 8px;
 }
 .home-container .second h3 strong {
   font-weight: 500;
   color: var(--orange-300);
 }
 .home-container .second .buttons {
-  display: flex;
-  gap: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  box-sizing: border-box;
 }
 .home-container .second button, .home-container .second a.button {
   align-self: inherit;
   width: auto;
+  padding: 12px 16px;
 }
 .home-container .second aside {
   font-size: 1.1rem;
@@ -180,18 +195,23 @@ article > section.first {
   }
 }
 article > section .hero p {
-  margin: 32px;
+  margin: 32px 0;
 }
 article > section .hero img {
-  width: 70vw;
-  max-width: 400px;
+  width: min(400px, 40vw);
 }
 article > section .hero form {
   display: grid;
   grid-template-columns: 1fr;
   justify-content: center;
   gap: 8px;
-  margin: 32px;
+  margin: 32px 0;
+}
+article > section .hero form input, article > section .hero form button {
+  padding: 12px 16px;
+  width: 100%;
+  min-width: 200px;
+  box-sizing: border-box;
 }
 article > section .hero form button {
   white-space: nowrap;
@@ -235,9 +255,11 @@ footer {
   bottom: 0;
   left: 0;
   right: 0;
+  color: var(--blue-200);
 }
 footer a {
   text-decoration: underline;
+  color: var(--blue-200);
 }
 
 .previewing .iframe-container {
@@ -245,7 +267,7 @@ footer a {
   opacity: 1;
 }
 .previewing .home-container {
-  margin-top: calc(100dvh - 400px);
+  margin-top: calc(100dvh - 100px);
   width: 100cqw;
   z-index: 1001;
 }
@@ -291,7 +313,7 @@ footer a {
 ::deep .language-select {
   background-color: var(--blue-600);
   border: 1px solid var(--blue-500);
-  max-width: min(80vw, 400px);
+  max-width: min(90vw, 400px);
 }
 ::deep .language-select:after {
   border-top: 5px solid white;

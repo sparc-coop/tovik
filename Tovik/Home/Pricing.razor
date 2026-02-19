@@ -44,7 +44,10 @@
                         <p>@tier.Description</p>
                         <h3>
                             @tier.FormattedPrice
-                            <strong>/one time fee</strong>
+                            @if (tier.Name != "Free")
+                            {
+                                <strong>/ one time</strong>
+                            }
                         </h3>
                     </header>
                     @if (CurrentTier == tier.Name)

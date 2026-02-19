@@ -82,16 +82,17 @@
                         <div class="hero-background"><DashedLine Color="#FFD4BF" /></div>
 
                         <header>
-                            <img src="./images/TovikMagicWand.png" />
+                            <img id="grabber" src="./icons/Grabber.svg" alt="Grab to Scroll" class="grabber" />
+                            <img src="./images/TovikMagicWand.png" alt="Tovik with Magic Wand" />
                             <h2>
                                 With Tovik, everyone can understand.
                             </h2>
                         </header>
 
                         <section>
-                            <h3>Tovik can give <strong>@PreviewUrl</strong> a voice in @Sparc.Blossom.Content.Language.LanguageCount languages and @Sparc.Blossom.Content.Language.Count dialects:</h3>
+                            <h3>Install Tovik on <strong>@PreviewUrl</strong> and instantly give it a voice in @Sparc.Blossom.Content.Language.LanguageCount languages (and @Sparc.Blossom.Content.Language.Count dialects):</h3>
                             <Sparc.Blossom.Content.LanguageSelector IsLoading="IsPreviewLoading" WithButton=false Visible=true InitialLanguageId="@PreviewLang" OnLanguageChanged="UpdateLanguage" />
-                            <div class="buttons">
+                            <div class="buttons" id="scrollanchor">
                                 <a class="button primary-btn" href="/Install?domain=@PreviewUrl">
                                     Install for Free
                                 </a>
@@ -105,7 +106,7 @@
                     <Questions />
                 }
                 <footer>
-                    Made with ❤️ by Sparc Cooperative.
+                    Made with ❤️ by Sparc Cooperative.<br />
                     <a href="/Privacy">Privacy</a> |
                     <a href="/Terms">Terms of Use</a>
                 </footer>
@@ -229,6 +230,7 @@
             {
                 PreviewHtml = await Crawler.PreviewAsync(Url ?? QueryUrl, PreviewLang);
                 StateHasChanged();
+                await Js.InvokeVoidAsync("scrollToElementId", "scrollanchor");
             }
             else
             {
