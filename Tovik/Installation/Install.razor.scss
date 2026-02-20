@@ -36,18 +36,23 @@ footer {
     padding: 16px 0;
 
     button {
-        background: var(--blue-100);
-        border: 1px solid transparent;
-        opacity: 0.3;
+        background: rgba(79, 129, 153, 0.20);
+        border: 1px solid rgba(291, 243, 252, 0.20);
         padding: 8px 16px;
+        color: var(--blue-50);
     }
 
-    li:hover, li.selected {
+    li:hover {
         button {
-            background: var(--blue-700);
-            border: 1px solid var(--blue-500);
-            color: white;
-            opacity: 1;
+            background: rgba(79, 129, 153, 0.40);
+        }
+    }
+
+    li.selected { 
+        button {
+            border-color: var(--blue-700);
+            background-color: var(--blue-50);
+            color: var(--blue-700);
         }
     }
 

@@ -33,16 +33,18 @@ footer button {
   padding: 16px 0;
 }
 .platforms button {
-  background: var(--blue-100);
-  border: 1px solid transparent;
-  opacity: 0.3;
+  background: rgba(79, 129, 153, 0.2);
+  border: 1px solid rgba(255, 243, 252, 0.2);
   padding: 8px 16px;
+  color: var(--blue-50);
 }
-.platforms li:hover button, .platforms li.selected button {
-  background: var(--blue-700);
-  border: 1px solid var(--blue-500);
-  color: white;
-  opacity: 1;
+.platforms li:hover button {
+  background: rgba(79, 129, 153, 0.4);
+}
+.platforms li.selected button {
+  border-color: var(--blue-700);
+  background-color: var(--blue-50);
+  color: var(--blue-700);
 }
 .platforms li.comingsoon button {
   pointer-events: none;
