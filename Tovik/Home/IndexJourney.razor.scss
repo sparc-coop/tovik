@@ -152,6 +152,7 @@
         .buttons {
             display: grid;
             grid-template-columns: 1fr 1fr;
+            max-width: min(90vw, 400px);
             gap: 8px;
             box-sizing: border-box;
         }
