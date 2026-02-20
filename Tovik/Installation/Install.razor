@@ -8,8 +8,6 @@
         <h3 style="margin-top: 20px">Install Tovik on @Domain</h3>
     </header>
 
-    @if (SelectedPlatform == null)
-    {
         <p>
             Welcome to Tovik! We're so happy you're here.
         </p>
@@ -17,10 +15,6 @@
             Tovik is a website plugin that makes it easy to translate your website into multiple languages, so you can reach a global audience without the hassle of managing translations manually.
         </p>
         <p>To get started, select your website's platform:</p>
-    }
-    else
-    {
-    }
 
     <ul class="platforms">
         @foreach (var platform in Platforms)

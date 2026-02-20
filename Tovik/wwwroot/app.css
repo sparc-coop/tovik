@@ -151,7 +151,7 @@ button, a.button {
   text-decoration: none;
 }
 button[disabled], a.button[disabled] {
-  opacity: 0.3;
+  opacity: 0.5;
   pointer-events: none;
 }
 button > *, a.button > * {
@@ -188,15 +188,17 @@ button.secondary-btn, a.button.secondary-btn {
   justify-content: center;
   align-items: center;
   gap: 4px;
+  font-weight: 500;
   border-radius: 20px;
-  border: 1px solid var(--blue-600, #1F5068);
-  background: var(--blue-700, #07374F);
-  color: var(--white, #FFF);
+  border: 1px solid var(--blue-600);
+  background: var(--blue-700);
+  color: var(--blue-100);
   transition: background-color 0.05s ease-in;
 }
 button.secondary-btn:hover, a.button.secondary-btn:hover {
   background-color: var(--blue-600);
   border-color: var(--blue-500);
+  color: var(--blue-50);
 }
 button.icon-btn, a.button.icon-btn {
   aspect-ratio: 1/1;
