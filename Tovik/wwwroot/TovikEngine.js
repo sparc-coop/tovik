@@ -41,8 +41,13 @@ export default class TovikEngine {
         }
         return this.userLang;
     }
+    static injectPreloadCSS() {
+        const style = document.createElement('style');
+        style.textContent = 'html.tovik-translating, html.tovik-translating * { color: transparent !important; caret-color: transparent !important; }';
+        document.head.appendChild(style);
+    }
     static async hi() {
-        document.body.classList.add('tovik-translating');
+        this.injectPreloadCSS();
         let lang = await this.getUserLanguage();
         this.documentLang = document.documentElement.lang;
         await this.setLanguage(lang);

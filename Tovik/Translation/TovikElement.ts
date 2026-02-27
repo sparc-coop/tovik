@@ -47,8 +47,10 @@ export default class TovikElement extends HTMLElement {
             return;
         }
 
+        document.documentElement.classList.add('tovik-translating');
         await this.wrapTextNodes(element, forceReload);
         await this.translateAttribute(element, 'placeholder', forceReload);
+        document.documentElement.classList.remove('tovik-translating');
     }
 
     async wrapTextNodes(element, forceReload = false) {
@@ -146,13 +148,17 @@ export default class TovikElement extends HTMLElement {
             textNode.hash = TovikEngine.idHash(textNode.originalText);
             const translation = await db.translations.get(textNode.hash);
             if (translation) {
-                textNode.textContent = ' ' + translation.text + ' ';
+                textNode.textContent = (textNode.preWhiteSpace ? ' ' : '')
+                    + translation.text
+                    + (textNode.postWhiteSpace ? ' ' : '');
             } else {
                 pendingTranslations.push({ element: textNode, hash: textNode.hash });
                 //    if (textNode.parentElement)
                 //        textNode.parentElement.classList.add('tovik-translating');
             }
         }));
+
+        document.documentElement.classList.remove('tovik-translating');
 
         if (window.parent && window.parent.postMessage)
             window.parent.postMessage('tovik-translating');
@@ -173,7 +179,6 @@ export default class TovikElement extends HTMLElement {
                     window.parent.postMessage('tovik-translated');
             });
 
-        document.body.classList.remove('tovik-translating');
         if (window.parent && window.parent.postMessage)
             window.parent.postMessage('tovik-translated');
     }

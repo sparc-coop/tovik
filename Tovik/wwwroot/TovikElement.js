@@ -35,8 +35,10 @@ export default class TovikElement extends HTMLElement {
         if (this.#originalLang && this.#originalLang.substring(0, 2) === TovikEngine.userLang.substring(0, 2) && !forceReload) {
             return;
         }
+        document.documentElement.classList.add('tovik-translating');
         await this.wrapTextNodes(element, forceReload);
         await this.translateAttribute(element, 'placeholder', forceReload);
+        document.documentElement.classList.remove('tovik-translating');
     }
     async wrapTextNodes(element, forceReload = false) {
         var nodes = [];
@@ -111,7 +113,9 @@ export default class TovikElement extends HTMLElement {
             textNode.hash = TovikEngine.idHash(textNode.originalText);
             const translation = await db.translations.get(textNode.hash);
             if (translation) {
-                textNode.textContent = ' ' + translation.text + ' ';
+                textNode.textContent = (textNode.preWhiteSpace ? ' ' : '')
+                    + translation.text
+                    + (textNode.postWhiteSpace ? ' ' : '');
             }
             else {
                 pendingTranslations.push({ element: textNode, hash: textNode.hash });
@@ -119,6 +123,7 @@ export default class TovikElement extends HTMLElement {
                 //        textNode.parentElement.classList.add('tovik-translating');
             }
         }));
+        document.documentElement.classList.remove('tovik-translating');
         if (window.parent && window.parent.postMessage)
             window.parent.postMessage('tovik-translating');
         await TovikEngine.translateAll(pendingTranslations, node => node.originalText, this.#originalLang, (el, translation) => {
@@ -131,7 +136,6 @@ export default class TovikElement extends HTMLElement {
             if (window.parent && window.parent.postMessage)
                 window.parent.postMessage('tovik-translated');
         });
-        document.body.classList.remove('tovik-translating');
         if (window.parent && window.parent.postMessage)
             window.parent.postMessage('tovik-translated');
     }

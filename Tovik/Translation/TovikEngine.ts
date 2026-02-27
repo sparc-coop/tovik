@@ -48,8 +48,15 @@ export default class TovikEngine {
         return this.userLang;
     }
 
+    static injectPreloadCSS() {
+        const style = document.createElement('style');
+        style.textContent = 'html.tovik-translating, html.tovik-translating * { color: transparent !important; caret-color: transparent !important; }';
+        document.head.appendChild(style);
+    }
+
+
     static async hi() {
-        document.body.classList.add('tovik-translating');
+        this.injectPreloadCSS();
 
         let lang = await this.getUserLanguage();
         this.documentLang = document.documentElement.lang;
@@ -61,12 +68,12 @@ export default class TovikEngine {
     }
 
     static async getLanguages() {
-        return await this.fetch('translate/languages'); 
+        return await this.fetch('translate/languages');
     }
 
     static async setLanguage(language) {
         if (this.userLang != language) {
-             if (!document.body.getAttribute('data-toviklang'))
+            if (!document.body.getAttribute('data-toviklang'))
                 await localStorage.setItem('tovik-lang', language);
 
             this.userLang = language;
@@ -200,7 +207,7 @@ export default class TovikEngine {
         }
 
         if (language) {
-            options.headers.append('Accept-Language', language); 
+            options.headers.append('Accept-Language', language);
         }
 
         const response = await fetch(`${baseUrl}/${url}`, options);
