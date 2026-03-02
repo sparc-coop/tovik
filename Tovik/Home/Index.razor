@@ -1,7 +1,7 @@
-﻿@page "/old"
-@page "/oldpreview/{Url}"
-@page "/oldpreview"
-@layout ModalLayout
+﻿@page "/"
+@page "/preview/{Url}"
+@page "/preview"
+@layout EmptyLayout
 @using Tovik.Domains
 @using Tovik.Translation
 
@@ -28,127 +28,91 @@
     </script>
 </HeadContent>
 
-<div class="home-container @(IsPreviewing ? "previewing" : "") @(PreviewFirst ? "preview-first" : "")">
-    <iframe srcdoc="@PreviewHtml" @ref=IFrame>
-    </iframe>
+<div class="layout-container @(IsPreviewing ? "previewing" : "") @(PreviewFirst ? "preview-first" : "")">
+    <div class="hero-background"><DashedLine Color="#FFD4BF" /></div>
 
-    @if (IsPreviewing)
-    {
-        <Sparc.Blossom.Content.LanguageSelector IsLoading="IsPreviewLoading" WithButton=true Visible=true InitialLanguageId="@PreviewLang" OnLanguageChanged="UpdateLanguage" />
-        <div class="fine-print">
-            <span>
-                This is a simulated preview of <strong>@PreviewUrl</strong> in @PreviewLanguageName. Some site functionality may not work as expected.
-            </span>
+    <main>
+        <div class="iframe-container">
+            <iframe srcdoc="@PreviewHtml" @ref=IFrame>
+            </iframe>
+            @if (IsPreviewing)
+            {
+                <aside>
+                    Note: This is a limited preview, so a few features might not work here. For the complete experience,
+                    install Tovik on @PreviewUrl.
+                </aside>
+            }
         </div>
-    }
 
-    <article>
-        <div class="hero-background"><DashedLine Color="#FFD4BF" /></div>
-        <header>
-            <button class="logo" @onclick=Home>
-                <img src="/images/TovikWordmark.svg" alt="Tovik" />
-            </button>
+        <div class="home-container">
+            @if (IsACustomer)
+            {
+                <div class="is-a-customer">
+                    <a class="button secondary-btn" href="/sites">My Sites</a>
+                </div>
+            }
 
-            <div class="buttons">
+            <article>
                 @if (!IsPreviewing)
                 {
+                    <section class="first">
+                        <div class="hero">
+                            <img src="/images/TovikChar.svg" alt="Tovik" />
+                            <h1>Your website speaks your language.</h1>
+                            <h2>Does it speak theirs?</h2>
+                            <form @onsubmit=GoToPreview>
+                                <input type="text" placeholder="Enter your URL" @bind=Url required />
+                                <button class="primary-btn">
+                                    Preview
+                                </button>
+                            </form>
+                            @if (ErrorMessage != null)
+                            {
+                                <span class="error-message">@ErrorMessage</span>
+                            }
+                            <p>
+                                With Tovik, everyone can understand.
+                            </p>
+                        </div>
+                    </section>
                 }
                 else
                 {
-                    <button class="secondary-btn" @onclick=Home>Learn More</button>
-                }
-                @if (IsACustomer)
-                {
-                    <a class="button primary-btn" href="/sites">My Sites</a>
-                }
-                else
-                {
-                    <button class="primary-btn" @onclick=ToggleSidebar>Get Tovik</button>
-                }
-            </div>
-        </header>
+                    <div class="second">
+                        <header>
+                            <img id="grabber" src="./icons/Grabber.svg" alt="Grab to Scroll" class="grabber" />
+                            <img src="./images/TovikMagicWand.png" alt="Tovik with Magic Wand" />
+                            <h2>
+                                With Tovik, everyone can understand.
+                            </h2>
+                        </header>
 
-        <section class="first">
-            <img src="/images/TovikChar.svg" alt="Tovik" />
-            <div>
-                <h1>Your message deserves to be understood.</h1>
-                <h2>In all of these languages and dialects:</h2>
-                <Sparc.Blossom.Content.LanguageSelector WithButton=false Visible=true />
-            </div>
-            <p>
-                Whether you’re a small business, a museum, or a community organization, your website is the way you welcome people in.
-                Tovik helps you makes that welcome universal, translating your site into 130+ languages and 600+ dialects, while keeping your authentic voice intact.
-            </p>
-            <form @onsubmit=GoToPreview>
-                <input type="text" placeholder="Enter your website's URL" @bind=Url required />
-                <button class="primary-btn">Preview Your Site With Tovik</button>
-            </form>
-            @if (ErrorMessage != null)
-            {
-                <span class="error-message">@ErrorMessage</span>
-            }
-        </section>
+                        <section>
+                            <h3>Install Tovik on <strong>@PreviewUrl</strong> and instantly give it a voice in @Sparc.Blossom.Content.Language.LanguageCount languages (and @Sparc.Blossom.Content.Language.Count dialects):</h3>
+                            <Sparc.Blossom.Content.LanguageSelector IsLoading="IsPreviewLoading" WithButton=false Visible=true InitialLanguageId="@PreviewLang" OnLanguageChanged="UpdateLanguage" />
+                            <div class="buttons" id="scrollanchor">
+                                <a class="button primary-btn" href="/Install?domain=@PreviewUrl">
+                                    Install for Free
+                                </a>
+                                <a class="button secondary-btn" href="/Pricing?domain=@PreviewUrl">
+                                    See Pricing Plans
+                                </a>
+                            </div>
+                        </section>
+                    </div>
 
-        <div class="two">
-            <section>
-                <img src="/images/TiltedWorldIcon.svg" alt="Tilted World" />
-                <div>
-                    <h2>
-                        A website accessible to all 8 billion people
-                    </h2>
-                    <p>Your message becomes accessible to nearly everyone on Earth the moment you install it.</p>
-                </div>
-            </section>
-            <section>
-                <img src="/images/LightbulbIcon.svg" alt="Lightbulb" />
-                <div>
-                    <h2>Your voice, preserved</h2>
-                    <p>
-                        Tovik carries your unique tone, style, and intent across any language, so that your message stays unmistakably yours.
-                    </p>
-                </div>
-            </section>
-            <section>
-                <img src="/images/NoSubscriptions.svg" alt="No Subscriptions" />
-                <div>
-                    <h2>No Subscription Fees</h2>
-                    <p>
-                        Start for free, and when you're ready to grow, buy Tovik once.
-                    </p>
-                </div>
-            </section>
-            <section>
-                <img src="/images/TranslateIcon.svg" alt="Translate" />
-                <div>
-                    <h2>Works with your platform</h2>
-                    <p>
-                        Whether it's WordPress, Wix, Webflow, Shopify, Squarespace, or custom HTML, Tovik fits wherever your site lives.
-                    </p>
-                </div>
-            </section>
+                    <Questions />
+                }
+                <footer>
+                    Made with ❤️ by Sparc Cooperative.<br />
+                    <a href="/Privacy">Privacy</a> |
+                    <a href="/Terms">Terms of Use</a>
+                </footer>
+            </article>
         </div>
-
-        <section class="pricing-new">
-            <header>
-                <h3>Ethically Priced, Zero Subscriptions</h3>
-@*                 <h4>Just <strong>@Product?.FormattedPrice</strong>, once.</h4>
- *@                <p>
-                    Yes, really. We believe it's time for software to be subscription-free again.
-                </p>
-            </header>
-            <button class="primary-btn" @onclick="ToggleSidebar">Add Tovik To Your Site</button>
-        </section>
-
-        <section>
-            <header>
-                <h3>Ask us anything</h3>
-                <h4>Frequently Asked Questions</h4>
-            </header>
-        </section>
-
-        <Questions />
-    </article>
+    </main>
 </div>
+
 
 @inject ISparcAura Aura
 @inject TovikCrawler Crawler
@@ -159,7 +123,7 @@
 
 @code {
     [Parameter] public string? Url { get; set; }
-    [Parameter][SupplyParameterFromQuery] public string? PreviewLang { get; set; }
+    [Parameter][SupplyParameterFromQuery(Name = "l")] public string? PreviewLang { get; set; }
     [Parameter][SupplyParameterFromQuery(Name = "u")] public string? QueryUrl { get; set; }
     bool IsACustomer;
     bool IsPreviewing;
@@ -170,29 +134,35 @@
     string? ErrorMessage;
     string? PreviewLanguageName;
     ElementReference IFrame;
-    bool IsSidebarOpen;
-    SparcProduct? Product;
 
     protected override async Task OnInitializedAsync()
     {
         var domains = await Domains.All();
         IsACustomer = domains.Any();
         PreviewFirst = !string.IsNullOrWhiteSpace(Url) || !string.IsNullOrWhiteSpace(QueryUrl);
-        Product = await Billing.GetProductAsync("Tovik");
     }
 
     protected override async Task OnParametersSetAsync()
     {
+        PreviewFirst = !string.IsNullOrWhiteSpace(Url) || !string.IsNullOrWhiteSpace(QueryUrl);
         if (!string.IsNullOrWhiteSpace(Url) && Url != PreviewUrl)
         {
             PreviewUrl = Url;
             await PreviewSite();
         }
-        else if (!string.IsNullOrWhiteSpace(QueryUrl) && QueryUrl != PreviewUrl)
+        else if (!string.IsNullOrWhiteSpace(QueryUrl))
         {
             Url = QueryUrl;
             PreviewUrl = Url;
             await PreviewSite();
+        }
+        else
+        {
+            Url = null;
+            PreviewUrl = null;
+            IsPreviewing = false;
+            PreviewHtml = null;
+            ErrorMessage = null;
         }
     }
 
@@ -220,11 +190,6 @@
         StateHasChanged();
     }
 
-    void ToggleSidebar()
-    {
-        IsSidebarOpen = !IsSidebarOpen;
-    }
-
     void GoToPreview()
     {
         Nav.NavigateTo($"/preview?u={Url}", PreviewUrl != null);
@@ -237,12 +202,12 @@
 
         ErrorMessage = null;
         PreviewHtml = null;
+        if (string.IsNullOrWhiteSpace(PreviewLang))
+            PreviewLang = Sparc.Blossom.Content.Language.Random.Id;
 
         var domain = await Domains.Verify(Url);
         if (domain != null && !domain.IsBlocked)
         {
-            PreviewLang = Sparc.Blossom.Content.Language.Random.Id;
-
             PreviewLanguageName = Sparc.Blossom.Content.Language.Find(PreviewLang)?.LanguageDisplayName;
             IsPreviewing = true;
         }
@@ -261,8 +226,9 @@
         {
             if (PreviewHtml == null)
             {
-                PreviewHtml = await Crawler.PreviewAsync(Url!, PreviewLang);
+                PreviewHtml = await Crawler.PreviewAsync(Url ?? QueryUrl, PreviewLang);
                 StateHasChanged();
+                await Js.InvokeVoidAsync("scrollToElementId", "scrollanchor");
             }
             else
             {
@@ -274,6 +240,23 @@
             IsPreviewing = false;
             ErrorMessage = e.Message;
             StateHasChanged();
+        }
+    }
+
+    private async Task Register()
+    {
+        if (string.IsNullOrWhiteSpace(PreviewUrl))
+            return;
+
+        try
+        {
+            var newDomain = await Domains.RegisterAsync(PreviewUrl);
+            Nav.NavigateTo($"/sites/{newDomain.Id}");
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = ex.Message;
+            PreviewUrl = "";
         }
     }
 

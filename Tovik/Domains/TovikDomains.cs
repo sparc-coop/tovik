@@ -12,6 +12,21 @@ public class TovikDomains(BlossomAggregateOptions<SparcDomain> options, IReposit
             .Where(x => x.TovikUserId == User.Id())
             .ToListAsync();
 
+    public async Task<Page> GetPage(string domainName, string path)
+    {
+        var result = await pages.Query
+            .Where(p => p.Domain == domainName && p.Path == path)
+            .FirstOrDefaultAsync();
+
+        if (result == null)
+        {
+            result = new Page(domainName, path, path);
+            await pages.AddAsync(result);
+        }
+
+        return result;
+    }
+
     public async Task<List<Page>> GetPages(string domainName)
     {
         var result = await pages.Query

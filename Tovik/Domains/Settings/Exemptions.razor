@@ -1,0 +1,57 @@
+﻿@if (Domain.Exemptions.Any())
+{
+    <table class="exempt-table">
+        <thead>
+            <tr>
+                <td>Word or Phrase</td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var word in Domain.Exemptions)
+            {
+                <tr>
+                    <td>@word</td>
+                    <td>
+                        <div class="exempt-actions">
+                            <button class="delete-exempt-btn secondary-btn" @onclick="(() => Delete(word))"><TrashIcon /></button>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<div class="add">
+    <input type="text" @bind=NewExemption placeholder="Enter a word or phrase..." />
+    <button class="add-btn secondary-btn" @onclick=Add>Add</button>
+</div>
+
+@inject TovikDomains TovikDomains
+@code {
+    [Parameter] public required SparcDomain Domain { get; set; }
+    [Parameter] public EventCallback OnChange { get; set; }
+    string NewExemption = "";
+
+    async Task Add()
+    {
+        if (Domain != null && !string.IsNullOrWhiteSpace(NewExemption))
+        {
+            Domain.Exemptions.Add(NewExemption);
+            await TovikDomains.Update(Domain);
+            NewExemption = string.Empty; // Clear the input after adding
+            await OnChange.InvokeAsync();
+        }
+    }
+
+    async Task Delete(string word)
+    {
+        if (Domain != null && Domain.Exemptions.Contains(word))
+        {
+            Domain.Exemptions.Remove(word);
+            await TovikDomains.Update(Domain);
+            await OnChange.InvokeAsync();
+        }
+    }
+}

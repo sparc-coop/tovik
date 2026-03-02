@@ -1,0 +1,20 @@
+﻿<div class="usage-meter">
+	<header>
+		<div>
+			<span>@Domain.TovikUsage.ToString("N0")</span> 
+			/ 
+			<span>@Limit.ToString("N0")</span>
+		</div>
+	</header>
+	<div class="meter-container">
+		<div class="meter-fill" style="width: @FillPercentage%"></div>
+	</div>
+</div>
+
+@code {
+	[Parameter] public required SparcDomain Domain { get; set; }
+
+	int Limit => Domain.Product("Tovik")?.MaxUsage ?? 10;
+	int Remaining => Limit - Domain.TovikUsage;
+	int FillPercentage => Limit > 0 ? (int)((double)Domain.TovikUsage / Limit * 100) : 0;
+}

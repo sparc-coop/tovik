@@ -1,0 +1,69 @@
+﻿@using Sparc.Blossom.Content
+@using Tovik.Domains
+@using Tovik.Domains.Settings
+@using Tovik.Installation
+
+<article class="domain-page">
+    @if (Domain != null)
+    {
+        <div class="page-container">
+            @* @if (Domain.DateConnected == null)
+            {
+                <DomainCard Domain="Domain" PageType="Page" Languages="Languages" />
+            }
+            else
+            {
+                <DomainCard Domain="Domain" PageType="Page" Languages="Languages" OnUpgrade="Upgrade" />
+            } *@
+
+
+            <div class="preview">
+                <h3>Preview @Domain.Domain in other languages:</h3>
+                <div>
+                    <LanguageSelector OnLanguageChanged="OnLanguageChange" />
+                </div>
+            </div>
+
+            <section>
+                <header>
+                    <h3>Languages Translated</h3>
+                    <LanguageStats Domain="Domain" Page="Page" />
+                </header>
+            </section>
+
+            <section>
+                <header>
+                    <h3>Add Exempt Words or Phrases</h3>
+                    <p class="subheader">
+                        Do you have any words or phrases on this website 
+                        that you would like Tovik to ignore? Add them here!
+                        </p>
+                </header>
+
+                <Exemptions Domain="Domain" OnChange="OnChange" />
+            </section>
+        </div>
+    }
+</article>
+
+@inject TovikDomains TovikDomains
+@code {
+    [Parameter] public required SparcDomain Domain { get; set; }
+    [Parameter] public Page? Page { get; set; }
+    [Parameter] public EventCallback<Language> OnLanguageChange { get; set; }
+    [Parameter] public EventCallback OnChange { get; set; }
+
+    // async Task Preview()
+    // {
+    //     if (Domain?.DateConnected != null && !string.IsNullOrWhiteSpace(PreviewLanguage))
+    //     {
+    //         var url = Domain.ToUri().ToString() + "?lang=" + PreviewLanguage;
+    //         await Js.InvokeVoidAsync("open", url, "_blank");
+    //     }
+    //     else if (Domain != null)
+    //     {
+    //         var url = Nav.BaseUri + "preview?u=" + Domain?.Domain + "&l=" + PreviewLanguage;
+    //         await Js.InvokeVoidAsync("open", url, "_blank");
+    //     }
+    // }
+}

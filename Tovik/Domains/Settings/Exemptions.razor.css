@@ -1,0 +1,35 @@
+﻿table {
+    tbody {
+        width: 100%;
+
+        tr {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    }
+
+    td {
+        padding: 0;
+    }
+}
+
+.exempt-actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    gap: 8px;
+
+    button {
+        aspect-ratio: 1/1;
+        height: 48px;
+        padding: 0;
+    }
+}
+
+.add {
+    display: grid;
+    grid-template-columns: auto 100px;
+    gap: 16px;
+}

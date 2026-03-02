@@ -1,0 +1,68 @@
+﻿@using Sparc.Blossom.Content
+<div class="stats">
+    @foreach (var language in Stats.OrderByDescending(x => x.Value))
+    {
+        <div class="language" title="@language.Key.NativeName (@language.Key.DisplayName)">
+            <header>
+                @language.Key.DisplayName
+            </header>
+            <div class="meter-container">
+                <div class="meter-fill" style="width: @FillPercentage(language.Key)%"></div>
+            </div>
+        </div>
+    }
+
+    @if (!Stats.Any())
+    {
+        <aside>Nothing to see here yet!</aside>
+    }
+</div>
+
+@inject ITovik Tovik
+@inject TovikDomains TovikDomains
+@code {
+    [Parameter] public required SparcDomain Domain { get; set; }
+    [Parameter] public Page? Page { get; set; }
+    Dictionary<Language, int> Stats = [];
+    IEnumerable<Language> Languages = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        Languages = await Tovik.GetLanguages();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Page != null)
+        {
+            Stats = Page.TovikUsage
+            .GroupBy(x => Language(x.Key)!)
+            .ToDictionary(g => g.Key, g => g.Sum(x => x.Value)) ?? [];
+        }
+        else
+        {
+            var allPages = await TovikDomains.GetPages(Domain.Domain);
+            Stats = allPages
+                .SelectMany(p => p.TovikUsage)
+                .GroupBy(x => Language(x.Key)!)
+                .ToDictionary(g => g.Key, g => g.Sum(x => x.Value)) ?? [];
+        }
+    }
+
+    Language? Language(string id) => Languages.FirstOrDefault(x => x.Matches(id));
+
+    decimal FillPercentage(Language language)
+    {
+        if (Domain == null || Domain.TovikUsage == 0)
+            return 0;
+
+        var max = Stats.Values.Max();
+        if (max == 0)
+            return 0;
+
+        if (Stats.TryGetValue(language, out var usage))
+            return (decimal)usage / max * 100;
+
+        return 0;
+    }
+}
