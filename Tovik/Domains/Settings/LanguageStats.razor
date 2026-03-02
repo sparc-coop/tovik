@@ -5,9 +5,9 @@
         <dt title="@language.Key.NativeName (@language.Key.DisplayName)">
             @language.Key.DisplayName
         </dt>
-        <dd title="@(language.Value) visits (@(FillPercentage(language.Key))%)">
+        <dd title="@(language.Value) visits (@FillPercentage(language.Key))">
             <div class="meter-container">
-                <div class="meter-fill" style="width: @FillPercentage(language.Key)%"></div>
+                <div class="meter-fill" style="width: @FillPercentage(language.Key)"></div>
             </div>
             <span>@language.Value</span>
         </dd>
@@ -51,18 +51,21 @@
 
     Language? Language(string id) => Languages.FirstOrDefault(x => x.Matches(id));
 
-    decimal FillPercentage(Language language)
+    string FillPercentage(Language language)
     {
         if (Domain == null || Domain.TovikUsage == 0)
-            return 0;
+            return "0";
 
         var total = Stats.Values.Sum();
         if (total == 0)
-            return 0;
+            return "0";
 
         if (Stats.TryGetValue(language, out var usage))
-            return (decimal)usage / total * 100;
+        {
+            var result = (decimal)usage / total * 100;
+            return result.ToString("0.##") + "%";
+        }
 
-        return 0;
+        return "0";
     }
 }
