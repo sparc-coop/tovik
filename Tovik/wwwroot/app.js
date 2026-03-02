@@ -66,3 +66,22 @@ function scrollToElementId(elementId) {
 
     return true;
 }
+
+function initPreview(dotNet) {
+    window.addEventListener('message', (event) => {
+        if (event.data && event.data.startsWith && event.data.startsWith('tovik')) {
+            if (event.data.startsWith('tovik-url')) {
+                let url = event.data.replace('tovik-url:', '');
+                dotNet.invokeMethodAsync('UpdateUrl', url);
+            } else if (event.data.startsWith('tovik-translating')) {
+                dotNet.invokeMethodAsync('SetPreviewLoading', true);
+            } else if (event.data.startsWith('tovik-translated')) {
+                dotNet.invokeMethodAsync('SetPreviewLoading', false);
+            }
+        }
+    });
+}
+
+function changePreviewLanguage(iframe, lang) {
+    iframe.contentWindow.postMessage('tovik-lang:' + lang);
+}

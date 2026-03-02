@@ -1,69 +1,81 @@
-﻿.install-page p, .install-page ul {
-  font-size: 1.6rem;
-  letter-spacing: 1.1px;
-  line-height: 150%;
-}
-.install-page ul {
-  padding-left: 32px;
-}
-.install-page a {
-  color: var(--orange-300);
-  font-weight: 600;
-}
-.install-page strong {
-  font-weight: 600;
-}
-.install-page .page-header {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  padding: 24px;
-  background: rgba(79, 129, 153, 0.2);
-  border: 1px solid rgba(219, 243, 252, 0.2);
-  border-radius: 24px;
-  backdrop-filter: blur(4px);
-}
-.install-page .page-header h2 {
-  font-size: 3.125rem;
-  font-weight: 700;
-  line-height: normal;
-}
-.install-page .page-header .subheader {
-  font-family: var(--articulat);
-  font-size: 1.6rem;
-  font-weight: 400;
-  line-height: 140%;
-}
-.install-page section {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  align-items: flex-start;
-}
-.install-page section > img {
-  height: 30px;
-}
-.install-page section header {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.install-page section > div {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-  color: var(--blue-50, #EFF7F9);
-  font-family: var(--articulat);
-  font-size: 1.6rem;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
+.install-page {
+    p, ul {
+        font-size: 1.6rem;
+        letter-spacing: 1.1px;
+        line-height: 150%;
+    }
+
+    ul {
+        padding-left: 32px;
+    }
+
+    a {
+        color: var(--orange-300);
+        font-weight: 600;
+    }
+
+    strong {
+        font-weight: 600;
+    }
+    
+    .page-header {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 24px;
+        background: rgba(79, 129, 153, 0.20);
+        border: 1px solid rgba(219, 243, 252, 0.20);
+        border-radius: 24px;
+        backdrop-filter: blur(4px);
+
+        h2 {
+            font-size: 3.125rem;
+            font-weight: 700;
+            line-height: normal;
+        }
+
+        .subheader {
+            font-family: var(--articulat);
+            font-size: 1.6rem;
+            font-weight: 400;
+            line-height: 140%;
+        }
+    }
+
+    section {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        align-items: flex-start;
+
+        > img {
+            height: 30px;
+        }
+
+        header {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        > div {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            color: var(--blue-50, #EFF7F9);
+            font-family: var(--articulat);
+            font-size: 1.6rem;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+        }
+    }
 }
 
 pre code {
-  background-color: #eee;
-  color: var(--blue-50);
-  border: 1px solid #999;
-  display: block;
-  padding: 20px;
+    background-color: #eee;
+    color: var(--blue-50);
+    border: 1px solid #999;
+    display: block;
+    padding: 20px;
 }
