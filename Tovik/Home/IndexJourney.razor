@@ -178,7 +178,7 @@
         if (url != Url)
         {
             Url = url;
-            PreviewHtml = await Crawler.PreviewAsync(Url, PreviewLang);
+            //PreviewHtml = await Crawler.PreviewAsync(Url, PreviewLang);
             StateHasChanged();
         }
     }
@@ -226,7 +226,7 @@
         {
             if (PreviewHtml == null)
             {
-                PreviewHtml = await Crawler.PreviewAsync(Url ?? QueryUrl, PreviewLang);
+                //PreviewHtml = await Crawler.PreviewAsync(Url ?? QueryUrl, PreviewLang);
                 StateHasChanged();
                 await Js.InvokeVoidAsync("scrollToElementId", "scrollanchor");
             }

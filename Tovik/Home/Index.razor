@@ -1,85 +1,33 @@
 ﻿@page "/"
-@page "/preview/{Url}"
-@page "/preview"
 @layout EmptyLayout
 @using Tovik.Domains
 @using Tovik.Translation
 
-<div class="layout-container @(IsPreviewing ? "previewing" : "") @(PreviewFirst ? "preview-first" : "")">
+<div class="layout-container">
     <div class="hero-background"><DashedLine Color="#FFD4BF" /></div>
 
     <main>
-        <div class="iframe-container">
-            <iframe srcdoc="@PreviewHtml" @ref=IFrame>
-            </iframe>
-            @if (IsPreviewing)
-            {
-                <aside>
-                    Note: This is a limited preview, so a few features might not work here. For the complete experience,
-                    install Tovik on @PreviewUrl.
-                </aside>
-            }
-        </div>
-
         <div class="home-container">
-            @if (IsACustomer)
-            {
-                <div class="is-a-customer">
-                    <a class="button secondary-btn" href="/sites">My Sites</a>
-                </div>
-            }
-
             <article>
-                @if (!IsPreviewing)
-                {
-                    <section class="first">
-                        <div class="hero">
-                            <img src="/images/TovikChar.svg" alt="Tovik" />
-                            <h1>Your website speaks your language.</h1>
-                            <h2>Does it speak theirs?</h2>
-                            <form @onsubmit=GoToPreview>
-                                <input type="text" placeholder="Enter your URL" @bind=Url required />
-                                <button class="primary-btn">
-                                    Preview
-                                </button>
-                            </form>
-                            @if (ErrorMessage != null)
-                            {
-                                <span class="error-message">@ErrorMessage</span>
-                            }
-                            <p>
-                                With Tovik, everyone can understand.
-                            </p>
-                        </div>
-                    </section>
-                }
-                else
-                {
-                    <div class="second">
-                        <header>
-                            <img id="grabber" src="./icons/Grabber.svg" alt="Grab to Scroll" class="grabber" />
-                            <img src="./images/TovikMagicWand.png" alt="Tovik with Magic Wand" />
-                            <h2>
-                                With Tovik, everyone can understand.
-                            </h2>
-                        </header>
+                <section>
+                    <img src="/images/TovikChar.svg" alt="Tovik" />
+                    <h1>Your website speaks your language.</h1>
+                    <h2>Does it speak theirs?</h2>
+                    <form @onsubmit=GoToPreview>
+                        <input type="text" placeholder="Enter your URL" @bind=Url required />
+                        <button class="primary-btn">
+                            Preview
+                        </button>
+                    </form>
+                    @if (ErrorMessage != null)
+                    {
+                        <span class="error-message">@ErrorMessage</span>
+                    }
+                    <p>
+                        With Tovik, everyone can understand.
+                    </p>
+                </section>
 
-                        <section>
-                            <h3>Install Tovik on <strong>@PreviewUrl</strong> and instantly give it a voice in @Sparc.Blossom.Content.Language.LanguageCount languages (and @Sparc.Blossom.Content.Language.Count dialects):</h3>
-                            <Sparc.Blossom.Content.LanguageSelector IsLoading="IsPreviewLoading" WithButton=false Visible=true InitialLanguageId="@PreviewLang" OnLanguageChanged="UpdateLanguage" />
-                            <div class="buttons" id="scrollanchor">
-                                <a class="button primary-btn" href="/Install?domain=@PreviewUrl">
-                                    Install for Free
-                                </a>
-                                <a class="button secondary-btn" href="/Pricing?domain=@PreviewUrl">
-                                    See Pricing Plans
-                                </a>
-                            </div>
-                        </section>
-                    </div>
-
-                    <Questions />
-                }
                 <footer>
                     Made with ❤️ by Sparc Cooperative.<br />
                     <a href="/Privacy">Privacy</a> |
@@ -91,155 +39,25 @@
 </div>
 
 
-@inject ISparcAura Aura
-@inject TovikCrawler Crawler
 @inject TovikDomains Domains
 @inject IJSRuntime Js
 @inject ISparcBilling Billing
 @inject Microsoft.Extensions.Configuration.IConfiguration Config
 
 @code {
-    [Parameter] public string? Url { get; set; }
+    [Parameter][SupplyParameterFromQuery(Name = "u")] public string? Url { get; set; }
     [Parameter][SupplyParameterFromQuery(Name = "l")] public string? PreviewLang { get; set; }
-    [Parameter][SupplyParameterFromQuery(Name = "u")] public string? QueryUrl { get; set; }
-    bool IsACustomer;
-    bool IsPreviewing;
-    bool IsPreviewLoading;
-    bool PreviewFirst;
-    string? PreviewHtml;
-    string? PreviewUrl;
     string? ErrorMessage;
-    string? PreviewLanguageName;
-    ElementReference IFrame;
 
-    protected override async Task OnInitializedAsync()
+    async Task GoToPreview()
     {
-        var domains = await Domains.All();
-        IsACustomer = domains.Any();
-        PreviewFirst = !string.IsNullOrWhiteSpace(Url) || !string.IsNullOrWhiteSpace(QueryUrl);
-    }
-
-    protected override async Task OnParametersSetAsync()
-    {
-        PreviewFirst = !string.IsNullOrWhiteSpace(Url) || !string.IsNullOrWhiteSpace(QueryUrl);
-        if (!string.IsNullOrWhiteSpace(Url) && Url != PreviewUrl)
-        {
-            PreviewUrl = Url;
-            await PreviewSite();
-        }
-        else if (!string.IsNullOrWhiteSpace(QueryUrl))
-        {
-            Url = QueryUrl;
-            PreviewUrl = Url;
-            await PreviewSite();
-        }
-        else
-        {
-            Url = null;
-            PreviewUrl = null;
-            IsPreviewing = false;
-            PreviewHtml = null;
-            ErrorMessage = null;
-        }
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-            await Js.InvokeVoidAsync("initPreview", DotNetObjectReference.Create(this));
-    }
-
-    [JSInvokable]
-    public async Task UpdateUrl(string url)
-    {
-        if (url != Url)
-        {
-            Url = url;
-            PreviewHtml = await Crawler.PreviewAsync(Url, PreviewLang);
-            StateHasChanged();
-        }
-    }
-
-    [JSInvokable]
-    public void SetPreviewLoading(bool isLoading)
-    {
-        IsPreviewLoading = isLoading;
-        StateHasChanged();
-    }
-
-    void GoToPreview()
-    {
-        Nav.NavigateTo($"/preview?u={Url}", PreviewUrl != null);
-    }
-
-    async Task PreviewSite()
-    {
-        if (Url == null)
-            return;
-
         ErrorMessage = null;
-        PreviewHtml = null;
-        if (string.IsNullOrWhiteSpace(PreviewLang))
-            PreviewLang = Sparc.Blossom.Content.Language.Random.Id;
+        StateHasChanged();
 
         var domain = await Domains.Verify(Url);
-        if (domain != null && !domain.IsBlocked)
-        {
-            PreviewLanguageName = Sparc.Blossom.Content.Language.Find(PreviewLang)?.LanguageDisplayName;
-            IsPreviewing = true;
-        }
+        if (domain != null)
+            Nav.NavigateTo($"/sites/{Url}");
         else
-        {
-            ErrorMessage = domain?.IsBlocked == true ? "This domain is not compatible with Tovik." : "Please enter a valid URL.";
-        }
-    }
-
-    async Task UpdateLanguage(Sparc.Blossom.Content.Language lang)
-    {
-        ErrorMessage = null;
-        PreviewLang = lang.Id;
-        PreviewLanguageName = Sparc.Blossom.Content.Language.Find(PreviewLang)?.LanguageDisplayName;
-        try
-        {
-            if (PreviewHtml == null)
-            {
-                PreviewHtml = await Crawler.PreviewAsync(Url ?? QueryUrl, PreviewLang);
-                StateHasChanged();
-                await Js.InvokeVoidAsync("scrollToElementId", "scrollanchor");
-            }
-            else
-            {
-                await Js.InvokeVoidAsync("changePreviewLanguage", IFrame, PreviewLang);
-            }
-        }
-        catch (Exception e)
-        {
-            IsPreviewing = false;
-            ErrorMessage = e.Message;
-            StateHasChanged();
-        }
-    }
-
-    private async Task Register()
-    {
-        if (string.IsNullOrWhiteSpace(PreviewUrl))
-            return;
-
-        try
-        {
-            var newDomain = await Domains.RegisterAsync(PreviewUrl);
-            Nav.NavigateTo($"/sites/{newDomain.Id}");
-        }
-        catch (Exception ex)
-        {
-            ErrorMessage = ex.Message;
-            PreviewUrl = "";
-        }
-    }
-
-    void Home()
-    {
-        IsPreviewing = false;
-        PreviewHtml = null;
+            ErrorMessage = "Please enter a valid URL.";
     }
 }

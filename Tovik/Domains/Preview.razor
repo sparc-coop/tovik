@@ -1,0 +1,145 @@
+﻿@using Sparc.Blossom.Content
+@using Tovik.Translation
+@page "/sites/{InitialUrl}"
+@layout EmptyLayout
+
+<div class="browser">
+    <header>
+        <nav>
+            <button @onclick=Back disabled="@(History.Count == 0)">
+                <img src="icons/ChevronLeft.svg" alt="Back" />
+            </button>
+        </nav>
+        <form @onsubmit=LoadPage>
+            <input @bind="Url" />
+        </form>
+        <ul>
+            @if (MySites.Count > 0)
+            {
+                <li>
+                    <button class="secondary-btn">My Sites</button>
+                </li>
+            }
+        </ul>
+    </header>
+    <iframe srcdoc="@Html" @ref=IFrame>
+    </iframe>
+    @if (Html != null)
+    {
+        <aside>
+            Note: This is a limited preview, so a few features might not work here. For the complete experience,
+            install Tovik on @Url.
+        </aside>
+    }
+</div>
+
+<footer>
+    <img id="grabber" src="./icons/Grabber.svg" alt="Grab to Scroll" class="grabber" />
+    <DomainSettings Domain="Domain" Page="Page" OnChange="LoadPage" OnLanguageChange="UpdateLanguage" />
+</footer>
+
+
+
+@inject TovikDomains Domains
+@inject TovikCrawler Crawler
+@code {
+    [Parameter] public string? InitialUrl { get; set; }
+    List<SparcDomain> MySites = [];
+    SparcDomain? Domain;
+    Page? Page;
+    List<string> History = [];
+    string Url = string.Empty;
+    string? Html;
+    string? ErrorMessage;
+    string? Lang;
+    ElementReference IFrame;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        MySites = await Domains.All();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        ErrorMessage = null;
+
+        if (!string.IsNullOrWhiteSpace(InitialUrl) && Url != InitialUrl)
+        {
+            Url = InitialUrl;
+            await LoadPage();
+        }
+        else
+        {
+            Url = "";
+            Html = null;
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await Js.InvokeVoidAsync("initPreview", DotNetObjectReference.Create(this));
+    }
+
+    async Task LoadPage()
+    {
+        if (string.IsNullOrWhiteSpace(Url))
+            return;
+
+        ErrorMessage = null;
+        Html = null;
+        if (string.IsNullOrWhiteSpace(Lang))
+            Lang = Sparc.Blossom.Content.Language.Random.Id;
+
+        (Domain, Page) = await Domains.GetDomainAndPage(Url);
+        if (Domain != null && !Domain.IsBlocked && Page != null)
+            Html = await Crawler.PreviewAsync(Domain, Page, Lang);
+        else
+            ErrorMessage = Domain?.IsBlocked == true 
+                ? "This domain is not compatible with Tovik."
+                : "Please enter a valid URL.";
+    }
+
+    async Task UpdateLanguage(Sparc.Blossom.Content.Language lang)
+    {
+        ErrorMessage = null;
+        Lang = lang.Id;
+        try
+        {
+            if (Html == null)
+                await LoadPage();
+            else
+                await Js.InvokeVoidAsync("changePreviewLanguage", IFrame, Lang);
+        }
+        catch (Exception e)
+        {
+            ErrorMessage = e.Message;
+        }
+    }
+
+    [JSInvokable]
+    public async Task UpdateUrl(string url)
+    {
+        if (url == Url)
+            return;
+
+        Url = url;
+        await LoadPage();
+        StateHasChanged();
+    }
+
+    void Back()
+    {
+        if (History.Count > 0)
+        {
+            var lastUrl = History.Last();
+            History.RemoveAt(History.Count - 1);
+            Nav.NavigateTo($"/preview?u={lastUrl}", false);
+        }
+        else
+        {
+            Nav.NavigateTo("/", false);
+        }
+    }
+}

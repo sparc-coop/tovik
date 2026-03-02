@@ -73,10 +73,6 @@ function initPreview(dotNet) {
             if (event.data.startsWith('tovik-url')) {
                 let url = event.data.replace('tovik-url:', '');
                 dotNet.invokeMethodAsync('UpdateUrl', url);
-            } else if (event.data.startsWith('tovik-translating')) {
-                dotNet.invokeMethodAsync('SetPreviewLoading', true);
-            } else if (event.data.startsWith('tovik-translated')) {
-                dotNet.invokeMethodAsync('SetPreviewLoading', false);
             }
         }
     });

@@ -39,9 +39,6 @@
     [Parameter][SupplyParameterFromQuery] public string? TierId { get; set; }
     [Parameter][SupplyParameterFromQuery] public string? PaymentIntentId { get; set; }
 
-    SparcProduct? Product;
-    ProductTier? Tier => Product?.Tiers.FirstOrDefault(t => t.Name == TierId);
-
     void ChangeTab(string tab)
     {
         if (tab == "Purchase")

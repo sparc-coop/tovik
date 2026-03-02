@@ -17,30 +17,32 @@
             } *@
 
 
-            <div class="preview">
-                <h3>Preview @Domain.Domain in other languages:</h3>
+            <section>
+                <header>
+                    <h3>Preview @Domain.Domain in Other Languages</h3>
+                </header>
                 <div>
                     <LanguageSelector OnLanguageChanged="OnLanguageChange" />
                 </div>
-            </div>
-
-            <section>
-                <header>
-                    <h3>Languages Translated</h3>
-                    <LanguageStats Domain="Domain" Page="Page" />
-                </header>
             </section>
 
             <section>
                 <header>
                     <h3>Add Exempt Words or Phrases</h3>
                     <p class="subheader">
-                        Do you have any words or phrases on this website 
+                        Do you have any words or phrases on this website
                         that you would like Tovik to ignore? Add them here!
-                        </p>
+                    </p>
                 </header>
 
                 <Exemptions Domain="Domain" OnChange="OnChange" />
+            </section>
+
+            <section>
+                <header>
+                    <h3>Languages Translated</h3>
+                </header>
+                <LanguageStats Domain="Domain" Page="Page" />
             </section>
         </div>
     }

@@ -1,0 +1,73 @@
+﻿.browser {
+    position: fixed;
+    top: 0;
+    height: calc(100dvh - 50px);
+    opacity: 1;
+    transition: opacity ease-in-out 1.5s;
+    z-index: 1700;
+    background-color: var(--blue-700);
+
+    > header {
+        display: grid;
+        grid-template-columns: 1fr 8fr 1fr;
+        gap: 32px;
+        align-items: center;
+        padding: 16px;
+
+        ul {
+            list-style: none;
+            display: flex;
+            gap: 8px;
+        }
+    }
+
+    iframe {
+        background-color: var(--blue-200);
+        display: block;
+        margin: 0;
+        width: 100cqw;
+        height: 100%;
+        box-sizing: border-box;
+        z-index: 1100;
+        border: 1px solid transparent;
+        border-radius: 10px 10px 0 0;
+        border-top-width: 0;
+    }
+
+    > aside {
+        position: absolute;
+        bottom: -32px;
+        right: 32px;
+        padding: 8px 16px;
+        background-color: var(--blue-600);
+        color: white;
+        max-width: 70vw;
+        font-size: 1.2rem;
+        border-radius: 16px;
+    }
+}
+
+footer {
+    margin-top: calc(100dvh - 100px);
+    width: 100cqw;
+    position: relative;
+    background-color: var(--blue-700);
+    color: white;
+    z-index: 1800;
+    font-size: 1.4rem;
+    padding: 48px 7.5vw 32px 7.5vw;
+    border-radius: 24px 24px 0 0;
+    box-sizing: border-box;
+
+    @media screen and (min-width: 800px) {
+        padding: 48px 32px 32px 32px;
+    }
+
+    .grabber {
+        width: 24px;
+        position: absolute;
+        top: 12px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}

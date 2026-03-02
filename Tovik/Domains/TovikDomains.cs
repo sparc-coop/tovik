@@ -36,8 +36,11 @@ public class TovikDomains(BlossomAggregateOptions<SparcDomain> options, IReposit
         return result.OrderByDescending(x => x.TovikUsage.Sum(y => y.Value)).ToList();
     }
 
-    public async Task<SparcDomain?> Verify(string url)
+    public async Task<SparcDomain?> Verify(string? url)
     {
+        if (url == null)
+            return null;
+        
         try
         {
             var domain = new SparcDomain(url);
@@ -53,6 +56,35 @@ public class TovikDomains(BlossomAggregateOptions<SparcDomain> options, IReposit
             return existing ?? domain;
         }
         catch { return null; }
+    }
+
+    public async Task<(SparcDomain? Domain, Page? Page)> GetDomainAndPage(string url)
+    {
+        var uri = SparcDomain.ToNormalizedUri(url);
+        if (uri == null)
+            return (null, null);
+
+        var domain = await Repository.Query
+            .Where(d => d.Domain == uri.Host)
+            .FirstOrDefaultAsync();
+
+        if (domain == null)
+        {
+            domain = new SparcDomain(uri.Host);
+            await Repository.AddAsync(domain);
+        }
+
+        var page = await pages.Query
+            .Where(p => p.Domain == domain.Domain && p.Path == uri.AbsolutePath)
+            .FirstOrDefaultAsync();
+
+        if (page == null)
+        {
+            page = new Page(domain.Domain, uri.AbsolutePath, uri.AbsolutePath);
+            await pages.AddAsync(page);
+        }
+
+        return (domain, page);
     }
 
     public async Task<SparcDomain> RegisterAsync(string domainName)
