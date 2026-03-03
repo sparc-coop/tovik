@@ -74,7 +74,13 @@
         width: auto;
         display: inline-flex;
         font-size: 1.6rem;
-        gap: 16px;
+        line-height: 100%;
+        gap: 12px;
+
+        img {
+            position: relative;
+            top: 1px;
+        }
     }
 }
 
@@ -94,9 +100,5 @@
 
     &:after {
         border-top: 5px solid white;
-    }
-
-    select {
-        background-color: var(--blue-600);
     }
 }

@@ -6,6 +6,9 @@
 <div class="browser">
     <header>
         <nav>
+            <a href="/">
+                <img src="/images/TovikHorizontal.svg" />
+            </a>
             <button @onclick=Back disabled="@(History.Count == 0)">
                 <img src="icons/ChevronLeft.svg" alt="Back" />
             </button>
@@ -20,6 +23,9 @@
                     <button class="secondary-btn">My Sites</button>
                 </li>
             }
+            <li>
+                <a class="button secondary-btn round-btn" href="/Questions">?</a>
+            </li>
         </ul>
     </header>
     <iframe srcdoc="@Html" @ref=IFrame>
@@ -39,7 +45,7 @@
         <h1>Preview How Tovik Works On Your Website</h1>
         <p>With Tovik, everyone can understand.</p>
     </header>
-    <DomainSettings Domain="Domain" Page="Page" OnChange="LoadPage" OnLanguageChange="UpdateLanguage" />
+    <DomainSettings Domain="Domain" Page="Page" OnChange="LoadPage" InitialLanguageId="@Lang" OnLanguageChange="UpdateLanguage" />
 </article>
 
 
@@ -67,6 +73,7 @@
     protected override async Task OnParametersSetAsync()
     {
         ErrorMessage = null;
+        Lang = Sparc.Blossom.Content.Language.Random.Id;
 
         if (!string.IsNullOrWhiteSpace(InitialUrl) && Url != InitialUrl)
         {
@@ -93,8 +100,6 @@
 
         ErrorMessage = null;
         Html = null;
-        if (string.IsNullOrWhiteSpace(Lang))
-            Lang = Sparc.Blossom.Content.Language.Random.Id;
 
         (Domain, Page) = await Domains.GetDomainAndPage(Url);
         if (Domain != null && !Domain.IsBlocked && Page != null)

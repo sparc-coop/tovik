@@ -72,6 +72,9 @@ p.tovik-translating, div.tovik-translating, span.tovik-translating {
 .language-select select {
   appearance: none;
 }
+.language-select optgroup, .language-select option {
+  background-color: var(--blue-600);
+}
 
 .currency-selector {
   background-color: var(--blue-600);
@@ -199,6 +202,17 @@ button.secondary-btn:hover, a.button.secondary-btn:hover {
   background-color: var(--blue-600);
   border-color: var(--blue-500);
   color: var(--blue-50);
+}
+button.round-btn, a.button.round-btn {
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 32px;
+  border: 1px solid var(--blue-600, #1F5068);
+  background: var(--blue-700, #07374F);
 }
 button.icon-btn, a.button.icon-btn {
   aspect-ratio: 1/1;

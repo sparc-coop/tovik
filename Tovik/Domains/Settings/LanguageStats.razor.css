@@ -5,6 +5,7 @@
 
     thead tr, tbody tr {
         display: grid;
+        box-sizing: border-box;
         width: 100%;
         grid-template-columns: 2fr 1fr 1fr 1fr;
         padding: 16px 24px;
@@ -55,4 +56,8 @@
         align-items: center;
         gap: 8px;
     }
+}
+
+aside {
+    padding: 24px;
 }

@@ -25,7 +25,7 @@
                 </div>
             </header>
             <div>
-                <LanguageSelector OnLanguageChanged="OnLanguageChange" />
+                <LanguageSelector InitialLanguageId="@InitialLanguageId" OnLanguageChanged="OnLanguageChange" />
             </div>
         </section>
 
@@ -88,6 +88,7 @@
     [Parameter] public Page? Page { get; set; }
     [Parameter] public EventCallback<Language> OnLanguageChange { get; set; }
     [Parameter] public EventCallback OnChange { get; set; }
+    [Parameter] public string? InitialLanguageId { get; set; }
     bool IsMyDomain;
 
     protected override async Task OnInitializedAsync()

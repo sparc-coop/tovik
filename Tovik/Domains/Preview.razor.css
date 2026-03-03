@@ -14,9 +14,16 @@
         align-items: center;
         padding: 16px;
 
+        nav {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
         ul {
             list-style: none;
             display: flex;
+            justify-content: flex-end;
             gap: 8px;
         }
     }
