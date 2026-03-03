@@ -81,3 +81,7 @@ function initPreview(dotNet) {
 function changePreviewLanguage(iframe, lang) {
     iframe.contentWindow.postMessage('tovik-lang:' + lang);
 }
+
+function forceReloadPreview(iframe, lang) {
+    iframe.contentWindow.postMessage('tovik-forcereload');
+}

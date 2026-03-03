@@ -1,6 +1,6 @@
 import MD5 from "./MD5.js";
 import db from './TovikDb.js';
-const baseUrl = window.location.href.includes('localhost')
+const baseUrl = true || window.location.href.includes('localhost')
     ? 'https://localhost:7185'
     : 'https://engine.sparc.coop';
 export default class TovikEngine {
@@ -25,6 +25,10 @@ export default class TovikEngine {
                 if (lang && lang.startsWith && lang.startsWith('tovik-lang')) {
                     lang = lang.split(':')[1];
                     await this.setLanguage(lang);
+                }
+                else if (event['data'] == 'tovik-forcereload') {
+                    await db.translations.clear();
+                    window.location.reload();
                 }
             });
             return this.userLang;

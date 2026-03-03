@@ -1,32 +1,33 @@
-﻿@if (Domain.Exemptions.Any())
-{
-    <table class="exempt-table">
-        <thead>
+﻿<table class="exempt-table">
+    <thead>
+        <tr>
+            <td>Word or Phrase</td>
+            <td></td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var word in Domain.Settings.IgnoreList)
+        {
             <tr>
-                <td>Word or Phrase</td>
-                <td></td>
+                <td>@word</td>
+                <td>
+                    <button class="delete-exempt-btn secondary-btn round-btn" @onclick="(() => Delete(word))"><TrashIcon /></button>
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var word in Domain.Exemptions)
-            {
-                <tr>
-                    <td>@word</td>
-                    <td>
-                        <div class="exempt-actions">
-                            <button class="delete-exempt-btn secondary-btn" @onclick="(() => Delete(word))"><TrashIcon /></button>
-                        </div>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td>
+                <input type="text" @bind=NewExemption placeholder="Enter a word or phrase..." />
+            </td>
+            <td>
+                <button class="add-btn secondary-btn" @onclick=Add>Add</button>
+            </td>
+        </tr>
 
-<div class="add">
-    <input type="text" @bind=NewExemption placeholder="Enter a word or phrase..." />
-    <button class="add-btn secondary-btn" @onclick=Add>Add</button>
-</div>
+    </tfoot>
+</table>
 
 @inject TovikDomains TovikDomains
 @code {
@@ -38,7 +39,7 @@
     {
         if (Domain != null && !string.IsNullOrWhiteSpace(NewExemption))
         {
-            Domain.Exemptions.Add(NewExemption);
+            Domain.AddToIgnoreList(NewExemption);
             await TovikDomains.Update(Domain);
             NewExemption = string.Empty; // Clear the input after adding
             await OnChange.InvokeAsync();
@@ -47,11 +48,8 @@
 
     async Task Delete(string word)
     {
-        if (Domain != null && Domain.Exemptions.Contains(word))
-        {
-            Domain.Exemptions.Remove(word);
-            await TovikDomains.Update(Domain);
-            await OnChange.InvokeAsync();
-        }
+        Domain.RemoveFromIgnoreList(word);
+        await TovikDomains.Update(Domain);
+        await OnChange.InvokeAsync();
     }
 }

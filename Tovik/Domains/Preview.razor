@@ -45,7 +45,7 @@
         <h1>Preview How Tovik Works On Your Website</h1>
         <p>With Tovik, everyone can understand.</p>
     </header>
-    <DomainSettings Domain="Domain" Page="Page" OnChange="LoadPage" InitialLanguageId="@Lang" OnLanguageChange="UpdateLanguage" />
+    <DomainSettings Domain="Domain" Page="Page" OnChange="ForceReload" InitialLanguageId="@Lang" OnLanguageChange="UpdateLanguage" />
 </article>
 
 
@@ -91,6 +91,12 @@
     {
         if (firstRender)
             await Js.InvokeVoidAsync("initPreview", DotNetObjectReference.Create(this));
+    }
+
+    async Task ForceReload()
+    {
+        if (Html != null)
+            await Js.InvokeVoidAsync("forceReloadPreview", IFrame);
     }
 
     async Task LoadPage()

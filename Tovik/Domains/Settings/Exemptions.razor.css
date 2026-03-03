@@ -1,35 +1,21 @@
 ﻿table {
-    tbody {
-        width: 100%;
+    width: 100%;
 
-        tr {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    tr {
+        width: 100%;
+        display: grid;
+        grid-template-columns: auto 100px;
+        gap: 16px;
     }
 
     td {
-        padding: 0;
+        padding: 0 8px;
+        display: flex;
+        align-items: center;
+
+        &:last-child {
+            justify-content: flex-end;
+        }
     }
 }
 
-.exempt-actions {
-    display: flex;
-    flex-direction: row;
-    justify-content: end;
-    gap: 8px;
-
-    button {
-        aspect-ratio: 1/1;
-        height: 48px;
-        padding: 0;
-    }
-}
-
-.add {
-    display: grid;
-    grid-template-columns: auto 100px;
-    gap: 16px;
-}

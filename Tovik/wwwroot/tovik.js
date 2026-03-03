@@ -5967,9 +5967,8 @@
         return (p(a) + p(b) + p(c) + p(d)).toLowerCase();
     }
 
-    const baseUrl = window.location.href.includes('localhost')
-        ? 'https://localhost:7185'
-        : 'https://engine.sparc.coop';
+    const baseUrl = 'https://localhost:7185'
+        ;
     class TovikEngine {
         static userLang;
         static documentLang;
@@ -5992,6 +5991,10 @@
                     if (lang && lang.startsWith && lang.startsWith('tovik-lang')) {
                         lang = lang.split(':')[1];
                         await this.setLanguage(lang);
+                    }
+                    else if (event['data'] == 'tovik-forcereload') {
+                        await db.translations.clear();
+                        window.location.reload();
                     }
                 });
                 return this.userLang;
