@@ -1,18 +1,41 @@
 ﻿@using Sparc.Blossom.Content
-<dl class="stats">
+<table>
+    <thead>
+        <tr>
+            <th>
+                <h4>Language</h4>
+                Dialect
+            </th>
+            <th>
+                Page Count<br />
+                (Up to @Domain.Product("Tovik")?.MaxUsage)
+            </th>
+            <th>
+                Total Word Count<br />
+                (Unlimited)
+            </th>
+            <th>
+                Last Translated
+            </th>
+        </tr>
+    </thead>
+    <tbody>
     @foreach (var language in Stats.OrderByDescending(x => x.Value))
     {
-        <dt title="@language.Key.NativeName (@language.Key.DisplayName)">
-            @language.Key.DisplayName
-        </dt>
-        <dd title="@(language.Value) visits (@FillPercentage(language.Key))">
-            <div class="meter-container">
-                <div class="meter-fill" style="width: @FillPercentage(language.Key)"></div>
-            </div>
-            <span>@language.Value</span>
-        </dd>
+        <tr>
+            <td>
+                <h4>@language.Key.LanguageDisplayName</h4>
+                @language.Key.DialectDisplayName
+            </td>
+            <td>
+                @language.Value
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
     }
-</dl>
+    </tbody>
+</table>
 
 @if (!Stats.Any())
 {

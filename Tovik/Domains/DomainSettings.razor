@@ -6,8 +6,7 @@
 <article class="domain-page">
     @if (Domain != null)
     {
-        <div class="page-container">
-            @* @if (Domain.DateConnected == null)
+        @* @if (Domain.DateConnected == null)
             {
                 <DomainCard Domain="Domain" PageType="Page" Languages="Languages" />
             }
@@ -17,43 +16,85 @@
             } *@
 
 
-            <section>
-                <header>
-                    <h3>Preview @Domain.Domain in Other Languages</h3>
-                </header>
+        <section>
+            <header>
+                <img src="/images/TranslationIcon.svg" alt="Languages Supported" />
                 <div>
-                    <LanguageSelector OnLanguageChanged="OnLanguageChange" />
+                    <h3>Languages Supported</h3>
+                    <p>Choose one of the 200+ languages and 600+ dialects to preview your Tovik-enabled site as a native speaker would see it.</p>
                 </div>
-            </section>
+            </header>
+            <div>
+                <LanguageSelector OnLanguageChanged="OnLanguageChange" />
+            </div>
+        </section>
 
-            <section>
-                <header>
-                    <h3>Add Exempt Words or Phrases</h3>
-                    <p class="subheader">
-                        Do you have any words or phrases on this website
-                        that you would like Tovik to ignore? Add them here!
-                    </p>
-                </header>
-
+        <section>
+            <header>
+                <img src="/icons/Ignore.svg" alt="Ignore Words or Phrases" />
+                <div>
+                    <h3>Ignore Words or Phrases</h3>
+                    <p>Add any words or phrases you'd like to not be translated on your site (brand names, etc.).</p>
+                </div>
+            </header>
+            <div>
                 <Exemptions Domain="Domain" OnChange="OnChange" />
-            </section>
+            </div>
+        </section>
 
-            <section>
-                <header>
-                    <h3>Languages Translated</h3>
-                </header>
+        <section>
+            <header>
+                <img src="/images/WorldIcon.svg" alt="Active Languages" />
+                <div>
+                    <h3>Active Languages</h3>
+                    <p>Track translation metrics by language. Note that language page counts may overlap.</p>
+                </div>
+            </header>
+            <div>
                 <LanguageStats Domain="Domain" Page="Page" />
-            </section>
-        </div>
+            </div>
+        </section>
+
+        @if (!IsMyDomain)
+        {
+            <div class="cta">
+                <div>
+                    <h4>Like what you see? Install Tovik on your site to make it live!</h4>
+                    <p>
+                        If you have any questions, please visit our
+                        <a href="/Questions">FAQ page</a>
+                        or contact
+                        <a href="mailto:support@sparc.coop">support@sparc.coop</a>.
+                    </p>
+                </div>
+                <div class="buttons">
+                    <a class="button primary-btn" href="/Install?domain=@Domain.Domain">
+                        Install for Free
+                    </a>
+                    <a class="button secondary-btn" href="/Pricing?domain=@Domain.Domain">
+                        See Pricing
+                        <img src="/icons/ChevronRight.svg" alt="Go to Pricing Page" />
+                    </a>
+                </div>
+            </div>
+        }
     }
 </article>
 
 @inject TovikDomains TovikDomains
+@inject ISparcAura Aura
 @code {
     [Parameter] public required SparcDomain Domain { get; set; }
     [Parameter] public Page? Page { get; set; }
     [Parameter] public EventCallback<Language> OnLanguageChange { get; set; }
     [Parameter] public EventCallback OnChange { get; set; }
+    bool IsMyDomain;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var user = await Aura.UserInfo();
+        IsMyDomain = Domain?.TovikUserId == user?.Id;
+    }
 
     // async Task Preview()
     // {

@@ -1,8 +1,42 @@
-﻿.stats {
-    display: grid;
-    grid-template-columns: 1fr;
-    align-items: center;
-    gap: 16px;
+﻿table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+
+    thead tr, tbody tr {
+        display: grid;
+        width: 100%;
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+        padding: 16px 24px;
+    }
+
+    thead tr {
+        border-radius: 8px;
+        background: var(--blue-800);
+    }
+
+    th, td {
+        font-size: 1.6rem;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        &:first-child {
+            align-items: flex-start;
+        }
+    }
+
+    h4 {
+        font-size: 2rem;
+        margin-bottom: 8px;
+        line-height: 100%;
+    }
+
+    h5 {
+        font-size: 16px;
+        font-weight: 400;
+    }
 
     @media screen and (min-width: 800px) {
         grid-template-columns: 3fr 7fr;
