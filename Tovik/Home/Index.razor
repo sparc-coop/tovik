@@ -4,24 +4,22 @@
 @using Tovik.Translation
 
 <article>
-    <section>
-        <img src="/images/TovikChar.svg" alt="Tovik" />
-        <h1>Your website speaks your language.</h1>
-        <h2>Does it speak theirs?</h2>
-        <form @onsubmit=GoToPreview>
-            <input type="text" placeholder="Enter your URL" @bind=Url required />
-            <button>
-                Preview
-            </button>
-        </form>
-        @if (ErrorMessage != null)
-        {
-            <span class="error-message">@ErrorMessage</span>
-        }
-        <h3>
-            With Tovik, everyone can understand.
-        </h3>
-    </section>
+    <img src="/images/TovikChar.svg" alt="Tovik" />
+    <h1>Your website speaks your language.</h1>
+    <h2>Does it speak theirs?</h2>
+    <form @onsubmit=GoToPreview>
+        <input type="text" placeholder="Enter your URL" @bind=Url required />
+        <button>
+            Preview
+        </button>
+    </form>
+    @if (ErrorMessage != null)
+    {
+        <span class="error-message">@ErrorMessage</span>
+    }
+    <h3>
+        With Tovik, everyone can understand.
+    </h3>
 </article>
 
 

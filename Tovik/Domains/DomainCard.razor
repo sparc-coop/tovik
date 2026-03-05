@@ -1,72 +1,20 @@
 ﻿@using Sparc.Blossom.Content
 
-<div id="@Domain.Id" class="domain-card @("domain-card__" + PageType)">
+<article>
     <header>
         <img src="@Domain.FaviconUri" alt="@Domain.Domain" onerror="this.src='/images/Star.svg'" />
         <h2>
             @Domain.Domain
-            @if (Domain.DateConnected != null)
-            {
-                <VerifiedIcon />
-            }
         </h2>
-
-        <dl>
-            <dt>Edition:</dt>
-            <dd>@(License?.TierId) (up to @License?.MaxUsage pages)</dd>
-            <dt>Date Activated:</dt>
-            <dd class="@(Domain.DateConnected == null ? "no" : "")">@(Domain.DateConnected != null ? Domain.DateConnected.Value.ToShortDateString() : "Not Yet Activated")</dd>
-            <dt>Last Translation Activity:</dt>
-            <dd class="@(Domain.LastTranslatedDate == null ? "no" : "")">@(Domain.LastTranslatedDate == null ? "Never" : Domain.LastTranslatedDate.Value.ToShortDateString())</dd>
-        </dl>
-
-        @if (License != null && License.TierId != "Premium" && OnUpgrade.HasDelegate)
-        {
-            <a class="button primary-btn" href="/Pricing?domain=@Domain.Domain">Upgrade Tovik</a>
-        }
     </header>
 
-    @if (PageType == "home")
-    {
-        <ul class="languages">
-            @foreach (var language in Domain.PagesPerLanguage)
-            {
-                <li>@Language(language.Key)?.DisplayName</li>
-            }
-        </ul>
-    }
-    else
-    {
-        @if (!string.IsNullOrEmpty(ErrorMessage))
-        {
-            <p class="error-message">@ErrorMessage</p>
-        }
-    }
+    <Tovik.Domains.Settings.UsageMeter Domain="Domain" />
 
     <footer>
-        <ul>
-            <li>
-                <PageIcon />
-                Pages Translated
-                <span>@Domain.TovikUsage.ToString("N0") / @Domain.Product("Tovik")?.MaxUsage</span>
-            </li>
-            <li>
-                <LanguageIcon />
-                Languages Translated
-                <span>@Domain.PagesPerLanguage.Count / @Sparc.Blossom.Content.Language.Count</span>
-            </li>
-        </ul>
-
-        @if (PageType == "home")
-        {
-            <button class="actions-btn" data-id="@Domain.Id" @onclick='() => Nav.NavigateTo($"/sites/{Domain.Id}")'>Manage</button>
-        }
-        else
-        {
-            <button @onclick="ToggleDeleteModal" class="delete-btn secondary-btn"><TrashIcon /></button>
-        }
+        <a href="@($"/sites/{Domain.Id}/license")" class="button secondary-btn">Manage License</a>
+        <a href="@($"/sites/{Domain.Id}/settings")" class="button">Translation Settings</a>
     </footer>
-</div>
+</article>
 
 <DeleteModal Domain=Domain ShowModal=showDeleteModal OnClose=ToggleDeleteModal OnDelete="DeleteDomain" />
 

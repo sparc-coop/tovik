@@ -1,49 +1,13 @@
-﻿<header>
-    <a href="/">
-        <img src="/images/TovikWordmark.svg" alt="Tovik" />
-    </a>
-    <nav>
-        <ul>
-            <li>
-                <NavLink href="/sites">My Sites</NavLink>
-            </li>
-            <li>
-                <NavLink href="/questions">Questions</NavLink>
-            </li>
-            <li>
-                <NavLink href="/pricing">Pricing</NavLink>
-            </li>
-        </ul>
-    </nav>
-</header>
-
-@inject Tovik.Domains.TovikDomains TovikDomains
-@code {
-    bool showMobileMenu;
-    bool showOverlay;
-    bool hideOverlay;
-    List<SparcDomain> Domains = [];
-
-    protected override async Task OnInitializedAsync()
-    {
-        Domains = await TovikDomains.All();
-    }
-
-    async Task ToggleMobileMenu()
-    {
-        showMobileMenu = !showMobileMenu;
-
-        if (showMobileMenu)
-        {
-            showOverlay = true;
-            hideOverlay = false;
-        } else
-        {
-            hideOverlay = true;
-            StateHasChanged();
-            await Task.Delay(800);
-            showOverlay = false;
-            hideOverlay = false;
-        }
-    }
-}
+﻿<nav>
+    <ul>
+        <li>
+            <NavLink href="/sites">My Sites</NavLink>
+        </li>
+        <li>
+            <NavLink href="/questions">Questions</NavLink>
+        </li>
+        <li>
+            <NavLink href="/pricing">Pricing</NavLink>
+        </li>
+    </ul>
+</nav>

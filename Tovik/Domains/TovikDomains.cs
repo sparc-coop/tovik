@@ -105,6 +105,9 @@ public class TovikDomains(BlossomAggregateOptions<SparcDomain> options, IReposit
             await Repository.AddAsync(existing);
         }
 
+        if (existing.TovikUserId != null && existing.TovikUserId != User.Id())
+            throw new Exception("This domain is already registered with Tovik.");
+
         return existing;
     }
 

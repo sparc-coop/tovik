@@ -3,45 +3,32 @@
 @using Tovik.Installation
 @layout MainLayout
 
-<PageTitle>Tovik - My Websites</PageTitle>
+<PageTitle>Tovik - My Sites</PageTitle>
 
-<article class="home">
-    <div class="page-container">
-        @if (Limit > 0 && !Domains.Any())
+<article>
+    <header>
+        <h1>My Sites</h1>
+        <p>Here is an overview of your Tovik-activated domains and translation usage.</p>
+    </header>
+    <section>
+        @foreach (var domain in Domains)
         {
-            <section class="welcome">
-                <img src="/images/Star.svg" alt="Star" />
-                <header>
-                    <h3>Welcome to Tovik!</h3>
-                </header>
-                <p>
-                    We're so happy you're here.
-                </p>
-                <p>
-                    Tovik is designed to make it easy to translate your website into multiple languages, so you can reach a global audience without the hassle of managing translations manually.
-                </p>
-                <p>
-                    To get started, <span>enter the domain name</span> for the website where you'd like to install Tovik. Next, we'll guide you through adding a single line of code to get Tovik up and running.
-                </p>
-            </section>
+            <DomainCard Domain=domain />
         }
 
-        <section class="manage-domains">
-            <header>
-                <h3>My Websites</h3>
-            </header>
-            <p>
-                Manage your Tovik-enabled websites here. You can add as many domains as you'd like!
-            </p>
+        <button class="secondary-btn">
+            <img src="/icons/Add.svg" alt="Add a New Domain" />
+            <div>
+                Add a New Domain
+                <p>Start for free</p>
+            </div>
+        </button>
 
-            <Tovik.Domains.AddDomain />
-
-            @foreach (var domain in Domains)
-            {
-                <DomainCard Domain=domain PageType="home" Languages=Languages />
-            }
-        </section>
-    </div>
+        @if (Error != null)
+        {
+            <div class="error-message">@Error</div>
+        }
+    </section>
 </article>
 
 @inject Tovik.Domains.TovikDomains TovikDomains
@@ -51,22 +38,37 @@
 
 @code {
     List<SparcDomain> Domains = new();
-    IEnumerable<Sparc.Blossom.Content.Language> Languages = [];
-    [SupplyParameterFromQuery] public string? Welcome { get; set; }
-
-    int Usage;
-    int Limit;
+    bool IsVerifying;
+    string NewDomain = "";
+    string? Error;
 
     protected override async Task OnInitializedAsync()
     {
         await LoadDomains();
-        Limit = Domains.Sum(x => x.Products.Sum(y => y.MaxUsage));
-        Usage = Domains.Sum(d => d.TovikUsage);
-        Languages = await Tovik.GetLanguages();
     }
 
     private async Task LoadDomains()
     {
         Domains = await TovikDomains.All();
+    }
+
+    private async Task Add()
+    {
+        IsVerifying = true;
+        StateHasChanged();
+
+        try
+        {
+            var newDomain = await TovikDomains.RegisterAsync(NewDomain);
+            NewDomain = "";
+            Nav.NavigateTo($"/sites/{newDomain.Id}");
+        }
+        catch (Exception ex)
+        {
+            Error = ex.Message;
+            NewDomain = "";
+        }
+
+        IsVerifying = false;
     }
 }

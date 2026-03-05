@@ -6,14 +6,14 @@
 <article class="domain-page">
     @if (Domain != null)
     {
-        @* @if (Domain.DateConnected == null)
-            {
-                <DomainCard Domain="Domain" PageType="Page" Languages="Languages" />
-            }
-            else
-            {
-                <DomainCard Domain="Domain" PageType="Page" Languages="Languages" OnUpgrade="Upgrade" />
-            } *@
+       @*  <dl>
+            <dt>Edition:</dt>
+            <dd>@(License?.TierId) (up to @License?.MaxUsage pages)</dd>
+            <dt>Date Activated:</dt>
+            <dd class="@(Domain.DateConnected == null ? "no" : "")">@(Domain.DateConnected != null ? Domain.DateConnected.Value.ToShortDateString() : "Not Yet Activated")</dd>
+            <dt>Last Translation Activity:</dt>
+            <dd class="@(Domain.LastTranslatedDate == null ? "no" : "")">@(Domain.LastTranslatedDate == null ? "Never" : Domain.LastTranslatedDate.Value.ToShortDateString())</dd>
+        </dl> *@
 
 
         <section>
