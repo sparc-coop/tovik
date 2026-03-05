@@ -35,13 +35,26 @@
 
     async Task GoToPreview()
     {
+        if (Url == null)
+        {
+            ErrorMessage = "Please enter a URL.";
+            return;
+        }
+
         ErrorMessage = null;
         StateHasChanged();
 
-        var domain = await Domains.Verify(Url);
-        if (domain != null)
-            Nav.NavigateTo($"/sites/{Url}");
-        else
-            ErrorMessage = "Please enter a valid URL.";
+        try
+        {
+            var domain = await Domains.RegisterAsync(Url);
+            if (domain != null)
+                Nav.NavigateTo($"/sites/{domain.Id}/preview");
+            else
+                ErrorMessage = "Please enter a valid URL.";
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = ex.Message;
+        }
     }
 }

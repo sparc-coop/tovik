@@ -16,7 +16,7 @@
             <DomainCard Domain=domain />
         }
 
-        <button class="secondary-btn">
+        <button class="secondary-btn" @onclick=Add>
             <img src="/icons/Add.svg" alt="Add a New Domain" />
             <div>
                 Add a New Domain
@@ -54,21 +54,6 @@
 
     private async Task Add()
     {
-        IsVerifying = true;
-        StateHasChanged();
-
-        try
-        {
-            var newDomain = await TovikDomains.RegisterAsync(NewDomain);
-            NewDomain = "";
-            Nav.NavigateTo($"/sites/{newDomain.Id}");
-        }
-        catch (Exception ex)
-        {
-            Error = ex.Message;
-            NewDomain = "";
-        }
-
-        IsVerifying = false;
+        Nav.NavigateTo("/");
     }
 }

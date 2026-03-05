@@ -1,6 +1,6 @@
 ﻿@using Sparc.Blossom.Content
 @using Tovik.Translation
-@page "/sites/{InitialUrl}"
+@page "/sites/{Id}/preview"
 @layout EmptyLayout
 
 <div class="browser">
@@ -16,17 +16,6 @@
         <form @onsubmit=LoadPage>
             <input @bind="Url" />
         </form>
-        <ul>
-            @if (MySites.Count > 0)
-            {
-                <li>
-                    <button class="secondary-btn">My Sites</button>
-                </li>
-            }
-            <li>
-                <a class="button secondary-btn round-btn" href="/Questions">?</a>
-            </li>
-        </ul>
     </header>
     <iframe srcdoc="@Html" @ref=IFrame>
     </iframe>
@@ -53,8 +42,7 @@
 @inject TovikDomains Domains
 @inject TovikCrawler Crawler
 @code {
-    [Parameter] public string? InitialUrl { get; set; }
-    List<SparcDomain> MySites = [];
+    [Parameter] public required string Id { get; set; }
     SparcDomain? Domain;
     Page? Page;
     List<string> History = [];
@@ -65,25 +53,16 @@
     ElementReference IFrame;
 
 
-    protected override async Task OnInitializedAsync()
-    {
-        MySites = await Domains.All();
-    }
-
     protected override async Task OnParametersSetAsync()
     {
         ErrorMessage = null;
         Lang = Sparc.Blossom.Content.Language.Random.Id;
+        Domain = await Domains.Get(Id);
 
-        if (!string.IsNullOrWhiteSpace(InitialUrl) && Url != InitialUrl)
+        if (Domain != null)
         {
-            Url = InitialUrl;
+            Url = Domain.Domain;
             await LoadPage();
-        }
-        else
-        {
-            Url = "";
-            Html = null;
         }
     }
 
@@ -111,7 +90,7 @@
         if (Domain != null && !Domain.IsBlocked && Page != null)
             Html = await Crawler.PreviewAsync(Domain, Page, Lang);
         else
-            ErrorMessage = Domain?.IsBlocked == true 
+            ErrorMessage = Domain?.IsBlocked == true
                 ? "This domain is not compatible with Tovik."
                 : "Please enter a valid URL.";
     }

@@ -10,15 +10,25 @@
 
     <Tovik.Domains.Settings.UsageMeter Domain="Domain" />
 
-    <footer>
-        <a href="@($"/sites/{Domain.Id}/license")" class="button secondary-btn">Manage License</a>
-        <a href="@($"/sites/{Domain.Id}/settings")" class="button">Translation Settings</a>
-    </footer>
+    @if (Edition == "Preview")
+    {
+        <footer>
+            <a href="@($"/sites/{Domain.Id}/license")" class="button secondary-btn">Manage License</a>
+            <a href="@($"/sites/{Domain.Id}/preview")" class="button">Preview</a>
+        </footer>
+    }
+    else
+    {
+        <footer>
+            <a href="@($"/sites/{Domain.Id}/license")" class="button secondary-btn">Manage License</a>
+            <a href="@($"/sites/{Domain.Id}/settings")" class="button">Translation Settings</a>
+        </footer>
+    }
 </article>
 
 <DeleteModal Domain=Domain ShowModal=showDeleteModal OnClose=ToggleDeleteModal OnDelete="DeleteDomain" />
 
-@inject Tovik.Domains.TovikDomains TovikDomains
+@inject Tovik.Domains.TovikDomains TovikDomains 
 @code {
     [Parameter] public required SparcDomain Domain { get; set; }
     [Parameter] public required IEnumerable<Language> Languages { get; set; }
@@ -27,6 +37,7 @@
     string? ErrorMessage;
     bool IsSidebarOpen = false;
     SparcLicense? License => Domain.Product("Tovik");
+    string Edition => Domain.Product("Tovik")?.TierId ?? "Preview";
 
     bool showDeleteModal = false;
 

@@ -4,13 +4,13 @@ using Sparc.Blossom.Data;
 
 namespace Tovik.Domains;
 
-public class TovikDomains(BlossomAggregateOptions<SparcDomain> options, IRepository<Page> pages) 
+public class TovikDomains(BlossomAggregateOptions<SparcDomain> options, IRepository<Page> pages)
     : BlossomAggregate<SparcDomain>(options)
 {
-   public async Task<List<SparcDomain>> All()
-        => await Repository.Query
-            .Where(x => x.TovikUserId == User.Id())
-            .ToListAsync();
+    public async Task<List<SparcDomain>> All()
+         => await Repository.Query
+             .Where(x => x.TovikUserId == User.Id() || x.Users.Contains(User.Id()))
+             .ToListAsync();
 
     public async Task<Page> GetPage(string domainName, string path)
     {
@@ -40,7 +40,7 @@ public class TovikDomains(BlossomAggregateOptions<SparcDomain> options, IReposit
     {
         if (url == null)
             return null;
-        
+
         try
         {
             var domain = new SparcDomain(url);
@@ -89,9 +89,9 @@ public class TovikDomains(BlossomAggregateOptions<SparcDomain> options, IReposit
 
     public async Task<SparcDomain> RegisterAsync(string domainName)
     {
-        var host = SparcDomain.Normalize(domainName) 
+        var host = SparcDomain.Normalize(domainName)
             ?? throw new ArgumentException("Invalid domain name.", nameof(domainName));
-        
+
         var existing = await Repository.Query
             .Where(d => d.Domain == host)
             .FirstOrDefaultAsync();
@@ -100,12 +100,18 @@ public class TovikDomains(BlossomAggregateOptions<SparcDomain> options, IReposit
         {
             existing = new SparcDomain(host)
             {
-                TovikUserId = User.Id()
+                Users = [User.Id()]
             };
             await Repository.AddAsync(existing);
         }
 
-        if (existing.TovikUserId != null && existing.TovikUserId != User.Id())
+        if (existing.TovikUserId == null && !existing.Users.Contains(User.Id()))
+        {
+            existing.Users.Add(User.Id());
+            await Repository.UpdateAsync(existing);
+        }
+
+        if (!existing.CanBeAccessedBy(User))
             throw new Exception("This domain is already registered with Tovik.");
 
         return existing;
@@ -113,7 +119,10 @@ public class TovikDomains(BlossomAggregateOptions<SparcDomain> options, IReposit
 
     public async Task DeleteAsync(SparcDomain domain)
     {
-        domain.TovikUserId = null;
-        await Repository.UpdateAsync(domain);
+        if (domain.Users.Contains(User.Id()))
+        {
+            domain.Users.Remove(User.Id());
+            await Repository.UpdateAsync(domain);
+        }
     }
 }
