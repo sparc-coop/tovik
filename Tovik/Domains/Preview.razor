@@ -4,21 +4,20 @@
 @layout EmptyLayout
 
 <div class="browser">
-    <header>
-        <nav>
-            <a href="/">
-                <img src="/images/TovikHorizontal.svg" />
-            </a>
-            <button @onclick=Back disabled="@(History.Count == 0)">
-                <img src="icons/ChevronLeft.svg" alt="Back" />
-            </button>
-        </nav>
-        <form @onsubmit=LoadPage>
-            <input @bind="Url" />
-        </form>
-    </header>
     <iframe srcdoc="@Html" @ref=IFrame>
     </iframe>
+
+    <article>
+        <a href="/sites" class="back">
+            <img src="/icons/ChevronLeft.svg" alt="Back" />
+            Back to My Sites
+        </a>
+        <header>
+            <h1>Preview How Tovik Works on @(Domain?.Domain ?? "Your Website")</h1>
+            <p>With Tovik, everyone can understand.</p>
+        </header>
+        <DomainSettings Domain="Domain" Page="Page" OnChange="ForceReload" InitialLanguageId="@Lang" OnLanguageChange="UpdateLanguage" />
+    </article>
     @if (Html != null)
     {
         <aside>
@@ -27,17 +26,6 @@
         </aside>
     }
 </div>
-
-<article>
-    <img id="grabber" src="./icons/Grabber.svg" alt="Grab to Scroll" class="grabber" />
-    <header>
-        <h1>Preview How Tovik Works On Your Website</h1>
-        <p>With Tovik, everyone can understand.</p>
-    </header>
-    <DomainSettings Domain="Domain" Page="Page" OnChange="ForceReload" InitialLanguageId="@Lang" OnLanguageChange="UpdateLanguage" />
-</article>
-
-
 
 @inject TovikDomains Domains
 @inject TovikCrawler Crawler

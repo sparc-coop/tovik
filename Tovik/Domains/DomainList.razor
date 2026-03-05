@@ -11,7 +11,7 @@
         <p>Here is an overview of your Tovik-activated domains and translation usage.</p>
     </header>
     <section>
-        @foreach (var domain in Domains)
+        @foreach (var domain in Domains.OrderByDescending(x => x.Product("Tovik")?.MaxUsage))
         {
             <DomainCard Domain=domain />
         }

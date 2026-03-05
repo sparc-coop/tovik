@@ -1,73 +1,51 @@
 ﻿.browser {
-    position: fixed;
-    top: 0;
-    height: calc(100dvh - 50px);
-    opacity: 1;
-    transition: opacity ease-in-out 1.5s;
+    margin-top: 70px;
+    height: calc(100cqh - 70px);
+    width: 100cqw;
     z-index: 1700;
     background-color: var(--blue-700);
-
-    > header {
-        display: grid;
-        grid-template-columns: 1fr 8fr 1fr;
-        gap: 32px;
-        align-items: center;
-        padding: 16px;
-
-        nav {
-            display: flex;
-            gap: 32px;
-            align-items: center;
-        }
-
-        ul {
-            list-style: none;
-            display: flex;
-            justify-content: flex-end;
-            gap: 8px;
-        }
-    }
+    display: grid;
+    grid-template-columns: auto minmax(30vw, 600px);
 
     iframe {
         background-color: var(--blue-200);
         display: block;
         margin: 0;
-        width: 100cqw;
+        width: 100%;
         height: 100%;
         box-sizing: border-box;
         z-index: 1100;
-        border: 1px solid transparent;
-        border-radius: 10px 10px 0 0;
-        border-top-width: 0;
-    }
-
-    > aside {
-        position: absolute;
-        bottom: -32px;
-        right: 32px;
-        padding: 8px 16px;
-        background-color: var(--blue-600);
-        color: white;
-        max-width: 70vw;
-        font-size: 1.2rem;
-        border-radius: 16px;
     }
 }
 
+aside {
+    position: fixed;
+    bottom: 16px;
+    left: 16px;
+    padding: 8px 16px;
+    background-color: var(--blue-600);
+    color: white;
+    max-width: 70vw;
+    font-size: 1.2rem;
+    border-radius: 16px;
+    z-index: 2100;
+}
+
+
 article {
-    margin-top: calc(100dvh - 100px);
-    width: 100cqw;
     position: relative;
     background-color: var(--blue-700);
-    color: white;
+    height: 100%;
+    overflow-y: auto;
     z-index: 1800;
-    font-size: 1.4rem;
-    padding: 32px max(calc(50vw - 600px), 3vw);
+    padding: 32px 40px;
 
-    border-radius: 24px 24px 0 0;
-    box-sizing: border-box;
+    h1 {
+        font-size: 2.5rem;
+    }
+}
 
-    > header {
+    article header {
         padding: 24px 0;
 
         p {
@@ -75,20 +53,15 @@ article {
         }
     }
 
-    h1 {
-        font-size: 2.5rem;
-        color: var(--blue-50);
-    }
 
-    .grabber {
-        width: 24px;
-        position: absolute;
-        top: 12px;
-        left: 50%;
-        transform: translateX(-50%);
-
-        @media screen and (min-width: 800px) {
-            display: none;
-        }
-    }
+a.back {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--blue-50);
+    text-decoration: none;
+    font-size: 1.6rem;
+    font-weight: 700;
+    font-family: var(--brother-printed);
+    padding: 12px 17px;
 }

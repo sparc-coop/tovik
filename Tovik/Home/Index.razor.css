@@ -6,6 +6,10 @@ article {
     text-align: center;
     width: 100%;
 
+    @media screen and (min-width: 800px) {
+        margin-top: 200px;
+    }
+
     img {
         width: min(211px, 40vw);
     }

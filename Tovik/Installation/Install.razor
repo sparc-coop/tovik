@@ -1,20 +1,14 @@
 ﻿@using Tovik.Domains
 <section class="welcome">
     <header>
-        @if (SparcDomain != null)
+        @if (Domain != null)
         {
-            <img src="@SparcDomain.FaviconUri" alt="@SparcDomain.Domain" onerror="this.src='/images/Star.svg'" />
+            <img src="@Domain.FaviconUri" alt="@Domain.Domain" onerror="this.src='/icons/MagicWand.svg'" />
+            <h3 style="margin-top: 20px">Install Tovik on @Domain.Domain</h3>
         }
-        <h3 style="margin-top: 20px">Install Tovik on @Domain</h3>
     </header>
 
-        <p>
-            Welcome to Tovik! We're so happy you're here.
-        </p>
-        <p>
-            Tovik is a website plugin that makes it easy to translate your website into multiple languages, so you can reach a global audience without the hassle of managing translations manually.
-        </p>
-        <p>To get started, select your website's platform:</p>
+    <p>To get started, select your website's platform:</p>
 
     <ul class="platforms">
         @foreach (var platform in Platforms)
@@ -27,7 +21,7 @@
         }
     </ul>
 
-    @if (SelectedPlatform == "HTML")
+    @if (SelectedPlatform == "Other (HTML)")
     {
         <div>
             <ol>
@@ -187,19 +181,16 @@
 @inject ISparcBilling Billing
 @inject ISparcAura Aura
 @code {
-    [Parameter][SupplyParameterFromQuery] public required string Domain { get; set; }
-    [Parameter][SupplyParameterFromQuery] public string? TierId { get; set; }
-    SparcDomain? SparcDomain;
+    [Parameter] public required SparcDomain Domain { get; set; }
     SparcProduct? SparcProduct;
     BlossomUser? User;
-    List<string> Platforms = ["WordPress", "Wix", "SquareSpace", "Webflow", "Weebly", "Shopify", "HTML"];
+    List<string> Platforms = ["WordPress", "Wix", "SquareSpace", "Webflow", "Weebly", "Shopify", "Other (HTML)"];
     List<string> ComingSoon = [];
     string? SelectedPlatform { get; set; } = null;
     string? Error;
 
     protected override async Task OnInitializedAsync()
     {
-        SparcDomain = await Domains.Verify(Domain);
         SparcProduct = await Billing.GetProductAsync("Tovik");
         User = await Aura.UserInfo();
     }
@@ -218,26 +209,23 @@
 
     async Task Activate()
     {
-        if (SparcDomain == null)
-            return;
-
         Error = null;
         try
         {
-            var result = await SparcDomain.VerifyAsync();
+            var result = await Domain.VerifyAsync();
             if (result)
             {
                 // Check for existing license
-                var license = SparcDomain.Product("Tovik");
+                var license = Domain.Product("Tovik");
                 if (license == null && SparcProduct != null && User != null)
-                   SparcDomain.Fulfill(SparcProduct, "Free", "Free", User.Id);
+                   Domain.Fulfill(SparcProduct, "Free", "Free", User.Id);
                 
-                await Domains.Update(SparcDomain);
-                Nav.NavigateTo("/sites/" + SparcDomain.Id);
+                await Domains.Update(Domain);
+                Nav.NavigateTo("/sites/" + Domain.Id);
             }
             else
             {
-                Error = $"Tovik does not yet appear to be installed on {SparcDomain.Domain}. Please double-check the install instructions and try again!";
+                Error = $"Tovik does not yet appear to be installed on {Domain.Domain}. Please double-check the install instructions and try again!";
             }
         }
         catch (Exception e)
@@ -245,13 +233,4 @@
             Error = e.Message + " " + e.InnerException?.Message + " Please double-check the install instructions and try again!";
         }
     }
-
-    void ChangeTab(string tab)
-    {
-        if (tab == "Install")
-            Nav.NavigateTo("/Install?domain=" + Domain, true);
-        else if (tab == "Purchase")
-            Nav.NavigateTo("/Purchase/" + TierId + "?domain=" + Domain, true);
-    }
-
 }

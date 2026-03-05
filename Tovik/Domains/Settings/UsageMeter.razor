@@ -4,7 +4,7 @@
         <div>
             <span>@Domain.TovikUsage.ToString("N0")</span>
             /
-            <span>@Limit.ToString("N0")</span>
+            <span>@Limit.ToString("N0") pages</span>
             @if (Edition == "Preview")
             {
                 <a href="@($"/sites/{Domain.Id}/activate")">

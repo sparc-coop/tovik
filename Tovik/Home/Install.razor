@@ -1,52 +1,33 @@
-﻿@page "/Install"
-@layout ModalLayout
+﻿@page "/sites/{Id}/activate"
+@using Tovik.Domains
+@layout MainLayout
 
 <article>
     <header>
-        <a class="back" href="/Pricing?domain=@Domain">
-            <img src="./icons/ChevronLeft.svg" alt="Back" />
-            Back to Plans
+        <a href="/sites" class="back">
+            <img src="/icons/ChevronLeft.svg" alt="Back to My Sites" />
+            Back to My Sites
         </a>
-        <nav>
-            <ul>
-                <li>
-                    <figure @onclick=@(() => ChangeTab("Purchase"))>
-                        <img src="./icons/Purchase.svg" alt="Purchase" />
-                        <figcaption>1. Purchase</figcaption>
-                    </figure>
-                </li>
-                <li>
-                    <figure class="active" @onclick=@(() => ChangeTab("Install"))>
-                        <img src="./icons/MagicWand.svg" alt="Install" />
-                        <figcaption>2. Installation</figcaption>
-                    </figure>
-                </li>
-            </ul>
-        </nav>
+        <h1>Installation guide</h1>
+        <p>Follow these simple steps to install and activate Tovik on your website.</p>
     </header>
 
-    <section>
-        <Tovik.Installation.Install />
-    </section>
+    @if (Domain != null)
+    {
+        <section>
+            <Tovik.Installation.Install Domain="Domain" />
+        </section>
+    }
 
 </article>
 
-@inject IConfiguration Config
-@inject ISparcBilling Billing
-
+@inject TovikDomains TovikDomains
 @code {
-    [Parameter][SupplyParameterFromQuery] public required string Domain { get; set; }
-    [Parameter][SupplyParameterFromQuery] public string? TierId { get; set; }
-    [Parameter][SupplyParameterFromQuery] public string? PaymentIntentId { get; set; }
+    [Parameter] public required string Id { get; set; }
+    SparcDomain? Domain;
 
-    void ChangeTab(string tab)
+    protected override async Task OnParametersSetAsync()
     {
-        if (tab == "Purchase")
-        {
-            if (string.IsNullOrWhiteSpace(TierId))
-                Nav.NavigateTo("/Pricing?domain=" + Domain);
-            else
-                Nav.NavigateTo("/Purchase/" + TierId + "?domain=" + Domain + "&paymentIntentId=" + PaymentIntentId, true);
-        }
+        Domain = await TovikDomains.Get(Id);
     }
 }

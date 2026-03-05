@@ -31,7 +31,7 @@
     }
 
     h3 {
-        font-size: 2.5rem;
+        font-size: 1.8rem;
         line-height: 100%;
         margin-bottom: 8px;
         color: var(--blue-50);
@@ -43,19 +43,19 @@
 }
 
 .cta {
-    display: grid;
-    grid-template-columns: 7fr 3fr;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
     align-items: center;
     background: rgba(79, 129, 153, 0.20);
     border-radius: 32px;
-    padding: 48px;
+    padding: 32px 24px;
     box-sizing: border-box;
     width: 100%;
 
     h4 {
         font-size: 2rem;
         margin-bottom: 8px;
-        line-height: 100%;
         color: var(--blue-50);
     }
 
@@ -65,18 +65,13 @@
     }
 
     .buttons {
-        text-align: right;
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
     }
 
     a.button {
-        padding: 14px 16px;
-        align-self: inherit;
-        width: auto;
-        display: inline-flex;
-        font-size: 1.6rem;
-        line-height: 100%;
-        gap: 12px;
-
         img {
             position: relative;
             top: 1px;
@@ -101,4 +96,9 @@
     &:after {
         border-top: 5px solid white;
     }
+}
+
+::deep .language-select select {
+    width: 100%;
+    outline: none;
 }

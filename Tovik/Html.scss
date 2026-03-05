@@ -238,6 +238,7 @@ button, a.button {
         display: flex;
         width: 44px;
         height: 44px;
+        padding: 0;
         justify-content: center;
         align-items: center;
         border-radius: 20px;
@@ -277,14 +278,7 @@ input {
 
 
 select {
-    display: flex;
-    padding: 10px 16px;
-    align-items: center;
-    gap: 8px;
-    border-radius: 20px;
-    border: 1px solid var(--blue-500, #376880);
     background: var(--blue-600, #1F5068);
-    color: var(--white, #FFF);
     font-family: var(--articulat);
     font-size: 16px;
     font-style: normal;
@@ -436,4 +430,16 @@ header.page-header {
     .desktop-only {
         display: none !important;
     }
+}
+
+a.back {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--blue-50);
+    text-decoration: none;
+    font-size: 1.6rem;
+    font-weight: 700;
+    font-family: var(--brother-printed);
+    padding: 12px 17px;
 }

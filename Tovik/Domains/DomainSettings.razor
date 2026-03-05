@@ -41,19 +41,7 @@
                 <Exemptions Domain="Domain" OnChange="OnChange" />
             </div>
         </section>
-
-        <section>
-            <header>
-                <img src="/images/WorldIcon.svg" alt="Active Languages" />
-                <div>
-                    <h3>Active Languages</h3>
-                    <p>Track translation metrics by language. Note that language page counts may overlap.</p>
-                </div>
-            </header>
-            <div>
-                <LanguageStats Domain="Domain" Page="Page" />
-            </div>
-        </section>
+        
 
         @if (!IsMyDomain)
         {
@@ -61,19 +49,12 @@
                 <div>
                     <h4>Like what you see? Install Tovik on your site to make it live!</h4>
                     <p>
-                        If you have any questions, please visit our
-                        <a href="/Questions">FAQ page</a>
-                        or contact
-                        <a href="mailto:support@sparc.coop">support@sparc.coop</a>.
+                        Tovik is a one-line script that you can add to your website to make it multilingual and accessible to everyone.
                     </p>
                 </div>
                 <div class="buttons">
-                    <a class="button primary-btn" href="/Install?domain=@Domain.Domain">
-                        Install for Free
-                    </a>
-                    <a class="button secondary-btn" href="/Pricing?domain=@Domain.Domain">
-                        See Pricing
-                        <img src="/icons/ChevronRight.svg" alt="Go to Pricing Page" />
+                    <a class="button primary-btn" href="/sites/@Domain.Id/activate">
+                        Activate
                     </a>
                 </div>
             </div>
