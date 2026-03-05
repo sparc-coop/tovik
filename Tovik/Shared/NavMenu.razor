@@ -1,33 +1,21 @@
-﻿<nav>
-    <div class="right">
-        <SparcAura />
-        <button class="menu-btn" @onclick=ToggleMobileMenu>
-            <MenuIcon />
-        </button>
-    </div>
-    <div class="nav-menu @(showMobileMenu ? "show" : "")">
-        <SecondaryLogo />
+﻿<header>
+    <a href="/">
+        <img src="/images/TovikWordmark.svg" alt="Tovik" />
+    </a>
+    <nav>
         <ul>
-            <li><NavLink class="nav-link" href="/sites" ActiveClass="active" @onclick=ToggleMobileMenu><BubbleTail />My Websites</NavLink></li>
-            <li><NavLink class="nav-link" href="/questions" ActiveClass="active" @onclick=ToggleMobileMenu><BubbleTail />Questions</NavLink></li>
-            <li><NavLink class="nav-link" href="/credits" ActiveClass="active" @onclick=ToggleMobileMenu><BubbleTail />Made with ❤️</NavLink></li>
+            <li>
+                <NavLink href="/sites">My Sites</NavLink>
+            </li>
+            <li>
+                <NavLink href="/questions">Questions</NavLink>
+            </li>
+            <li>
+                <NavLink href="/pricing">Pricing</NavLink>
+            </li>
         </ul>
-    </div>
-    <div class="nav-mask">
-        <img src="/images/NavShape.png" />
-    </div>
-</nav>
-<div class="nav-overlay @(showOverlay ? "show" : "") @(hideOverlay ? "hiding" :"")" @onclick=ToggleMobileMenu></div>
-<div class="nav-sidebar">
-    <div class="nav-menu @(showMobileMenu ? "show" : "")">
-        <PrimaryLogo FontColor="#FF945E" />
-        <ul>
-            <li><NavLink class="nav-link" href="/sites" ActiveClass="active" @onclick=ToggleMobileMenu><BubbleTail />My Websites</NavLink></li>
-            <li><NavLink class="nav-link" href="/questions" ActiveClass="active" @onclick=ToggleMobileMenu><BubbleTail />Questions</NavLink></li>
-            <li><NavLink class="nav-link" href="/credits" ActiveClass="active" @onclick=ToggleMobileMenu><BubbleTail />Made with ❤️</NavLink></li>
-        </ul>
-    </div>
-</div>
+    </nav>
+</header>
 
 @inject Tovik.Domains.TovikDomains TovikDomains
 @code {

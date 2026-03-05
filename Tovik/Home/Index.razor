@@ -1,42 +1,28 @@
 ﻿@page "/"
-@layout EmptyLayout
+@layout MainLayout
 @using Tovik.Domains
 @using Tovik.Translation
 
-<div class="layout-container">
-    <div class="hero-background"><DashedLine Color="#FFD4BF" /></div>
-
-    <main>
-        <div class="home-container">
-            <article>
-                <section>
-                    <img src="/images/TovikChar.svg" alt="Tovik" />
-                    <h1>Your website speaks your language.</h1>
-                    <h2>Does it speak theirs?</h2>
-                    <form @onsubmit=GoToPreview>
-                        <input type="text" placeholder="Enter your URL" @bind=Url required />
-                        <button class="primary-btn">
-                            Preview
-                        </button>
-                    </form>
-                    @if (ErrorMessage != null)
-                    {
-                        <span class="error-message">@ErrorMessage</span>
-                    }
-                    <p>
-                        With Tovik, everyone can understand.
-                    </p>
-                </section>
-
-                <footer>
-                    Made with ❤️ by Sparc Cooperative.<br />
-                    <a href="/Privacy">Privacy</a> |
-                    <a href="/Terms">Terms of Use</a>
-                </footer>
-            </article>
-        </div>
-    </main>
-</div>
+<article>
+    <section>
+        <img src="/images/TovikChar.svg" alt="Tovik" />
+        <h1>Your website speaks your language.</h1>
+        <h2>Does it speak theirs?</h2>
+        <form @onsubmit=GoToPreview>
+            <input type="text" placeholder="Enter your URL" @bind=Url required />
+            <button>
+                Preview
+            </button>
+        </form>
+        @if (ErrorMessage != null)
+        {
+            <span class="error-message">@ErrorMessage</span>
+        }
+        <h3>
+            With Tovik, everyone can understand.
+        </h3>
+    </section>
+</article>
 
 
 @inject TovikDomains Domains
