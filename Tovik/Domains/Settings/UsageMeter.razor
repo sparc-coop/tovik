@@ -1,22 +1,36 @@
 ﻿<div class="usage-meter">
-	<header>
-		<span>@Edition Edition</span>
-		<div>
-			<span>@Domain.TovikUsage.ToString("N0")</span> 
-			/ 
-			<span>@Limit.ToString("N0")</span>
-		</div>
-	</header>
-	<div class="meter-container">
-		<div class="meter-fill" style="width: @FillPercentage%"></div>
-	</div>
+    <header>
+        <span>@Edition Edition</span>
+        <div>
+            <span>@Domain.TovikUsage.ToString("N0")</span>
+            /
+            <span>@Limit.ToString("N0")</span>
+            @if (Edition == "Preview")
+            {
+                <a href="@($"/sites/{Domain.Id}/activate")">
+                    Activate
+                    <img src="icons/ChevronRightOrange.svg" alt="Activate this Domain" />
+                </a>
+            }
+            else if (FillPercentage > 70)
+            {
+                <a href="@($"/sites/{Domain.Id}/upgrade")">
+                    Upgrade
+                    <img src="icons/ChevronRightOrange.svg" alt="Upgrade this Domain" />
+                </a>
+            }
+        </div>
+    </header>
+    <div class="meter-container">
+        <div class="meter-fill" style="width: @FillPercentage%"></div>
+    </div>
 </div>
 
 @code {
-	[Parameter] public required SparcDomain Domain { get; set; }
-	string Edition => Domain.Product("Tovik")?.TierId ?? "Preview";
+    [Parameter] public required SparcDomain Domain { get; set; }
+    string Edition => Domain.Product("Tovik")?.TierId ?? "Preview";
 
-	int Limit => Domain.Product("Tovik")?.MaxUsage ?? 1;
-	int Remaining => Limit - Domain.TovikUsage;
-	int FillPercentage => Limit > 0 ? (int)((double)Domain.TovikUsage / Limit * 100) : 0;
+    int Limit => Domain.Product("Tovik")?.MaxUsage ?? 1;
+    int Remaining => Limit - Domain.TovikUsage;
+    int FillPercentage => Limit > 0 ? (int)((double)Domain.TovikUsage / Limit * 100) : 0;
 }
