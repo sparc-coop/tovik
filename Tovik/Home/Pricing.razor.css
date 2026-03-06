@@ -36,6 +36,10 @@ article {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
 
+            &.existing {
+                grid-template-columns: 1fr 1fr;
+            }
+
             > div {
             }
         }
@@ -110,10 +114,26 @@ article {
         }
     }
 
-    .currency {
+    .options {
         display: flex;
-        gap: 16px;
-        align-items: center;
-        font-size: 1.6rem;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: center;
+
+        > div {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            align-items: center;
+            font-size: 2rem;
+            font-family: var(--brother-printed);
+            font-weight: 700;
+        }
     }
+}
+
+.domain-selector {
+    width: 100%;
+    border-radius: 20px;
+    padding: 8px 16px;
 }

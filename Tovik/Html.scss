@@ -84,16 +84,28 @@ p, div, span {
     }
 }
 
-.currency-selector {
+.currency-selector, .domain-selector {
     background-color: var(--blue-600);
     border: 1px solid var(--blue-500) !important;
     max-width: min(80vw, 400px);
+    position: relative;
+    outline: none;
 
     &:after {
+        content: " ";
+        position: absolute;
+        top: 50%;
+        margin-top: -2px;
+        right: 24px;
+        width: 0;
+        height: 0;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
         border-top: 5px solid white;
     }
 
     select {
+        width: 100%;
         background-color: var(--blue-600) !important;
 
         option {

@@ -1,71 +1,108 @@
 ﻿@page "/pricing"
-@layout ModalLayout
+@page "/sites/{Id}/upgrade"
+@layout MainLayout
 @using Sparc.Blossom.Realtime
 @using Tovik.Domains
 
 
 <article>
     <header>
-        @if (CurrentTier == null)
-        {
             <h1>
-                Introducing Tovik
+                Tovik Pricing
             </h1>
-        }
-        else
-        {
-            <h1>Upgrade Tovik</h1>
-        }
-        <p>Tovik is a website plugin that makes it easy to translate your website into multiple languages, so you can reach a global audience without the hassle of managing translations manually.</p>
-        @if (User != null)
-        {
-            <div class="currency">
-                See pricing in your preferred currency:
-                <CurrencySelector Avatar="User.Avatar" />
-            </div>
-        }
+        <p>Translate your website effortlessly. Choose the right plan for your domain.</p>
 
+        <div class="options">
+            @if (User != null)
+            {
+                <div>
+                    Select your currency
+                    <CurrencySelector Avatar="User.Avatar" />
+                </div>
+            }
+            @if (AllDomains.Count > 0)
+            {
+                <div>
+                    Select your domain
+                    <div class="domain-selector">
+                        <select @onchange="OnDomainChanged">
+                            <option value="">-- Choose your domain --</option>
+                            @foreach (var domain in AllDomains.OrderBy(x => x.Domain))
+                            {
+                                <option value="@domain.Id">
+                                    @domain.Domain
+                                </option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            }
+        </div>
     </header>
 
     @if (Product != null)
     {
-        <section>
+        <section class="@(SparcDomain?.DateConnected == null ? "new" : "existing")">
             @foreach (var tier in Product.Tiers)
             {
+                var index = Product.Tiers.IndexOf(tier);
+                if (index == 0 && SparcDomain?.DateConnected != null)
+                {
+                    // Don't show the free tier if the user is already on a paid plan
+                    continue;
+                }
+
                 <div>
                     <header>
                         <h2>
-                            @if (tier.Name != "Free")
+                            @if (index > 0)
                             {
-                                <img src="./icons/Premium.svg" alt="@tier.Name" />
+                                <img src="/icons/Tier@(index).svg" alt="@tier.Name" />
                             }
                             @tier.Name
                         </h2>
                         <p>@tier.Description</p>
                         <h3>
                             @tier.FormattedPrice
-                            @if (tier.Name != "Free")
+                            @if (index > 0)
                             {
                                 <strong>/ one time</strong>
                             }
                         </h3>
                     </header>
-                    @if (CurrentTier == tier.Name)
+                    @if (index == 0 && SparcDomain?.DateConnected != null)
                     {
                         <a class="button secondary-btn" href="/sites" disabled>Current Plan</a>
                     }
-                    else if (tier.Name == "Free")
+                    else if (index == 0 && SparcDomain == null)
                     {
-                        <a class="button primary-btn" href="/Install?domain=@Domain">Install Now</a>
+                        <a class="button primary-btn" href="/">Get Started</a>
+                    }
+                    else if (index == 0 && SparcDomain != null && SparcDomain.DateConnected == null)
+                    {
+                        <a class="button primary-btn" href="/sites/@(SparcDomain.Id)/activate">Get Started</a>
+                    }
+                    else if (index > 0 && SparcDomain != null)
+                    {
+                        <a class="button primary-btn" href="/sites/@(SparcDomain.Id)/purchase/@(tier.Name)">Purchase Now</a>
                     }
                     else
                     {
-                        <a class="button primary-btn" href="/Purchase/@tier.Name?domain=@Domain">Purchase Now</a>
+                        <a class="button secondary-btn" href="/sites" disabled>Purchase Now</a>
                     }
                     <ul>
-                        <li>
-                            <strong>For domains up to @tier.ItemQuantity.ToString("N0") pages</strong>
-                        </li>
+                        @if (SparcDomain?.DateConnected == null)
+                        {
+                            <li>
+                                <strong>For domains up to @tier.ItemQuantity.ToString("N0") pages</strong>
+                            </li>
+                        }
+                        else
+                        {
+                            <li>
+                                <strong>Add @tier.ItemQuantity.ToString("N0") more translatable pages</strong>
+                            </li>
+                        }
                         <li>
                             Unlimited visitors &amp; page visits
                         </li>
@@ -97,16 +134,18 @@
 
 @code {
     [Parameter] public EventCallback OnClick { get; set; }
-    [Parameter][SupplyParameterFromQuery] public required string Domain { get; set; }
+    [Parameter] public string? Id { get; set; }
     SparcProduct? Product;
     BlossomUser? User;
     SparcDomain? SparcDomain;
-    string? CurrentTier;
+    List<SparcDomain> AllDomains = [];
 
     protected override async Task OnInitializedAsync()
     {
-        SparcDomain = await Domains.Verify(Domain);
-        CurrentTier = SparcDomain?.Product("Tovik")?.TierId;
+        if (Id != null)
+            SparcDomain = await Domains.Get(Id);
+
+        AllDomains = await Domains.All();
 
         Events.CurrencyChanged += OnCurrencyChanged;
         User = await Aura.UserInfo();
@@ -120,4 +159,8 @@
     }
 
     ProductTier? Tiers(string tierName) => Product?.Tiers.FirstOrDefault(t => t.Name == tierName);
+    private async Task OnDomainChanged(ChangeEventArgs args)
+    {
+        SparcDomain = AllDomains.FirstOrDefault(x => x.Id == args.Value?.ToString());
+    }
 }

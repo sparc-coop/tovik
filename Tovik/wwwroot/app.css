@@ -76,18 +76,30 @@ p.tovik-translating, div.tovik-translating, span.tovik-translating {
   background-color: var(--blue-600);
 }
 
-.currency-selector {
+.currency-selector, .domain-selector {
   background-color: var(--blue-600);
   border: 1px solid var(--blue-500) !important;
   max-width: min(80vw, 400px);
+  position: relative;
+  outline: none;
 }
-.currency-selector:after {
+.currency-selector:after, .domain-selector:after {
+  content: " ";
+  position: absolute;
+  top: 50%;
+  margin-top: -2px;
+  right: 24px;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
   border-top: 5px solid white;
 }
-.currency-selector select {
+.currency-selector select, .domain-selector select {
+  width: 100%;
   background-color: var(--blue-600) !important;
 }
-.currency-selector select option:checked {
+.currency-selector select option:checked, .domain-selector select option:checked {
   color: var(--orange-300);
 }
 
