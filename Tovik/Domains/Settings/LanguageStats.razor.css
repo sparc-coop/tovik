@@ -39,7 +39,7 @@
         font-weight: 400;
     }
 
-    @media screen and (min-width: 800px) {
+    @media (orientation: landscape) {
         grid-template-columns: 3fr 7fr;
     }
 

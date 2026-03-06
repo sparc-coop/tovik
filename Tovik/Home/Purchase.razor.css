@@ -43,7 +43,7 @@ article {
             display: grid;
             grid-template-columns: 1fr;
 
-            @media screen and (min-width: 800px) {
+            @media (orientation: landscape) {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
             }

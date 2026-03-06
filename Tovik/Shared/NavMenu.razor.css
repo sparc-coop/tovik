@@ -1,12 +1,17 @@
 nav {
     ul {
         display: flex;
-        gap: 24px;
+        gap: 4px;
         list-style: none;
+
+        @media (orientation: landscape) {
+            gap: 24px;
+        }
     }
 
     li {
         padding: 10.5px 12px;
+        text-wrap: nowrap;
     }
 
     ::deep a {

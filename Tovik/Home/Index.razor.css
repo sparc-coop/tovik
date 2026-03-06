@@ -6,7 +6,7 @@ article {
     text-align: center;
     width: 100%;
 
-    @media screen and (min-width: 800px) {
+    @media (orientation: landscape) {
         margin-top: 200px;
     }
 
@@ -31,7 +31,6 @@ article {
         justify-content: center;
         align-items: center;
         gap: 8px;
-        width: 100%;
 
         input {
             width: 100%;
@@ -39,14 +38,15 @@ article {
 
         input, button {
             padding: 13px 16px;
-            min-width: 120px;
+            min-width: 300px;
+            max-width: 50vw;
         }
 
         button {
             white-space: nowrap;
         }
 
-        @media screen and (min-width: 800px) {
+        @media (orientation: landscape) {
             display: flex;
             gap: 8px;
 

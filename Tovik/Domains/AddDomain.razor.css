@@ -3,12 +3,6 @@ form {
     grid-template-columns: auto 80px;
     align-items: center;
     gap: 8px;
-
-    label {
-        input {
-            width: var(--container-width);
-        }
-    }
 }
 
 .error-message {

@@ -1,5 +1,5 @@
 main {
-    width: var(--app-width);
+    width: 100cqw;
     margin-top: 100px;
     padding: 0 16px;
     padding-bottom: 24px;
@@ -18,7 +18,7 @@ main {
     }
 
     .hero {
-        width: var(--app-width);
+        width: 100cqw;
         height: fit-content;
         position: relative;
 
@@ -53,7 +53,7 @@ main {
     }
 
     ::deep article {
-        width: var(--app-width);
+        width: 100cqw;
         position: relative;
         z-index: 20;
 
@@ -113,7 +113,7 @@ main {
 }
 
 ::deep nav {
-    width: var(--app-width);
+    width: 100cqw;
 
     .right {
         background-image: url('/images/aura-background.svg') !important;

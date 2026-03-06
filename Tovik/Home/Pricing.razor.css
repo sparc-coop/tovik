@@ -32,7 +32,7 @@ article {
             padding: 24px;
         }
 
-        @media screen and (min-width: 800px) {
+        @media (orientation: landscape) {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
 

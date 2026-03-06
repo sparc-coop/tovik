@@ -20,10 +20,6 @@
   --orange-200: #FFB48E;
   --orange-100: #FFD4BF;
   --purple: #6A2FD0;
-  --app-width: calc(100vw - 32px);
-  --container-width: calc(100% - 32px);
-  --padded-width: calc(100% - 80px);
-  --desktop-width: calc(100vw - 128px);
   --brother-printed: "brother-1816-printed", sans-serif;
   --articulat: "articulat-cf", sans-serif;
 }
@@ -239,7 +235,6 @@ button.icon-btn ::deep svg, a.button.icon-btn ::deep svg {
 }
 
 input {
-  width: var(--container-width);
   display: flex;
   padding: 16px;
   align-items: center;
@@ -446,16 +441,6 @@ section.icon-header p {
   color: var(--blue-50);
 }
 
-@media screen and (min-width: 800px) {
-  .mobile-only {
-    display: none !important;
-  }
-}
-@media screen and (max-width: 799px) {
-  .desktop-only {
-    display: none !important;
-  }
-}
 a.back {
   display: flex;
   align-items: center;
