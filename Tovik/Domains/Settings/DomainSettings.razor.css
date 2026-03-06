@@ -3,43 +3,6 @@
     flex-direction: column;
     align-items: center;
     gap: 24px;
-
-    section {
-        padding: 0;
-        background: rgba(79, 129, 153, 0.20);
-        border-radius: 32px;
-        width: 100%;
-
-        header {
-            background: var(--blue-600);
-            border-radius: 32px;
-            display: grid;
-            grid-template-columns: 48px auto;
-            gap: 16px;
-            align-items: center;
-            padding: 24px;
-
-            > img {
-                height: 32px;
-                margin: 0 auto;
-            }
-        }
-
-        > div {
-            padding: 24px 86px;
-        }
-    }
-
-    h3 {
-        font-size: 1.8rem;
-        line-height: 100%;
-        margin-bottom: 8px;
-        color: var(--blue-50);
-    }
-
-    p {
-        color: var(--blue-50);
-    }
 }
 
 .cta {
