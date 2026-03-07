@@ -2,32 +2,6 @@ article {
     display: flex;
     flex-direction: column;
     gap: 24px;
-
-    > header {
-        display: flex;
-        flex-direction: column;
-        gap: 24px;
-        padding: 24px;
-        margin-bottom: 24px;
-        align-items: center;
-
-        a {
-            color: var(--orange-300);
-            text-decoration: underline;
-        }
-
-        h2 {
-            font-family: var(--brother-printed);
-            font-weight: 700;
-            font-size: 2.4rem;
-            color: var(--blue-50);
-        }
-
-        p {
-            color: var(--blue-200);
-            font-size: 1.6rem;
-        }
-    }
 }
 
 

@@ -3,13 +3,16 @@
 @layout MainLayout
 
 <article>
-    <header>
-        <a href="/sites" class="back">
-            <img src="/icons/ChevronLeft.svg" alt="Back to My Sites" />
-            Back to My Sites
-        </a>
-        <h1>Activation guide</h1>
-        <p>Follow these simple steps to install and activate Tovik on your website.</p>
+    <a href="/sites" class="back">
+        <img src="/icons/ChevronLeft.svg" alt="Back to My Sites" />
+        Back to My Sites
+    </a>
+
+    <header class="subpage">
+        <div>
+            <h1>Activation guide</h1>
+            <p>Follow these simple steps to install and activate Tovik on your website.</p>
+        </div>
     </header>
 
     @if (Domain != null)
@@ -19,7 +22,7 @@
                 @if (Domain != null)
                 {
                     <img src="@Domain.FaviconUri" alt="@Domain.Domain" onerror="this.src='/icons/MagicWand.svg'" />
-                    <h3 style="margin-top: 20px">Install Tovik on @Domain.Domain</h3>
+                    <h3 style="margin-top: 20px">Activate Tovik on @Domain.Domain</h3>
                 }
             </header>
 

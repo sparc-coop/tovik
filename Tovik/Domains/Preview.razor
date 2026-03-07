@@ -8,23 +8,44 @@
     <iframe srcdoc="@Html" @ref=IFrame>
     </iframe>
 
-    <article>
-        <a href="/sites" class="back">
-            <img src="/icons/ChevronLeft.svg" alt="Back" />
-            Back to My Sites
-        </a>
-        <header>
-            <h1>Preview How Tovik Works on @(Domain?.Domain ?? "Your Website")</h1>
-            <p>With Tovik, everyone can understand.</p>
-        </header>
-        <DomainSettings Domain="Domain" Page="Page" OnChange="ForceReload" InitialLanguageId="@Lang" OnLanguageChange="UpdateLanguage" />
-    </article>
-    @if (Html != null)
+    @if (Domain != null)
     {
-        <aside>
-            Note: This is a limited preview, so a few features might not work here. For the complete experience,
-            install Tovik on @Url.
-        </aside>
+        <article>
+            <a href="/sites" class="back">
+                <img src="/icons/ChevronLeft.svg" alt="Back" />
+                Back to My Sites
+            </a>
+            <header>
+                @if (Domain.DateConnected == null)
+                {
+                    <h1>Preview How Tovik Works on @(Domain.Domain ?? "Your Website")</h1>
+                }
+                else
+                {
+                    <h1>Translation Settings for @Domain.Domain</h1>
+                }
+                <p>With Tovik, everyone can understand.</p>
+            </header>
+
+            <DomainSettings Domain="Domain" Page="Page" OnChange="ForceReload" InitialLanguageId="@Lang" OnLanguageChange="UpdateLanguage" />
+
+            @if (Domain.DateConnected == null)
+            {
+                <div class="cta">
+                    <div>
+                        <h4>This is just a sneak peek.</h4>
+                        <p>
+                            Translations in this preview are limited. <a href="/sites/@(Domain.Id)/activate">Install Tovik on your website</a> to make @Domain.Domain multilingual and accessible to everyone.
+                        </p>
+                    </div>
+                    <div class="buttons">
+                        <a class="button primary-btn" href="/sites/@Domain.Id/activate">
+                            Get Tovik
+                        </a>
+                    </div>
+                </div>
+            }
+        </article>
     }
 </div>
 
@@ -39,6 +60,7 @@
     string? Html;
     string? ErrorMessage;
     string? Lang;
+
     ElementReference IFrame;
 
 

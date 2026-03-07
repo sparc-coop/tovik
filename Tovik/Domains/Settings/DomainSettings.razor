@@ -5,16 +5,6 @@
 <article class="domain-page">
     @if (Domain != null)
     {
-       @*  <dl>
-            <dt>Edition:</dt>
-            <dd>@(License?.TierId) (up to @License?.MaxUsage pages)</dd>
-            <dt>Date Activated:</dt>
-            <dd class="@(Domain.DateConnected == null ? "no" : "")">@(Domain.DateConnected != null ? Domain.DateConnected.Value.ToShortDateString() : "Not Yet Activated")</dd>
-            <dt>Last Translation Activity:</dt>
-            <dd class="@(Domain.LastTranslatedDate == null ? "no" : "")">@(Domain.LastTranslatedDate == null ? "Never" : Domain.LastTranslatedDate.Value.ToShortDateString())</dd>
-        </dl> *@
-
-
         <section class="icon-header">
             <header>
                 <img src="/images/TranslationIcon.svg" alt="Languages Supported" />
@@ -40,42 +30,16 @@
                 <Exemptions Domain="Domain" OnChange="OnChange" />
             </div>
         </section>
-        
-
-        @if (!IsMyDomain)
-        {
-            <div class="cta">
-                <div>
-                    <h4>Like what you see? Install Tovik on your site to make it live!</h4>
-                    <p>
-                        Tovik is a one-line script that you can add to your website to make it multilingual and accessible to everyone.
-                    </p>
-                </div>
-                <div class="buttons">
-                    <a class="button primary-btn" href="/sites/@Domain.Id/activate">
-                        Activate
-                    </a>
-                </div>
-            </div>
-        }
     }
 </article>
 
 @inject TovikDomains TovikDomains
-@inject ISparcAura Aura
 @code {
     [Parameter] public required SparcDomain Domain { get; set; }
     [Parameter] public Page? Page { get; set; }
     [Parameter] public EventCallback<Language> OnLanguageChange { get; set; }
     [Parameter] public EventCallback OnChange { get; set; }
     [Parameter] public string? InitialLanguageId { get; set; }
-    bool IsMyDomain;
-
-    protected override async Task OnInitializedAsync()
-    {
-        var user = await Aura.UserInfo();
-        IsMyDomain = Domain?.TovikUserId == user?.Id;
-    }
 
     // async Task Preview()
     // {

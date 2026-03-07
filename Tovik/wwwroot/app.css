@@ -76,6 +76,7 @@ p.tovik-translating, div.tovik-translating, span.tovik-translating {
   background-color: var(--blue-600);
   border: 1px solid var(--blue-500) !important;
   max-width: min(80vw, 400px);
+  min-width: 300px;
   position: relative;
   outline: none;
 }
@@ -388,6 +389,7 @@ ul.category-buttons {
   display: flex;
   gap: 4px;
   flex-wrap: wrap;
+  justify-content: center;
   padding: 0 !important;
 }
 ul.category-buttons button {
@@ -428,8 +430,14 @@ section.icon-header header > img {
   height: 32px;
   margin: 0 auto;
 }
+section.icon-header.with-buttons header {
+  grid-template-columns: 48px auto min-content;
+}
 section.icon-header > div {
   padding: 24px 86px;
+}
+section.icon-header div.buttons {
+  padding: 0;
 }
 section.icon-header h3 {
   font-size: 1.8rem;
@@ -439,6 +447,49 @@ section.icon-header h3 {
 }
 section.icon-header p {
   color: var(--blue-50);
+}
+
+header.infopage {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+  margin-bottom: 24px;
+  align-items: center;
+}
+header.infopage a {
+  color: var(--orange-300);
+  text-decoration: underline;
+}
+header.infopage h2 {
+  font-family: var(--brother-printed);
+  font-weight: 700;
+  font-size: 2.4rem;
+  color: var(--blue-50);
+}
+header.infopage p {
+  color: var(--blue-200);
+  font-size: 1.6rem;
+}
+
+header.subpage {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 24px;
+}
+header.subpage h1 {
+  font-size: 2.5rem;
+}
+header.subpage > div {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+header.subpage .buttons {
+  flex-direction: row;
+  gap: 16px;
 }
 
 a.back {

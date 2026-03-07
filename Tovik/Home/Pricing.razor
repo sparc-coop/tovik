@@ -1,15 +1,15 @@
 ﻿@page "/pricing"
-@page "/sites/{Id}/upgrade"
+@page "/sites/{Id}/purchase"
 @layout MainLayout
 @using Sparc.Blossom.Realtime
 @using Tovik.Domains
 
 
 <article>
-    <header>
-            <h1>
-                Tovik Pricing
-            </h1>
+    <header class="infopage">
+        <h1>
+            Tovik Pricing
+        </h1>
         <p>Translate your website effortlessly. Choose the right plan for your domain.</p>
 
         <div class="options">
@@ -25,7 +25,7 @@
                 <div>
                     Select your domain
                     <div class="domain-selector">
-                        <select @onchange="OnDomainChanged">
+                        <select @bind="@Domain" @bind:after="OnDomainChanged">
                             <option value="">-- Choose your domain --</option>
                             @foreach (var domain in AllDomains.OrderBy(x => x.Domain))
                             {
@@ -138,12 +138,16 @@
     SparcProduct? Product;
     BlossomUser? User;
     SparcDomain? SparcDomain;
+    string? Domain;
     List<SparcDomain> AllDomains = [];
 
     protected override async Task OnInitializedAsync()
     {
         if (Id != null)
+        {
             SparcDomain = await Domains.Get(Id);
+            Domain = SparcDomain?.Id;
+        }
 
         AllDomains = await Domains.All();
 
@@ -159,8 +163,8 @@
     }
 
     ProductTier? Tiers(string tierName) => Product?.Tiers.FirstOrDefault(t => t.Name == tierName);
-    private async Task OnDomainChanged(ChangeEventArgs args)
+    private async Task OnDomainChanged()
     {
-        SparcDomain = AllDomains.FirstOrDefault(x => x.Id == args.Value?.ToString());
+        SparcDomain = AllDomains.FirstOrDefault(x => x.Id == Domain);
     }
 }

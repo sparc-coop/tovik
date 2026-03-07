@@ -4,22 +4,6 @@ article {
     background: rgba(5, 39, 56, 0.32);
     width: 100%;
 
-    > header {
-        display: flex;
-        gap: 8px;
-        align-items: center;
-        margin-bottom: 16px;
-
-        img {
-            height: 32px;
-        }
-
-        h2 {
-            font-size: 2rem;
-            font-weight: 700;
-        }
-    }
-
     > footer {
         margin-top: 48px;
         display: flex;

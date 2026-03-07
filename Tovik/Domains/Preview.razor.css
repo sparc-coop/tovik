@@ -1,13 +1,13 @@
 ﻿.browser {
     margin-top: 70px;
-    height: calc(100cqh - 70px);
     width: 100cqw;
     z-index: 1700;
     background-color: var(--blue-700);
-    display: grid;
-    grid-template-columns: auto minmax(30vw, 600px);
+    position: relative;
 
     iframe {
+        position: fixed;
+        top: 70px;
         background-color: var(--blue-200);
         display: block;
         margin: 0;
@@ -16,6 +16,27 @@
         box-sizing: border-box;
         z-index: 1100;
     }
+
+    article {
+        margin-top: calc(100cqh - 120px);
+        border-radius: 32px 32px 0 0;
+    }
+
+    @media (orientation: landscape) {
+        display: grid;
+        grid-template-columns: auto minmax(30vw, 600px);
+        margin-top: 70px;
+        height: calc(100cqh - 70px);
+
+        iframe {
+            position: static;
+        }
+
+        article {
+            margin-top: 0;
+            border-radius: 0;
+        }
+    }
 }
 
 aside {
@@ -23,12 +44,19 @@ aside {
     bottom: 16px;
     left: 16px;
     padding: 8px 16px;
-    background-color: var(--blue-600);
+    background-color: var(--blue-800);
     color: white;
-    max-width: 70vw;
-    font-size: 1.2rem;
-    border-radius: 16px;
+    max-width: 50vw;
+    font-size: 1.6rem;
     z-index: 2100;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border-radius: 16px;
+
+    button {
+        padding: 8px 12px;
+    }
 }
 
 
@@ -64,4 +92,40 @@ a.back {
     font-weight: 700;
     font-family: var(--brother-printed);
     padding: 12px 17px;
+}
+
+.cta {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    background: var(--blue-800);
+    border-radius: 32px;
+    padding: 32px 24px;
+    box-sizing: border-box;
+    width: 100%;
+    margin-top: 24px;
+
+    h4 {
+        font-size: 2rem;
+        margin-bottom: 8px;
+        color: var(--blue-50);
+    }
+
+    p a {
+        color: var(--orange-300);
+    }
+
+    .buttons {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+    }
+
+    a.button {
+        img {
+            position: relative;
+            top: 1px;
+        }
+    }
 }

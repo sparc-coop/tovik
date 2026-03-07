@@ -1,0 +1,116 @@
+﻿@page "/sites/{Id}"
+@using Tovik.Domains.Settings
+
+<article>
+    @if (Domain != null)
+    {
+        <a class="back" href="/sites">
+            <img src="/icons/ChevronLeft.svg" alt="Back" />
+            Back to My Sites
+        </a>
+
+        <header class="subpage">
+            <div>
+                <h1>Manage @Domain.Domain</h1>
+                <p>Manage domain details and active languages for your domain.</p>
+            </div>
+            <div class="buttons">
+                <div class="toggle-label @(Domain.IsActive ? "active" : "inactive")">
+                    @(Domain.IsActive ? "Active" : "Inactive")
+                    <label class="toggle">
+                        <input type="checkbox" checked="@Domain.IsActive" @onchange="ToggleDomain" />
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <a href="/sites/@(Id)/preview" class="button secondary-btn">
+                    @(Domain.DateConnected == null ? "Preview" : "Translation Settings")
+                </a>
+            </div>
+        </header>
+
+        <section class="icon-header with-buttons">
+            <header>
+                <img src="/icons/SiteOverview.svg" alt="Site Overview" />
+                <div>
+                    <h3>Site Overview</h3>
+                    <p>Overview of your site's settings and configurations.</p>
+                </div>
+                <div class="buttons">
+                    @if (Domain.DateConnected == null)
+                    {
+                        <a href="/sites/@(Id)/activate" class="button primary-btn">Activate</a>
+                    }
+                    else
+                    {
+                        <a href="/sites/@(Id)/purchase" class="button primary-btn">Upgrade</a>
+                    }
+                </div>
+            </header>
+
+            <div>
+                <DomainName Domain="Domain" />
+                <dl>
+                    <div>
+                        <dt>Edition</dt>
+                        @if (Product?.TierId == null)
+                        {
+                            <dd>Preview</dd>
+                        }
+                        else
+                        {
+                            <dd>
+                                @(Product?.TierId)
+                                (up to @(Product?.MaxUsage ?? 1) pages)
+                            </dd>
+                        }
+                    </div>
+                    <div>
+                        <dt>Total Pages Translated</dt>
+                        <dd>@Domain.TovikUsage / @(Product?.MaxUsage ?? 1)</dd>
+                    </div>
+                    <div>
+                        <dt>Date Activated</dt>
+                        <dd>@(Domain.DateConnected != null ? Domain.DateConnected.Value.ToShortDateString() : "Not Yet Activated")</dd>
+                    </div>
+                    <div>
+                        <dt>Last Translation Activity</dt>
+                        <dd>@(Domain.LastTranslatedDate == null ? "Never" : Domain.LastTranslatedDate.Value.ToShortDateString())</dd>
+                    </div>
+                </dl>
+
+            </div>
+        </section>
+
+        <section class="icon-header with-buttons">
+            <header>
+                <img src="/images/WorldIcon.svg" alt="Language Stats" />
+                <div>
+                    <h3>Language Stats</h3>
+                    <p>Overview of your site's language usage and translation activity.</p>
+                </div>
+            </header>
+
+            <div>
+                <LanguageStats Domain="Domain" />
+            </div>
+        </section>
+    }
+</article>
+
+@inject TovikDomains Domains
+@code {
+    [Parameter] public required string Id { get; set; }
+    SparcDomain? Domain;
+    SparcLicense? Product => Domain?.Product("Tovik");
+
+    protected override async Task OnParametersSetAsync()
+    {
+        Domain = await Domains.Get(Id);
+    }
+
+    private async Task ToggleDomain(ChangeEventArgs e)
+    {
+        Domain!.IsActive = !Domain.IsActive;
+        await Domains.Update(Domain);
+    }
+}

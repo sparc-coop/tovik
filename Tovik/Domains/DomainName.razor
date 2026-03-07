@@ -1,0 +1,10 @@
+﻿<figure>
+    <img src="@Domain.FaviconUri" alt="@Domain.Domain" onerror="this.src='/images/Star.svg'" />
+    <figcaption>
+        @Domain.Domain
+    </figcaption>
+</figure>
+
+@code {
+    [Parameter] public required SparcDomain Domain { get; set; }
+}

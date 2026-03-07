@@ -1,0 +1,16 @@
+﻿figure {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 16px;
+
+    img {
+        height: 32px;
+    }
+
+    figcaption {
+        font-size: 2rem;
+        font-weight: 700;
+        font-family: var(--brother-printed);
+    }
+}

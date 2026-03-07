@@ -34,11 +34,15 @@ article {
 
         input {
             width: 100%;
+            min-width: 300px;
+        }
+
+        button {
+            min-width: 120px;
         }
 
         input, button {
             padding: 13px 16px;
-            min-width: 300px;
             max-width: 50vw;
         }
 

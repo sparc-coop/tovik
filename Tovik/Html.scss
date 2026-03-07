@@ -84,6 +84,7 @@ p, div, span {
     background-color: var(--blue-600);
     border: 1px solid var(--blue-500) !important;
     max-width: min(80vw, 400px);
+    min-width: 300px;
     position: relative;
     outline: none;
 
@@ -432,6 +433,7 @@ ul.category-buttons {
     display: flex;
     gap: 4px;
     flex-wrap: wrap;
+    justify-content: center;
     padding: 0 !important;
 
     button {
@@ -481,8 +483,18 @@ section.icon-header {
         }
     }
 
+    &.with-buttons {
+        header {
+            grid-template-columns: 48px auto min-content;
+        }
+    }
+
     > div {
         padding: 24px 86px;
+    }
+
+    div.buttons {
+        padding: 0;
     }
 
     h3 {
@@ -494,6 +506,55 @@ section.icon-header {
 
     p {
         color: var(--blue-50);
+    }
+}
+
+header.infopage {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 24px;
+    margin-bottom: 24px;
+    align-items: center;
+
+    a {
+        color: var(--orange-300);
+        text-decoration: underline;
+    }
+
+    h2 {
+        font-family: var(--brother-printed);
+        font-weight: 700;
+        font-size: 2.4rem;
+        color: var(--blue-50);
+    }
+
+    p {
+        color: var(--blue-200);
+        font-size: 1.6rem;
+    }
+}
+
+header.subpage {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    padding: 24px;
+
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    > div {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .buttons {
+        flex-direction: row;
+        gap: 16px;
     }
 }
 
