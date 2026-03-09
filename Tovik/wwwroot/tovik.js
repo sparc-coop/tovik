@@ -5967,9 +5967,8 @@
         return (p(a) + p(b) + p(c) + p(d)).toLowerCase();
     }
 
-    const baseUrl = window.location.href.includes('localhost')
-        ? 'https://localhost:7185'
-        : 'https://engine.sparc.coop';
+    const baseUrl = 'https://localhost:7185'
+        ;
     class TovikEngine {
         static userLang;
         static documentLang;
