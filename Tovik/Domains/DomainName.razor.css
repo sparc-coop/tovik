@@ -2,7 +2,6 @@
     display: flex;
     gap: 8px;
     align-items: center;
-    margin-bottom: 16px;
 
     img {
         height: 32px;

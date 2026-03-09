@@ -15,16 +15,29 @@
                 <p>Manage domain details and active languages for your domain.</p>
             </div>
             <div class="buttons">
-                <div class="toggle-label @(Domain.IsActive ? "active" : "inactive")">
-                    @(Domain.IsActive ? "Active" : "Inactive")
-                    <label class="toggle">
-                        <input type="checkbox" checked="@Domain.IsActive" @onchange="ToggleDomain" />
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                <a href="/sites/@(Id)/preview" class="button secondary-btn">
-                    @(Domain.DateConnected == null ? "Preview" : "Translation Settings")
-                </a>
+                @if (Domain.DateConnected == null)
+                {
+                    <div class="toggle-label inactive">
+                        Inactive
+                        <label class="toggle">
+                            <input type="checkbox" disabled />
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <a href="/sites/@(Id)/activate" class="button primary-btn">
+                        Activate
+                    </a>
+                }
+                else
+                {
+                    <div class="toggle-label @(Domain.IsActive ? "active" : "inactive")">
+                        @(Domain.IsActive ? "Active" : "Inactive")
+                        <label class="toggle">
+                            <input type="checkbox" checked="@Domain.IsActive" @onchange="ToggleDomain" />
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                }
             </div>
         </header>
 
@@ -38,12 +51,17 @@
                 <div class="buttons">
                     @if (Domain.DateConnected == null)
                     {
-                        <a href="/sites/@(Id)/activate" class="button primary-btn">Activate</a>
+                        <a href="/sites/@(Id)/preview" class="button secondary-btn">
+                            Preview
+                        </a>
                     }
                     else
                     {
-                        <a href="/sites/@(Id)/purchase" class="button primary-btn">Upgrade</a>
+                        <a href="/sites/@(Id)/preview" class="button primary-btn">
+                            Translation Settings
+                        </a>
                     }
+
                 </div>
             </header>
 
@@ -60,13 +78,18 @@
                         {
                             <dd>
                                 @(Product?.TierId)
-                                (up to @(Product?.MaxUsage ?? 1) pages)
                             </dd>
                         }
                     </div>
                     <div>
                         <dt>Total Pages Translated</dt>
-                        <dd>@Domain.TovikUsage / @(Product?.MaxUsage ?? 1)</dd>
+                        <dd>
+                            @Domain.TovikUsage / @((Product?.MaxUsage ?? 1).ToString("N0"))
+                            <a href="@($"/sites/{Domain.Id}/purchase")">
+                                Add Pages
+                                <img src="icons/ChevronRightOrange.svg" alt="Add Pages to this Domain" />
+                            </a>
+                        </dd>
                     </div>
                     <div>
                         <dt>Date Activated</dt>

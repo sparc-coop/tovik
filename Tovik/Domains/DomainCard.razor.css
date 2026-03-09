@@ -4,6 +4,10 @@ article {
     background: rgba(5, 39, 56, 0.32);
     width: 100%;
 
+    > header {
+        padding-bottom: 16px;
+    }
+
     > footer {
         margin-top: 48px;
         display: flex;

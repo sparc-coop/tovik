@@ -73,6 +73,7 @@ dl {
     display: flex;
     flex-direction: column;
     gap: 8px;
+    margin-top: 16px;
 
     @media (orientation: landscape) {
         display: grid;
@@ -101,4 +102,14 @@ dd {
     font-weight: 700;
     font-family: var(--brother-printed);
     color: var(--blue-100);
+
+    a {
+        color: var(--orange-300);
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        margin-left: 8px;
+        font-size: 1.6rem;
+        font-weight: 400;
+    }
 }

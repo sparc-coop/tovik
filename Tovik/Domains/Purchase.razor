@@ -1,0 +1,112 @@
+﻿@page "/sites/{Id}/purchase/{TierId}"
+@using Sparc.Blossom.Realtime
+
+<article>
+    <a class="back" href="/sites/@(Id)/purchase">
+        <img src="./icons/ChevronLeft.svg" alt="Back" />
+        Back to Pricing
+    </a>
+
+    @if (Tier != null && PaymentIntentId == null)
+    {
+        var index = Product?.Tiers.IndexOf(Tier);
+        <section class="summary">
+            <header>
+                <h1>Order Summary</h1>
+                <DomainName Domain="Domain" />
+            </header>
+            <div>
+                <div>
+                    <h2>
+                        @if (Tier.Name != "Free")
+                        {
+                            <img src="./icons/Tier@(index).svg" alt="@Tier.Name" />
+                        }
+                        @Tier.Name
+                    </h2>
+                    <p>@Tier.Description</p>
+                </div>
+                <div class="right">
+                    <h3>
+                        @Tier.FormattedPrice
+                    </h3>
+                    <strong>/one time fee</strong>
+                </div>
+            </div>
+            <ul>
+                <li>
+                    Increases translation limit by @Tier.ItemQuantity.ToString("N0") pages
+                </li>
+                <li>
+                    Unlimited visitors &amp; page visits
+                </li>
+            </ul>
+            <footer>
+                <h4>Total Due</h4>
+                <span>@Tier.FormattedPrice</span>
+            </footer>
+        </section>
+    }
+
+    @if (User != null && Domain != null)
+    {
+        <section>
+            <GlobalBiller ProductId="Tovik" TierId="@TierId" Domain="Domain" Avatar="User.Avatar" Appearance="Appearance" />
+        </section>
+    }
+</article>
+
+@inject IConfiguration Config
+@inject ISparcAura Aura
+@inject ISparcBilling Billing
+@inject SparcEvents Events
+@inject TovikDomains Domains
+
+@code {
+    [Parameter] public required string Id { get; set; }
+    [Parameter] public required string TierId { get; set; }
+    [Parameter][SupplyParameterFromQuery] public string? PaymentIntentId { get; set; }
+
+    BlossomUser? User;
+    SparcDomain? Domain;
+    SparcProduct? Product;
+    ProductTier? Tier => Product?.Tiers.FirstOrDefault(t => t.Name == TierId);
+    StripeAppearance? Appearance = new()
+    {
+        Theme = "flat",
+        Variables = new()
+        {
+            ColorPrimary = "#EFF7F9",
+            ColorText = "#EFF7F9",
+            ColorBackground = "#376880",
+            BorderRadius = "20px",
+            SpacingUnit = "4px"
+        },
+        Rules = new()
+        {
+            { ".Label", new() { FontSize = "13px", FontWeight = 500 }},
+            { ".Input", new() { Border = "1px solid transparent" } },
+            { ".Tab", new() { BorderRadius = "20px" }}
+        }
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        Domain = await Domains.Get(Id);
+        Events.CurrencyChanged += OnCurrencyChanged;
+        User = await Aura.UserInfo();
+        await OnCurrencyChanged(User.Avatar.Currency);
+    }
+
+    async Task OnCurrencyChanged(SparcCurrency? currency)
+    {
+        Product = await Billing.GetProductAsync("Tovik", currency?.Id);
+        StateHasChanged();
+    }
+
+    void ChangeTab(string tab)
+    {
+        if (tab == "Install")
+            Nav.NavigateTo("/Install?domain=" + Domain + "&tierId=" + TierId + "&paymentIntentId=" + PaymentIntentId, true);
+    }
+}

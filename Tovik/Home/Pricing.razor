@@ -1,16 +1,20 @@
 ﻿@page "/pricing"
 @page "/sites/{Id}/purchase"
-@layout MainLayout
 @using Sparc.Blossom.Realtime
 @using Tovik.Domains
 
-
 <article>
     <header class="infopage">
-        <h1>
-            Tovik Pricing
-        </h1>
-        <p>Translate your website effortlessly. Choose the right plan for your domain.</p>
+        @if (SparcDomain?.DateConnected != null)
+        {
+            <h1>Upgrade Your Domain</h1>
+            <p>Choose from the packs below to permanently add additional translatable pages to your domain.</p>
+        }
+        else
+        {
+            <h1>Tovik Pricing</h1>
+            <p>Translate your website effortlessly. Choose the right plan for your domain.</p>
+        }
 
         <div class="options">
             @if (User != null)
@@ -88,7 +92,7 @@
                     }
                     else
                     {
-                        <a class="button secondary-btn" href="/sites" disabled>Purchase Now</a>
+                        <a class="button secondary-btn" href="/sites" disabled>Select a domain</a>
                     }
                     <ul>
                         @if (SparcDomain?.DateConnected == null)
@@ -100,7 +104,7 @@
                         else
                         {
                             <li>
-                                <strong>Add @tier.ItemQuantity.ToString("N0") more translatable pages</strong>
+                                <strong>Increases translation limit by @tier.ItemQuantity.ToString("N0") pages</strong>
                             </li>
                         }
                         <li>

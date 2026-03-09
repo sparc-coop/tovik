@@ -433,8 +433,16 @@ section.icon-header header > img {
 section.icon-header.with-buttons header {
   grid-template-columns: 48px auto min-content;
 }
+section.icon-header.with-buttons button, section.icon-header.with-buttons a.button {
+  white-space: nowrap;
+}
 section.icon-header > div {
-  padding: 24px 86px;
+  padding: 24px;
+}
+@media (orientation: landscape) {
+  section.icon-header > div {
+    padding: 24px 86px;
+  }
 }
 section.icon-header div.buttons {
   padding: 0;
@@ -474,9 +482,10 @@ header.infopage p {
 
 header.subpage {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  gap: 8px;
+  gap: 24px;
   padding: 24px;
 }
 header.subpage h1 {

@@ -13,7 +13,6 @@
         margin: 0;
         width: 100%;
         height: 100%;
-        box-sizing: border-box;
         z-index: 1100;
     }
 
@@ -101,7 +100,6 @@ a.back {
     background: var(--blue-800);
     border-radius: 32px;
     padding: 32px 24px;
-    box-sizing: border-box;
     width: 100%;
     margin-top: 24px;
 

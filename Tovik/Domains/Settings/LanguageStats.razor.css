@@ -5,7 +5,6 @@
 
     thead tr, tbody tr {
         display: grid;
-        box-sizing: border-box;
         width: 100%;
         grid-template-columns: 2fr 1fr 1fr 1fr;
         padding: 16px 24px;
@@ -49,7 +48,6 @@
     }
 
     dd {
-        box-sizing: border-box;
         margin: 0;
         display: grid;
         grid-template-columns: 1fr auto;

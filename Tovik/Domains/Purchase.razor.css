@@ -1,0 +1,132 @@
+article {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+section {
+    border-radius: 32px;
+    width: 100%;
+    background: rgba(79, 129, 153, 0.20);
+    backdrop-filter: blur(4px);
+    padding: 32px;
+
+    h2 {
+        font-size: 2rem;
+        font-weight: 700;
+        display: flex;
+        gap: 4px;
+        align-items: center;
+    }
+
+    ul {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+
+        li {
+            background: url('/images/Star.svg') no-repeat left 8px;
+            background-size: 12px 12px;
+            padding-left: 24px;
+            font-size: 1.6rem;
+            font-weight: 400;
+            font-family: var(--articulat);
+        }
+
+        strong {
+            color: var(--orange-300);
+        }
+    }
+}
+
+.summary {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+
+    > div {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .right {
+        text-align: right;
+    }
+
+    header {
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+        padding-bottom: 32px;
+        border-bottom: 1px solid var(--blue-500);
+    }
+
+    footer {
+        border-top: 1px solid var(--blue-500);
+        padding-top: 32px;
+        display: flex;
+        justify-content: space-between;
+
+        h4, span {
+            font-size: 2.5rem;
+            font-weight: 700;
+            font-family: var(--brother-printed);
+        }
+    }
+
+    h2 {
+        margin-bottom: 10px;
+    }
+
+    h3 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+
+
+    strong {
+        font-family: var(--brother-printed);
+        font-weight: 700;
+        font-size: 2rem;
+        color: var(--orange-300);
+    }
+}
+
+::deep #payment-form {
+    header h4 {
+        font-size: 13px;
+        font-weight: 500;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    input, select {
+        max-width: max(50vw, 100%);
+    }
+}
+
+::deep input, ::deep select, ::deep option, ::deep .currency-selector {
+    background-color: var(--blue-500) !important;
+
+    &::placeholder {
+        color: #d8dee0;
+    }
+}
+
+::deep .purchased {
+    h4 {
+        margin-bottom: 16px;
+        padding: 16px;
+        border: 1px solid white;
+        font-size: 2.8rem;
+        border-radius: 20px;
+        display: inline-block;
+    }
+}
