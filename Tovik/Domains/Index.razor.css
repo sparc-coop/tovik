@@ -10,19 +10,38 @@
         gap: 8px;
         align-items: center;
         width: min(85vw, 880px);
-
-        button.secondary-btn {
-            width: 100%;
-            justify-content: flex-start;
-            gap: 16px;
-            font-family: var(--brother-printed);
-            font-weight: 700;
-            font-size: 2rem;
-            padding: 32px 24px;
-        }
     }
 }
 
 form {
     padding: 32px 24px;
+}
+
+.add-domain {
+    width: 100%;
+    border: 1px solid var(--blue-600);
+    border-radius: 32px;
+    display: flex;
+    gap: 16px;
+    justify-content: flex-start;
+    gap: 16px;
+    font-family: var(--brother-printed);
+    font-weight: 700;
+    font-size: 2rem;
+    padding: 32px 24px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: var(--blue-600);
+        border-color: var(--blue-500);
+    }
+
+    &.adding {
+        cursor: default;
+
+        &:hover {
+            background-color: transparent;
+            border-color: var(--blue-600);
+        }
+    }
 }

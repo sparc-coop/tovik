@@ -6,54 +6,8 @@
     <img src="/images/TovikChar.svg" alt="Tovik" />
     <h1>Your website speaks your language.</h1>
     <h2>Does it speak theirs?</h2>
-    <form @onsubmit=GoToPreview>
-        <input type="text" placeholder="Enter your URL" @bind=Url required />
-        <button>
-            Preview
-        </button>
-    </form>
-    @if (ErrorMessage != null)
-    {
-        <span class="error-message">@ErrorMessage</span>
-    }
+    <AddDomain Mode="Home" />
     <h3>
         With Tovik, everyone can understand.
     </h3>
 </article>
-
-
-@inject TovikDomains Domains
-@inject IJSRuntime Js
-@inject ISparcBilling Billing
-@inject Microsoft.Extensions.Configuration.IConfiguration Config
-
-@code {
-    [Parameter][SupplyParameterFromQuery(Name = "u")] public string? Url { get; set; }
-    [Parameter][SupplyParameterFromQuery(Name = "l")] public string? PreviewLang { get; set; }
-    string? ErrorMessage;
-
-    async Task GoToPreview()
-    {
-        if (Url == null)
-        {
-            ErrorMessage = "Please enter a URL.";
-            return;
-        }
-
-        ErrorMessage = null;
-        StateHasChanged();
-
-        try
-        {
-            var domain = await Domains.RegisterAsync(Url);
-            if (domain != null)
-                Nav.NavigateTo($"/sites/{domain.Id}/preview");
-            else
-                ErrorMessage = "Please enter a valid URL.";
-        }
-        catch (Exception ex)
-        {
-            ErrorMessage = ex.Message;
-        }
-    }
-}

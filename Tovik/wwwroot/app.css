@@ -450,8 +450,10 @@ section.icon-header div.buttons {
 section.icon-header h3 {
   font-size: 1.8rem;
   line-height: 100%;
-  margin-bottom: 8px;
   color: var(--blue-50);
+}
+section.icon-header h3 + p {
+  margin-top: 8px;
 }
 section.icon-header p {
   color: var(--blue-50);

@@ -1,11 +1,52 @@
 form {
     display: grid;
-    grid-template-columns: auto 80px;
+    grid-template-columns: 1fr;
+    justify-content: center;
     align-items: center;
     gap: 8px;
-}
 
-.error-message {
-    margin-top: 16px;
-}
+    input, button {
+        width: 100%;
+        min-width: 300px;
+    }
 
+    input, button {
+        padding: 13px 16px;
+        max-width: 50vw;
+    }
+
+    button {
+        white-space: nowrap;
+    }
+
+    @media (orientation: landscape) {
+        display: flex;
+        gap: 8px;
+
+        input {
+            width: auto;
+            min-width: 350px;
+        }
+
+        button {
+            min-width: 120px;
+        }
+    }
+
+    &.Sites {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr min-content;
+
+        input, button {
+            width: auto;
+            max-width: none;
+            min-width: 0;
+        }
+
+        @media (max-width: 600px) {
+            grid-template-columns: 1fr;
+        }
+
+    }
+}

@@ -14,17 +14,22 @@
             <DomainCard Domain=domain />
         }
 
-        <button class="secondary-btn" @onclick=Add>
-            <img src="/icons/Add.svg" alt="Add a New Domain" />
-            <div>
-                Add a New Domain
-                <p>Start for free</p>
-            </div>
-        </button>
-
-        @if (Error != null)
+        @if (IsAdding)
         {
-            <div class="error-message">@Error</div>
+            <div class="add-domain adding">
+                <img src="/icons/Add.svg" alt="Add a New Domain" />
+                <AddDomain Mode="Sites" />
+            </div>
+        }
+        else
+        {
+            <div class="add-domain" @onclick=Add>
+                <img src="/icons/Add.svg" alt="Add a New Domain" />
+                <div>
+                    Add a New Domain
+                    <p>Start for free</p>
+                </div>
+            </div>
         }
     </section>
 </article>
@@ -36,9 +41,7 @@
 
 @code {
     List<SparcDomain> Domains = new();
-    bool IsVerifying;
-    string NewDomain = "";
-    string? Error;
+    bool IsAdding;
 
     protected override async Task OnInitializedAsync()
     {
@@ -52,6 +55,6 @@
 
     private async Task Add()
     {
-        Nav.NavigateTo("/");
+        IsAdding = true;
     }
 }

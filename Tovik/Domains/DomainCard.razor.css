@@ -6,6 +6,8 @@ article {
 
     > header {
         padding-bottom: 16px;
+        display: flex;
+        justify-content: space-between;
     }
 
     > footer {

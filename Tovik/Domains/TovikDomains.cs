@@ -124,5 +124,11 @@ public class TovikDomains(BlossomAggregateOptions<SparcDomain> options, IReposit
             domain.Users.Remove(User.Id());
             await Repository.UpdateAsync(domain);
         }
+
+        if (domain.TovikUserId == User.Id())
+        {
+            domain.TovikUserId = null;
+            await Repository.UpdateAsync(domain);
+        }
     }
 }

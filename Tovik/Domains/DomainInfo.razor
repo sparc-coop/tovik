@@ -17,15 +17,15 @@
             <div class="buttons">
                 @if (Domain.DateConnected == null)
                 {
-                    <div class="toggle-label inactive">
+                    <div class="toggle-label inactive" @onclick="GoToActivate">
                         Inactive
                         <label class="toggle">
                             <input type="checkbox" disabled />
                             <span class="slider"></span>
                         </label>
                     </div>
-                    <a href="/sites/@(Id)/activate" class="button primary-btn">
-                        Activate
+                    <a href="/sites/@(Id)/activate" class="button secondary-btn">
+                        Preview
                     </a>
                 }
                 else
@@ -37,6 +37,9 @@
                             <span class="slider"></span>
                         </label>
                     </div>
+                    <a href="/sites/@(Id)/preview" class="button secondary-btn">
+                        Translation Settings
+                    </a>
                 }
             </div>
         </header>
@@ -51,14 +54,14 @@
                 <div class="buttons">
                     @if (Domain.DateConnected == null)
                     {
-                        <a href="/sites/@(Id)/preview" class="button secondary-btn">
-                            Preview
+                        <a href="/sites/@(Id)/activate" class="button primary-btn">
+                            Activate
                         </a>
                     }
                     else
                     {
-                        <a href="/sites/@(Id)/preview" class="button primary-btn">
-                            Translation Settings
+                        <a href="/sites/@(Id)/purchase" class="button primary-btn">
+                            Add Pages
                         </a>
                     }
 
@@ -85,10 +88,6 @@
                         <dt>Total Pages Translated</dt>
                         <dd>
                             @Domain.TovikUsage / @((Product?.MaxUsage ?? 1).ToString("N0"))
-                            <a href="@($"/sites/{Domain.Id}/purchase")">
-                                Add Pages
-                                <img src="icons/ChevronRightOrange.svg" alt="Add Pages to this Domain" />
-                            </a>
                         </dd>
                     </div>
                     <div>
@@ -129,6 +128,11 @@
     protected override async Task OnParametersSetAsync()
     {
         Domain = await Domains.Get(Id);
+    }
+
+    void GoToActivate()
+    {
+        Nav.NavigateTo($"/sites/{Id}/activate");
     }
 
     private async Task ToggleDomain(ChangeEventArgs e)

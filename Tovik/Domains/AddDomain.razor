@@ -1,52 +1,49 @@
-﻿<form @onsubmit=Add>
-    <label>
-        <input type="text" placeholder="Enter your domain name" @bind="NewDomain" @bind:event="oninput" />
-    </label>
-
-    <button class="add-btn primary-btn" type="submit" disabled="@IsVerifying">
-        Add
+﻿<form class="@Mode" @onsubmit=GoToPreview>
+    <input type="text" placeholder="Enter your URL" @bind=Url required />
+    <button disabled="@IsVerifying">
+        @(Mode == "Sites" ? "Add Domain" : "Preview")
     </button>
 </form>
 
-@if (Error != null)
+@if (ErrorMessage != null)
 {
-    <div class="error-message">@Error</div>
+    <span class="error-message">@ErrorMessage</span>
 }
 
 @inject Tovik.Domains.TovikDomains TovikDomains
 @code {
-    [Parameter] public EventCallback OnAdded { get; set; }
-    [Parameter] public string? Domain { get; set; }
+    [Parameter] public string? Mode { get; set; }
     bool IsVerifying;
-    string NewDomain = "";
-    string? Error;
-    
-    protected override void OnParametersSet()
-    {
-        if (!string.IsNullOrWhiteSpace(Domain))
-            NewDomain = Domain;
-	}
+    string Url = "";
+    string? ErrorMessage;
 
-    private async Task Add()
+    async Task GoToPreview()
     {
+        if (Url == null)
+        {
+            ErrorMessage = "Please enter a URL.";
+            return;
+        }
+
+        ErrorMessage = null;
         IsVerifying = true;
         StateHasChanged();
 
         try
         {
-            var newDomain = await TovikDomains.RegisterAsync(NewDomain);
-            NewDomain = "";
-            if (OnAdded.HasDelegate)
-                await OnAdded.InvokeAsync();
-			else
-                Nav.NavigateTo($"/sites/{newDomain.Id}");
+            var domain = await TovikDomains.RegisterAsync(Url);
+            if (domain != null)
+                Nav.NavigateTo($"/sites/{domain.Id}/preview");
+            else
+                ErrorMessage = "Please enter a valid URL.";
         }
         catch (Exception ex)
         {
-            Error = ex.Message;
-            NewDomain = "";
+            ErrorMessage = ex.Message;
         }
-
-        IsVerifying = false;
+        finally
+        {
+            IsVerifying = false;
+        }
     }
 }

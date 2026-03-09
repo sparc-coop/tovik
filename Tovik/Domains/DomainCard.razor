@@ -3,6 +3,9 @@
 <article>
     <header>
         <DomainName Domain="Domain" />
+        <button class="secondary-btn round-btn" @onclick="DeleteDomain">
+            <img src="/icons/Trash.svg" alt="Delete this domain" />
+        </button>
     </header>
 
     <Tovik.Domains.Settings.UsageMeter Domain="Domain" />
@@ -23,9 +26,8 @@
     }
 </article>
 
-<DeleteModal Domain=Domain ShowModal=showDeleteModal OnClose=ToggleDeleteModal OnDelete="DeleteDomain" />
-
 @inject Tovik.Domains.TovikDomains TovikDomains 
+@inject IJSRuntime Js
 @code {
     [Parameter] public required SparcDomain Domain { get; set; }
     [Parameter] public required IEnumerable<Language> Languages { get; set; }
@@ -49,11 +51,6 @@
         IsSidebarOpen = !IsSidebarOpen;
     }
 
-    private void ToggleDeleteModal()
-    {
-        showDeleteModal = !showDeleteModal;
-    }
-
     async Task Verify()
     {
         var result = await Domain.VerifyAsync();
@@ -68,9 +65,13 @@
         }
     }
 
-    private async Task DeleteDomain(string id)
+    private async Task DeleteDomain()
     {
+        var confirm = await Js.InvokeAsync<bool>("confirm", $"Are you sure you want to delete {Domain.Domain}? This action cannot be undone.");
+        if (!confirm)
+            return;
+
         await TovikDomains.DeleteAsync(Domain);
-        Nav.NavigateTo("/sites", true);
+        Nav.Refresh(true);
     }
 }

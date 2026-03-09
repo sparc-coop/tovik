@@ -2,6 +2,7 @@
     display: flex;
     gap: 8px;
     align-items: center;
+    width: 100%;
 
     img {
         height: 32px;
@@ -11,5 +12,8 @@
         font-size: 2rem;
         font-weight: 700;
         font-family: var(--brother-printed);
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
     }
 }
