@@ -56,4 +56,5 @@ dd {
     color: var(--blue-200);
     text-align: left;
     display: none;
+    padding: 0 16px;
 }

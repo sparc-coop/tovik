@@ -1,7 +1,12 @@
-﻿<table class="exempt-table">
+﻿<div class="newword">
+    <input type="text" @bind=NewExemption placeholder="Enter a word or phrase..." />
+    <button class="add-btn secondary-btn" @onclick=Add>Add</button>
+</div>
+
+<table class="exempt-table">
     <thead>
         <tr>
-            <td>Word or Phrase</td>
+            <td colspan="2" class="header">Ignored Words or Phrases (@Domain.Settings.IgnoreList.Count)</td>
             <td></td>
         </tr>
     </thead>
@@ -11,21 +16,13 @@
             <tr>
                 <td>@word</td>
                 <td>
-                    <button class="delete-exempt-btn secondary-btn round-btn" @onclick="(() => Delete(word))"><TrashIcon /></button>
+                    <button class="delete-exempt-btn" @onclick="(() => Delete(word))">✕</button>
                 </td>
             </tr>
         }
     </tbody>
     <tfoot>
-        <tr>
-            <td>
-                <input type="text" @bind=NewExemption placeholder="Enter a word or phrase..." />
-            </td>
-            <td>
-                <button class="add-btn secondary-btn" @onclick=Add>Add</button>
-            </td>
-        </tr>
-
+        
     </tfoot>
 </table>
 

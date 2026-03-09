@@ -27,3 +27,23 @@
     width: 100%;
     outline: none;
 }
+
+.icon-header > header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+
+    > img {
+        margin: 0;
+    }
+
+    @media (orientation: landscape) {
+        display: grid;
+        grid-template-columns: 48px auto;
+
+        > img {
+            margin: 0 auto;
+        }
+    }
+}

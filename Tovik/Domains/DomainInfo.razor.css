@@ -18,6 +18,10 @@ h1 {
     &.active {
         color: #3DE4AD;
     }
+
+    &.inactive {
+        opacity: 0.2;
+    }
 }
 
 .toggle {

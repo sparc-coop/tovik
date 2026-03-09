@@ -9,7 +9,7 @@
 
     <header class="subpage">
         <div>
-            <h1>Activation guide</h1>
+            <h1>How to install Tovik</h1>
             <p>Follow these simple steps to install and activate Tovik on your website.</p>
         </div>
     </header>
@@ -21,7 +21,7 @@
                 @if (Domain != null)
                 {
                     <img src="@Domain.FaviconUri" alt="@Domain.Domain" onerror="this.src='/icons/MagicWand.svg'" />
-                    <h3 style="margin-top: 20px">Activate Tovik on @Domain.Domain</h3>
+                    <h3 style="margin-top: 20px">Install and Activate Tovik on @Domain.Domain</h3>
                 }
             </header>
 
@@ -185,6 +185,7 @@
             @if (SelectedPlatform != null)
             {
                 <footer>
+                    <p>Once you've installed Tovik, click the button below to activate Tovik Free and get 10 pages of unlimited translation.</p>
                     <button class="primary-btn" @onclick="ActivateDomain">Activate Tovik</button>
                     @if (Error != null)
                     {

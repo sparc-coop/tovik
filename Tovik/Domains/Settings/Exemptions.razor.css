@@ -1,25 +1,48 @@
 ﻿table {
     width: 100%;
-
-    input {
-        width: 100%;
-    }
-
+    
     tr {
         width: 100%;
         display: grid;
         grid-template-columns: auto 100px;
-        gap: 16px;
+        gap: 0;
     }
 
     td {
-        padding: 0 8px;
+        padding: 4px 8px;
         display: flex;
         align-items: center;
 
         &:last-child {
             justify-content: flex-end;
         }
+
+        &.header {
+            padding-top: 16px; 
+        }
+    }
+}
+
+.delete-exempt-btn {
+    color: white;
+    background: transparent;
+    padding: 4px;
+    border: none;
+}
+
+.add-btn {
+    width: 100%;
+    min-width: 120px;
+}
+
+.newword {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    @media (orientation: landscape) {
+        display: grid;
+        grid-template-columns: auto min-content;
     }
 }
 

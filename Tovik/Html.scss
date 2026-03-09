@@ -120,6 +120,7 @@ html, body {
     margin: 0;
     position: relative;
     background: var(--blue-700);
+    letter-spacing: 0.15em;
     //overflow-x: hidden;
 }
 
@@ -175,7 +176,7 @@ button, a.button {
     cursor: pointer;
     text-decoration: none;
     display: flex;
-    padding: 16px 24px;
+    padding: 13px 16px;
     justify-content: center;
     align-items: center;
     gap: 10px;
@@ -206,7 +207,7 @@ button, a.button {
     }
 
     &.secondary-btn {
-        padding: 16px 24px;
+        padding: 13px 16px;
         display: flex;
         flex-direction: row;
         justify-content: center;
@@ -497,7 +498,7 @@ section.icon-header {
         padding: 24px;
 
         @media (orientation: landscape) {
-            padding: 24px 86px;
+            padding: 24px;
         }
     }
 
@@ -506,7 +507,7 @@ section.icon-header {
     }
 
     h3 {
-        font-size: 1.8rem;
+        font-size: 2.5rem;
         line-height: 100%;
         color: var(--blue-50);
     }
