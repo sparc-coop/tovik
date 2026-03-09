@@ -468,6 +468,9 @@ header.infopage {
   margin-bottom: 24px;
   align-items: center;
 }
+header.infopage h1 {
+  text-align: center;
+}
 header.infopage a {
   color: var(--orange-300);
   text-decoration: underline;

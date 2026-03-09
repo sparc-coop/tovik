@@ -529,6 +529,10 @@ header.infopage {
     margin-bottom: 24px;
     align-items: center;
 
+    h1 {
+        text-align: center;
+    }
+
     a {
         color: var(--orange-300);
         text-decoration: underline;
