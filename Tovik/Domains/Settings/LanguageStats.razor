@@ -37,7 +37,7 @@
 }
 
 
-@inject ITovik Tovik
+@inject ISparcContent SparcContent
 @inject TovikDomains TovikDomains
 @code {
     [Parameter] public required SparcDomain Domain { get; set; }
@@ -48,7 +48,7 @@
     protected override async Task OnParametersSetAsync()
     {
         if (Languages.Count() == 0)
-            Languages = await Tovik.GetLanguages();
+            Languages = await SparcContent.GetLanguages();
 
         if (Page != null)
         {
