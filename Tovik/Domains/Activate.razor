@@ -21,7 +21,7 @@
                 @if (Domain != null)
                 {
                     <img src="@Domain.FaviconUri" alt="@Domain.Domain" onerror="this.src='/icons/MagicWand.svg'" />
-                    <h3 style="margin-top: 20px">Install and Activate Tovik on @Domain.Domain</h3>
+                    <h3 style="margin-top: 20px">Install Tovik on @Domain.Domain</h3>
                 }
             </header>
 
@@ -185,7 +185,7 @@
             @if (SelectedPlatform != null)
             {
                 <footer>
-                    <p>Once you've installed Tovik, click the button below to activate Tovik Free and get 10 pages of unlimited translation.</p>
+                    <p>Once you're done installing Tovik, click the button below to activate Tovik with <strong>10 free pages</strong>.</p>
                     <button class="primary-btn" @onclick="ActivateDomain">Activate Tovik</button>
                     @if (Error != null)
                     {

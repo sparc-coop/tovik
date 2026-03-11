@@ -11,39 +11,55 @@
     @if (Domain != null)
     {
         <article>
-            <a href="/sites" class="back">
-                <img src="/icons/ChevronLeft.svg" alt="Back" />
-                Back to My Sites
-            </a>
+            @if (Domain.DateConnected != null)
+            {
+                <a href="/sites" class="back">
+                    <img src="/icons/ChevronLeft.svg" alt="Back" />
+                    Back to My Sites
+                </a>
+            }
+            
             <header>
                 @if (Domain.DateConnected == null)
                 {
-                    <h1>Preview How Tovik Works on @(Domain.Domain ?? "Your Website")</h1>
+                    <img class="preview" src="/images/TovikMagicWand.png" alt="Tovik Magic Wand" />
+                    <p class="preview">With Tovik, everyone can understand.</p>
                 }
                 else
                 {
                     <h1>Translation Settings for @Domain.Domain</h1>
+                    <p>With Tovik, everyone can understand.</p>
                 }
-                <p>With Tovik, everyone can understand.</p>
             </header>
-
-            <DomainSettings Domain="Domain" Page="Page" OnChange="ForceReload" InitialLanguageId="@Lang" OnLanguageChange="UpdateLanguage" />
 
             @if (Domain.DateConnected == null)
             {
                 <div class="cta">
                     <div>
-                        <h4>This is just a sneak peek.</h4>
                         <p>
-                            Translations in this preview are limited. <a href="/sites/@(Domain.Id)/activate">Install Tovik on your website</a> to make @Domain.Domain multilingual and accessible to everyone.
+                            Tovik is a lightweight plugin that <strong>automatically translates your entire site</strong> into your visitor's native language.
                         </p>
                     </div>
+
+                    <LanguageSelector InitialLanguageId="@Lang" OnLanguageChanged="UpdateLanguage" />
+
                     <div class="buttons">
                         <a class="button primary-btn" href="/sites/@Domain.Id/activate">
-                            Install for Free
+                            Install Tovik on @Domain.Domain
                         </a>
                     </div>
                 </div>
+
+                                <div class="cta2">
+                    Want to learn more? 
+                                    <a href="/questions">FAQ</a> | 
+                    <a href="/pricing">Pricing</a>
+                </div>
+
+            }
+            else
+            {
+                <DomainSettings Domain="Domain" Page="Page" OnChange="ForceReload" InitialLanguageId="@Lang" OnLanguageChange="UpdateLanguage" />
             }
         </article>
     }

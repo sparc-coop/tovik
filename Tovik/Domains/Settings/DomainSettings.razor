@@ -10,7 +10,7 @@
                 <img src="/images/TranslationIcon.svg" alt="Languages Supported" />
                 <div>
                     <h3>Languages Supported</h3>
-                    <p>Choose one of the 200+ languages and 600+ dialects to preview your Tovik-enabled site as a native speaker would see it.</p>
+                    <p>Preview your site as a native speaker would see it with Tovik.</p>
                 </div>
             </header>
             <div>
@@ -18,6 +18,8 @@
             </div>
         </section>
 
+        @if (Domain.DateConnected != null)
+        {
         <section class="icon-header">
             <header>
                 <img src="/icons/Ignore.svg" alt="Ignore Words or Phrases" />
@@ -30,6 +32,7 @@
                 <Exemptions Domain="Domain" OnChange="OnChange" />
             </div>
         </section>
+        }
     }
 </article>
 
