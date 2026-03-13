@@ -54,7 +54,7 @@
         {
             Stats = Page.TovikUsage
             .GroupBy(x => Language(x.Key)!)
-            .ToDictionary(g => g.Key, g => g.Sum(x => x.Value)) ?? [];
+            .ToDictionary(g => g.Key, g => g.Count()) ?? [];
         }
         else
         {
@@ -62,7 +62,7 @@
             Stats = allPages
                 .SelectMany(p => p.TovikUsage)
                 .GroupBy(x => Language(x.Key)!)
-                .ToDictionary(g => g.Key, g => g.Sum(x => x.Value)) ?? [];
+                .ToDictionary(g => g.Key, g => g.Count()) ?? [];
         }
     }
 
