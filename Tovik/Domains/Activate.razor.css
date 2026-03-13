@@ -141,12 +141,21 @@ section {
     ol, ul {
         padding-left: 32px;
 
-        li {
-            margin: 8px 0;
-        }
-
         strong, code {
             color: var(--orange-300);
+        }
+    }
+
+    ol li {
+        margin: 8px 0;
+    }
+
+    ul.notes {
+        list-style: circle;
+
+        li {
+            margin: 8px 0;
+            list-style: circle;
         }
     }
 

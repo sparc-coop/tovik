@@ -434,7 +434,7 @@ ul.category-buttons {
     display: flex;
     gap: 4px;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: flex-start;
     padding: 0 !important;
 
     button {

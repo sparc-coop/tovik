@@ -1,13 +1,37 @@
 ﻿@page "/"
+@page "/home"
 @using Tovik.Domains
 @using Tovik.Translation
 
-<article>
-    <img src="/images/TovikChar.svg" alt="Tovik" />
-    <h1>Your website speaks your language.</h1>
-    <h2>Does it speak theirs?</h2>
-    <AddDomain Mode="Home" />
-    <h3>
-        With Tovik, everyone can understand.
-    </h3>
-</article>
+@if (!IsLoading)
+{
+    <article>
+        <img src="/images/TovikChar.svg" alt="Tovik" />
+        <h1>Your website speaks your language.</h1>
+        <h2>Does it speak theirs?</h2>
+        <AddDomain Mode="Home" />
+        <h3>
+            With Tovik, everyone can understand.
+        </h3>
+    </article>
+}
+
+@inject TovikDomains TovikDomains
+@code {
+    bool IsLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Nav.Uri.Contains("home"))
+        {
+            IsLoading = false;
+            return;
+        }
+
+        var domains = await TovikDomains.All();
+        if (domains.Count > 0)
+            Nav.NavigateTo("/sites");
+
+        IsLoading = false;
+    }
+}
