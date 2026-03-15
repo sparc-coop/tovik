@@ -99,7 +99,7 @@ export default class TovikEngine {
         const request = {
             id: this.idHash(text, fromLang),
             Domain: window.location.host,
-            Path: window.location.pathname,
+            SpaceId: window.location.pathname,
             LanguageId: fromLang,
             Language: { Id: fromLang },
             Text: text
@@ -187,7 +187,7 @@ export default class TovikEngine {
         return {
             id: item.hash || this.idHash(item.text, fromLang),
             Domain: domain,
-            Path: path,
+            SpaceId: path,
             LanguageId: fromLang,
             Language: { Id: fromLang },
             Text: item.text
