@@ -3,6 +3,7 @@ nav {
         display: flex;
         gap: 4px;
         list-style: none;
+        align-items: center;
 
         @media (orientation: landscape) {
             gap: 24px;

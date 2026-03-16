@@ -185,6 +185,15 @@
             @if (SelectedPlatform != null)
             {
                 <footer>
+                    @if (User?.IsRegistered == false)
+                    {
+                        <div class="register">
+                            <p>To make sure you always have access to your domain on Tovik, please enter your email address or register a passkey.</p>
+                            <input type="email" @bind=Email placeholder="Enter your email address" />
+                            <button class="link-btn" @onclick="RegisterPasskey">Prefer to stay anonymous? Register a passkey instead!</button>
+                        </div>
+                    }
+                    
                     <p>Once you're done installing Tovik, click the button below to activate Tovik with <strong>10 free pages</strong>.</p>
                     <button class="primary-btn" @onclick="ActivateDomain">Activate Tovik</button>
                     @if (Error != null)
@@ -207,6 +216,7 @@
     SparcDomain? Domain;
     SparcProduct? SparcProduct;
     BlossomUser? User;
+    string Email = "";
     List<string> Platforms = ["WordPress", "Wix", "SquareSpace", "Webflow", "Weebly", "Shopify", "Other (HTML)"];
     List<string> ComingSoon = [];
     string? SelectedPlatform { get; set; } = null;
@@ -216,6 +226,7 @@
     {
         SparcProduct = await Billing.GetProductAsync("Tovik");
         User = await Aura.UserInfo();
+        Email = User?.Identity("Email") ?? "";
     }
 
     protected override async Task OnParametersSetAsync()
@@ -235,9 +246,24 @@
         }
     }
 
+    private async Task RegisterPasskey()
+    { }
+
     async Task ActivateDomain()
     {
         Error = null;
+        if (!User!.IsRegistered && string.IsNullOrWhiteSpace(Email))
+        {
+            Error = "Please enter a valid email address or register a passkey.";
+            return;
+        }
+
+        if (!User.IsRegistered)
+        {
+            var result = await Aura.Login(Email);
+            User = result.User;
+        }
+
         try
         {
             var result = await Domain!.VerifyAsync();

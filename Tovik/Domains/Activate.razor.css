@@ -91,9 +91,18 @@ footer {
     grid-template-columns: 1fr;
     gap: 24px;
 
-    button {
+    button.primary-btn {
         max-width: 200px;
     }
+}
+
+.register {
+    background: var(--blue-800);
+    padding: 24px;
+    border-radius: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }
 
 a.button {

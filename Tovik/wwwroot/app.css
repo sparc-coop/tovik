@@ -22,6 +22,8 @@
   --purple: #6A2FD0;
   --brother-printed: "brother-1816-printed", sans-serif;
   --articulat: "articulat-cf", sans-serif;
+  --aura-background: #2C5569;
+  --aura-border: #9ED2F0;
 }
 
 p.tovik-translating, div.tovik-translating, span.tovik-translating {
@@ -51,7 +53,11 @@ p.tovik-translating, div.tovik-translating, span.tovik-translating {
 }
 
 .language-select {
+  background-color: var(--blue-600);
+  border: 1px solid var(--blue-500);
+  border-radius: 20px;
   position: relative;
+  width: 100%;
 }
 .language-select:after {
   content: " ";
@@ -63,10 +69,11 @@ p.tovik-translating, div.tovik-translating, span.tovik-translating {
   height: 0;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
-  border-top: 5px solid var(--purple-500);
+  border-top: 5px solid white;
 }
 .language-select select {
   appearance: none;
+  width: 100%;
 }
 .language-select optgroup, .language-select option {
   background-color: var(--blue-600);
@@ -234,6 +241,14 @@ button.icon-btn, a.button.icon-btn {
 button.icon-btn ::deep svg, a.button.icon-btn ::deep svg {
   height: 100%;
   width: auto;
+}
+button.link-btn, a.button.link-btn {
+  background: transparent;
+  text-decoration: underline;
+  color: white;
+  border: none;
+  padding: 0;
+  display: block;
 }
 
 input {
