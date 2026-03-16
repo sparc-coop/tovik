@@ -1,0 +1,36 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: current
+endpoint_name: vllm-hf
+environment_variables:
+  MODEL_NAME: MaLA-LM/emma-500-llama3.1-8b-bi # define the model name using the identifier from HG
+  VLLM_ARGS: "--enable-auto-tool-choice --tool-call-parser llama3_json"
+  HUGGING_FACE_HUB_TOKEN: # Add your HF API key here
+environment:
+  image: xxxxxxxxx.azurecr.io/azureml/azureml_xxxxxxxxxxx # Replace with your own image
+  inference_config:
+    liveness_route:
+      port: 8000
+      path: /ping 
+    readiness_route:
+      port: 8000
+      path: /health
+    scoring_route:
+      port: 8000
+      path: /
+instance_type: Standard_NC24ads_A100_v4
+instance_count: 1
+request_settings:
+    request_timeout_ms: 60000
+    max_concurrent_requests_per_instance: 16 
+liveness_probe:
+  initial_delay: 10
+  period: 10
+  timeout: 2
+  success_threshold: 1
+  failure_threshold: 30
+readiness_probe:
+  initial_delay: 120
+  period: 10
+  timeout: 2
+  success_threshold: 1
+  failure_threshold: 30
