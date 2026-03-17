@@ -622,12 +622,16 @@ dialog .login {
 
     form {
         display: flex;
-        flex-direction: column;
         gap: 8px;
+        padding: 0 16px;
 
         @media (orientation: landscape) {
             display: grid;
             grid-template-columns: auto min-content;
+        }
+
+        &.verify input {
+            inline-size: 120px;
         }
     }
 }
