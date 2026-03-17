@@ -275,7 +275,7 @@ button, a.button {
         color: white;
         border: none;
         padding: 0;
-        display: block;
+        display: inline-block;
     }
 }
 
@@ -602,4 +602,32 @@ a.back {
     font-weight: 700;
     font-family: var(--brother-printed);
     padding: 12px 17px;
+}
+
+dialog .login {
+    h4 {
+        margin-bottom: 16px;
+    }
+
+
+    p, aside {
+        text-align: center;
+        margin-bottom: 16px;
+        font-size: 1.4rem;
+
+        @media (orientation: landscape) {
+            text-align: left;
+        }
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        @media (orientation: landscape) {
+            display: grid;
+            grid-template-columns: auto min-content;
+        }
+    }
 }

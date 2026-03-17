@@ -249,7 +249,7 @@ button.link-btn, a.button.link-btn {
   color: white;
   border: none;
   padding: 0;
-  display: block;
+  display: inline-block;
 }
 
 input {
@@ -533,4 +533,29 @@ a.back {
   font-weight: 700;
   font-family: var(--brother-printed);
   padding: 12px 17px;
+}
+
+dialog .login h4 {
+  margin-bottom: 16px;
+}
+dialog .login p, dialog .login aside {
+  text-align: center;
+  margin-bottom: 16px;
+  font-size: 1.4rem;
+}
+@media (orientation: landscape) {
+  dialog .login p, dialog .login aside {
+    text-align: left;
+  }
+}
+dialog .login form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+@media (orientation: landscape) {
+  dialog .login form {
+    display: grid;
+    grid-template-columns: auto min-content;
+  }
 }
