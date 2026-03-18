@@ -611,7 +611,6 @@ dialog .login {
 
 
     p, aside {
-        text-align: center;
         margin-bottom: 16px;
         font-size: 1.4rem;
 
@@ -622,16 +621,30 @@ dialog .login {
 
     form {
         display: flex;
+        flex-wrap: wrap;
         gap: 8px;
         padding: 0 16px;
+        justify-content: center;
 
         @media (orientation: landscape) {
             display: grid;
             grid-template-columns: auto min-content;
+            justify-content: flex-start;
         }
 
-        &.verify input {
-            inline-size: 120px;
+        input {
+            max-inline-size: 60vw;
+        }
+
+        &.verify {
+            justify-content: flex-start;
+            input {
+                inline-size: 120px;
+            }
+        }
+
+        button {
+            white-space: nowrap;
         }
     }
 }

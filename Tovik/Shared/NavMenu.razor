@@ -1,6 +1,10 @@
 ﻿@using Sparc.Blossom.Authentication.Avatar
+@using Sparc.Blossom.Authentication.Icons
 <nav>
-    <ul>
+    <ul class="@OpenClass">
+        <li @onclick="Open" class="mobile-only">
+            <Close />
+        </li>
         <li>
             <NavLink href="/sites">My Sites</NavLink>
         </li>
@@ -10,8 +14,20 @@
         <li>
             <NavLink href="/pricing">Pricing</NavLink>
         </li>
-        <li>
-            <SparcAura />
-        </li>
     </ul>
+
+    <SparcAura />
+
+    <button class="icon-btn mobile-only" @onclick="Open">
+        <img src="/icons/MenuIcon.svg" alt="Open Nav Menu" />
+    </button>
 </nav>
+
+@code {
+    string OpenClass = "";
+
+    void Open()
+    {
+        OpenClass = OpenClass == "" ? "open" : "";
+    }
+}

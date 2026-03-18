@@ -539,7 +539,6 @@ dialog .login h4 {
   margin-bottom: 16px;
 }
 dialog .login p, dialog .login aside {
-  text-align: center;
   margin-bottom: 16px;
   font-size: 1.4rem;
 }
@@ -550,15 +549,27 @@ dialog .login p, dialog .login aside {
 }
 dialog .login form {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   padding: 0 16px;
+  justify-content: center;
 }
 @media (orientation: landscape) {
   dialog .login form {
     display: grid;
     grid-template-columns: auto min-content;
+    justify-content: flex-start;
   }
+}
+dialog .login form input {
+  max-inline-size: 60vw;
+}
+dialog .login form.verify {
+  justify-content: flex-start;
 }
 dialog .login form.verify input {
   inline-size: 120px;
+}
+dialog .login form button {
+  white-space: nowrap;
 }

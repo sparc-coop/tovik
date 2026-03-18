@@ -1,11 +1,33 @@
 nav {
-    ul {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+
+    > ul {
         display: flex;
+        flex-direction: column;
         gap: 4px;
         list-style: none;
-        align-items: center;
+        align-items: flex-start;
+        position: fixed;
+        right: 0;
+        transform: translateX(400px);
+        top: 0;
+        bottom: 0;
+        padding: 24px;
+        background-color: var(--blue-800);
+        transition: transform 0.3s ease;
+
+        &.open {
+            transform: translateX(0);
+        }
 
         @media (orientation: landscape) {
+            position: static;
+            flex-direction: row;
+            transform: translateX(0);
+            transition: none;
+            background-color: transparent;
             gap: 24px;
         }
     }
@@ -13,6 +35,7 @@ nav {
     li {
         padding: 10.5px 12px;
         text-wrap: nowrap;
+        cursor: pointer;
     }
 
     ::deep a {
@@ -23,5 +46,19 @@ nav {
         &.active {
             color: var(--orange-300);
         }
+    }
+}
+
+.icon-btn {
+    border: 0;
+
+    img {
+        height: 16px;
+    }
+}
+
+@media (orientation: landscape) {
+    .mobile-only {
+        display: none;
     }
 }
