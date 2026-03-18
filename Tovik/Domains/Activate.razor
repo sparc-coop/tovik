@@ -1,4 +1,5 @@
 ﻿@page "/sites/{Id}/activate"
+@using Sparc.Blossom.Realtime
 @using Tovik.Domains
 
 <article>
@@ -185,12 +186,11 @@
             @if (SelectedPlatform != null)
             {
                 <footer>
-                    @if (User?.IsRegistered == false)
+                    @if (User?.IsVerified == false)
                     {
                         <div class="register">
-                            <p>To make sure you always have access to your domain on Tovik, please enter your email address or register a passkey.</p>
-                            <input type="email" @bind=Email placeholder="Enter your email address" />
-                            <button class="link-btn" @onclick="RegisterPasskey">Prefer to stay anonymous? Register a passkey instead!</button>
+                            <p>To ensure you always have access to your domain on Tovik, make sure to save your Tovik profile.</p>
+                            <button class="link-btn" @onclick="SetupProfile">Set Up My Profile</button>
                         </div>
                     }
                     
@@ -211,6 +211,7 @@
 @inject TovikDomains Domains
 @inject ISparcBilling Billing
 @inject ISparcAura Aura
+@inject SparcEvents Events 
 @code {
     [Parameter] public required string Id { get; set; }
     SparcDomain? Domain;
@@ -246,23 +247,14 @@
         }
     }
 
-    private async Task RegisterPasskey()
-    { }
+    private async Task SetupProfile()
+    {
+        await Events.OnSetupProfile();
+    }
 
     async Task ActivateDomain()
     {
         Error = null;
-        if (!User!.IsRegistered && string.IsNullOrWhiteSpace(Email))
-        {
-            Error = "Please enter a valid email address or register a passkey.";
-            return;
-        }
-
-        if (!User.IsRegistered)
-        {
-            var result = await Aura.Login(Email);
-            User = result.User;
-        }
 
         try
         {
