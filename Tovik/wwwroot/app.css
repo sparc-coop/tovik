@@ -513,6 +513,9 @@ header.subpage {
 header.subpage h1 {
   font-size: 2.5rem;
 }
+header.subpage p {
+  color: var(--blue-300);
+}
 header.subpage > div {
   display: flex;
   flex-direction: column;

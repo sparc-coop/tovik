@@ -580,6 +580,10 @@ header.subpage {
         font-size: 2.5rem;
     }
 
+    p {
+        color: var(--blue-300);
+    }
+
     > div {
         display: flex;
         flex-direction: column;
