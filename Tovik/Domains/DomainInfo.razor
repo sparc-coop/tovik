@@ -112,7 +112,7 @@
                 </div>
             </header>
 
-            <div>
+            <div class="scroll">
                 <LanguageStats Domain="Domain" />
             </div>
         </section>
@@ -144,13 +144,15 @@
                     <p>The following API key has been generated for your use with @Domain.Domain. This key will only be visible once, so please copy it to a secure location.</p>
                     <p>If you need to regenerate the API key, you can do so by toggling the API key off and on again.</p>
                     <CodeBlock CanCopy="true">@Key</CodeBlock>
+                    <UsageMeter Domain="Domain" Mode="API" />
                 </div>
             }
             else if (Domain.ApiKey != null)
             {
                 <div class="apikey">
-                    <p>The Tovik API is currently active for @Domain.Domain. If you need to view or regenerate your API key, please toggle the API key off and on again.</p>
+                    <p>Tovik API is currently active for @Domain.Domain. If you need to view or regenerate your API key, please toggle the API key off and on again.</p>
                     <CodeBlock>@Domain.ApiKey</CodeBlock>
+                    <UsageMeter Domain="Domain" Mode="API" />
                 </div>
             }
         </section>

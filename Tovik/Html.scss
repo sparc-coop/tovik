@@ -485,7 +485,7 @@ section.icon-header {
     border-radius: 32px;
     width: 100%;
 
-    header {
+    > header {
         background: var(--blue-600);
         border-radius: 32px;
         display: grid;

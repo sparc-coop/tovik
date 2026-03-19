@@ -2,9 +2,9 @@
     <header>
         <span>@Edition Edition</span>
         <div>
-            <span>@Domain.TovikUsage.ToString("N0")</span>
+            <span>@Usage.ToString("N0")</span>
             /
-            <span>@Limit.ToString("N0") pages</span>
+            <span>@Limit.ToString("N0") @Unit</span>
             @if (Edition == "Preview")
             {
                 <a href="@($"/sites/{Domain.Id}/activate")">
@@ -15,8 +15,8 @@
             else if (FillPercentage > 70)
             {
                 <a href="@($"/sites/{Domain.Id}/purchase")">
-                    Add Pages
-                    <img src="icons/ChevronRightOrange.svg" alt="Add Pages to this Domain" />
+                    Add @Unit
+                    <img src="icons/ChevronRightOrange.svg" alt="Add @Unit to this Domain" />
                 </a>
             }
         </div>
@@ -28,9 +28,13 @@
 
 @code {
     [Parameter] public required SparcDomain Domain { get; set; }
-    string Edition => Domain.Product("Tovik")?.TierId ?? "Preview";
+    [Parameter] public string Mode { get; set; } = "";
+    string Edition => License?.TierId ?? "Preview";
 
-    int Limit => Domain.Product("Tovik")?.MaxUsage ?? 1;
-    int Remaining => Limit - Domain.TovikUsage;
-    int FillPercentage => Limit > 0 ? (int)((double)Domain.TovikUsage / Limit * 100) : 0;
+    int Limit => Mode == "API" ? License?.MaxUsage * 1000 ?? 1000 : License?.MaxUsage ?? 1;
+    int Usage => Mode == "API" ? Domain.TovikApiUsage : Domain.TovikUsage;
+    int Remaining => Limit - Usage;
+    int FillPercentage => Limit > 0 ? (int)((double)Usage / Limit * 100) : 0;
+    string Unit => Mode == "API" ? "Words" : "Pages";
+    SparcLicense? License => Domain.Product("Tovik");
 }

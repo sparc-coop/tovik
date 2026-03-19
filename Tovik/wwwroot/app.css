@@ -433,7 +433,7 @@ section.icon-header {
   border-radius: 32px;
   width: 100%;
 }
-section.icon-header header {
+section.icon-header > header {
   background: var(--blue-600);
   border-radius: 32px;
   display: grid;
@@ -443,7 +443,7 @@ section.icon-header header {
   padding: 24px;
   margin-bottom: 16px;
 }
-section.icon-header header > img {
+section.icon-header > header > img {
   height: 32px;
   margin: 0 auto;
 }

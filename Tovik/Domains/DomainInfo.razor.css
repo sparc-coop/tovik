@@ -123,3 +123,8 @@ dd {
     flex-direction: column;
     gap: 16px;
 }
+
+.scroll {
+    max-height: 400px;
+    overflow-y: auto;
+}
