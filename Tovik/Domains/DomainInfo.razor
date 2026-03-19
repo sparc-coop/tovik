@@ -182,7 +182,14 @@
 
     private async Task ToggleApi(ChangeEventArgs e)
     {
-        Key = Domain!.ToggleApiKey();
+        if (Domain!.ApiKey != null)
+        {
+            var confirm = await Js.InvokeAsync<bool>("confirm", "Are you sure you want to disable the Tovik API? This will invalidate your current API key and require you to generate a new one if you want to use the API in the future.");
+            if (!confirm)
+                return;
+        }
+
+        Key = Domain.ToggleApiKey();
         await Domains.Update(Domain);
     }
 }

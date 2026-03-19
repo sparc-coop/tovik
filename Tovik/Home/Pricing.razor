@@ -114,8 +114,12 @@
                             @Sparc.Blossom.Content.Language.LanguageCount languages &amp; @Sparc.Blossom.Content.Language.Count dialects
                         </li>
                         <li>
-                            Unlimited translations
+                            Unlimited translations per page
                         </li>
+                        @if (index > 0)
+                        {
+                            <li>(New!) Tovik API: Directly translate up to @ApiQuantity(tier) words</li>
+                        }
                     </ul>
                 </div>
             }
@@ -170,5 +174,14 @@
     private async Task OnDomainChanged()
     {
         SparcDomain = AllDomains.FirstOrDefault(x => x.Id == Domain);
+    }
+
+    string ApiQuantity(ProductTier tier)
+    {
+        if (tier.ItemQuantity == 100)
+            return "100K";
+        if (tier.ItemQuantity == 1000)
+            return "1M";
+        return tier.ItemQuantity.ToString("N0");
     }
 }
