@@ -1,0 +1,154 @@
+@page "/sites/{Id}/api"
+@using Sparc.Blossom.Realtime
+@using Tovik.Domains
+
+<article>
+    <a href="/sites/@Id" class="back">
+        <img src="/icons/ChevronLeft.svg" alt="Back to Domain Settings" />
+        Back to Domain Settings
+    </a>
+
+    <header class="subpage">
+        <div>
+            <h1>API guide</h1>
+            <p>Use the Tovik translate API to translate text programmatically.</p>
+        </div>
+    </header>
+
+    @if (Domain != null)
+    {
+        <section>
+            <header>
+                <h2>1</h2>
+                <h3>Endpoint</h3>
+            </header>
+
+            <div>
+                <p>The translate API endpoint for your domain is:</p>
+                <CodeBlock CanCopy=true>POST https://api.tovik.app/translate</CodeBlock>
+            </div>
+        </section>
+
+        <section>
+            <header>
+                <h2>2</h2>
+                <h3>Headers</h3>
+            </header>
+
+            <div>
+                <p>Authenticate with your full domain API key (found on your domain settings page) using a Bearer token in the <strong>Authorization</strong> header.</p>
+
+                <p>To set the from and to language for your translation, use the following language headers (use IETF BCP 47 tags, e.g. <code>de-DE</code>, <code>fr-FR</code>):</p>
+                <ul class="notes">
+                    <li><strong>Content-Language</strong> — the language of the supplied text (the "from" language). Example: <code>de-DE</code>.</li>
+                    <li><strong>Accept-Language</strong> — the requested language to translate to (the "to" language). Example: <code>fr-FR</code>.</li>
+                </ul>
+                <CodeBlock CanCopy=true>
+Authorization: Bearer @Domain.ApiKey?.MaskedKey
+Content-Language: en-US
+Accept-Language: fr-FR
+                </CodeBlock>
+            </div>
+        </section>
+
+        <section>
+            <header>
+                <h2>3</h2>
+                <h3>Request body</h3>
+            </header>
+
+            <div>
+                <p>Send a JSON body with a <code>content</code> array and an optional <code>options</code> object. Basic example:</p>
+                <CodeBlock CanCopy=true>
+{
+  "content": [
+    "Hi, how are you?",
+    "I am fine, thank you."
+  ]
+}
+                </CodeBlock>
+
+                <h4>Available options</h4>
+                <p>The <code>options</code> object lets you customize your translation in the following ways:</p>
+                <ul>
+                    <li><strong>outputLanguage</strong> — (string) BCP 47 tag for the requested output language (e.g. <code>fr-FR</code>). If omitted, the <code>Accept-Language</code> header or the domain/user default may be used.</li>
+                    <li><strong>ignoreList</strong> — (array of strings) words or phrases that should not be translated (can be transliterated instead).</li>
+                    <li><strong>instructions</strong> — (string) Additional special instructions to the translator.</li>
+                    <li><strong>additionalContext</strong> — (string) extra context to help with translation (examples, conversation context, style notes, additional text surrounding the text to translate).</li>
+                </ul>
+
+                <p>Example with more options:</p>
+                <CodeBlock CanCopy=true>
+{
+  "content": ["Welcome to our site!"],
+  "options": {
+    "outputLanguage": "fr-FR",
+    "ignoreList": ["Tovik", "Acme"],
+    "additionalContext": "Marketing homepage headline, friendly tone.",
+  }
+}
+                </CodeBlock>
+
+                <h3>cURL example</h3>
+                <CodeBlock CanCopy=true>
+curl -X POST \
+  https://api.tovik.app/translate \
+  -H 'Authorization: Bearer [apiKey]' \
+  -H 'Content-Type: application/json' \
+  -H 'Content-Language: en-US' \
+  -H 'Accept-Language: fr-FR' \
+  -d '{
+    "content": [
+      "Hi, how are you?",
+      "I am fine, thank you."
+    ],
+    "options": {
+      "additionalContext": "This is a conversation between close friends."
+    }
+  }'
+                </CodeBlock>
+            </div>
+        </section>
+
+        <section>
+            <header>
+                <h2>4</h2>
+                <h3>Results</h3>
+            </header>
+
+            <div>
+                <p>The API returns a list of translated results. Each item typically includes the original text, the translated text, and the language tag of the translation.</p>
+                <CodeBlock>
+[
+  {
+    "originalText": "I am fine, thank you.",
+    "translatedText": "Je vais bien, merci.",
+    "language": "fr-FR"
+  },
+  {
+    "originalText": "Hi, how are you?",
+    "translatedText": "Salut, comment ça va ?",
+    "language": "fr-FR"
+  }
+]
+                </CodeBlock>
+            </div>
+        </section>
+
+        <footer>
+            <h3 class="tagline">With Tovik, everyone can understand.</h3>
+        </footer>
+    }
+
+</article>
+
+@inject TovikDomains Domains
+@code {
+    [Parameter] public required string Id { get; set; }
+    SparcDomain? Domain;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        Domain = await Domains.Get(Id);
+    }
+}
