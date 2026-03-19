@@ -117,3 +117,9 @@ dd {
         font-weight: 400;
     }
 }
+
+.apikey {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}

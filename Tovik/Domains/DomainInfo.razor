@@ -116,6 +116,44 @@
                 <LanguageStats Domain="Domain" />
             </div>
         </section>
+
+        <section class="icon-header with-buttons">
+            <header>
+                <img src="/images/LightbulbIcon.svg" alt="Tovik API" />
+                <div>
+                    <h3>Tovik API</h3>
+                    <p>Enable the Tovik REST API for programmatic access to Tovik's translations.</p>
+                </div>
+                <div class="buttons">
+                    <div class="toggle-label @(Domain.ApiKey != null ? "active" : "inactive")">
+                        @(Domain.ApiKey != null ? "Active" : "Inactive")
+                        <label class="toggle">
+                            <input type="checkbox" checked="@(Domain.ApiKey != null)" @onchange="ToggleApi" />
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <a href="/sites/@(Id)/api" class="button secondary-btn">
+                        Docs
+                    </a>
+                </div>
+            </header>
+
+            @if (Key != null)
+            {
+                <div class="apikey">
+                    <p>The following API key has been generated for your use with @Domain.Domain. This key will only be visible once, so please copy it to a secure location.</p>
+                    <p>If you need to regenerate the API key, you can do so by toggling the API key off and on again.</p>
+                    <CodeBlock CanCopy="true">@Key</CodeBlock>
+                </div>
+            }
+            else if (Domain.ApiKey != null)
+            {
+                <div class="apikey">
+                    <p>The Tovik API is currently active for @Domain.Domain. If you need to view or regenerate your API key, please toggle the API key off and on again.</p>
+                    <CodeBlock>@Domain.ApiKey</CodeBlock>
+                </div>
+            }
+        </section>
     }
 </article>
 
@@ -124,6 +162,7 @@
     [Parameter] public required string Id { get; set; }
     SparcDomain? Domain;
     SparcLicense? Product => Domain?.Product("Tovik");
+    string? Key;
 
     protected override async Task OnParametersSetAsync()
     {
@@ -138,6 +177,12 @@
     private async Task ToggleDomain(ChangeEventArgs e)
     {
         Domain!.IsActive = !Domain.IsActive;
+        await Domains.Update(Domain);
+    }
+
+    private async Task ToggleApi(ChangeEventArgs e)
+    {
+        Key = Domain!.ToggleApiKey();
         await Domains.Update(Domain);
     }
 }

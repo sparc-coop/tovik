@@ -453,6 +453,10 @@ section.icon-header.with-buttons header {
 section.icon-header.with-buttons button, section.icon-header.with-buttons a.button {
   white-space: nowrap;
 }
+section.icon-header.with-buttons .buttons {
+  display: flex;
+  gap: 8px;
+}
 section.icon-header > div {
   padding: 24px;
 }

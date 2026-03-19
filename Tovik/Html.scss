@@ -509,6 +509,11 @@ section.icon-header {
         button, a.button {
             white-space: nowrap;
         }
+
+        .buttons {
+            display: flex;
+            gap: 8px;
+        }
     }
 
     > div {
