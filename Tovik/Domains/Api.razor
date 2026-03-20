@@ -36,12 +36,12 @@
             </header>
 
             <div>
-                <p>Authenticate with your full domain API key (found on your domain settings page) using a Bearer token in the <strong>Authorization</strong> header.</p>
+                <p>Authenticate with your full domain API key (found on your domain settings page) using a Bearer token in the <strong translate="no">Authorization</strong> header.</p>
 
                 <p>To set the from and to language for your translation, use the following language headers (use IETF BCP 47 tags, e.g. <code>de-DE</code>, <code>fr-FR</code>):</p>
                 <ul class="notes">
-                    <li><strong>Content-Language</strong> — the language of the supplied text (the "from" language). Example: <code>de-DE</code>.</li>
-                    <li><strong>Accept-Language</strong> — the requested language to translate to (the "to" language). Example: <code>fr-FR</code>.</li>
+                    <li><strong translate="no">Content-Language</strong> — the language of the supplied text (the "from" language). Example: <code>de-DE</code>.</li>
+                    <li><strong translate="no">Accept-Language</strong> — the requested language to translate to (the "to" language). Example: <code>fr-FR</code>.</li>
                 </ul>
                 <CodeBlock CanCopy=true>
 Authorization: Bearer @Domain.ApiKey?.MaskedKey
@@ -58,7 +58,7 @@ Accept-Language: fr-FR
             </header>
 
             <div>
-                <p>Send a JSON body with a <code>content</code> array and an optional <code>options</code> object. Basic example:</p>
+                <p>Send a JSON body with a <code translate="no">content</code> array and an optional <code translate="no">options</code> object. Basic example:</p>
                 <CodeBlock CanCopy=true>
 {
   "content": [
@@ -69,12 +69,12 @@ Accept-Language: fr-FR
                 </CodeBlock>
 
                 <h4>Available options</h4>
-                <p>The <code>options</code> object lets you customize your translation in the following ways:</p>
+                <p>The <code translate="no">options</code> object lets you customize your translation in the following ways:</p>
                 <ul>
-                    <li><strong>outputLanguage</strong> — (string) BCP 47 tag for the requested output language (e.g. <code>fr-FR</code>). If omitted, the <code>Accept-Language</code> header or the domain/user default may be used.</li>
-                    <li><strong>ignoreList</strong> — (array of strings) words or phrases that should not be translated (can be transliterated instead).</li>
-                    <li><strong>instructions</strong> — (string) Additional special instructions to the translator.</li>
-                    <li><strong>additionalContext</strong> — (string) extra context to help with translation (examples, conversation context, style notes, additional text surrounding the text to translate).</li>
+                    <li><strong translate="no">outputLanguage</strong> — (string) BCP 47 tag for the requested output language (e.g. <code>fr-FR</code>). If omitted, the <code translate="no">Accept-Language</code> header or the domain/user default may be used.</li>
+                    <li><strong translate="no">ignoreList</strong> — (array of strings) words or phrases that should not be translated (can be transliterated instead).</li>
+                    <li><strong translate="no">instructions</strong> — (string) Additional special instructions to the translator.</li>
+                    <li><strong translate="no">additionalContext</strong> — (string) extra context to help with translation (examples, conversation context, style notes, additional text surrounding the text to translate).</li>
                 </ul>
 
                 <p>Example with more options:</p>
