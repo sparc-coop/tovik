@@ -14,7 +14,7 @@ nav {
         transform: translateX(400px);
         top: 0;
         bottom: 0;
-        padding: 24px;
+        padding: 1px 24px;
         background-color: var(--blue-800);
         transition: transform 0.3s ease;
 
