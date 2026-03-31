@@ -4,7 +4,7 @@ using Sparc.Blossom.Data;
 
 namespace Tovik.Domains;
 
-public class TovikDomains(BlossomAggregateOptions<SparcDomain> options, IRepository<Page> pages)
+public class TovikDomains(BlossomAggregateOptions<SparcDomain> options, IRepository<Page> pages, IRepository<BlossomFile> files)
     : BlossomAggregate<SparcDomain>(options)
 {
     public async Task<List<SparcDomain>> All()
@@ -130,5 +130,30 @@ public class TovikDomains(BlossomAggregateOptions<SparcDomain> options, IReposit
             domain.TovikUserId = null;
             await Repository.UpdateAsync(domain);
         }
+    }
+
+    public async Task<List<Page>> GetDocumentsAsync(SparcDomain domain)
+    {
+        var result = await pages.Query
+            .Where(p => p.Domain == domain.Domain && p.Path.EndsWith(".docx"))
+            .ToListAsync();
+
+        return result.OrderByDescending(x => x.TovikUsage.Sum(y => y.Value)).ToList();
+    }
+
+    public async Task<Page> UploadDocumentAsync(SparcDomain domain, string filename, Stream stream)
+    {
+        var obfuscatedFileName = $"{domain.Id}/{Guid.NewGuid()}.docx";
+
+        var file = new BlossomFile("documents", obfuscatedFileName, AccessTypes.Private, stream);
+        await files.AddAsync(file);
+
+        Page page = new(domain.Domain, obfuscatedFileName, filename)
+        {
+            Language = Language.Find("en-US")
+        };
+
+        await pages.AddAsync(page);
+        return page;
     }
 }

@@ -1,4 +1,5 @@
 ﻿@page "/sites/{Id}"
+@using Sparc.Blossom.Content
 @using Tovik.Domains.Settings
 
 <article>
@@ -119,6 +120,51 @@
 
         <section class="icon-header with-buttons">
             <header>
+                <img src="/images/LightbulbIcon.svg" alt="Tovik Docs" />
+                <div>
+                    <h3>Translatable Documents</h3>
+                    <p>Upload your documents here to automatically translate them with Tovik.</p>
+                </div>
+                <InputFile OnChange="UploadFiles" multiple />
+            </header>
+            <div class="scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>
+                                <h4>Document</h4>
+                            </th>
+                            <th>
+                                Page Count
+                            </th>
+                            <th>
+                                URL
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var doc in Documents)
+                        {
+                            <tr>
+                                <td>
+                                    <h4>@doc.Name</h4>
+                                </td>
+                                <td>
+                                    @doc.Visits.Sum(x => x.Value)
+                                </td>
+                                <td>
+                                    <a href="@DocLink(doc, "es-AR")">@doc.Path</a>
+                                </td>
+                            </tr>
+                        }
+                        )
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="icon-header with-buttons">
+            <header>
                 <img src="/images/LightbulbIcon.svg" alt="Tovik API" />
                 <div>
                     <h3>Tovik API</h3>
@@ -160,15 +206,18 @@
 </article>
 
 @inject TovikDomains Domains
+@inject IConfiguration Config
 @code {
     [Parameter] public required string Id { get; set; }
     SparcDomain? Domain;
+    List<Page> Documents = [];
     SparcLicense? Product => Domain?.Product("Tovik");
     string? Key;
 
     protected override async Task OnParametersSetAsync()
     {
         Domain = await Domains.Get(Id);
+        Documents = await Domains.GetDocumentsAsync(Domain!);
     }
 
     void GoToActivate()
@@ -193,5 +242,20 @@
 
         Key = Domain.ToggleApiKey();
         await Domains.Update(Domain);
+    }
+
+    private async Task UploadFiles(InputFileChangeEventArgs e)
+    {
+        foreach (var file in e.GetMultipleFiles())
+        {
+            using var stream = file.OpenReadStream();
+            await Domains.UploadDocumentAsync(Domain!, file.Name, stream);
+        }
+    }
+
+    string DocLink(Page doc, string lang)
+    {
+        var baseUrl = Config["SparcEngine"];
+        return $"{baseUrl}/translate/documents/{doc.Id}?domain={Domain?.Domain}&lang={lang}";
     }
 }
