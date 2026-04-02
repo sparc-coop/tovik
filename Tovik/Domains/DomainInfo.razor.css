@@ -36,6 +36,13 @@ h1 {
     }
 }
 
+.delete-exempt-btn {
+    color: white;
+    background: transparent;
+    padding: 4px;
+    border: none;
+}
+
 .slider {
     position: absolute;
     cursor: pointer;

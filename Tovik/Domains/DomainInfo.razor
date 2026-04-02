@@ -140,6 +140,8 @@
                             <th>
                                 URL
                             </th>
+                            <th>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -153,11 +155,13 @@
                                     @doc.Visits.Sum(x => x.Value)
                                 </td>
                                 <td>
-                                    <a href="@DocLink(doc, "es-AR")">@doc.Path</a>
+                                    <a href="@DocLink(doc, "es-ES")">@doc.Path</a>
+                                </td>
+                                <td>
+                                    <button class="delete-exempt-btn" @onclick="(() => Delete(doc))">✕</button>
                                 </td>
                             </tr>
                         }
-                        )
                     </tbody>
                 </table>
             </div>
@@ -257,5 +261,15 @@
     {
         var baseUrl = Config["SparcEngine"];
         return $"{baseUrl}/translate/documents/{doc.Id}?domain={Domain?.Domain}&lang={lang}";
+    }
+
+    async Task Delete(Page doc)
+    {
+        var confirm = await Js.InvokeAsync<bool>("confirm", $"Are you sure you want to delete the document '{doc.Name}'? This action cannot be undone.");
+        if (!confirm)
+            return;
+
+        await Domains.DeleteDocumentAsync(doc);
+        Documents.Remove(doc);
     }
 }

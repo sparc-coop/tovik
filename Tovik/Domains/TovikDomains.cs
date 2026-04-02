@@ -4,7 +4,10 @@ using Sparc.Blossom.Data;
 
 namespace Tovik.Domains;
 
-public class TovikDomains(BlossomAggregateOptions<SparcDomain> options, IRepository<Page> pages, IRepository<BlossomFile> files)
+public class TovikDomains(BlossomAggregateOptions<SparcDomain> options, 
+    IRepository<Page> pages, 
+    IRepository<BlossomFile> files,
+    IRepository<TextContent> contents)
     : BlossomAggregate<SparcDomain>(options)
 {
     public async Task<List<SparcDomain>> All()
@@ -155,5 +158,17 @@ public class TovikDomains(BlossomAggregateOptions<SparcDomain> options, IReposit
 
         await pages.AddAsync(page);
         return page;
+    }
+
+    public async Task DeleteDocumentAsync(Page doc)
+    {
+        var textContent = await contents.Query.Where(x => x.Domain == doc.Domain && x.SpaceId == doc.Id).ToListAsync();
+        await contents.DeleteAsync(textContent);
+
+        var file = await files.FindAsync($"documents/{doc.Path}");
+        if (file != null)
+            await files.DeleteAsync(file);
+
+        await pages.DeleteAsync(doc);
     }
 }
