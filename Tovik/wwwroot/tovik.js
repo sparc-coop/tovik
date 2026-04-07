@@ -5973,6 +5973,7 @@
     class TovikEngine {
         static userLang;
         static documentLang;
+        static detectedLang;
         static model;
         static rtlLanguages = ['ar', 'fa', 'he', 'ur', 'ps', 'ku', 'dv', 'yi', 'sd', 'ug'];
         static async getUserLanguage() {
@@ -6016,6 +6017,24 @@
             const style = document.createElement('style');
             style.textContent = 'html.tovik-translating, html.tovik-translating * { color: transparent !important; caret-color: transparent !important; }';
             document.head.appendChild(style);
+        }
+        static isRegisteringVisit = false;
+        static async registerVisit() {
+            if (this.isRegisteringVisit || document.body.innerText.length < 50)
+                return;
+            console.log('visiting', document.body.innerText);
+            this.isRegisteringVisit = true;
+            this.fetch('translate/visit', {
+                Domain: window.location.host,
+                SpaceId: window.location.pathname,
+                LanguageId: this.documentLang,
+                Language: { Id: this.documentLang },
+                Text: document.body.innerText.substring(0, 1000)
+            }).then(x => {
+                console.log('visited', x);
+                this.detectedLang = x.id;
+                this.isRegisteringVisit = false;
+            });
         }
         static async hi() {
             this.injectPreloadCSS();
@@ -6277,6 +6296,8 @@
                 this.observer.disconnect();
         }
         async translatePage(element, forceReload = false) {
+            if (!TovikEngine.detectedLang)
+                TovikEngine.registerVisit();
             // Only translate if the first two characters of originalLang don't match the first two characters of TovikEngine.userLang
             if (this.#originalLang && this.#originalLang.substring(0, 2) === TovikEngine.userLang.substring(0, 2) && !forceReload) {
                 return;
