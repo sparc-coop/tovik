@@ -60,10 +60,9 @@ export default class TovikEngine {
 
     static isRegisteringVisit = false;
     static async registerVisit() {
-        if (this.isRegisteringVisit || document.body.innerText.length < 50)
+        if (this.isRegisteringVisit || document.body.innerText.length < 100)
             return;
 
-        console.log('visiting', document.body.innerText);
         this.isRegisteringVisit = true;
 
         this.fetch('translate/visit', {
@@ -73,7 +72,6 @@ export default class TovikEngine {
             Language: { Id: this.documentLang },
             Text: document.body.innerText.substring(0, 1000)
         }).then(x => {
-            console.log('visited', x);
             this.detectedLang = x.id;
             this.isRegisteringVisit = false;
         });
