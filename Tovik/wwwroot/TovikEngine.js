@@ -149,8 +149,9 @@ export default class TovikEngine {
         }
         const untranslated = textsToTranslate.filter(item => !existingTranslations.some(t => t.id === item.hash));
         const batches = [];
-        for (let i = 0; i < untranslated.length; i += 25) {
-            batches.push(untranslated.slice(i, i + 25));
+        const batchSize = 50;
+        for (let i = 0; i < untranslated.length; i += batchSize) {
+            batches.push(untranslated.slice(i, i + batchSize));
         }
         await Promise.all(batches.map(async (batch) => {
             let newTranslations = await TovikEngine.getUntranslated(batch, fromLang);
