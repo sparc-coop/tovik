@@ -5967,14 +5967,14 @@
         return (p(a) + p(b) + p(c) + p(d)).toLowerCase();
     }
 
-    const baseUrl = window.location.href.includes('localhost')
-        ? 'https://localhost:7185'
-        : 'https://engine.sparc.coop';
+    const baseUrl = 'https://localhost:7185'
+        ;
     class TovikEngine {
         static userLang;
         static documentLang;
         static detectedLang;
         static model;
+        static sampleText;
         static rtlLanguages = ['ar', 'fa', 'he', 'ur', 'ps', 'ku', 'dv', 'yi', 'sd', 'ug'];
         static async getUserLanguage() {
             // If query parameter lang is set, use it
@@ -6020,24 +6020,23 @@
         }
         static isRegisteringVisit = false;
         static async registerVisit() {
-            if (this.isRegisteringVisit || document.body.innerText.length < 50)
+            if (this.isRegisteringVisit || this.sampleText.length < 100)
                 return;
-            console.log('visiting', document.body.innerText);
             this.isRegisteringVisit = true;
             this.fetch('translate/visit', {
                 Domain: window.location.host,
                 SpaceId: window.location.pathname,
                 LanguageId: this.documentLang,
                 Language: { Id: this.documentLang },
-                Text: document.body.innerText.substring(0, 1000)
+                Text: this.sampleText.substring(0, 1000)
             }).then(x => {
-                console.log('visited', x);
                 this.detectedLang = x.id;
                 this.isRegisteringVisit = false;
             });
         }
         static async hi() {
             this.injectPreloadCSS();
+            this.sampleText = document.body.innerText;
             let lang = await this.getUserLanguage();
             this.documentLang = document.documentElement.lang;
             await this.setLanguage(lang);
@@ -6090,7 +6089,7 @@
             if (!this.userLang) {
                 await this.getUserLanguage();
             }
-            var result = await this.fetch('translate/untranslated', { content: requests, additionalContext: document.body.innerText }, this.userLang);
+            var result = await this.fetch('translate/untranslated', { content: requests, options: { additionalContext: this.sampleText } }, this.userLang);
             return result;
         }
         static async translateAll(pendingTranslations, textMap, fromLang, onTranslation) {
