@@ -4,9 +4,10 @@ using Sparc.Blossom.Content;
 
 namespace Tovik.Translation;
 
+public record TovikCrawlResult(string Url, string Html, bool IsTovikInstalled);
 public class TovikCrawler(IConfiguration config)
 {
-    public async Task<string> PreviewAsync(SparcDomain domain, Page page, string? lang = null)
+    public async Task<TovikCrawlResult> PreviewAsync(SparcDomain domain, Page page, string? lang = null)
     {
         var domainUri = domain.ToUri();
 
@@ -17,7 +18,9 @@ public class TovikCrawler(IConfiguration config)
 
         var client = new HttpClient(handler);
         client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (compatible; https://tovik.app)");
-        string html = await client.GetStringAsync(page.AbsolutePath(lang));
+        var url = page.AbsolutePath(lang);
+        string html = await client.GetStringAsync(url);
+        var isTovikInstalled = html.Contains("tovik.js");
 
         var doc = new HtmlDocument();
         doc.LoadHtml(html);
@@ -27,10 +30,13 @@ public class TovikCrawler(IConfiguration config)
         var body = doc.DocumentNode.SelectSingleNode("//body");
         if (body != null)
         {
-            var script = doc.CreateElement("script");
-            script.SetAttributeValue("type", "module");
-            script.SetAttributeValue("src", $"{tovik}/tovik.js");
-            body.AppendChild(script);
+            if (!isTovikInstalled)
+            {
+                var script = doc.CreateElement("script");
+                script.SetAttributeValue("type", "module");
+                script.SetAttributeValue("src", $"{tovik}/tovik.js");
+                body.AppendChild(script);
+            }
 
             body.SetAttributeValue("data-tovikdomain", domain.Domain);
             body.SetAttributeValue("data-tovikpath", page.Path);
@@ -72,6 +78,6 @@ public class TovikCrawler(IConfiguration config)
         }
 
         var result = doc.DocumentNode.OuterHtml;
-        return result;
+        return new(url, result, isTovikInstalled);
     }
 }

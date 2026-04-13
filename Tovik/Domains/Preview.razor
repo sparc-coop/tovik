@@ -5,13 +5,13 @@
 @layout EmptyLayout
 
 <div class="browser">
-    <iframe srcdoc="@Html" @ref=IFrame>
+    <iframe srcdoc="@CrawlResult?.Html" @ref=IFrame>
     </iframe>
 
     @if (Domain != null)
     {
         <article>
-            @if (Domain.DateConnected != null)
+            @if (CrawlResult?.IsTovikInstalled == true)
             {
                 <a href="/sites" class="back">
                     <img src="/icons/ChevronLeft.svg" alt="Back" />
@@ -20,19 +20,11 @@
             }
             
             <header>
-                @if (Domain.DateConnected == null)
-                {
-                    <img class="preview" src="/images/TovikMagicWand.png" alt="Tovik Magic Wand" />
-                    <p class="preview">With Tovik, everyone can understand.</p>
-                }
-                else
-                {
-                    <h1>Translation Settings for @Domain.Domain</h1>
-                    <p>With Tovik, everyone can understand.</p>
-                }
+                <img class="preview" src="/images/TovikMagicWand.png" alt="Tovik Magic Wand" />
+                <p class="preview">With Tovik, everyone can understand.</p>
             </header>
 
-            @if (Domain.DateConnected == null)
+            @if (CrawlResult != null && CrawlResult.IsTovikInstalled == false)
             {
                 <div class="cta">
                     <div>
@@ -50,14 +42,14 @@
                     </div>
                 </div>
 
-                                <div class="cta2">
-                    Want to learn more? 
-                                    <a href="/questions">FAQ</a> | 
+                <div class="cta2">
+                    Want to learn more?
+                    <a href="/questions">FAQ</a> |
                     <a href="/pricing">Pricing</a>
                 </div>
 
             }
-            else
+            else if (CrawlResult?.IsTovikInstalled == true)
             {
                 <DomainSettings Domain="Domain" Page="Page" OnChange="ForceReload" InitialLanguageId="@Lang" OnLanguageChange="UpdateLanguage" />
             }
@@ -73,7 +65,7 @@
     Page? Page;
     List<string> History = [];
     string Url = string.Empty;
-    string? Html;
+    TovikCrawlResult? CrawlResult;
     string? ErrorMessage;
     string? Lang;
 
@@ -101,7 +93,7 @@
 
     async Task ForceReload()
     {
-        if (Html != null)
+        if (CrawlResult != null)
             await Js.InvokeVoidAsync("forceReloadPreview", IFrame);
     }
 
@@ -111,11 +103,11 @@
             return;
 
         ErrorMessage = null;
-        Html = null;
+        CrawlResult = null;
 
         (Domain, Page) = await Domains.GetDomainAndPage(Url);
         if (Domain != null && !Domain.IsBlocked && Page != null)
-            Html = await Crawler.PreviewAsync(Domain, Page, Lang);
+            CrawlResult = await Crawler.PreviewAsync(Domain, Page, Lang);
         else
             ErrorMessage = Domain?.IsBlocked == true
                 ? "This domain is not compatible with Tovik."
@@ -128,7 +120,7 @@
         Lang = lang.Id;
         try
         {
-            if (Html == null)
+            if (CrawlResult == null)
                 await LoadPage();
             else
                 await Js.InvokeVoidAsync("changePreviewLanguage", IFrame, Lang);
