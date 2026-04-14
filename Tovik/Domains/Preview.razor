@@ -4,6 +4,8 @@
 @page "/sites/{Id}/preview"
 @layout EmptyLayout
 
+<PageTitle>@Domain?.Domain Preview | Tovik</PageTitle>
+
 <div class="browser">
     <iframe srcdoc="@CrawlResult?.Html" @ref=IFrame>
     </iframe>
