@@ -6090,7 +6090,7 @@
             if (!this.userLang) {
                 await this.getUserLanguage();
             }
-            var result = await this.fetch('translate/untranslated', { content: requests, options: { additionalContext: this.sampleText } }, this.userLang);
+            var result = await this.fetch('translate/untranslated', { content: requests, options: { additionalContext: this.sampleText.substring(0, 1000) } }, this.userLang);
             return result;
         }
         static async translateAll(pendingTranslations, textMap, fromLang, onTranslation) {
@@ -6100,10 +6100,12 @@
             for (let i = 0; i < progress.length; i++) {
                 progress[i].classList.add('show');
             }
-            var textsToTranslate = pendingTranslations.map(item => ({
-                hash: item.hash,
-                text: textMap(item.element)
-            }));
+            const uniqueMap = new Map();
+            for (const item of pendingTranslations) {
+                if (!uniqueMap.has(item.hash))
+                    uniqueMap.set(item.hash, { hash: item.hash, text: textMap(item.element) });
+            }
+            var textsToTranslate = Array.from(uniqueMap.values());
             const existingTranslations = await TovikEngine.getFromCache(textsToTranslate, fromLang);
             if (existingTranslations) {
                 for (let translation of existingTranslations) {
@@ -6324,6 +6326,7 @@
             return node
                 && node.textContent
                 && /\p{Letter}/u.test(node.textContent) // Check if the text contains any letter
+                && !Date.parse(node.textContent) // Exclude text that can be parsed as a date
                 && !(node.parentElement && node.parentElement.tagName === 'TOVIK-T');
         }
         #observer = mutations => {

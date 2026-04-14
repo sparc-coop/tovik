@@ -58,6 +58,7 @@ export default class TovikElement extends HTMLElement {
         return node
             && node.textContent
             && /\p{Letter}/u.test(node.textContent) // Check if the text contains any letter
+            && !Date.parse(node.textContent) // Exclude text that can be parsed as a date
             && !(node.parentElement && node.parentElement.tagName === 'TOVIK-T');
     }
     #observer = mutations => {
