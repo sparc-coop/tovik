@@ -6120,7 +6120,7 @@
             }
             const untranslated = textsToTranslate.filter(item => !existingTranslations.some(t => t.id === item.hash));
             const batches = [];
-            const batchSize = 50;
+            const batchSize = 10;
             for (let i = 0; i < untranslated.length; i += batchSize) {
                 batches.push(untranslated.slice(i, i + batchSize));
             }
