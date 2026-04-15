@@ -5968,8 +5968,10 @@
     }
 
     const baseUrl = window.location.href.includes('localhost')
+        || (window.parent?.location != null && window.parent.location.href.includes('localhost'))
         ? 'https://localhost:7185'
         : 'https://engine.sparc.coop';
+    console.log('urls', window.parent?.location?.href);
     class TovikEngine {
         static userLang;
         static documentLang;
