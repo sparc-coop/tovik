@@ -33,7 +33,6 @@ export default class TovikElement extends HTMLElement {
     async translatePage(element, forceReload = false) {
         if (!TovikEngine.detectedLang)
             TovikEngine.registerVisit();
-        console.log('hi', this.#originalLang, TovikEngine.userLang);
         // Only translate if the first two characters of originalLang don't match the first two characters of TovikEngine.userLang
         if (this.#originalLang && this.#originalLang.substring(0, 2) === TovikEngine.userLang.substring(0, 2) && !forceReload) {
             return;
