@@ -35,9 +35,10 @@
                         </p>
                     </div>
 
-                    <LanguageSelector InitialLanguageId="@Lang" OnLanguageChanged="UpdateLanguage" />
+                    <LanguageSelector InitialLanguageId="@Lang" OnLanguageChanged="UpdateLanguage" @ref="LangSelector" />
 
                     <div class="buttons">
+                        <button class="secondary-btn" @onclick="PickRandomLanguage">Show Me Another Language</button>
                         <a class="button primary-btn" href="/sites/@Domain.Id/activate">
                             Install Tovik on @Domain.Domain
                         </a>
@@ -70,6 +71,7 @@
     TovikCrawlResult? CrawlResult;
     string? ErrorMessage;
     string? Lang;
+    LanguageSelector? LangSelector;
 
     ElementReference IFrame;
 
@@ -77,7 +79,7 @@
     protected override async Task OnParametersSetAsync()
     {
         ErrorMessage = null;
-        Lang = Sparc.Blossom.Content.Language.Random.Id;
+        Lang = Sparc.Blossom.Content.Language.Random("en").Id;
         Domain = await Domains.Get(Id);
 
         if (Domain != null)
@@ -97,6 +99,13 @@
     {
         if (CrawlResult != null)
             await Js.InvokeVoidAsync("forceReloadPreview", IFrame);
+    }
+
+    async Task PickRandomLanguage()
+    {
+        Lang = Sparc.Blossom.Content.Language.Random("en").Id;
+        if (LangSelector != null)
+            await LangSelector.SetLanguage(Lang);
     }
 
     async Task LoadPage()
