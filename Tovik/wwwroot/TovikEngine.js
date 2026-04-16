@@ -56,7 +56,7 @@ export default class TovikEngine {
     }
     static isRegisteringVisit = false;
     static async registerVisit() {
-        if (this.isRegisteringVisit || this.sampleText.length < 100)
+        if (this.isRegisteringVisit || !this.sampleText || this.sampleText.length < 100)
             return;
         this.isRegisteringVisit = true;
         this.fetch('translate/visit', {
@@ -72,7 +72,6 @@ export default class TovikEngine {
     }
     static async hi() {
         this.injectPreloadCSS();
-        this.sampleText = document.body.innerText;
         let lang = await this.getUserLanguage();
         this.documentLang = document.documentElement.lang;
         await this.setLanguage(lang);
@@ -118,6 +117,40 @@ export default class TovikEngine {
         var result = await this.fetch('translate/all', requests, this.userLang);
         return result;
     }
+    static getWindowedSample(firstItem, lastItem, totalChars) {
+        if (!this.sampleText)
+            return '';
+        var text = this.sampleText;
+        const firstItemIndex = text.indexOf(firstItem.text);
+        const lastItemIndex = text.indexOf(lastItem.text);
+        const numSamples = firstItemIndex > -1 && lastItemIndex > -1
+            ? lastItemIndex - firstItemIndex > totalChars ? 2 : 1
+            : firstItemIndex > -1 || lastItemIndex > -1 ? 1
+                : 0;
+        let sample;
+        if (numSamples === 0) {
+            sample = text.substring(0, totalChars);
+        }
+        else if (numSamples == 2) {
+            const firstStartIndex = Math.max(0, firstItemIndex - totalChars / 4);
+            const firstEndIndex = Math.min(text.length, firstItemIndex + totalChars / 4);
+            const lastStartIndex = Math.max(0, lastItemIndex - totalChars / 4);
+            const lastEndIndex = Math.min(text.length, lastItemIndex + totalChars / 4);
+            sample = text.substring(firstStartIndex, firstEndIndex) + text.substring(lastStartIndex, lastEndIndex);
+        }
+        else {
+            var index = firstItemIndex > -1 ? firstItemIndex : lastItemIndex;
+            let start = Math.max(0, index - totalChars / 2);
+            let end = Math.min(text.length, index + totalChars / 2);
+            // ensure we get as close to totalChars as possible
+            if (end - start < totalChars) {
+                start = Math.max(0, end - totalChars);
+                end = Math.min(text.length, start + totalChars);
+            }
+            sample = text.substring(start, end);
+        }
+        return sample;
+    }
     static async getUntranslated(items, fromLang) {
         if (!items.length)
             return [];
@@ -125,7 +158,8 @@ export default class TovikEngine {
         if (!this.userLang) {
             await this.getUserLanguage();
         }
-        var result = await this.fetch('translate/untranslated', { content: requests, options: { additionalContext: this.sampleText.substring(0, 1000) } }, this.userLang);
+        var windowedContext = this.getWindowedSample(items[0], items[items.length - 1], 1000);
+        var result = await this.fetch('translate/untranslated', { content: requests, options: { additionalContext: windowedContext } }, this.userLang);
         return result;
     }
     static async translateAll(pendingTranslations, textMap, fromLang, onTranslation) {
@@ -159,6 +193,8 @@ export default class TovikEngine {
         }
         await Promise.all(batches.map(async (batch) => {
             let newTranslations = await TovikEngine.getUntranslated(batch, fromLang);
+            if (!newTranslations)
+                return;
             for (let translation of newTranslations) {
                 const items = pendingTranslations.filter(item => item.hash === translation.id);
                 for (let item of items) {
