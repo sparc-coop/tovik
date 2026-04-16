@@ -1,4 +1,8 @@
-﻿table {
+﻿input[type=search] {
+    width: 100%;
+}
+
+table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
@@ -6,13 +10,20 @@
     thead tr, tbody tr {
         display: grid;
         width: 100%;
-        grid-template-columns: 2fr 1fr 1fr 1fr;
+        grid-template-columns: 4fr 1fr;
         padding: 16px 24px;
+    }
+
+    thead {
+        position: sticky;
+        top: -24px;
+        background: var(--blue-700);
     }
 
     thead tr {
         border-radius: 8px;
         background: var(--blue-800);
+
     }
 
     th, td {
@@ -25,6 +36,18 @@
         &:first-child {
             align-items: flex-start;
         }
+    }
+
+    thead tr.search {
+        background: transparent;
+    }
+
+    a.gotopreview h4 {
+        text-decoration: underline;
+    }
+
+    h4, h5 {
+        text-align: left;
     }
 
     h4 {

@@ -1,4 +1,5 @@
 ﻿@using Sparc.Blossom.Content
+
 <table>
     <thead>
         <tr>
@@ -7,27 +8,30 @@
                 Dialect
             </th>
             <th>
-                Page Count
+                Visits
             </th>
-            <th>
-                Last Translated
+        </tr>
+        <tr class="search">
+            <th colspan="2">
+                <input type="search" placeholder="Search languages..." @bind="SearchText" @bind:event="oninput" @bind:after="Search" />
             </th>
         </tr>
     </thead>
     <tbody>
-    @foreach (var language in Stats.OrderByDescending(x => x.Value))
-    {
-        <tr>
-            <td>
-                <h4>@language.Key.LanguageDisplayName</h4>
-                @language.Key.DialectDisplayName
-            </td>
-            <td>
-                @language.Value.ToString("N0")
-            </td>
-            <td></td>
-        </tr>
-    }
+        @foreach (var language in FilteredLanguages.OrderByDescending(x => Stats.ContainsKey(x) ? Stats[x] : -1).ThenBy(x => x.LanguageDisplayName).ThenBy(x => x.DialectDisplayName))
+        {
+            <tr>
+                <td>
+                    <a href="@PreviewLink(language)" class="gotopreview" target="_blank">
+                        <h4>@language.LanguageDisplayName</h4>
+                        <h5>@language.DialectDisplayName</h5>
+                    </a>
+                </td>
+                <td>
+                    @(Stats.ContainsKey(language) ? Stats[language].ToString("N0") : "")
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 
@@ -44,11 +48,15 @@
     [Parameter] public Page? Page { get; set; }
     Dictionary<Language, int> Stats = [];
     IEnumerable<Language> Languages = [];
+    IEnumerable<Language> FilteredLanguages = [];
+    string SearchText = "";
 
     protected override async Task OnParametersSetAsync()
     {
         if (Languages.Count() == 0)
             Languages = await Tovik.GetLanguages();
+
+        FilteredLanguages = Languages;
 
         if (Page != null)
         {
@@ -62,11 +70,38 @@
             Stats = allPages
                 .SelectMany(p => p.TovikUsage)
                 .GroupBy(x => Language(x.Key)!)
+                .Where(x => x.Key != null)
                 .ToDictionary(g => g.Key, g => g.Count()) ?? [];
         }
     }
 
-    Language? Language(string id) => Languages.FirstOrDefault(x => x.Matches(id));
+    void Search()
+    {
+        if (string.IsNullOrWhiteSpace(SearchText))
+        {
+            FilteredLanguages = Languages;
+        }
+        else
+        {
+            var search = SearchText.Trim().ToLower();
+            FilteredLanguages = Languages.Where(l =>
+                l.LanguageDisplayName.ToLower().Contains(search) ||
+                l.LanguageNativeName.ToLower().Contains(search) ||
+                (l.DialectDisplayName != null && l.DialectDisplayName.ToLower().Contains(search)) ||
+                (l.DialectNativeName != null && l.DialectNativeName.ToLower().Contains(search)) ||
+                l.Id.ToLower().Contains(search));
+        }
+    }
+
+    string PreviewLink(Language language)
+    {
+        if (Domain.DateConnected == null)
+            return $"/sites/{Domain.Id}/preview?l={language.Id}";
+
+        return $"https://{Domain.Domain}?plang={language.Id}";
+    }
+
+    Language? Language(string id) => FilteredLanguages.FirstOrDefault(x => x.Matches(id));
 
     string FillPercentage(Language language)
     {

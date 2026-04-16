@@ -4,19 +4,25 @@ const baseUrl = window.location.href.includes('localhost')
     || (window.parent?.location != null && window.parent.location.href.includes('localhost'))
     ? 'https://localhost:7185'
     : 'https://engine.sparc.coop';
-console.log('urls', window.parent?.location?.href);
 export default class TovikEngine {
     static userLang;
     static documentLang;
     static detectedLang;
     static model;
     static sampleText;
+    static isPreview;
     static rtlLanguages = ['ar', 'fa', 'he', 'ur', 'ps', 'ku', 'dv', 'yi', 'sd', 'ug'];
     static async getUserLanguage() {
         // If query parameter lang is set, use it
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.has('lang')) {
             this.userLang = urlParams.get('lang');
+            return this.userLang;
+        }
+        if (urlParams.has('plang')) {
+            this.userLang = urlParams.get('plang');
+            await localStorage.setItem('tovik-plang', this.userLang);
+            this.isPreview = true;
             return this.userLang;
         }
         // Check for data-lang on the body element
@@ -39,19 +45,22 @@ export default class TovikEngine {
         }
         if (this.userLang)
             return this.userLang;
-        var tovikLang = await localStorage.getItem('tovik-lang');
+        var tovikLang = await localStorage.getItem('tovik-plang');
         if (tovikLang) {
             this.userLang = tovikLang;
+            this.isPreview = true;
         }
         else {
             this.userLang = navigator.language;
-            await localStorage.setItem('tovik-lang', this.userLang);
+            //await localStorage.setItem('tovik-lang', this.userLang);
         }
         return this.userLang;
     }
     static injectPreloadCSS() {
         const style = document.createElement('style');
-        style.textContent = 'html.tovik-translating, html.tovik-translating * { color: transparent !important; caret-color: transparent !important; }';
+        style.textContent = 'html.tovik-translating, html.tovik-translating * { color: transparent !important; caret-color: transparent !important; }'
+            + '.tovik-preview { position: fixed; bottom: 20px; right: 20px; z-index: 1000000; background-color: #1F5068; color: white; font-size: 16px; padding: 16px 24px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 16px; }'
+            + '.tovik-preview img { width: 36px; height: 36px; }';
         document.head.appendChild(style);
     }
     static isRegisteringVisit = false;
@@ -70,13 +79,24 @@ export default class TovikEngine {
             this.isRegisteringVisit = false;
         });
     }
+    static async exitPreview() {
+        await localStorage.removeItem('tovik-plang');
+        window.location.href = window.location.pathname;
+    }
     static async hi() {
         this.injectPreloadCSS();
         let lang = await this.getUserLanguage();
         this.documentLang = document.documentElement.lang;
+        if (this.isPreview) {
+            let languageName = new Intl.DisplayNames([navigator.language], { type: 'language' }).of(this.userLang);
+            var previewHtml = `<div class="tovik-preview" translate="no" onclick="document.dispatchEvent(new CustomEvent('tovik-exit-preview'))"><img src="https://tovik.app/images/TovikChar.svg" /> ${languageName} <span>✕</span></div>`;
+            document.body.insertAdjacentHTML('beforeend', previewHtml);
+            document.addEventListener('tovik-exit-preview', this.exitPreview);
+        }
         await this.setLanguage(lang);
         document.addEventListener('tovik-user-language-changed', async (event) => {
-            await this.setLanguage(event.detail);
+            if (!this.isPreview)
+                await this.setLanguage(event.detail);
         });
     }
     static async getLanguages() {
@@ -84,8 +104,6 @@ export default class TovikEngine {
     }
     static async setLanguage(language) {
         if (this.userLang != language) {
-            if (!document.body.getAttribute('data-toviklang'))
-                await localStorage.setItem('tovik-lang', language);
             this.userLang = language;
             document.dispatchEvent(new CustomEvent('tovik-language-changed', { detail: this.userLang }));
         }

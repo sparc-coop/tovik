@@ -64,6 +64,7 @@
 @inject TovikCrawler Crawler
 @code {
     [Parameter] public required string Id { get; set; }
+    [Parameter][SupplyParameterFromQuery(Name = "l")] public string? PreviewLang { get; set; }
     SparcDomain? Domain;
     Page? Page;
     List<string> History = [];
@@ -79,7 +80,7 @@
     protected override async Task OnParametersSetAsync()
     {
         ErrorMessage = null;
-        Lang = Sparc.Blossom.Content.Language.Random("en").Id;
+        Lang = PreviewLang ?? Sparc.Blossom.Content.Language.Random("en").Id;
         Domain = await Domains.Get(Id);
 
         if (Domain != null)
