@@ -6021,7 +6021,7 @@
         }
         static isRegisteringVisit = false;
         static async registerVisit() {
-            if (this.isRegisteringVisit || this.sampleText.length < 100)
+            if (this.isRegisteringVisit || !this.sampleText || this.sampleText.length < 100)
                 return;
             this.isRegisteringVisit = true;
             this.fetch('translate/visit', {
@@ -6037,7 +6037,6 @@
         }
         static async hi() {
             this.injectPreloadCSS();
-            this.sampleText = document.body.innerText;
             let lang = await this.getUserLanguage();
             this.documentLang = document.documentElement.lang;
             await this.setLanguage(lang);
@@ -6083,6 +6082,40 @@
             var result = await this.fetch('translate/all', requests, this.userLang);
             return result;
         }
+        static getWindowedSample(firstItem, lastItem, totalChars) {
+            if (!this.sampleText)
+                return '';
+            var text = this.sampleText;
+            const firstItemIndex = text.indexOf(firstItem.text);
+            const lastItemIndex = text.indexOf(lastItem.text);
+            const numSamples = firstItemIndex > -1 && lastItemIndex > -1
+                ? lastItemIndex - firstItemIndex > totalChars ? 2 : 1
+                : firstItemIndex > -1 || lastItemIndex > -1 ? 1
+                    : 0;
+            let sample;
+            if (numSamples === 0) {
+                sample = text.substring(0, totalChars);
+            }
+            else if (numSamples == 2) {
+                const firstStartIndex = Math.max(0, firstItemIndex - totalChars / 4);
+                const firstEndIndex = Math.min(text.length, firstItemIndex + totalChars / 4);
+                const lastStartIndex = Math.max(0, lastItemIndex - totalChars / 4);
+                const lastEndIndex = Math.min(text.length, lastItemIndex + totalChars / 4);
+                sample = text.substring(firstStartIndex, firstEndIndex) + text.substring(lastStartIndex, lastEndIndex);
+            }
+            else {
+                var index = firstItemIndex > -1 ? firstItemIndex : lastItemIndex;
+                let start = Math.max(0, index - totalChars / 2);
+                let end = Math.min(text.length, index + totalChars / 2);
+                // ensure we get as close to totalChars as possible
+                if (end - start < totalChars) {
+                    start = Math.max(0, end - totalChars);
+                    end = Math.min(text.length, start + totalChars);
+                }
+                sample = text.substring(start, end);
+            }
+            return sample;
+        }
         static async getUntranslated(items, fromLang) {
             if (!items.length)
                 return [];
@@ -6090,7 +6123,8 @@
             if (!this.userLang) {
                 await this.getUserLanguage();
             }
-            var result = await this.fetch('translate/untranslated', { content: requests, options: { additionalContext: this.sampleText.substring(0, 1000) } }, this.userLang);
+            var windowedContext = this.getWindowedSample(items[0], items[items.length - 1], 1000);
+            var result = await this.fetch('translate/untranslated', { content: requests, options: { additionalContext: windowedContext } }, this.userLang);
             return result;
         }
         static async translateAll(pendingTranslations, textMap, fromLang, onTranslation) {
@@ -6124,6 +6158,8 @@
             }
             await Promise.all(batches.map(async (batch) => {
                 let newTranslations = await TovikEngine.getUntranslated(batch, fromLang);
+                if (!newTranslations)
+                    return;
                 for (let translation of newTranslations) {
                     const items = pendingTranslations.filter(item => item.hash === translation.id);
                     for (let item of items) {
@@ -6301,6 +6337,7 @@
         async translatePage(element, forceReload = false) {
             if (!TovikEngine.detectedLang)
                 TovikEngine.registerVisit();
+            console.log('hi', this.#originalLang, TovikEngine.userLang);
             // Only translate if the first two characters of originalLang don't match the first two characters of TovikEngine.userLang
             if (this.#originalLang && this.#originalLang.substring(0, 2) === TovikEngine.userLang.substring(0, 2) && !forceReload) {
                 return;
@@ -6312,19 +6349,26 @@
         }
         async wrapTextNodes(element, forceReload = false) {
             var nodes = [];
-            var treeWalker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, forceReload ? this.#tovikForceReloadIgnoreFilter : this.#tovikIgnoreFilter);
+            TovikEngine.sampleText = '';
+            var treeWalker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, this.#tovikIgnoreFilter);
             while (treeWalker.nextNode()) {
                 const node = treeWalker.currentNode;
-                if (this.isValid(node)) {
+                if (node['originalText'])
+                    TovikEngine.sampleText += (node['preWhiteSpace'] ? ' ' : '') + node['originalText'] + (node['postWhiteSpace'] ? ' ' : '');
+                else
+                    TovikEngine.sampleText += node.textContent + ' ';
+                if (this.shouldTranslate(node, forceReload)) {
                     node['translating'] = true;
                     nodes.push(node);
                 }
             }
             await this.translateTextNodes(nodes);
         }
-        isValid(node) {
+        shouldTranslate(node, forceReload) {
             return node
                 && node.textContent
+                && (forceReload || !node.translating)
+                && (forceReload || !node.translated)
                 && /\p{Letter}/u.test(node.textContent) // Check if the text contains any letter
                 && !Date.parse(node.textContent) // Exclude text that can be parsed as a date
                 && !(node.parentElement && node.parentElement.tagName === 'TOVIK-T');
@@ -6333,15 +6377,6 @@
             document.dispatchEvent(new CustomEvent('tovik-content-changed'));
         };
         #tovikIgnoreFilter = function (node) {
-            var approvedNodes = ['#text'];
-            if (!approvedNodes.includes(node.nodeName) || node.translating || node.translated || node.parentNode.nodeName == 'SCRIPT' || node.parentNode.nodeName == 'STYLE')
-                return NodeFilter.FILTER_SKIP;
-            var closest = node.parentElement.closest('[translate="no"]');
-            if (closest)
-                return NodeFilter.FILTER_SKIP;
-            return NodeFilter.FILTER_ACCEPT;
-        };
-        #tovikForceReloadIgnoreFilter = function (node) {
             var approvedNodes = ['#text'];
             if (!approvedNodes.includes(node.nodeName) || node.parentNode.nodeName == 'SCRIPT' || node.parentNode.nodeName == 'STYLE')
                 return NodeFilter.FILTER_SKIP;

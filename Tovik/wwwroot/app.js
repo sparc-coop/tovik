@@ -17,7 +17,6 @@ function highlight(codeBlock) {
     }
 
     hljs.highlightElement(codeBlock);
-    console.log('highlighted', codeBlock.originalCode);
 }
 
 function populatePreviewCode(previewBlock, codeBlock) {

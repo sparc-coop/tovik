@@ -33,6 +33,7 @@ export default class TovikElement extends HTMLElement {
     async translatePage(element, forceReload = false) {
         if (!TovikEngine.detectedLang)
             TovikEngine.registerVisit();
+        console.log('hi', this.#originalLang, TovikEngine.userLang);
         // Only translate if the first two characters of originalLang don't match the first two characters of TovikEngine.userLang
         if (this.#originalLang && this.#originalLang.substring(0, 2) === TovikEngine.userLang.substring(0, 2) && !forceReload) {
             return;
@@ -44,19 +45,26 @@ export default class TovikElement extends HTMLElement {
     }
     async wrapTextNodes(element, forceReload = false) {
         var nodes = [];
-        var treeWalker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, forceReload ? this.#tovikForceReloadIgnoreFilter : this.#tovikIgnoreFilter);
+        TovikEngine.sampleText = '';
+        var treeWalker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, this.#tovikIgnoreFilter);
         while (treeWalker.nextNode()) {
             const node = treeWalker.currentNode;
-            if (this.isValid(node)) {
+            if (node['originalText'])
+                TovikEngine.sampleText += (node['preWhiteSpace'] ? ' ' : '') + node['originalText'] + (node['postWhiteSpace'] ? ' ' : '');
+            else
+                TovikEngine.sampleText += node.textContent + ' ';
+            if (this.shouldTranslate(node, forceReload)) {
                 node['translating'] = true;
                 nodes.push(node);
             }
         }
         await this.translateTextNodes(nodes);
     }
-    isValid(node) {
+    shouldTranslate(node, forceReload) {
         return node
             && node.textContent
+            && (forceReload || !node.translating)
+            && (forceReload || !node.translated)
             && /\p{Letter}/u.test(node.textContent) // Check if the text contains any letter
             && !Date.parse(node.textContent) // Exclude text that can be parsed as a date
             && !(node.parentElement && node.parentElement.tagName === 'TOVIK-T');
@@ -65,15 +73,6 @@ export default class TovikElement extends HTMLElement {
         document.dispatchEvent(new CustomEvent('tovik-content-changed'));
     };
     #tovikIgnoreFilter = function (node) {
-        var approvedNodes = ['#text'];
-        if (!approvedNodes.includes(node.nodeName) || node.translating || node.translated || node.parentNode.nodeName == 'SCRIPT' || node.parentNode.nodeName == 'STYLE')
-            return NodeFilter.FILTER_SKIP;
-        var closest = node.parentElement.closest('[translate="no"]');
-        if (closest)
-            return NodeFilter.FILTER_SKIP;
-        return NodeFilter.FILTER_ACCEPT;
-    };
-    #tovikForceReloadIgnoreFilter = function (node) {
         var approvedNodes = ['#text'];
         if (!approvedNodes.includes(node.nodeName) || node.parentNode.nodeName == 'SCRIPT' || node.parentNode.nodeName == 'STYLE')
             return NodeFilter.FILTER_SKIP;
