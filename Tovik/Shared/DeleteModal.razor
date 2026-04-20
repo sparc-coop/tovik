@@ -4,7 +4,7 @@
         @if (DeleteType == "domain")
         {
             <h4>Delete Domain</h4>
-            <p>Are you sure you want to delete this domain? This action cannot be undone.</p>
+            <p>Are you sure you want to delete this website? This action cannot be undone.</p>
             <div class="btn-container">
                 <button class="cancel-btn secondary-btn" @onclick=Close>Cancel</button>
                 <button class="delete-btn primary-btn" @onclick="DeleteDomain"><TrashIcon /> Delete Domain</button>
@@ -13,7 +13,7 @@
         else if (DeleteType == "exemption")
         {
             <h4>@Domain.Domain</h4>
-            <h5>Delete " <span>@Word</span> " from this domain's exemptions?</h5>
+            <h5>Delete " <span>@Word</span> " from this website's exemptions?</h5>
             <p>Are you sure you want to delete this word or phrase? This action cannot be undone.</p>
             <div class="btn-container">
                 <button class="cancel-btn secondary-btn" @onclick=Close>Cancel</button>

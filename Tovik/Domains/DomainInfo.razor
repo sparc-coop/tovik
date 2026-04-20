@@ -9,18 +9,18 @@
     {
         <a class="back" href="/sites">
             <img src="/icons/ChevronLeft.svg" alt="Back" />
-            Back to My Sites
+            Back to My Websites
         </a>
 
         <header class="subpage">
             <div>
                 <h1>Manage @Domain.Domain</h1>
-                <p>Manage domain details and active languages for your domain.</p>
+                <p>Manage website details and active languages.</p>
             </div>
             <div class="buttons">
                 @if (Domain.DateConnected == null)
                 {
-                    <div class="toggle-label inactive" title="Install Tovik on your site to enable it">
+                    <div class="toggle-label inactive" title="Install Tovik on your website to enable it">
                         Inactive
                         <label class="toggle">
                             <input type="checkbox" disabled />
@@ -49,16 +49,16 @@
 
         <section class="icon-header with-buttons">
             <header>
-                <img src="/icons/SiteOverview.svg" alt="Site Overview" />
+                <img src="/icons/SiteOverview.svg" alt="Website Overview" />
                 <div>
-                    <h3>Site Overview</h3>
-                    <p>Overview of your site's settings and configurations.</p>
+                    <h3>Website Overview</h3>
+                    <p>Overview of your website's settings and configurations.</p>
                 </div>
                 <div class="buttons">
                     @if (Domain.DateConnected == null)
                     {
-                        <a href="/sites/@(Id)/activate" class="button primary-btn">
-                            Install for Free
+                        <a href="/sites/@(Id)/pricing" class="button primary-btn">
+                            Get Tovik for Your Website
                         </a>
                     }
                     else
@@ -111,7 +111,7 @@
                 <img src="/images/WorldIcon.svg" alt="Language Stats" />
                 <div>
                     <h3>Language Stats</h3>
-                    <p>Click any language to preview your site in that language.</p>
+                    <p>Click any language to preview your website in that language.</p>
                 </div>
             </header>
 

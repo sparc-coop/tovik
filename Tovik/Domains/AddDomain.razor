@@ -1,7 +1,7 @@
 ﻿<form class="@Mode" @onsubmit=GoToPreview>
     <input type="text" placeholder="Enter your URL" @bind=Url required />
     <button disabled="@IsVerifying">
-        @(Mode == "Sites" ? "Add Domain" : "Preview")
+        @(Mode == "Sites" ? "Add Website" : "Preview")
     </button>
 </form>
 

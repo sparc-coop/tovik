@@ -17,7 +17,7 @@
             {
                 <a href="/sites" class="back">
                     <img src="/icons/ChevronLeft.svg" alt="Back" />
-                    Back to My Sites
+                    Back to My Websites
                 </a>
             }
             
@@ -31,7 +31,7 @@
                 <div class="cta">
                     <div>
                         <p>
-                            Tovik is a lightweight plugin that <strong>automatically translates your entire site</strong> into your visitor's native language.
+                            Tovik is a lightweight plugin that <strong>automatically translates your entire website</strong> into your visitor's native language.
                         </p>
                     </div>
 
@@ -39,8 +39,8 @@
 
                     <div class="buttons">
                         <button class="secondary-btn" @onclick="PickRandomLanguage">Show Me Another Language</button>
-                        <a class="button primary-btn" href="/sites/@Domain.Id/activate">
-                            Install Tovik on @Domain.Domain
+                        <a class="button primary-btn" href="/sites/@Domain.Id/pricing">
+                            Get Tovik for Your Website
                         </a>
                     </div>
                 </div>
@@ -122,7 +122,7 @@
             CrawlResult = await Crawler.PreviewAsync(Domain, Page, Lang);
         else
             ErrorMessage = Domain?.IsBlocked == true
-                ? "This domain is not compatible with Tovik."
+                ? "This website is not compatible with Tovik."
                 : "Please enter a valid URL.";
     }
 

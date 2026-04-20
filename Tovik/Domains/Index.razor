@@ -1,12 +1,12 @@
 ﻿@page "/sites"
 @using Sparc.Blossom.Content
 
-<PageTitle>My Sites | Tovik</PageTitle>
+<PageTitle>My Websites | Tovik</PageTitle>
 
 <article>
     <header class="infopage">
-        <h1>My Sites</h1>
-        <p>Here is an overview of your Tovik-activated domains and translation usage.</p>
+        <h1>My Websites</h1>
+        <p>Here is an overview of your Tovik-activated websites and translation usage.</p>
 
 
     </header>
@@ -19,16 +19,16 @@
         @if (IsAdding)
         {
             <div class="add-domain adding">
-                <img src="/icons/Add.svg" alt="Add a New Domain" />
+                <img src="/icons/Add.svg" alt="Add a New Website" />
                 <AddDomain Mode="Sites" />
             </div>
         }
         else
         {
             <div class="add-domain" @onclick=Add>
-                <img src="/icons/Add.svg" alt="Add a New Domain" />
+                <img src="/icons/Add.svg" alt="Add a New Website" />
                 <div>
-                    Add a New Domain
+                    Add a New Website
                     <p>Start for free</p>
                 </div>
             </div>

@@ -13,14 +13,14 @@
     @if (Edition == "Preview")
     {
         <footer>
-            <a href="@($"/sites/{Domain.Id}")" class="button secondary-btn">Manage Domain</a>
+            <a href="@($"/sites/{Domain.Id}")" class="button secondary-btn">Manage Website</a>
             <a href="@($"/sites/{Domain.Id}/preview")" class="button">Preview</a>
         </footer>
     }
     else
     {
         <footer>
-            <a href="@($"/sites/{Domain.Id}")" class="button secondary-btn">Manage Domain</a>
+            <a href="@($"/sites/{Domain.Id}")" class="button secondary-btn">Manage Website</a>
             <a href="@($"/sites/{Domain.Id}/preview")" class="button">Translation Settings</a>
         </footer>
     }
@@ -61,7 +61,7 @@
         }
         else
         {
-            ErrorMessage = $"{Domain.Domain} does not contain the expected Tovik script: https://tovik.app/tovik.js. Please ensure Tovik is installed correctly on this domain.";
+            ErrorMessage = $"{Domain.Domain} does not contain the expected Tovik script: https://tovik.app/tovik.js. Please ensure Tovik is installed correctly on this website.";
         }
     }
 

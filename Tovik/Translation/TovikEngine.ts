@@ -308,10 +308,10 @@ export default class TovikEngine {
         if (response.ok)
             return await response.json();
         else if (response.status === 429) {
-            console.warn(`Tovik tried to translate your site into ${language}, but your site has reached the Tovik translation limit!`);
+            console.warn(`Tovik tried to translate your website into ${language}, but your site has reached the Tovik translation limit!`);
         }
         else {
-            console.error(`Tovik was unable to translate part of your site. Contact Tovik support to assist: Error code ${response.status}`);
+            console.error(`Tovik was unable to translate part of your website. Contact Tovik support to assist: Error code ${response.status}`);
         }
     }
 }

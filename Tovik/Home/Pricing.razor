@@ -1,5 +1,6 @@
 ﻿@page "/pricing"
 @page "/sites/{Id}/purchase"
+@page "/sites/{Id}/pricing"
 @using Sparc.Blossom.Realtime
 @using Tovik.Domains
 
@@ -9,13 +10,13 @@
     <header class="infopage">
         @if (SparcDomain?.DateConnected != null)
         {
-            <h1>Upgrade Your Domain</h1>
-            <p>Choose from the packs below to permanently add additional translatable pages to your domain.</p>
+            <h1>Upgrade Your Website</h1>
+            <p>Choose from the packs below to permanently add additional translatable pages to your website.</p>
         }
         else
         {
             <h1>Tovik Pricing</h1>
-            <p>Translate your website effortlessly. Choose the right plan for your domain.</p>
+            <p>Tovik is a lightweight plugin that <strong>automatically translates your entire website</strong> into your visitor's native language.</p>
         }
 
         <div class="options">
@@ -29,10 +30,10 @@
             @if (AllDomains.Count > 0)
             {
                 <div>
-                    Select your domain
+                    Select your website
                     <div class="domain-selector">
                         <select @bind="@Domain" @bind:after="OnDomainChanged">
-                            <option value="">-- Choose your domain --</option>
+                            <option value="">Choose your website...</option>
                             @foreach (var domain in AllDomains.OrderBy(x => x.Domain))
                             {
                                 <option value="@domain.Id">
@@ -82,25 +83,25 @@
                     }
                     else if (index == 0 && SparcDomain == null)
                     {
-                        <a class="button primary-btn" href="/">Get Started</a>
+                        <a class="button primary-btn" href="/sites">Get Started</a>
                     }
                     else if (index == 0 && SparcDomain != null && SparcDomain.DateConnected == null)
                     {
-                        <a class="button primary-btn" href="/sites/@(SparcDomain.Id)/activate">Get Started</a>
+                        <a class="button primary-btn" href="/sites/@(SparcDomain.Id)/activate">Install</a>
                     }
                     else if (index > 0 && SparcDomain != null)
                     {
-                        <a class="button primary-btn" href="/sites/@(SparcDomain.Id)/purchase/@(tier.Name)">Purchase Now</a>
+                        <a class="button primary-btn" href="/sites/@(SparcDomain.Id)/purchase/@(tier.Name)">Buy Now</a>
                     }
                     else
                     {
-                        <a class="button secondary-btn" href="/sites" disabled>Select a domain</a>
+                        <a class="button secondary-btn" href="/sites" disabled>Select a website</a>
                     }
                     <ul>
                         @if (SparcDomain?.DateConnected == null)
                         {
                             <li>
-                                <strong>For domains up to @tier.ItemQuantity.ToString("N0") pages</strong>
+                                <strong>For websites up to @tier.ItemQuantity.ToString("N0") pages</strong>
                             </li>
                         }
                         else
@@ -113,16 +114,16 @@
                             Unlimited visitors &amp; page visits
                         </li>
                         <li>
-                            @Sparc.Blossom.Content.Language.LanguageCount languages &amp; @Sparc.Blossom.Content.Language.Count dialects
+                            Unlimited languages and dialects
                         </li>
                         <li>
                             Unlimited translations per page
                         </li>
-                        @if (index > 0)
+@*                         @if (index > 0)
                         {
                             <li>(New!) Tovik API: Directly translate up to @ApiQuantity(tier) words</li>
                         }
-                    </ul>
+ *@                    </ul>
                 </div>
             }
         </section>
