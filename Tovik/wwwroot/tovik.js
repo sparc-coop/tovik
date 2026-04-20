@@ -6365,6 +6365,7 @@
             await this.wrapTextNodes(element, forceReload);
             await this.translateAttribute(element, 'placeholder', forceReload);
             document.documentElement.classList.remove('tovik-translating');
+            document.documentElement.classList.add('tovik-translated');
         }
         async wrapTextNodes(element, forceReload = false) {
             var nodes = [];

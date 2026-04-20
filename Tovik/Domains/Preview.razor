@@ -119,7 +119,7 @@
 
         (Domain, Page) = await Domains.GetDomainAndPage(Url);
         if (Domain != null && !Domain.IsBlocked && Page != null)
-            CrawlResult = await Crawler.PreviewAsync(Domain, Page, Lang);
+            CrawlResult = await Crawler.PreviewDynamicAsync(Domain, Page, Lang!);
         else
             ErrorMessage = Domain?.IsBlocked == true
                 ? "This website is not compatible with Tovik."
