@@ -38,8 +38,6 @@
     SparcLicense? License => Domain.Product("Tovik");
     string Edition => Domain.Product("Tovik")?.TierId ?? "Preview";
 
-    bool showDeleteModal = false;
-
     Language? Language(string id) => Languages.FirstOrDefault(x => x.Matches(id));
     async Task Upgrade()
     {

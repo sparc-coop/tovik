@@ -207,7 +207,7 @@
                     }
 
                     <p>Once you're done installing Tovik, click the button below to activate your website with <strong>10 free pages</strong>.</p>
-                    <button class="primary-btn" @onclick="ActivateDomain">Activate Tovik on @Domain.Domain</button>
+                    <button class="primary-btn" @onclick="ActivateDomain">Activate Tovik on @Domain?.Domain</button>
                     @if (Error != null)
                     {
                         <p class="error-message">@Error</p>
