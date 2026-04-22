@@ -116,24 +116,47 @@ export default class TovikEngine {
             lang = this.userLang;
         return MD5(text.trim() + ':' + lang);
     }
-    static async translate(text, fromLang) {
-        const request = {
-            id: this.idHash(text, fromLang),
-            Domain: window.location.host,
-            SpaceId: window.location.pathname,
-            LanguageId: fromLang,
-            Language: { Id: fromLang },
-            Text: text
-        };
-        return await this.fetch('translate', request, this.userLang);
-    }
     static async getFromCache(items, fromLang) {
         const requests = items.map(item => TovikEngine.toRequest(item, fromLang));
         if (!this.userLang) {
             await this.getUserLanguage();
         }
-        var result = await this.fetch('translate/all', requests, this.userLang);
-        return result;
+        var result = await this.fetch('translate/all', { content: requests, options: { additionalContext: document.body.innerText } }, this.userLang);
+        return result.content;
+    }
+    static async stream(pendingTranslations, textMap, fromLang, onTranslation) {
+        if (!pendingTranslations.length)
+            return;
+        const uniqueMap = new Map();
+        for (const item of pendingTranslations) {
+            if (!uniqueMap.has(item.hash))
+                uniqueMap.set(item.hash, { hash: item.hash, text: textMap(item.element) });
+        }
+        const requests = Array.from(uniqueMap.values()).map(item => TovikEngine.toRequest(item, fromLang));
+        if (!this.userLang) {
+            await this.getUserLanguage();
+        }
+        var result = await this.fetch('translate/stream', { content: requests, options: { additionalContext: document.body.innerText } }, this.userLang);
+        if (result.continuationToken) {
+            var source = new EventSource(`${baseUrl}/translate/stream/${result.continuationToken}`);
+            source.addEventListener('done', () => source.close());
+            source.addEventListener('ContentTranslated', (event) => {
+                var translation = JSON.parse(event.data).data.translatedContent;
+                console.log('message!', event.data, translation);
+                const items = pendingTranslations.filter(item => item.hash === translation.id);
+                for (let item of items) {
+                    onTranslation(item.element, translation);
+                    db.translations.put(translation);
+                }
+            });
+        }
+        for (let translation of result.content) {
+            const pending = pendingTranslations.find(item => item.hash === translation.id);
+            if (pending) {
+                onTranslation(pending.element, translation);
+                db.translations.put(translation);
+            }
+        }
     }
     static getWindowedSample(firstItem, lastItem, totalChars) {
         if (!this.sampleText)

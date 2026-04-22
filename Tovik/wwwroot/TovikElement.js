@@ -99,7 +99,7 @@ export default class TovikElement extends HTMLElement {
                 }
             }
         }
-        await TovikEngine.translateAll(pendingTranslations, x => x['original-' + attributeName], this.#originalLang, (el, translation) => el.setAttribute(attributeName, translation.text));
+        await TovikEngine.stream(pendingTranslations, x => x['original-' + attributeName], this.#originalLang, (el, translation) => el.setAttribute(attributeName, translation.text));
     }
     async translateTextNodes(textNodes) {
         let pendingTranslations = [];
@@ -127,7 +127,7 @@ export default class TovikElement extends HTMLElement {
         document.documentElement.classList.remove('tovik-translating');
         if (window.parent && window.parent.postMessage)
             window.parent.postMessage('tovik-translating');
-        await TovikEngine.translateAll(pendingTranslations, node => node.originalText, this.#originalLang, (el, translation) => {
+        await TovikEngine.stream(pendingTranslations, node => node.originalText, this.#originalLang, (el, translation) => {
             el.textContent =
                 (el.preWhiteSpace ? ' ' : '')
                     + translation.text

@@ -6083,24 +6083,47 @@
                 lang = this.userLang;
             return MD5(text.trim() + ':' + lang);
         }
-        static async translate(text, fromLang) {
-            const request = {
-                id: this.idHash(text, fromLang),
-                Domain: window.location.host,
-                SpaceId: window.location.pathname,
-                LanguageId: fromLang,
-                Language: { Id: fromLang },
-                Text: text
-            };
-            return await this.fetch('translate', request, this.userLang);
-        }
         static async getFromCache(items, fromLang) {
             const requests = items.map(item => TovikEngine.toRequest(item, fromLang));
             if (!this.userLang) {
                 await this.getUserLanguage();
             }
-            var result = await this.fetch('translate/all', requests, this.userLang);
-            return result;
+            var result = await this.fetch('translate/all', { content: requests, options: { additionalContext: document.body.innerText } }, this.userLang);
+            return result.content;
+        }
+        static async stream(pendingTranslations, textMap, fromLang, onTranslation) {
+            if (!pendingTranslations.length)
+                return;
+            const uniqueMap = new Map();
+            for (const item of pendingTranslations) {
+                if (!uniqueMap.has(item.hash))
+                    uniqueMap.set(item.hash, { hash: item.hash, text: textMap(item.element) });
+            }
+            const requests = Array.from(uniqueMap.values()).map(item => TovikEngine.toRequest(item, fromLang));
+            if (!this.userLang) {
+                await this.getUserLanguage();
+            }
+            var result = await this.fetch('translate/stream', { content: requests, options: { additionalContext: document.body.innerText } }, this.userLang);
+            if (result.continuationToken) {
+                var source = new EventSource(`${baseUrl}/translate/stream/${result.continuationToken}`);
+                source.addEventListener('done', () => source.close());
+                source.addEventListener('ContentTranslated', (event) => {
+                    var translation = JSON.parse(event.data).data.translatedContent;
+                    console.log('message!', event.data, translation);
+                    const items = pendingTranslations.filter(item => item.hash === translation.id);
+                    for (let item of items) {
+                        onTranslation(item.element, translation);
+                        db.translations.put(translation);
+                    }
+                });
+            }
+            for (let translation of result.content) {
+                const pending = pendingTranslations.find(item => item.hash === translation.id);
+                if (pending) {
+                    onTranslation(pending.element, translation);
+                    db.translations.put(translation);
+                }
+            }
         }
         static getWindowedSample(firstItem, lastItem, totalChars) {
             if (!this.sampleText)
@@ -6228,53 +6251,6 @@
             }
             else {
                 console.error(`Tovik was unable to translate part of your website. Contact Tovik support to assist: Error code ${response.status}`);
-            }
-        }
-    }
-
-    class TovikNode extends HTMLElement {
-        #original;
-        #originalLang;
-        #translated;
-        constructor() {
-            super();
-        }
-        connectedCallback() {
-            this.#original = this.textContent.trim();
-            this.#originalLang = this.lang || document.documentElement.lang;
-            document.addEventListener('tovik-language-changed', this.#languageChangedCallback);
-            this.askForTranslation();
-        }
-        disconnectedCallback() {
-            document.removeEventListener('tovik-language-changed', this.#languageChangedCallback);
-        }
-        #languageChangedCallback = (event) => {
-            this.askForTranslation();
-        };
-        askForTranslation() {
-            const hash = TovikEngine.idHash(this.#original);
-            db.translations.get(hash).then(translation => {
-                if (translation) {
-                    this.render(translation);
-                }
-                else {
-                    this.classList.add('tovik-translating');
-                    TovikEngine.translate(this.#original, this.#originalLang)
-                        .then(newTranslation => {
-                        this.render(newTranslation);
-                        db.translations.put(newTranslation);
-                    });
-                    this.classList.remove('tovik-translating');
-                }
-            });
-        }
-        render(translation) {
-            this.#translated = translation.text;
-            if (this.#translated) {
-                this.textContent = this.#translated;
-            }
-            else {
-                this.textContent = this.#original;
             }
         }
     }
@@ -6423,7 +6399,7 @@
                     }
                 }
             }
-            await TovikEngine.translateAll(pendingTranslations, x => x['original-' + attributeName], this.#originalLang, (el, translation) => el.setAttribute(attributeName, translation.text));
+            await TovikEngine.stream(pendingTranslations, x => x['original-' + attributeName], this.#originalLang, (el, translation) => el.setAttribute(attributeName, translation.text));
         }
         async translateTextNodes(textNodes) {
             let pendingTranslations = [];
@@ -6451,7 +6427,7 @@
             document.documentElement.classList.remove('tovik-translating');
             if (window.parent && window.parent.postMessage)
                 window.parent.postMessage('tovik-translating');
-            await TovikEngine.translateAll(pendingTranslations, node => node.originalText, this.#originalLang, (el, translation) => {
+            await TovikEngine.stream(pendingTranslations, node => node.originalText, this.#originalLang, (el, translation) => {
                 el.textContent =
                     (el.preWhiteSpace ? ' ' : '')
                         + translation.text
@@ -6468,7 +6444,6 @@
 
     // do an initial ping to Sparc Engine to set the cookie
     TovikEngine.hi().then(() => {
-        customElements.define('tovik-t', TovikNode);
         customElements.define('tovik-language', TovikLanguageElement);
         customElements.define('tovik-translate', TovikElement);
         // If the document does not have a <tovik-translate> element, create one and point it to the body

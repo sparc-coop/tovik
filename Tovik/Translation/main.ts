@@ -1,11 +1,9 @@
-﻿import TovikNode from './TovikNode.js';
-import TovikLanguageElement from './TovikLanguageElement.js';
+﻿import TovikLanguageElement from './TovikLanguageElement.js';
 import TovikElement from './TovikElement.js';
 import TovikEngine from './TovikEngine.js';
 
 // do an initial ping to Sparc Engine to set the cookie
 TovikEngine.hi().then(() => {
-    customElements.define('tovik-t', TovikNode);
     customElements.define('tovik-language', TovikLanguageElement);
     customElements.define('tovik-translate', TovikElement);
 

@@ -126,7 +126,7 @@ export default class TovikElement extends HTMLElement {
             }
         }
 
-        await TovikEngine.translateAll(
+        await TovikEngine.stream(
             pendingTranslations,
             x => x['original-' + attributeName],
             this.#originalLang,
@@ -164,7 +164,7 @@ export default class TovikElement extends HTMLElement {
         if (window.parent && window.parent.postMessage)
             window.parent.postMessage('tovik-translating');
 
-        await TovikEngine.translateAll(
+        await TovikEngine.stream(
             pendingTranslations,
             node => node.originalText,
             this.#originalLang,
