@@ -1,9 +1,12 @@
 import MD5 from "./MD5.js";
 import db from './TovikDb.js';
-const baseUrl = window.location.href.includes('localhost')
-    || (window.parent?.location != null && window.parent.location.href.includes('localhost'))
-    ? 'https://localhost:7185'
-    : 'https://engine.sparc.coop';
+function windowOrParentIncludes(str) {
+    return window.location.href.includes(str)
+        || (window.parent?.location && window.parent.location.href.includes(str));
+}
+const baseUrl = windowOrParentIncludes('localhost') ? 'https://localhost:7185'
+    : windowOrParentIncludes('tovik-staging') ? 'https://sparcengine-staging-asdagffkefgheqfm.centralus-01.azurewebsites.net'
+        : 'https://engine.sparc.coop';
 export default class TovikEngine {
     static userLang;
     static documentLang;
@@ -121,7 +124,7 @@ export default class TovikEngine {
         if (!this.userLang) {
             await this.getUserLanguage();
         }
-        var result = await this.fetch('translate/all', { content: requests, options: { additionalContext: document.body.innerText } }, this.userLang);
+        var result = await this.fetch('translate/all', { content: requests, options: { additionalContext: this.sampleText } }, this.userLang);
         return result.content;
     }
     static async stream(pendingTranslations, textMap, fromLang, onTranslation) {
