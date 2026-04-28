@@ -175,7 +175,6 @@ export default class TovikEngine {
             source.addEventListener('done', () => source.close());
             source.addEventListener('ContentTranslated', (event) => {
                 var translation = JSON.parse(event.data).data.translatedContent;
-                console.log('message!', event.data, translation);
                 const items = pendingTranslations.filter(item => item.hash === translation.id);
                 for (let item of items) {
                     onTranslation(item.element, translation);
