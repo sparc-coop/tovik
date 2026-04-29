@@ -1,5 +1,5 @@
 ﻿export default {
-	input: 'wwwroot/main.js',
+	input: '../../blossom/Sparc.Blossom.Engine/wwwroot/main.js',
 	output: {
 		file: 'wwwroot/tovik.js',
 		format: 'iife'
