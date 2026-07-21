@@ -1,7 +1,7 @@
 ﻿<form class="@Mode" @onsubmit=GoToPreview>
-    <input type="text" placeholder="Enter your URL" @bind=Url required />
+    <input type="text" placeholder="Enter your website's URL" @bind=Url required />
     <button disabled="@IsVerifying">
-        @(Mode == "Sites" ? "Add Website" : "Preview")
+        @(Mode == "Sites" ? "Add Website" : "Get Tovik")
     </button>
 </form>
 
@@ -33,7 +33,7 @@
         {
             var domain = await TovikDomains.RegisterAsync(Url);
             if (domain != null)
-                Nav.NavigateTo($"/sites/{domain.Id}/preview");
+                Nav.NavigateTo($"/sites/{domain.Id}/activate");
             else
                 ErrorMessage = "Please enter a valid URL.";
         }

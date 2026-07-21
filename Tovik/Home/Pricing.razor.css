@@ -25,12 +25,13 @@ article {
 
         @media (orientation: landscape) {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: 1fr 1fr;
             gap: 8px;
             width: 100%;
+            max-width: 800px;
 
             &.existing {
-                grid-template-columns: 1fr 1fr;
+                grid-template-columns: 1fr;
             }
 
             > div {

@@ -13,7 +13,7 @@
     <header class="subpage">
         <div>
             <h1>Installation guide</h1>
-            <p>Follow these simple steps to install and activate Tovik on your website.</p>
+            <p>Thanks for choosing Tovik! Follow these simple steps to install and activate Tovik on your website.</p>
         </div>
     </header>
 
@@ -47,10 +47,10 @@
             <section>
                 <header>
                     <h2>2</h2>
-                    <h3>Install and Activate Tovik on @SelectedPlatform</h3>
+                    <h3>Add Tovik to <DomainName Domain="@Domain" /> (@SelectedPlatform)</h3>
                 </header>
 
-                @if (SelectedPlatform == "Other (HTML)")
+                @if (SelectedPlatform == "HTML/JS")
                 {
                     <div>
                         <ol>
@@ -192,7 +192,20 @@
                     </div>
                 }
 
-                <footer>
+            </section>
+
+            <section>
+                <header>
+                    @if (Domain != null)
+                    {
+                        <h2>3</h2>
+                        <h3>
+                            Activate Tovik on <DomainName Domain="@Domain" />
+                        </h3>
+                    }
+                </header>
+
+                <div>
                     @if (User?.IsVerified == false)
                     {
                         <div class="register">
@@ -206,13 +219,15 @@
                         </div>
                     }
 
-                    <p>Once you're done installing Tovik, click the button below to activate your website with <strong>10 free pages</strong>.</p>
-                    <button class="primary-btn" @onclick="ActivateDomain">Activate Tovik on @Domain?.Domain</button>
+                    <p>After you've completed the installation steps, click the button below to verify proper installation and fully activate Tovik:</p>
+                    <div>
+                        <button class="primary-btn" @onclick="ActivateDomain">Activate Tovik</button>
+                    </div>
                     @if (Error != null)
                     {
                         <p class="error-message">@Error</p>
                     }
-                </footer>
+                </div>
             </section>
         }
         <h3 class="tagline">With Tovik, everyone can understand.</h3>
@@ -231,7 +246,7 @@
     SparcProduct? SparcProduct;
     BlossomUser? User;
     string Email = "";
-    List<string> Platforms = ["WordPress", "Wix", "SquareSpace", "Webflow", "Weebly", "Shopify", "Other (HTML)"];
+    List<string> Platforms = ["HTML/JS", "WordPress", "Wix", "SquareSpace", "Webflow", "Weebly", "Shopify"];
     List<string> ComingSoon = [];
     string? SelectedPlatform { get; set; } = null;
     string? Error;

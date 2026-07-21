@@ -1,7 +1,7 @@
 ﻿@page "/"
 @page "/home"
+@using Sparc.Blossom.Content
 @using Tovik.Domains
-@using Tovik.Translation
 
 <PageTitle>Tovik - With Tovik, everyone can understand.</PageTitle>
 
@@ -9,21 +9,87 @@
 {
     <article>
         <img src="/images/TovikChar.svg" alt="Tovik" />
-        <h1>Your website speaks your language.</h1>
-        <h2>Does it speak theirs?</h2>
-        <AddDomain Mode="Home" />
+        <div class="hero">
+            <h1>Hi, I'm Tovik.</h1>
+            <h2>The <i>ethical</i> website translation plugin.</h2>
+            <p>Tovik automatically translates your entire website into your visitor's preferred language, without requiring them to install anything, and without compromising their privacy.</p>
+        </div>
+
+        <div class="register">
+            <p>Join the movement and get Tovik for your website. Free for up to 20 pages!</p>
+            <AddDomain Mode="Home" />
+        </div>
+
+        <div class="beliefs">
+            <h4>Why Tovik?</h4>
+            <ul>
+                <li>
+                    <header>
+                        <img src="/images/HeartIcon.svg" alt="World Icon" />
+                        Understanding is a human right
+                    </header>
+                    Everyone should be able to understand the content of every website, regardless of the language it is originally written in.
+                </li>
+                <li>
+                    <header>
+                        <img src="/images/LockIcon.svg" alt="Privacy Icon" />
+                        Your visitors deserve privacy
+                    </header>
+                    Your story should be able to cross every border, without forcing your readers to give up their privacy by tracking them or storing their personal data.
+                </li>
+                <li>
+                    <header>
+                        <img src="/images/TiltedWorldIcon.svg" alt="Language Icon" />
+                        Translation should honor every language
+                    </header>
+                    Your visitors can come from anywhere in the world. Your content shouldn't be artificially limited to
+                    just the most popular languages.
+                </li>
+                <li>
+                    <header>
+                        <img src="/icons/Purchase.svg" alt="Cost Icon" />
+                        Translation should be a one-time cost
+                    </header>
+                    Translation services should be affordable and accessible to every content creator, without requiring a lifetime of subscriptions.
+                </li>
+            </ul>
+        </div>
+
+        <div class="languages">
+            <h4>Tovik automatically translates between @Languages.Count() languages and dialects:</h4>
+            <ul>
+                @foreach (var language in Languages.OrderBy(x => x.LanguageDisplayName).ThenBy(x => x.DialectDisplayName))
+                {
+                    <li>
+                        <h5>@language.NativeName</h5>
+                        @if (language.NativeName != language.DisplayName)
+                        {
+                            <h6>@language.DisplayName</h6>
+                        }
+                    </li>
+                }
+            </ul>
+        </div>
+
+
         <h3 class="tagline">
             With Tovik, everyone can understand.
         </h3>
     </article>
 }
 
+@inject ISparcContent Tovik
 @inject TovikDomains TovikDomains
+
 @code {
     bool IsLoading = true;
+    IEnumerable<Language> Languages = [];
 
     protected override async Task OnInitializedAsync()
     {
+        if (Languages.Count() == 0)
+            Languages = await Tovik.GetLanguages();
+
         if (Nav.Uri.Contains("home"))
         {
             IsLoading = false;

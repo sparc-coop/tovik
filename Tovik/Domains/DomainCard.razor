@@ -13,14 +13,14 @@
     @if (Edition == "Preview")
     {
         <footer>
-            <a href="@($"/sites/{Domain.Id}")" class="button secondary-btn">Manage Website</a>
-            <a href="@($"/sites/{Domain.Id}/preview")" class="button">Preview</a>
+            <a href="@($"/sites/{Domain.Id}")" class="button secondary-btn">Manage</a>
+            <a href="@($"/sites/{Domain.Id}/activate")" class="button">Install & Activate</a>
         </footer>
     }
     else
     {
         <footer>
-            <a href="@($"/sites/{Domain.Id}")" class="button secondary-btn">Manage Website</a>
+            <a href="@($"/sites/{Domain.Id}")" class="button secondary-btn">Manage</a>
             <a href="@($"/sites/{Domain.Id}/preview")" class="button">Translation Settings</a>
         </footer>
     }

@@ -16,21 +16,21 @@
         else
         {
             <h1>Tovik Pricing</h1>
-            <p>Tovik is a lightweight plugin that <strong>automatically translates your entire website</strong> into your visitor's native language.</p>
+            <p>Tovik is a lightweight plugin that automatically translates your entire website into your visitor's native language.</p>
         }
 
         <div class="options">
             @if (User != null)
             {
                 <div>
-                    Select your currency
+                    Pay in your preferred currency:
                     <CurrencySelector Avatar="User.Avatar" />
                 </div>
             }
             @if (AllDomains.Count > 0)
             {
                 <div>
-                    Select your website
+                    Select your website:
                     <div class="domain-selector">
                         <select @bind="@Domain" @bind:after="OnDomainChanged">
                             <option value="">Choose your website...</option>
@@ -73,7 +73,11 @@
                             @tier.FormattedPrice
                             @if (index > 0)
                             {
-                                <strong>/ one time</strong>
+                                <strong>/ once</strong>
+                            }
+                            else
+                            {
+                                <strong> / forever</strong>
                             }
                         </h3>
                     </header>
@@ -119,11 +123,11 @@
                         <li>
                             Unlimited translations per page
                         </li>
-@*                         @if (index > 0)
+                         @if (index > 0)
                         {
-                            <li>(New!) Tovik API: Directly translate up to @ApiQuantity(tier) words</li>
+                            <li>Need more pages? Add 500 more pages for @tier.FormattedPrice</li>
                         }
- *@                    </ul>
+                     </ul>
                 </div>
             }
         </section>
