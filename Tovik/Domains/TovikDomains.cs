@@ -90,7 +90,7 @@ public class TovikDomains(BlossomAggregateOptions<SparcDomain> options,
         return (domain, page);
     }
 
-    public async Task<SparcDomain> RegisterAsync(string domainName)
+    public async Task<SparcDomain?> RegisterAsync(string domainName)
     {
         var host = SparcDomain.Normalize(domainName)
             ?? throw new ArgumentException("Invalid domain name.", nameof(domainName));
@@ -105,6 +105,10 @@ public class TovikDomains(BlossomAggregateOptions<SparcDomain> options,
             {
                 Users = [User.Id()]
             };
+
+            if (!await existing.IsOnline())
+                return null;
+
             await Repository.AddAsync(existing);
         }
 
