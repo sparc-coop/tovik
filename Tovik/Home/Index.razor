@@ -11,7 +11,7 @@
         <img src="/images/TovikChar.svg" alt="Tovik" />
         <div class="hero">
             <h1>Hi, I'm Tovik.</h1>
-            <h2>The <i>ethical</i> website translation plugin.</h2>
+            <h2>The ethical website translation plugin.</h2>
             <p>Tovik automatically translates your entire website into your visitor's preferred language, without requiring them to install anything, and without compromising their privacy.</p>
         </div>
 
@@ -57,7 +57,7 @@
 
         <div class="languages">
             <h4>Tovik automatically translates between @Languages.Count() languages and dialects:</h4>
-            <ul>
+            <ul translate="no">
                 @foreach (var language in Languages.OrderBy(x => x.LanguageDisplayName).ThenBy(x => x.DialectDisplayName))
                 {
                     <li>
